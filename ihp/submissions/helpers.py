@@ -21,7 +21,8 @@ def parse_dp(sheet):
     submission = Submission.objects.create(
         country=country,
         institution=institution,
-        docversion=version
+        docversion=version,
+        type="DP",
     )
 
     for row in range(5, sheet.nrows):

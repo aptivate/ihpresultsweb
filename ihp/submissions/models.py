@@ -1,16 +1,18 @@
 from django.db import models
 
 class SubmissionManager(models.Manager):
-    def get_latest_submission(self, country, institution):
+    def get_latest_submission(self, country, institution, type):
         return self.filter(
             country=country,
-            institution=institution
+            institution=institution,
+            type=type,
         ).reverse()[0:1] or None
 
 class Submission(models.Model):
     country = models.CharField(max_length=30, null=False)
     institution = models.CharField(max_length=30, null=False)
     docversion = models.CharField(max_length=10, null=False)
+    type = models.CharField(max_length=10, null=False)
     date_submitted = models.DateTimeField(auto_now_add=True)
 
     objects = SubmissionManager()
