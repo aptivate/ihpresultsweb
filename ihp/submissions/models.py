@@ -1,16 +1,16 @@
 from django.db import models
 
 class SubmissionManager(models.Manager):
-    def get_latest_submission(self, country, institution, type):
+    def get_latest_submission(self, country, agency, type):
         return self.filter(
             country=country,
-            institution=institution,
+            agency=agency,
             type=type,
         ).reverse()[0:1] or None
 
 class Submission(models.Model):
     country = models.CharField(max_length=30, null=False)
-    institution = models.CharField(max_length=30, null=False)
+    agency = models.CharField(max_length=30, null=False)
     docversion = models.CharField(max_length=10, null=False)
     type = models.CharField(max_length=10, null=False)
     date_submitted = models.DateTimeField(auto_now_add=True)
@@ -25,3 +25,11 @@ class DPQuestion(models.Model):
     latest_year = models.CharField(max_length=4, null=False)
     latest_value = models.CharField(max_length=20, null=False)
     comments = models.TextField()
+
+class AgencyCountries(models.Model):
+    agency = models.CharField(max_length=50, null=False)
+    country = models.CharField(max_length=50, null=False)
+
+    def __unicode__(self):
+        return "<<AgencyCountry Object>>%s %s" % (self.agency, self.country)
+

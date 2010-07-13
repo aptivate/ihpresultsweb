@@ -1,5 +1,7 @@
 import xlrd
-from submissions.models import Submission, DPQuestion
+import urllib2
+import json
+from submissions.models import Submission, DPQuestion, AgencyCountries
 
 def parse_file(filename):
     book = xlrd.open_workbook(filename)
@@ -16,11 +18,11 @@ def unfloat(val):
     
 def parse_dp(sheet):
     country = sheet.cell(0, 5).value
-    institution = sheet.cell(1, 5).value
+    agency = sheet.cell(1, 5).value
     version = sheet.cell(2, 5).value
     submission = Submission.objects.create(
         country=country,
-        institution=institution,
+        agency=agency,
         docversion=version,
         type="DP",
     )
@@ -35,3 +37,35 @@ def parse_dp(sheet):
            latest_value=unfloat(sheet.cell(row, 8).value),
            comments=sheet.cell(row, 11).value,  
         )
+
+#agency_country_url = "https://ihp.dabbledb.com/publish/sarpam/e955563b-618c-4c9a-a131-8ed69356e570/agencycountries.jsonp"
+def load_agency_countries(filename=None):
+    #fp = urllib2.urlopen(agency_country_url)
+    fp = open(filename)
+    s = fp.read()
+    js = json.loads(s)
+    cols = {}
+    data = []
+    for key in js["fields"]:
+        cols[key] = js["fields"][key]["name"]
+
+    agencies = []
+    for entry in js["entries"]:
+        datum = {}
+        for field in entry["fields"]:
+            col = cols[field["field"]]
+            if "values" in field:
+                countries = []
+                for value in field["values"]:
+                    countries.append(value["value"])
+                datum[col] = countries
+            else:
+                datum[col] = field["value"]
+        agencies.append(datum)
+    AgencyCountries.objects.all().delete()
+    for datum in agencies:
+        countries = datum["Country"]
+        for country in countries:
+           AgencyCountries.objects.create(agency=datum["Name"], country=country)  
+    return agencies
+
