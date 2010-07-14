@@ -1,7 +1,7 @@
 import xlrd
 import urllib2
 import json
-from submissions.models import Submission, DPQuestion, AgencyCountries
+from submissions.models import Submission, DPQuestion, AgencyCountries, Targets
 
 def parse_file(filename):
     book = xlrd.open_workbook(filename)
@@ -17,9 +17,17 @@ def unfloat(val):
     return val
     
 def parse_dp(sheet):
+
     country = sheet.cell(0, 5).value
     agency = sheet.cell(1, 5).value
     version = sheet.cell(2, 5).value
+
+    Submission.objects.filter(
+        country=country,
+        agency=agency,
+        type="DP"
+    ).delete()
+
     submission = Submission.objects.create(
         country=country,
         agency=agency,
@@ -68,4 +76,36 @@ def load_agency_countries(filename=None):
         for country in countries:
            AgencyCountries.objects.create(agency=datum["Name"], country=country)  
     return agencies
+
+def load_agency_targets(filename=None):
+    fp = open(filename)
+    js = json.load(fp)
+    cols = {}
+    data = []
+
+    for key in js["fields"]:
+        cols[key] = js["fields"][key]["name"]
+
+    #import pdb; pdb.set_trace();
+    for entry in js["entries"]:
+        datum = {}
+        for field in entry["fields"]:
+            key = cols[field["field"]]
+            value = field["value"]
+            if type(value) == dict:
+                value = value["value"]
+            datum[key] = value or None
+        data.append(datum)
+    
+    Targets.objects.all().delete()
+    for datum in data:
+        Targets.objects.create(
+            indicator=datum["Indicator"],
+            agency=datum["Agency"],
+            tick_criterion_type=datum["Tick Criterion Type"],
+            tick_criterion_value=datum["Tick Criterion Value"],
+            arrow_criterion_type=datum["Arrow Criterion Type"],
+            arrow_criterion_value=datum["Arrow Criterion Value"],
+        )
+        
 
