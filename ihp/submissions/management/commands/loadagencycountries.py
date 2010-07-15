@@ -13,6 +13,6 @@ class Command(BaseCommand):
             filename = args[0]
             load_agency_countries(filename)
         elif len(args) == 0:
-            print "Downloading from dabbledb - UNDER CONSTRUCTION"
+            load_agency_countries() 
         else:
             raise CommandError("Expected 0 or 1 parameters")

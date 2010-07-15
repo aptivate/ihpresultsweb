@@ -46,10 +46,12 @@ def parse_dp(sheet):
            comments=sheet.cell(row, 11).value,  
         )
 
-#agency_country_url = "https://ihp.dabbledb.com/publish/sarpam/e955563b-618c-4c9a-a131-8ed69356e570/agencycountries.jsonp"
+agency_country_url = "https://ihp.dabbledb.com/publish/sarpam/e955563b-618c-4c9a-a131-8ed69356e570/agencycountries.jsonp"
 def load_agency_countries(filename=None):
-    #fp = urllib2.urlopen(agency_country_url)
-    fp = open(filename)
+    if filename:
+        fp = open(filename)
+    else:
+        fp = urllib2.urlopen(agency_country_url)
     s = fp.read()
     js = json.loads(s)
     cols = {}
@@ -77,9 +79,12 @@ def load_agency_countries(filename=None):
            AgencyCountries.objects.create(agency=datum["Name"], country=country)  
     return agencies
 
-#https://ihp.dabbledb.com/publish/sarpam/8fefaf12-ad89-4600-beb6-374898c37809/targets.jsonp
+agency_targets_url = "https://ihp.dabbledb.com/publish/sarpam/8fefaf12-ad89-4600-beb6-374898c37809/targets.jsonp"
 def load_agency_targets(filename=None):
-    fp = open(filename)
+    if filename:
+        fp = open(filename)
+    else:
+        fp = urllib2.urlopen(agency_targets_url)
     js = json.load(fp)
     cols = {}
     data = []

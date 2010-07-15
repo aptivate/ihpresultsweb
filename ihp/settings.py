@@ -1,5 +1,4 @@
 import os
-print "YO HO"
 
 PROJECT_HOME = os.path.dirname(os.path.realpath(__name__))
 DEBUG = True
