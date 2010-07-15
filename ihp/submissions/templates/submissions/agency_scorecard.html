@@ -7,6 +7,7 @@
                 <th>Base Val</th>
                 <th>Cur Val</th>
                 <th>Target</th>
+                <th>Comments</th>
             </tr>
             {% for agency, agency_targets in targets.items %}
             {% for indicator, target in agency_targets.items %}
@@ -15,7 +16,7 @@
                 <td>{{ indicator }}</td>
                 <td>{{ target.base_val }}</td>
                 <td>{{ target.cur_val }}</td>
-                <td>{{ target.target }}</td>
+                <td>{{ target.comments }}</td>
             </tr>
             {% endfor %}
             {% endfor %}

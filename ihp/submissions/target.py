@@ -49,7 +49,7 @@ def calc_agency_targets(agency):
     targets = get_agency_targets(agency)
     indicators = calc_agency_indicators(agency)
     results = {}
-    for indicator, (base_val, cur_val) in indicators.items():
+    for indicator, ((base_val, cur_val), comments) in indicators.items():
         target = targets[indicator]
         tick_func = criteria_funcs[target.tick_criterion_type]
         arrow_func = criteria_funcs[target.arrow_criterion_type]
@@ -57,6 +57,7 @@ def calc_agency_targets(agency):
         result = {
             "base_val" : base_val,
             "cur_val" : cur_val,
+            "comments" : comments,
         }
         if tick_func(base_val, cur_val, target.tick_criterion_value):
             result["target"] = "tick"

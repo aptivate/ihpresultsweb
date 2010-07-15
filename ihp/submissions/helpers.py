@@ -43,7 +43,7 @@ def parse_dp(sheet):
            baseline_value=unfloat(sheet.cell(row, 6).value),
            latest_year=unfloat(sheet.cell(row, 7).value),
            latest_value=unfloat(sheet.cell(row, 8).value),
-           comments=sheet.cell(row, 11).value,  
+           comments=sheet.cell(row, 12).value,  
         )
 
 agency_country_url = "https://ihp.dabbledb.com/publish/sarpam/e955563b-618c-4c9a-a131-8ed69356e570/agencycountries.jsonp"

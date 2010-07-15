@@ -77,7 +77,9 @@ def sum_values(qs, q):
 
 def calc_indicator(qs, indicator):
     func, args = indicator_funcs[indicator]
-    return func(qs, *args)
+    qs2 = qs.filter(question_number__in=args)
+    comments = [(question.question_number, question.submission.country, question.comments) for question in qs2]
+    return func(qs, *args), comments
 
 def calc_agency_indicator(agency, indicator):
     qs = DPQuestion.objects.filter(submission__agency=agency)
