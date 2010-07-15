@@ -5,7 +5,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Example:
-    # (r'^ihp/', include('ihp.foo.urls')),
-
+    (r'^scorecard/agency/$', 'submissions.views.agency_scorecard', {}, 'agency_scorecard'),
     (r'^admin/', include(admin.site.urls)),
 )

@@ -77,6 +77,7 @@ def load_agency_countries(filename=None):
            AgencyCountries.objects.create(agency=datum["Name"], country=country)  
     return agencies
 
+#https://ihp.dabbledb.com/publish/sarpam/8fefaf12-ad89-4600-beb6-374898c37809/targets.jsonp
 def load_agency_targets(filename=None):
     fp = open(filename)
     js = json.load(fp)
@@ -99,6 +100,8 @@ def load_agency_targets(filename=None):
     
     Targets.objects.all().delete()
     for datum in data:
+        if datum["Indicator"] == None:
+            continue
         Targets.objects.create(
             indicator=datum["Indicator"],
             agency=datum["Agency"],

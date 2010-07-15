@@ -1,0 +1,25 @@
+<html>
+    <body>
+        <table>
+            <tr>
+                <th>Agency</th>
+                <th>Indicator</th>
+                <th>Base Val</th>
+                <th>Cur Val</th>
+                <th>Target</th>
+            </tr>
+            {% for agency, agency_targets in targets.items %}
+            {% for indicator, target in agency_targets.items %}
+            <tr>
+                <td>{{ agency }}</td>
+                <td>{{ indicator }}</td>
+                <td>{{ target.base_val }}</td>
+                <td>{{ target.cur_val }}</td>
+                <td>{{ target.target }}</td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </table>
+        
+    </body>
+</html>

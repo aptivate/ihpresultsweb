@@ -6,20 +6,51 @@ def sum_current_values(qs):
 def sum_baseline_values(qs):
     return sum([int(el.baseline_value) for el in qs])
 
-def count_yes(qs, q):
-    qs = qs.filter(
-        question_number=q, 
-    )
+def count_factory(value):
+    def count_value(qs, q):
+        qs = qs.filter(
+            question_number=q, 
+        )
 
-    base_yes = qs.filter(
-        baseline_value__iexact="yes"
-    ).count()
+        base_value = qs.filter(
+            baseline_value__iexact=value
+        ).count()
 
-    cur_yes = qs.filter(
-        latest_value__iexact="yes"
-    ).count()
-    
-    return (base_yes, cur_yes)
+        cur_value = qs.filter(
+            latest_value__iexact=value
+        ).count()
+        
+        return (base_value, cur_value)
+    return count_value
+
+def exclude_count_factory(value):
+    def count_value(qs, q):
+        qs = qs.filter(
+            question_number=q, 
+        )
+
+        base_value = qs.exclude(
+            baseline_value__iexact=value
+        ).count()
+
+        cur_value = qs.exclude(
+            latest_value__iexact=value
+        ).count()
+        
+        return (base_value, cur_value)
+    return count_value
+
+def perc_factory(value):
+    def perc_value(qs, q):
+        count_value = count_factory(value)
+        exclude_count_value = exclude_count_factory(value)
+
+        base_value, cur_value = count_value(qs, q)
+        base_exclude_value, cur_exclude_value = exclude_count_value(qs, q)
+
+
+        return (float(base_value) / (base_value + base_exclude_value), float(cur_value) / (cur_value + cur_exclude_value))
+    return perc_value
 
 def calc_numdenom(qs, numq, denomq):
     cur_den = float(sum_current_values(qs.filter(question_number=denomq)))
@@ -37,23 +68,24 @@ def sum_values(qs, q):
     return (base_val, cur_val)
 
 
-def calc_dp_indicator(agency, indicator):
-    qs = DPQuestion.objects.filter(
-       submission__agency=agency, 
-    )
-
-    return calc_indicator(qs, indicator)
-
-def calc_country_indicator(country, indicator):
-    qs = DPQuestion.objects.filter(
-       submission__country=country, 
-    )
-
-    return calc_indicator(qs, indicator)
+#def calc_country_indicator(country, indicator):
+#    qs = DPQuestion.objects.filter(
+#       submission__country=country, 
+#    )
+#
+#    return calc_indicator(qs, indicator)
 
 def calc_indicator(qs, indicator):
     func, args = indicator_funcs[indicator]
     return func(qs, *args)
+
+def calc_agency_indicator(agency, indicator):
+    qs = DPQuestion.objects.filter(submission__agency=agency)
+    return calc_indicator(qs, indicator)
+
+def calc_agency_indicators(agency):
+    results = [calc_agency_indicator(agency, indicator) for indicator in indicators]
+    return dict(zip(indicators, results))
 
 indicators = [
     "1DP" , "2DPa", "2DPb",
@@ -63,7 +95,7 @@ indicators = [
 ]
 
 indicator_funcs = {
-    "1DP"  : (count_yes, ("1",)),
+    "1DP"  : (perc_factory("yes"), ("1",)),
     "2DPa" : (calc_numdenom, ("3", "2")),
     "2DPb" : (calc_numdenom, ("5", "4")),
     "2DPc" : (calc_numdenom, ("6", "2")),
@@ -72,8 +104,8 @@ indicator_funcs = {
     "5DPa" : (calc_numdenom, ("10", "9")),
     "5DPb" : (calc_numdenom, ("12", "9")),
     "5DPc" : (sum_values, ("13",)),
-    "6DP"  : (count_yes, ("15",)),
-    "7DP"  : (count_yes, ("16",)),
-    "8DP"  : (count_yes, ("17",)),
+    "6DP"  : (count_factory("yes"), ("15",)),
+    "7DP"  : (count_factory("yes"), ("16",)),
+    "8DP"  : (count_factory("yes"), ("17",)),
 }
 
