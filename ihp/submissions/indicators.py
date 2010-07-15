@@ -57,7 +57,11 @@ def calc_numdenom(qs, numq, denomq):
     cur_num = float(sum_current_values(qs.filter(question_number=numq)))
     base_den = float(sum_baseline_values(qs.filter(question_number=denomq)))
     base_num = float(sum_baseline_values(qs.filter(question_number=numq)))
-    return (base_num / base_den, cur_num / cur_den)
+
+    base_ratio = cur_ratio = None
+    if base_den > 0: base_ratio = base_num / base_den
+    if cur_den > 0: cur_ratio = cur_num / cur_den
+    return (base_ratio, cur_ratio)
 
 def sum_values(qs, q):
     qs = qs.filter(question_number=q)
