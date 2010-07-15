@@ -52,22 +52,28 @@ def calc_country_indicator(country, indicator):
     return calc_indicator(qs, indicator)
 
 def calc_indicator(qs, indicator):
-    
-    indicators = {
-        "1DP"  : (count_yes, ("1",)),
-        "2DPa" : (calc_numdenom, ("3", "2")),
-        "2DPb" : (calc_numdenom, ("5", "4")),
-        "2DPc" : (calc_numdenom, ("6", "2")),
-        "3DP"  : (calc_numdenom, ("7", "2")),
-        "4DP"  : (calc_numdenom, ("8b", "8")),
-        "5DPa" : (calc_numdenom, ("10", "9")),
-        "5DPb" : (calc_numdenom, ("12", "9")),
-        "5DPc" : (sum_values, ("13",)),
-        "6DP"  : (count_yes, ("15",)),
-        "7DP"  : (count_yes, ("16",)),
-        "8DP"  : (count_yes, ("17",)),
-    }
+    func, args = indicator_funcs[indicator]
+    return func(qs, *args)
 
-    if indicator in indicators:
-        func, args = indicators[indicator]
-        return func(qs, *args)
+indicators = [
+    "1DP" , "2DPa", "2DPb",
+    "2DPc", "3DP" , "4DP" ,
+    "5DPa", "5DPb", "5DPc",
+    "6DP" , "7DP" , "8DP" ,
+]
+
+indicator_funcs = {
+    "1DP"  : (count_yes, ("1",)),
+    "2DPa" : (calc_numdenom, ("3", "2")),
+    "2DPb" : (calc_numdenom, ("5", "4")),
+    "2DPc" : (calc_numdenom, ("6", "2")),
+    "3DP"  : (calc_numdenom, ("7", "2")),
+    "4DP"  : (calc_numdenom, ("8b", "8")),
+    "5DPa" : (calc_numdenom, ("10", "9")),
+    "5DPb" : (calc_numdenom, ("12", "9")),
+    "5DPc" : (sum_values, ("13",)),
+    "6DP"  : (count_yes, ("15",)),
+    "7DP"  : (count_yes, ("16",)),
+    "8DP"  : (count_yes, ("17",)),
+}
+
