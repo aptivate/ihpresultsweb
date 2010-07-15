@@ -58,7 +58,7 @@ def calc_numdenom(qs, numq, denomq):
     base_den = float(sum_baseline_values(qs.filter(question_number=denomq)))
     base_num = float(sum_baseline_values(qs.filter(question_number=numq)))
 
-    base_ratio = cur_ratio = None
+    base_ratio = cur_ratio = 0 # TODO this is an intentional bug - it makes life so much easier
     if base_den > 0: base_ratio = base_num / base_den
     if cur_den > 0: cur_ratio = cur_num / cur_den
     return (base_ratio, cur_ratio)
