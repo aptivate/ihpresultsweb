@@ -1,6 +1,6 @@
 #!/bin/sh
-
+command=$1
 cd /home/burgercom/ihp.burgercom.co.za/ihp
 source /home/burgercom/.virtualenvs/ihp/bin/activate
-echo `date` >> log
-python manage.py checkemail
+echo `date] ${command}` >> log
+python manage.py ${command}
