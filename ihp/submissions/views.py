@@ -16,6 +16,7 @@ def agency_scorecard(request, template_name="submissions/agency_scorecard.html",
             for question_number, country, comment in old_comments:
                 comments.append("%s %s] %s" % (question_number, country, comment))
             d["comments"] = "\n".join(comments)
+            d["key"] = "%s_%s" % (agency, indicator)
         
     extra_context["targets"] = targets
 

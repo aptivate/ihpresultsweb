@@ -2,6 +2,7 @@
     <body>
         <table>
             <tr>
+                <th>Key</th>
                 <th>Agency</th>
                 <th>Indicator</th>
                 <th>Base Val</th>
@@ -12,6 +13,7 @@
             {% for agency, agency_targets in targets.items %}
             {% for indicator, target in agency_targets.items %}
             <tr>
+                <td>{{ target.key }}</td>
                 <td>{{ agency }}</td>
                 <td>{{ indicator }}</td>
                 <td>{{ target.base_val }}</td>
