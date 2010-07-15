@@ -67,3 +67,8 @@ INSTALLED_APPS = (
    
     'submissions',
 )
+
+# Poll Email Account Settings
+POLL_USERNAME = "ihp@burgercom.co.za"
+POLL_PASSWORD = "paddycake"
+POLL_HOST = "pop.gmail.com"
