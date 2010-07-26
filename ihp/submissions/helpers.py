@@ -1,7 +1,8 @@
+import sys
 import xlrd
 import urllib2
 import json
-from submissions.models import Submission, DPQuestion, AgencyCountries, Targets
+from submissions.models import Submission, DPQuestion, AgencyCountries, Targets, Agency
 
 def parse_file(filename):
     book = xlrd.open_workbook(filename)
@@ -21,6 +22,8 @@ def parse_dp(sheet):
     country = sheet.cell(0, 5).value
     agency = sheet.cell(1, 5).value
     version = sheet.cell(2, 5).value
+
+    agency = Agency.objects.get(agency=agency)
 
     Submission.objects.filter(
         country=country,
@@ -75,8 +78,9 @@ def load_agency_countries(filename=None):
     AgencyCountries.objects.all().delete()
     for datum in agencies:
         countries = datum["Country"]
+        (agency, _) = Agency.objects.get_or_create(agency=datum["Name"])
         for country in countries:
-           AgencyCountries.objects.create(agency=datum["Name"], country=country)  
+           AgencyCountries.objects.create(agency=agency, country=country)  
     return agencies
 
 agency_targets_url = "https://ihp.dabbledb.com/publish/sarpam/8fefaf12-ad89-4600-beb6-374898c37809/targets.jsonp"
@@ -107,13 +111,19 @@ def load_agency_targets(filename=None):
     for datum in data:
         if datum["Indicator"] == None:
             continue
-        Targets.objects.create(
-            indicator=datum["Indicator"],
-            agency=datum["Agency"],
-            tick_criterion_type=datum["Tick Criterion Type"],
-            tick_criterion_value=datum["Tick Criterion Value"],
-            arrow_criterion_type=datum["Arrow Criterion Type"],
-            arrow_criterion_value=datum["Arrow Criterion Value"],
-        )
-        
+        try:
+            if datum["Agency"] == None:
+                agency = None
+            else:
+                agency = Agency.objects.get(agency=datum["Agency"])
 
+            Targets.objects.create(
+                indicator=datum["Indicator"],
+                agency=agency,
+                tick_criterion_type=datum["Tick Criterion Type"],
+                tick_criterion_value=datum["Tick Criterion Value"],
+                arrow_criterion_type=datum["Arrow Criterion Type"],
+                arrow_criterion_value=datum["Arrow Criterion Value"],
+            )
+        except Agency.DoesNotExist:
+            print >> sys.stderr, "Warning - Agency %s does not exist" % datum["Agency"]

@@ -1,8 +1,15 @@
 from django.db import models
 
+class Agency(models.Model):
+    agency = models.CharField(max_length=50, null=False)
+    description = models.TextField()
+
+    def __unicode__(self):
+        return self.agency
+
 class Submission(models.Model):
     country = models.CharField(max_length=30, null=False)
-    agency = models.CharField(max_length=30, null=False)
+    agency = models.ForeignKey(Agency, null=False)
     docversion = models.CharField(max_length=10, null=False)
     type = models.CharField(max_length=10, null=False)
     date_submitted = models.DateTimeField(auto_now_add=True)
@@ -27,7 +34,7 @@ class AgencyCountriesManager(models.Manager):
         return [r.country for r in res]
 
 class AgencyCountries(models.Model):
-    agency = models.CharField(max_length=50, null=False)
+    agency = models.ForeignKey(Agency, null=False)
     country = models.CharField(max_length=50, null=False)
 
     objects = AgencyCountriesManager()
@@ -37,7 +44,7 @@ class AgencyCountries(models.Model):
 
 class Targets(models.Model):
     indicator = models.CharField(max_length=10, null=False)
-    agency = models.CharField(max_length=50, null=False)
+    agency = models.ForeignKey(Agency, null=True)
     tick_criterion_type = models.CharField(max_length=50, null=False)
     tick_criterion_value = models.IntegerField(null=True)
     arrow_criterion_type = models.CharField(max_length=50, null=False)

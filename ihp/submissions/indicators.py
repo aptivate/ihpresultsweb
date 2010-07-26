@@ -7,7 +7,7 @@ def sum_baseline_values(qs):
     return sum([int(el.baseline_value) for el in qs])
 
 def count_factory(value):
-    def count_value(qs, q):
+    def count_value(qs, agency, q):
         qs = qs.filter(
             question_number=q, 
         )
@@ -24,7 +24,7 @@ def count_factory(value):
     return count_value
 
 def exclude_count_factory(value):
-    def count_value(qs, q):
+    def count_value(qs, agency, q):
         qs = qs.filter(
             question_number=q, 
         )
@@ -41,29 +41,41 @@ def exclude_count_factory(value):
     return count_value
 
 def perc_factory(value):
-    def perc_value(qs, q):
+    def perc_value(qs, agency, q):
         count_value = count_factory(value)
         exclude_count_value = exclude_count_factory(value)
 
-        base_value, cur_value = count_value(qs, q)
-        base_exclude_value, cur_exclude_value = exclude_count_value(qs, q)
+        base_value, cur_value = count_value(qs, agency, q)
+        base_exclude_value, cur_exclude_value = exclude_count_value(qs, agency, q)
 
 
         return (float(base_value) / (base_value + base_exclude_value), float(cur_value) / (cur_value + cur_exclude_value))
     return perc_value
 
-def calc_numdenom(qs, numq, denomq):
+def country_perc_factory(value):
+    def perc_value(qs, agency, q):
+        count_value = count_factory(value)
+
+        base_value, cur_value = count_value(qs, agency, q)
+        num_countries = float(len(AgencyCountries.objects.get_agency_countries(agency)))
+        if num_countries == 0:
+            return None, None
+        else:
+            return (base_value / num_countries), (cur_value / num_countries)
+    return perc_value
+
+def calc_numdenom(qs, agency, numq, denomq):
     cur_den = float(sum_current_values(qs.filter(question_number=denomq)))
     cur_num = float(sum_current_values(qs.filter(question_number=numq)))
     base_den = float(sum_baseline_values(qs.filter(question_number=denomq)))
     base_num = float(sum_baseline_values(qs.filter(question_number=numq)))
 
-    base_ratio = cur_ratio = 0 # TODO this is an intentional bug - it makes life so much easier
+    base_ratio = cur_ratio = None
     if base_den > 0: base_ratio = base_num / base_den
     if cur_den > 0: cur_ratio = cur_num / cur_den
     return (base_ratio, cur_ratio)
 
-def sum_values(qs, q):
+def sum_values(qs, agency, q):
     qs = qs.filter(question_number=q)
 
     cur_val = float(sum_current_values(qs))
@@ -79,17 +91,32 @@ def sum_values(qs, q):
 #
 #    return calc_indicator(qs, indicator)
 
-def calc_indicator(qs, indicator):
+def calc_indicator(qs, agency, indicator):
     func, args = indicator_funcs[indicator]
     qs2 = qs.filter(question_number__in=args)
     comments = [(question.question_number, question.submission.country, question.comments) for question in qs2]
-    return func(qs, *args), comments
+    return func(qs, agency, *args), comments
 
 def calc_agency_indicator(agency, indicator):
+    """
+    Calculate the value of a particular indicator for the given agency
+    Returns a tuple ((cur_val, base_val), indicator comment)
+    """
     qs = DPQuestion.objects.filter(submission__agency=agency)
-    return calc_indicator(qs, indicator)
+    return calc_indicator(qs, agency, indicator)
 
 def calc_agency_indicators(agency):
+    """
+    Calculates all the indicators for the given agency
+    Returns a dict with the following form
+    {
+        "1DP" : ((base_1dp, cur_1dp), comment_1dp),
+        "2DPa" : ((base_2dpa, cur_2dpa), comment_2dp),
+        .
+        .
+        .
+    }
+    """
     results = [calc_agency_indicator(agency, indicator) for indicator in indicators]
     return dict(zip(indicators, results))
 
@@ -101,7 +128,7 @@ indicators = [
 ]
 
 indicator_funcs = {
-    "1DP"  : (perc_factory("yes"), ("1",)),
+    "1DP"  : (country_perc_factory("yes"), ("1",)),
     "2DPa" : (calc_numdenom, ("3", "2")),
     "2DPb" : (calc_numdenom, ("5", "4")),
     "2DPc" : (calc_numdenom, ("6", "2")),

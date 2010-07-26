@@ -3,26 +3,34 @@ from models import Targets
 
 def criterion_absolute(base_val, cur_val, criterion_param):
     
+    if cur_val == None: return None
     if cur_val * 100 - criterion_param < 0.000000001:
         return True
     return False
 
 def criterion_relative_increase(base_val, cur_val, criterion_param):
+    if cur_val == None or base_val == None: return None
     if cur_val >= base_val * (1 + criterion_param / 100.0):
         return True
     return False
 
 def criterion_relative_decrease(base_val, cur_val, criterion_param):
+    if cur_val == None or base_val == None: return None
+
     if cur_val <= base_val * (1 - criterion_param / 100.0):
         return True
     return False
 
 def criterion_increase(base_val, cur_val, criterion_param):
+    if cur_val == None or base_val == None: return None
+
     if cur_val > base_val:
         return True
     return False
 
 def criterion_decrease(base_val, cur_val, criterion_param):
+    if cur_val == None or base_val == None: return None
+
     if cur_val < base_val:
         return True
     return False
@@ -41,11 +49,33 @@ def get_agency_targets(agency):
         try:
             target = Targets.objects.get(agency=agency, indicator=indicator)
         except Targets.DoesNotExist:
-            target = Targets.objects.get(agency="Default", indicator=indicator)
+            target = Targets.objects.get(agency=None, indicator=indicator)
         targets[indicator] = target
     return targets
 
 def calc_agency_targets(agency):
+    """
+    Returns information for all indicators for the given agency in a dict with the
+    following form
+    {
+        "1DP" : {
+            "base_val" : ...,
+            "cur_val" : ...,
+            "comments" : ...,
+            "target" : ...,
+        },
+        "2DPa" : {
+            "base_val" : ...,
+            "cur_val" : ...,
+            "comments" : ...,
+            "target" : ...,
+        },
+        .
+        .
+        .
+    }
+    """
+        
     targets = get_agency_targets(agency)
     indicators = calc_agency_indicators(agency)
     results = {}

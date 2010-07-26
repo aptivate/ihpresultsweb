@@ -16,8 +16,8 @@
                 <td>{{ target.key }}</td>
                 <td>{{ agency }}</td>
                 <td>{{ indicator }}</td>
-                <td>{{ target.base_val }}</td>
-                <td>{{ target.cur_val }}</td>
+                <td>{{ target.base_val|default_if_none:"" }}</td>
+                <td>{{ target.cur_val|default_if_none:"" }}</td>
                 <td>{{ target.target }}</td>
                 <td>{{ target.comments }}</td>
             </tr>

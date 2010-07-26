@@ -1,20 +1,16 @@
 from collections import defaultdict
-from django.views.generic.simple import direct_to_template
-from models import Submission
-from target import calc_agency_targets
-from django.http import HttpResponse
 
-def get_agencies():
-    agencies = Submission.objects.all().values("agency").distinct()
-    agencies = [el["agency"] for el in agencies]
-    return agencies
+from django.http import HttpResponse
+from django.views.generic.simple import direct_to_template
+
+from models import Submission, AgencyCountries, Agency
+from target import calc_agency_targets
 
 def agency_scorecard(request, template_name="submissions/agency_scorecard.html", extra_context=None):
     extra_context = extra_context or {}
-    agencies = get_agencies()
 
     targets = {} 
-    for agency in agencies:
+    for agency in Agency.objects.all():
         targets[agency] = calc_agency_targets(agency)
         for indicator, d in targets[agency].items():
             old_comments = d["comments"]
