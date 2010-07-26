@@ -46,9 +46,9 @@
             </tr>
             {% for agency, agency_targets in targets.items %}
             <tr>
-                <td>{{ agency }}</td>
-                <td>{{ agency }}</td>
-                <td>{% comment profile %}{% endcomment %}</td>
+                <td>{{ agency.agency }}</td>
+                <td>{{ agency.agency }}</td>
+                <td>{{ agency.description }}</td>
                 <td>{% comment er1 %}{% endcomment %}</td>
                 <td>{{ agency_targets.1DP.target }}</td>
                 <td>{% comment er2a %}{% endcomment %}</td>
