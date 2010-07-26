@@ -11,6 +11,7 @@ def agency_scorecard(request, template_name="submissions/agency_scorecard.html",
 
     targets = {} 
     for agency in Agency.objects.all():
+        if agency.submission_set.count() == 0: continue
         targets[agency] = calc_agency_targets(agency)
         for indicator, d in targets[agency].items():
             old_comments = d["comments"]
