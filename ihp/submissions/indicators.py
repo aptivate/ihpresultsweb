@@ -70,6 +70,8 @@ def calc_numdenom(qs, agency, numq, denomq):
     base_den = float(sum_baseline_values(qs.filter(question_number=denomq)))
     base_num = float(sum_baseline_values(qs.filter(question_number=numq)))
 
+    print cur_den, cur_num, base_den, base_num
+
     base_ratio = cur_ratio = None
     if base_den > 0: base_ratio = base_num / base_den
     if cur_den > 0: cur_ratio = cur_num / cur_den
@@ -93,14 +95,20 @@ def sum_values(qs, agency, q):
 
 def calc_indicator(qs, agency, indicator):
     func, args = indicator_funcs[indicator]
+    # TODO - this is really ugly - probably need to refactor this code
     qs2 = qs.filter(question_number__in=args)
     comments = [(question.question_number, question.submission.country, question.comments) for question in qs2]
-    return func(qs, agency, *args), comments
+    base_val, cur_val = func(qs, agency, *args)
+    # TODO here i assume that the year is the same across all years and all questions. 
+    cur_year = qs2[0].latest_year
+    base_year = qs2[0].baseline_year
+
+    return (base_val, base_year, cur_val, cur_year), comments
 
 def calc_agency_indicator(agency, indicator):
     """
     Calculate the value of a particular indicator for the given agency
-    Returns a tuple ((cur_val, base_val), indicator comment)
+    Returns a tuple ((base_val, base_year, cur_val, cur_year), indicator comment)
     """
     qs = DPQuestion.objects.filter(submission__agency=agency)
     return calc_indicator(qs, agency, indicator)
@@ -110,8 +118,8 @@ def calc_agency_indicators(agency):
     Calculates all the indicators for the given agency
     Returns a dict with the following form
     {
-        "1DP" : ((base_1dp, cur_1dp), comment_1dp),
-        "2DPa" : ((base_2dpa, cur_2dpa), comment_2dp),
+        "1DP" : ((base_1dp, base_1dp_year, cur_1dp, cur_1dp_year), comment_1dp),
+        "2DPa" : ((base_2dpa, base_2dpa_year, cur_2dpa, cur_2dpa_year), comment_2dp),
         .
         .
         .
@@ -137,8 +145,8 @@ indicator_funcs = {
     "5DPa" : (calc_numdenom, ("10", "9")),
     "5DPb" : (calc_numdenom, ("12", "9")),
     "5DPc" : (sum_values, ("13",)),
-    "6DP"  : (count_factory("yes"), ("15",)),
-    "7DP"  : (count_factory("yes"), ("16",)),
-    "8DP"  : (count_factory("yes"), ("17",)),
+    "6DP"  : (country_perc_factory("yes"), ("15",)),
+    "7DP"  : (country_perc_factory("yes"), ("16",)),
+    "8DP"  : (country_perc_factory("yes"), ("17",)),
 }
 
