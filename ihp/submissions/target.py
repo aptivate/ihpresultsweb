@@ -1,5 +1,5 @@
-from indicators import calc_agency_indicators, indicators
-from models import Targets
+from indicators import calc_agency_indicators, indicators, calc_agency_country_indicators
+from models import Targets, AgencyCountries, Submission
 import math
 
 def criterion_absolute(base_val, cur_val, criterion_param):
@@ -64,6 +64,17 @@ def none_mul(a, b):
         return None
     return a * b
 
+def evaluate_indicator(target, base_val, cur_val):
+    tick_func = criteria_funcs[target.tick_criterion_type]
+    arrow_func = criteria_funcs[target.arrow_criterion_type]
+
+    if tick_func(base_val, cur_val, target.tick_criterion_value):
+        return "tick"
+    elif arrow_func(base_val, cur_val, target.arrow_criterion_value):
+        return "arrow"
+    else:
+        return "cross"
+
 def calc_agency_targets(agency):
     """
     Returns information for all indicators for the given agency in a dict with the
@@ -89,7 +100,7 @@ def calc_agency_targets(agency):
 
     commentary_map = {
         "1DP" : "An IHP+ Country Compact or equivalent was signed in %(cur_val)d%% of IHP+ countries where these exist, by the end of %(cur_year)s. Target = %(target_val)d%% of IHP+ countries where the signatory operates have support for/commitment to the IHP+ compact (or equivalent) mutually agreed and documented.",
-        "2DPa" : "%(cur_val)d%% of health sector aid was reported on national health sector budgets by the end of %(cur_year)s - %(diff_direction)s from %(base_val)d%% in 2006. Target %(target_val)s.",
+        "2DPa" : "%(cur_val)d%% of health sector aid was reported on national health sector budgets by the end of %(cur_year)s - %(diff_direction)s from %(base_val)d%% in 2006. Target %(target_val)d%%.",
         "2DPb" : "",
         "2DPc" : "%(cur_val)d%% of health sector aid was provided through programme based approaches by the end of %(cur_year)s, %(diff_direction)s of %(diff_val)d%% from the %(base_year)s baseline. Target = %(target_val)s.",
         "3DP" : "%(cur_val)d%% of health sector funding was provided through multi-year commitments by the end of %(cur_year)s: %(diff_direction)s from %(base_val)d%% in %(base_year)s. Target = %(target_val)s.",
@@ -105,12 +116,9 @@ def calc_agency_targets(agency):
     targets = get_agency_targets(agency)
     indicators = calc_agency_indicators(agency)
     results = {}
-    for indicator, ((base_val, base_year, cur_val, cur_year), comments) in indicators.items():
+    for indicator in indicators:
+        (base_val, base_year, cur_val, cur_year), comments = indicators[indicator]
         target = targets[indicator]
-        tick_func = criteria_funcs[target.tick_criterion_type]
-        arrow_func = criteria_funcs[target.arrow_criterion_type]
-        base_val = none_mul(base_val, 100)
-        cur_val = none_mul(cur_val, 100)
 
         result = {
             "base_val" : base_val,
@@ -121,19 +129,35 @@ def calc_agency_targets(agency):
             "commentary" : "",
         }
 
+        result["target"] = evaluate_indicator(target, base_val, cur_val)
+
         # create commentary
         if base_val != None and cur_val != None:
             result["diff_val"] = math.fabs(base_val - cur_val)
-            result["diff_direction"] = "a decrease" if base_val - cur_val < 0 else "an increase"
+            result["diff_direction"] = "a decrease" if base_val - cur_val > 0 else "an increase"
             result["target_val"] = target.tick_criterion_value
 
             result["commentary"] = commentary_map[indicator] % result
 
-        if tick_func(base_val, cur_val, target.tick_criterion_value):
-            result["target"] = "tick"
-        elif arrow_func(base_val, cur_val, target.arrow_criterion_value):
-            result["target"] = "arrow"
-        else:
-            result["target"] = "cross"
         results[indicator] = result
+
+    np = []
+    p = []
+    for country in AgencyCountries.objects.get_agency_countries(agency):
+        if Submission.objects.filter(agency=agency, country=country).count() == 0:
+            np.append(country)
+        else:
+            num_indicators = ticks = 0
+            for indicator in indicators:
+                (base_val, base_year, cur_val, cur_year), comments = indicators[indicator]
+                target = targets[indicator]
+                result = evaluate_indicator(target, base_val, cur_val)
+                if result != "cross":
+                    ticks += 1.0
+                num_indicators += 1.0
+            if ticks / num_indicators > 0.5:
+                p.append(country + "_%f" % (ticks / num_indicators))
+            else:
+                np.append(country + "_%f" % (ticks / num_indicators))
+    print np, p
     return results

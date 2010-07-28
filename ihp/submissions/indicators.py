@@ -40,18 +40,6 @@ def exclude_count_factory(value):
         return (base_value, cur_value)
     return count_value
 
-def perc_factory(value):
-    def perc_value(qs, agency, q):
-        count_value = count_factory(value)
-        exclude_count_value = exclude_count_factory(value)
-
-        base_value, cur_value = count_value(qs, agency, q)
-        base_exclude_value, cur_exclude_value = exclude_count_value(qs, agency, q)
-
-
-        return (float(base_value) / (base_value + base_exclude_value), float(cur_value) / (cur_value + cur_exclude_value))
-    return perc_value
-
 def country_perc_factory(value):
     def perc_value(qs, agency, q):
         count_value = count_factory(value)
@@ -61,7 +49,7 @@ def country_perc_factory(value):
         if num_countries == 0:
             return None, None
         else:
-            return (base_value / num_countries), (cur_value / num_countries)
+            return (base_value / num_countries * 100), (cur_value / num_countries * 100)
     return perc_value
 
 def calc_numdenom(qs, agency, numq, denomq):
@@ -70,11 +58,9 @@ def calc_numdenom(qs, agency, numq, denomq):
     base_den = float(sum_baseline_values(qs.filter(question_number=denomq)))
     base_num = float(sum_baseline_values(qs.filter(question_number=numq)))
 
-    print cur_den, cur_num, base_den, base_num
-
     base_ratio = cur_ratio = None
-    if base_den > 0: base_ratio = base_num / base_den
-    if cur_den > 0: cur_ratio = cur_num / cur_den
+    if base_den > 0: base_ratio = base_num / base_den * 100
+    if cur_den > 0: cur_ratio = cur_num / cur_den * 100
     return (base_ratio, cur_ratio)
 
 def sum_values(qs, agency, q):
@@ -100,8 +86,11 @@ def calc_indicator(qs, agency, indicator):
     comments = [(question.question_number, question.submission.country, question.comments) for question in qs2]
     base_val, cur_val = func(qs, agency, *args)
     # TODO here i assume that the year is the same across all years and all questions. 
-    cur_year = qs2[0].latest_year
-    base_year = qs2[0].baseline_year
+    if len(qs2) > 0: 
+        cur_year = qs2[0].latest_year
+        base_year = qs2[0].baseline_year
+    else:
+        cur_year = base_year = None
 
     return (base_val, base_year, cur_val, cur_year), comments
 
@@ -126,6 +115,20 @@ def calc_agency_indicators(agency):
     }
     """
     results = [calc_agency_indicator(agency, indicator) for indicator in indicators]
+    return dict(zip(indicators, results))
+
+def calc_agency_country_indicator(agency, country, indicator):
+    """
+    Same as calc_agency_indicator above but only looks at a specific country
+    """
+    qs = DPQuestion.objects.filter(submission__agency=agency, submission__country=country)
+    return calc_indicator(qs, agency, indicator)
+
+def calc_agency_country_indicators(agency, country):
+    """
+    Same as calc_agency_indicators above but only looks at a specific country
+    """
+    results = [calc_agency_country_indicator(agency, country, indicator) for indicator in indicators]
     return dict(zip(indicators, results))
 
 indicators = [
