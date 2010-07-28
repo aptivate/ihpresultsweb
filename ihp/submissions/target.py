@@ -165,23 +165,40 @@ def calc_agency_targets(agency):
 
         results[indicator] = result
 
+    return results
+
+def get_country_progress(agency):
     np = []
     p = []
+    np_dict = {}
+    p_dict = {}
+    targets = get_agency_targets(agency)
     for country in AgencyCountries.objects.get_agency_countries(agency):
+        country_indicators = calc_agency_country_indicators(agency, country)
         if Submission.objects.filter(agency=agency, country=country).count() == 0:
             np.append(country)
         else:
             num_indicators = ticks = 0
-            for indicator in indicators:
-                (base_val, base_year, cur_val, cur_year), comments = indicators[indicator]
-                target = targets[indicator]
-                result = evaluate_indicator(target, base_val, cur_val)
+            for indicator in country_indicators:
+                (base_val, base_year, cur_val, cur_year), comments = country_indicators[indicator]
+                # TODO this is a hack - it might be better to extract this
+                # logic out of here
+                if indicator in ["1DP", "6DP", "7DP", "8DP"]:
+                    if cur_val > 0:
+                        result = "tick" 
+                else:
+                    target = targets[indicator]
+                    result = evaluate_indicator(target, base_val, cur_val)
                 if result != "cross":
                     ticks += 1.0
                 num_indicators += 1.0
             if ticks / num_indicators > 0.5:
-                p.append(country + "_%f" % (ticks / num_indicators))
+                p.append(country)
             else:
-                np.append(country + "_%f" % (ticks / num_indicators))
-    print np, p
-    return results
+                np.append(country)
+    for i, country in enumerate(sorted(p)):
+        p_dict[i + 1] = country
+    for i, country in enumerate(sorted(np)):
+        np_dict[i + 1] = country
+        
+    return np_dict, p_dict

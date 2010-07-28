@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template
 
 from models import Submission, AgencyCountries, Agency
-from target import calc_agency_targets
+from target import calc_agency_targets, get_country_progress
 
 def agency_scorecard(request, template_name="submissions/agency_scorecard.html", extra_context=None):
     extra_context = extra_context or {}
@@ -20,7 +20,8 @@ def agency_scorecard(request, template_name="submissions/agency_scorecard.html",
                 comments.append("%s %s] %s" % (question_number, country, comment))
             d["comments"] = "\n".join([comment for comment in comments if comment])
             d["key"] = "%s_%s" % (agency, indicator)
+        targets[agency]["np"], targets[agency]["p"] = get_country_progress(agency)
         
-    extra_context["targets"] = targets
+        extra_context["targets"] = targets
 
     return direct_to_template(request, template=template_name, extra_context=extra_context)

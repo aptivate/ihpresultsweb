@@ -36,6 +36,9 @@
                 <th>p5</th>
                 <th>p6</th>
                 <th>p7</th>
+                <th>p8</th>
+                <th>p9</th>
+                <th>p10</th>
                 <th>np1</th>
                 <th>np2</th>
                 <th>np3</th>
@@ -43,6 +46,9 @@
                 <th>np5</th>
                 <th>np6</th>
                 <th>np7</th>
+                <th>np8</th>
+                <th>np9</th>
+                <th>np10</th>
             </tr>
             {% for agency, agency_targets in targets.items %}
             <tr>
@@ -73,20 +79,26 @@
                 <td>{{ agency_targets.7DP.target }}</td>
                 <td>{{ agency_targets.8DP.commentary }}</td>
                 <td>{{ agency_targets.8DP.target }}</td>
-                <td>{% comment p1 %}{% endcomment %}</td>
-                <td>{% comment p2 %}{% endcomment %}</td>
-                <td>{% comment p3 %}{% endcomment %}</td>
-                <td>{% comment p4 %}{% endcomment %}</td>
-                <td>{% comment p5 %}{% endcomment %}</td>
-                <td>{% comment p6 %}{% endcomment %}</td>
-                <td>{% comment p7 %}{% endcomment %}</td>
-                <td>{% comment np1 %}{% endcomment %}</td>
-                <td>{% comment np2 %}{% endcomment %}</td>
-                <td>{% comment np3 %}{% endcomment %}</td>
-                <td>{% comment np4 %}{% endcomment %}</td>
-                <td>{% comment np5 %}{% endcomment %}</td>
-                <td>{% comment np6 %}{% endcomment %}</td>
-                <td>{% comment np7 %}{% endcomment %}</td>
+                <td>{{ agency_targets.p.1 }}</td>
+                <td>{{ agency_targets.p.2 }}</td>
+                <td>{{ agency_targets.p.3 }}</td>
+                <td>{{ agency_targets.p.4 }}</td>
+                <td>{{ agency_targets.p.5 }}</td>
+                <td>{{ agency_targets.p.6 }}</td>
+                <td>{{ agency_targets.p.7 }}</td>
+                <td>{{ agency_targets.p.8 }}</td>
+                <td>{{ agency_targets.p.9 }}</td>
+                <td>{{ agency_targets.p.10 }}</td>
+                <td>{{ agency_targets.np.1 }}</td>
+                <td>{{ agency_targets.np.2 }}</td>
+                <td>{{ agency_targets.np.3 }}</td>
+                <td>{{ agency_targets.np.4 }}</td>
+                <td>{{ agency_targets.np.5 }}</td>
+                <td>{{ agency_targets.np.6 }}</td>
+                <td>{{ agency_targets.np.7 }}</td>
+                <td>{{ agency_targets.np.8 }}</td>
+                <td>{{ agency_targets.np.9 }}</td>
+                <td>{{ agency_targets.np.10 }}</td>
             </tr>
             {% endfor %}
         </table>
