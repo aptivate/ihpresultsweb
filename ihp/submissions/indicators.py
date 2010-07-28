@@ -63,6 +63,13 @@ def calc_numdenom(qs, agency, numq, denomq):
     if cur_den > 0: cur_ratio = cur_num / cur_den * 100
     return (base_ratio, cur_ratio)
 
+def calc_one_minus_numdenom(qs, agency, numq, denomq):
+    (base_ratio, cur_ratio) = calc_numdenom(qs, agency, numq, denomq)
+    if base_ratio and cur_ratio:
+        return (100 - base_ratio, 100 - cur_ratio)
+    else:
+        return base_ratio, cur_ratio
+
 def sum_values(qs, agency, q):
     qs = qs.filter(question_number=q)
 
@@ -144,9 +151,9 @@ indicator_funcs = {
     "2DPb" : (calc_numdenom, ("5", "4")),
     "2DPc" : (calc_numdenom, ("6", "2")),
     "3DP"  : (calc_numdenom, ("7", "2")),
-    "4DP"  : (calc_numdenom, ("8b", "8")),
-    "5DPa" : (calc_numdenom, ("10", "9")),
-    "5DPb" : (calc_numdenom, ("12", "9")),
+    "4DP"  : (calc_one_minus_numdenom, ("8b", "8")),
+    "5DPa" : (calc_one_minus_numdenom, ("10", "9")),
+    "5DPb" : (calc_one_minus_numdenom, ("12", "9")),
     "5DPc" : (sum_values, ("13",)),
     "6DP"  : (country_perc_factory("yes"), ("15",)),
     "7DP"  : (country_perc_factory("yes"), ("16",)),

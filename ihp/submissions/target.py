@@ -5,7 +5,7 @@ import math
 def criterion_absolute(base_val, cur_val, criterion_param):
     
     if cur_val == None: return None
-    if cur_val * 100 - criterion_param < 0.000000001:
+    if cur_val - criterion_param < 0.000000001:
         return True
     return False
 
@@ -36,12 +36,26 @@ def criterion_decrease(base_val, cur_val, criterion_param):
         return True
     return False
 
+def criterion_absolute_greater_than(base_val, cur_val, criterion_param):
+    if cur_val == None: return None
+    if cur_val > criterion_param:
+        return True
+    return False
+
+def criterion_absolute_less_than(base_val, cur_val, criterion_param):
+    if cur_val == None: return None
+    if cur_val < criterion_param:
+        return True
+    return False
+
 criteria_funcs = {
    "Absolute % Target" : criterion_absolute,
    "Minimum x% Increase relative to baseline" : criterion_relative_increase,
    "Minimum x% Decrease relative to baseline" : criterion_relative_decrease,
    "Increase relative to baseline (no minimum)" : criterion_increase,
    "Decrease relative to baseline (no minimum)" : criterion_decrease,
+   "Absolute greater than x%" : criterion_absolute_greater_than,
+   "Absolute less than x%" : criterion_absolute_less_than,
 }
 
 def get_agency_targets(agency):
@@ -101,13 +115,13 @@ def calc_agency_targets(agency):
     commentary_map = {
         "1DP" : "An IHP+ Country Compact or equivalent was signed in %(cur_val)d%% of IHP+ countries where these exist, by the end of %(cur_year)s. Target = %(target_val)d%% of IHP+ countries where the signatory operates have support for/commitment to the IHP+ compact (or equivalent) mutually agreed and documented.",
         "2DPa" : "%(cur_val)d%% of health sector aid was reported on national health sector budgets by the end of %(cur_year)s - %(diff_direction)s from %(base_val)d%% in 2006. Target %(target_val)d%%.",
-        "2DPb" : "",
-        "2DPc" : "%(cur_val)d%% of health sector aid was provided through programme based approaches by the end of %(cur_year)s, %(diff_direction)s of %(diff_val)d%% from the %(base_year)s baseline. Target = %(target_val)s.",
-        "3DP" : "%(cur_val)d%% of health sector funding was provided through multi-year commitments by the end of %(cur_year)s: %(diff_direction)s from %(base_val)d%% in %(base_year)s. Target = %(target_val)s.",
+        "2DPb" :"%(cur_val)d%% of capacity development support was provided through co-ordinated programmes in %(cur_year)s - %(diff_direction)s from %(base_val)d%% in %(base_year)s. Target = %(target_val)d%%",
+        "2DPc" : "%(cur_val)d%% of health sector aid was provided through programme based approaches by the end of %(cur_year)s, %(diff_direction)s of %(diff_val)d%% from the %(base_year)s baseline. Target = %(target_val)d%%.",
+        "3DP" : "%(cur_val)d%% of health sector funding was provided through multi-year commitments by the end of %(cur_year)s: %(diff_direction)s from %(base_val)d%% in %(base_year)s. Target = %(target_val)d%%.",
         "4DP" : "In %(cur_year)s, %(cur_val)d%% of health sector aid disbursements were released according to agreed schedules in annual or multi-year frameworks - %(diff_direction)s from %(base_val)d%% in %(base_year)s.",
-        "5DPa" : "By end %(cur_year)s, %(cur_val)d%% of health sector aid used government partner country public financial management systems: %(diff_direction)s from %(base_val)d%% since %(base_year)s. Target = %(target_val)d%% of aid to be chanelled through partner country PFM systems.",
-        "5DPb" : "By end %(cur_year)s, %(cur_val)d%% of health sector aid used country procurement systems in IHP+ partner countries: %(diff_direction)s from %(base_val)d%% in %(base_year)s. Target = %(target_val)d%% reduction in the %% of health sector aid to the public sector not useing partner country procurement systems.",
-        "5DPc" : "",
+        "5DPa" : "By the end of %(cur_year)s, %(cur_val)d%% of health sector aid used government partner country public financial management systems: %(diff_direction)s from %(base_val)d%% since %(base_year)s. Target = %(target_val)d%% of aid to be chanelled through partner country PFM systems.",
+        "5DPb" : "By end %(cur_year)s, %(one_minus_cur_val)d%% of health sector aid used country procurement systems in IHP+ partner countries: %(one_minus_diff_direction)s from %(one_minus_base_val)d%% in %(base_year)s. Target = %(one_minus_target_val)d%% reduction in the %% of health sector aid to the public sector not useing partner country procurement systems.",
+        "5DPc" : "There are no more than %(cur_val)d parallel Project Implementation Units (PIUs) in any IHP+ country: %(diff_direction2)s from %(base_val)d in %(base_year)s. Target = reduce the stock of PIUs to %(target_val)d.",
         "6DP" : "Where they exist, national performance assessment frameworks are used to assess progress in %(cur_val)d%% of IHP+ countries: increased from %(base_val)d%% in %(base_year)s. Target = %(target_val)s%%.",
         "7DP" : "Participated in annual mutual assessments of progress in implementing health sector commitments & agreements (such as the IHP+ country compact and on aid effectiveness in the health sector) in all IHP+ countries. Target = %(target_val)d%%.",
         "8DP" : "",
@@ -135,7 +149,17 @@ def calc_agency_targets(agency):
         if base_val != None and cur_val != None:
             result["diff_val"] = math.fabs(base_val - cur_val)
             result["diff_direction"] = "a decrease" if base_val - cur_val > 0 else "an increase"
+            result["diff_direction2"] = "down" if base_val - cur_val > 0 else "up"
             result["target_val"] = target.tick_criterion_value
+            if target.tick_criterion_type == "Minimum x% Decrease relative to baseline":
+                result["target_val"] = (1 - target.tick_criterion_value / 100.0) * base_val
+            elif target.tick_criterion_type == "Minimum x% Increase relative to baseline":
+                result["target_val"] = (1 + target.tick_criterion_value / 100.0) * base_val
+            print target.tick_criterion_type
+            result["one_minus_base_val"] = 100 - result["base_val"]
+            result["one_minus_cur_val"] = 100 - result["cur_val"]
+            result["one_minus_target_val"] = 100 - result["target_val"]
+            result["one_minus_diff_direction"] = "a decrease" if base_val - cur_val < 0 else "an increase"
 
             result["commentary"] = commentary_map[indicator] % result
 
