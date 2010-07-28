@@ -3,7 +3,7 @@ from collections import defaultdict
 from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template
 
-from models import Submission, AgencyCountries, Agency
+from models import Submission, AgencyCountries, Agency, DPQuestion
 from target import calc_agency_targets, get_country_progress
 
 def agency_scorecard(request, template_name="submissions/agency_scorecard.html", extra_context=None):
@@ -24,4 +24,10 @@ def agency_scorecard(request, template_name="submissions/agency_scorecard.html",
         
         extra_context["targets"] = targets
 
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html", extra_context=None):
+
+    extra_context = extra_context or {}
+    extra_context["questions"] = DPQuestion.objects.all()
     return direct_to_template(request, template=template_name, extra_context=extra_context)
