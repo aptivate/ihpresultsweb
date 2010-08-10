@@ -1,0 +1,28 @@
+<html>
+    <body>
+        <table>
+            <tr>
+                <th>Key</th>
+                <th>Country</th>
+                <th>Question Number</th>
+                <th>Baseline Year</th>
+                <th>Baseline Value</th>
+                <th>Latest Year</th>
+                <th>Latest Value</th>
+                <th>Comments</th>
+            </tr>
+            {% for question in questions %}
+                <tr>
+                    <td>{{ question.submission.country }}_{{ question.question_number }}</td>
+                    <td>{{ question.submission.country }}</td>
+                    <td>{{ question.question_number }}</td>
+                    <td>{{ question.baseline_year }}</td>
+                    <td>{{ question.baseline_value }}</td>
+                    <td>{{ question.latest_year }}</td>
+                    <td>{{ question.latest_value }}</td>
+                    <td>{{ question.comments }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

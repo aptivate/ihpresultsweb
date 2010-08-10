@@ -1,11 +1,11 @@
-from indicators import calc_agency_indicators, indicators, calc_agency_country_indicators
-from models import Targets, AgencyCountries, Submission
+from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
+from models import AgencyTargets, AgencyCountries, Submission, CountryTargets
 import math
 
 def criterion_absolute(base_val, cur_val, criterion_param):
     
     if cur_val == None: return None
-    if cur_val - criterion_param < 0.000000001:
+    if math.fabs(cur_val - criterion_param) < 0.000000001:
         return True
     return False
 
@@ -48,6 +48,26 @@ def criterion_absolute_less_than(base_val, cur_val, criterion_param):
         return True
     return False
 
+def criterion_absolute_increase(base_val, cur_val, criterion_param):
+    if cur_val - criterion_param > base_val:
+        return True
+    return False
+
+def criterion_absolute_decrease(base_val, cur_val, criterion_param):
+    if cur_val + criterion_param < base_val:
+        return True
+    return False
+
+def criterion_both_yes(base_val, cur_val, criterion_param):
+    if cur_val.lower() == "yy":
+        return True
+    return False
+
+def criterion_first_yes(base_val, cur_val, criterion_param):
+    if cur_val.lower()[0] == "y":
+        return True
+    return False
+
 criteria_funcs = {
    "Absolute % Target" : criterion_absolute,
    "Minimum x% Increase relative to baseline" : criterion_relative_increase,
@@ -56,15 +76,29 @@ criteria_funcs = {
    "Decrease relative to baseline (no minimum)" : criterion_decrease,
    "Absolute greater than x%" : criterion_absolute_greater_than,
    "Absolute less than x%" : criterion_absolute_less_than,
+   "Absolute Value Increase" : criterion_absolute_increase,
+   "Absolute Value Decrease" : criterion_absolute_decrease,
+   "Both Questions Yes" : criterion_both_yes,
+   "First Question Yes" : criterion_first_yes,
 }
 
-def get_agency_targets(agency):
+def get_agency_targets(agency, indicators):
     targets = {}
     for indicator in indicators:
         try:
-            target = Targets.objects.get(agency=agency, indicator=indicator)
-        except Targets.DoesNotExist:
-            target = Targets.objects.get(agency=None, indicator=indicator)
+            target = AgencyTargets.objects.get(agency=agency, indicator=indicator)
+        except AgencyTargets.DoesNotExist:
+            target = AgencyTargets.objects.get(agency=None, indicator=indicator)
+        targets[indicator] = target
+    return targets
+
+def get_country_targets(country, indicators):
+    targets = {}
+    for indicator in indicators:
+        try:
+            target = CountryTargets.objects.get(country=country, indicator=indicator)
+        except CountryTargets.DoesNotExist:
+            target = CountryTargets.objects.get(country=None, indicator=indicator)
         targets[indicator] = target
     return targets
 
@@ -127,7 +161,7 @@ def calc_agency_targets(agency):
         "8DP" : "",
     }
         
-    targets = get_agency_targets(agency)
+    targets = get_agency_targets(agency, dp_indicators)
     indicators = calc_agency_indicators(agency)
     results = {}
     for indicator in indicators:
@@ -155,7 +189,6 @@ def calc_agency_targets(agency):
                 result["target_val"] = (1 - target.tick_criterion_value / 100.0) * base_val
             elif target.tick_criterion_type == "Minimum x% Increase relative to baseline":
                 result["target_val"] = (1 + target.tick_criterion_value / 100.0) * base_val
-            print target.tick_criterion_type
             result["one_minus_base_val"] = 100 - result["base_val"]
             result["one_minus_cur_val"] = 100 - result["cur_val"]
             result["one_minus_target_val"] = 100 - result["target_val"]
@@ -167,12 +200,55 @@ def calc_agency_targets(agency):
 
     return results
 
+def calc_country_targets(country):
+    """
+    Returns information for all indicators for the given country in a dict with the
+    following form
+    {
+        "1G" : {
+            "base_val" : ...,
+            "cur_val" : ...,
+            "comments" : ...,
+            "target" : ...,
+        },
+        "2Ga" : {
+            "base_val" : ...,
+            "cur_val" : ...,
+            "comments" : ...,
+            "target" : ...,
+        },
+        .
+        .
+        .
+    }
+    """
+    targets = get_country_targets(country, g_indicators)
+    indicators = calc_country_indicators(country)
+    results = {}
+    for indicator in indicators:
+        (base_val, base_year, cur_val, cur_year), comments = indicators[indicator]
+        target = targets[indicator]
+
+        result = {
+            "base_val" : base_val,
+            "base_year" : base_year,
+            "cur_val" : cur_val,
+            "cur_year" : cur_year,
+            "comments" : comments,
+            "commentary" : "",
+        }
+
+        result["target"] = evaluate_indicator(target, base_val, cur_val)
+        results[indicator] = result
+
+    return results
+
 def get_country_progress(agency):
     np = []
     p = []
     np_dict = {}
     p_dict = {}
-    targets = get_agency_targets(agency)
+    targets = get_agency_targets(agency, dp_indicators)
     for country in AgencyCountries.objects.get_agency_countries(agency):
         country_indicators = calc_agency_country_indicators(agency, country)
         if Submission.objects.filter(agency=agency, country=country).count() == 0:
@@ -183,9 +259,9 @@ def get_country_progress(agency):
                 (base_val, base_year, cur_val, cur_year), comments = country_indicators[indicator]
                 # TODO this is a hack - it might be better to extract this
                 # logic out of here
+                result = "cross"
                 if indicator in ["1DP", "6DP", "7DP", "8DP"]:
-                    if cur_val > 0:
-                        result = "tick" 
+                    if cur_val > 0: result = "tick" 
                 else:
                     target = targets[indicator]
                     result = evaluate_indicator(target, base_val, cur_val)
@@ -200,5 +276,41 @@ def get_country_progress(agency):
         p_dict[i + 1] = country
     for i, country in enumerate(sorted(np)):
         np_dict[i + 1] = country
+        
+    return np_dict, p_dict
+
+def get_agency_progress(country):
+    np = []
+    p = []
+    np_dict = {}
+    p_dict = {}
+    for agency in AgencyCountries.objects.get_country_agencies(country):
+        targets = get_agency_targets(agency, dp_indicators)
+        country_indicators = calc_agency_country_indicators(agency, country)
+        if Submission.objects.filter(agency=agency, country=country).count() == 0:
+            np.append(agency)
+        else:
+            num_indicators = ticks = 0
+            for indicator in country_indicators:
+                (base_val, base_year, cur_val, cur_year), comments = country_indicators[indicator]
+                # TODO this is a hack - it might be better to extract this
+                # logic out of here
+                result = "cross"
+                if indicator in ["1DP", "6DP", "7DP", "8DP"]:
+                    if cur_val > 0: result = "tick" 
+                else:
+                    target = targets[indicator]
+                    result = evaluate_indicator(target, base_val, cur_val)
+                if result != "cross":
+                    ticks += 1.0
+                num_indicators += 1.0
+            if ticks / num_indicators > 0.5:
+                p.append(agency)
+            else:
+                np.append(agency)
+    for i, agency in enumerate(sorted(p)):
+        p_dict[i + 1] = agency
+    for i, agency in enumerate(sorted(np)):
+        np_dict[i + 1] = agency
         
     return np_dict, p_dict
