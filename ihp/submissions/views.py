@@ -41,13 +41,13 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
         country_target = calc_country_targets(country)
         if country_target == None: continue
         targets[country] = country_target
-        print country_target
+        
         for indicator, d in targets[country].items():
             old_comments = d["comments"]
             comments = []
-        #    for question_number, country, comment in old_comments:
-        #        comments.append("%s %s] %s" % (question_number, country, comment))
-        #    d["comments"] = "\n".join([comment for comment in comments if comment])
+            for question_number, country, comment in old_comments:
+                comments.append("%s ] %s" % (question_number, comment))
+            d["comments"] = "\n".join([comment for comment in comments if comment])
             d["key"] = "%s_%s" % (country, indicator)
         targets[country]["np"], targets[country]["p"] = get_agency_progress(country)
         targets[country]["questions"] = {}
