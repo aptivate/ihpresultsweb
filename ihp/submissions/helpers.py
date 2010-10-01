@@ -7,8 +7,10 @@ from submissions.models import Submission, DPQuestion, AgencyCountries, AgencyTa
 def parse_file(filename):
     book = xlrd.open_workbook(filename)
     for sheet in book.sheets():
-        if sheet.name == "DPs":
-            parse_dp(sheet)
+        #if sheet.name == "DPs":
+        if sheet.name == "Survey Tool":
+            if sheet.cell(4, 0).value == "1DP":
+                parse_dp(sheet)
         elif sheet.name == "Govs":
             parse_gov(sheet)
         else:
@@ -21,9 +23,12 @@ def unfloat(val):
 
 def parse_dp(sheet):
 
-    country = sheet.cell(0, 5).value
-    agency = sheet.cell(1, 5).value
+    country = sheet.cell(0, 3).value
+    agency = sheet.cell(1, 3).value
     version = sheet.cell(2, 5).value
+    completed_by = sheet.cell(0, 8).value
+    job = sheet.cell(1, 8).value
+    print country, agency, version, completed_by, job
 
     agency = Agency.objects.get(agency=agency)
     country = Country.objects.get(country=country)
@@ -41,7 +46,7 @@ def parse_dp(sheet):
         type="DP",
     )
 
-    for row in range(5, sheet.nrows):
+    for row in range(4, sheet.nrows):
         DPQuestion.objects.create(
            submission=submission,
            question_number=unfloat(sheet.cell(row, 3).value),

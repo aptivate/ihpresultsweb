@@ -1,10 +1,16 @@
 from models import Submission, DPQuestion, AgencyCountries, GovQuestion
 
+def float_or_zero(val):
+    try:
+        return float(val)
+    except ValueError:
+        return 0
+
 def sum_current_values(qs):
-    return sum([float(el.latest_value) for el in qs if el.latest_value != None])
+    return sum([float_or_zero(el.latest_value) for el in qs if el.latest_value != None])
 
 def sum_baseline_values(qs):
-    return sum([float(el.baseline_value) for el in qs if el.baseline_value != None])
+    return sum([float_or_zero(el.baseline_value) for el in qs if el.baseline_value != None])
 
 def question_values(qs, agency_or_country, q):
     qs = qs.filter(
@@ -142,6 +148,8 @@ def calc_agency_indicator(agency, indicator):
     Calculate the value of a particular indicator for the given agency
     Returns a tuple ((base_val, base_year, cur_val, cur_year), indicator comment)
     """
+    print "Agency: %s" % agency
+    print "Indicator: %s"  % indicator
     qs = DPQuestion.objects.filter(submission__agency=agency)
     return calc_indicator(qs, agency, indicator)
 
@@ -215,15 +223,15 @@ indicator_funcs = {
     "1DP"  : (country_perc_factory("yes"), ("1",)),
     "2DPa" : (calc_numdenom, ("3", "2")),
     "2DPb" : (calc_numdenom, ("5", "4")),
-    "2DPc" : (calc_numdenom, ("6", "2")),
-    "3DP"  : (calc_numdenom, ("7", "2")),
-    "4DP"  : (calc_one_minus_numdenom, ("8b", "8")),
-    "5DPa" : (calc_one_minus_numdenom, ("10", "9")),
-    "5DPb" : (calc_one_minus_numdenom, ("12", "9")),
-    "5DPc" : (sum_values, ("13",)),
-    "6DP"  : (country_perc_factory("yes"), ("15",)),
-    "7DP"  : (country_perc_factory("yes"), ("16",)),
-    "8DP"  : (country_perc_factory("yes"), ("17",)),
+    "2DPc" : (calc_numdenom, ("7", "6")),
+    "3DP"  : (calc_numdenom, ("9", "8")),
+    "4DP"  : (calc_one_minus_numdenom, ("11", "10")),
+    "5DPa" : (calc_one_minus_numdenom, ("13", "12")),
+    "5DPb" : (calc_one_minus_numdenom, ("15", "14")),
+    "5DPc" : (sum_values, ("16",)),
+    "6DP"  : (country_perc_factory("yes"), ("17",)),
+    "7DP"  : (country_perc_factory("yes"), ("18",)),
+    "8DP"  : (country_perc_factory("yes"), ("20",)),
     "1G"   : (equals_or_zero("yes"), ("1",)),
     "2Ga"  : (combine_yesnos, ("2", "3")),
     "2Gb"  : (equals_or_zero("yes"), ("4",)),
