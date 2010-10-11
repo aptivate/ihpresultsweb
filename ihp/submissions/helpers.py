@@ -83,7 +83,7 @@ def parse_gov(sheet):
         job_title=job
     )
 
-    for row in range(5, sheet.nrows):
+    for row in range(4, sheet.nrows):
         base_val = sheet.cell(row, 6).value
         cur_val = sheet.cell(row, 8).value
         base_val = base_val if base_val != "" else None

@@ -78,8 +78,15 @@ def equals_or_zero(val):
         qs = qs.filter(question_number=q)
         assert len(qs) == 1
         
-        base_val = 100 if qs[0].baseline_value.lower() == value else 0
-        cur_val = 100 if qs[0].latest_value.lower() == value else 0
+        if qs[0].baseline_value == None:
+            base_val = 0
+        else:
+            base_val = 100 if qs[0].baseline_value.lower() == value else 0
+
+        if qs[0].latest_value == None:
+            cur_val = 0
+        else:
+            cur_val = 100 if qs[0].latest_value.lower() == value else 0
         return base_val, cur_val
     return test
 
@@ -88,8 +95,16 @@ def combine_yesnos(qs, agency_or_country, *args):
     values_current = []
     for arg in args:
         qs1 = qs.filter(question_number=arg)
-        base_val = "y" if qs1[0].baseline_value.lower() == "yes" else "n"
-        cur_val = "y" if qs1[0].latest_value.lower() == "yes" else "n"
+        if qs1[0].baseline_value == None:
+            base_val = " "
+        else: 
+            base_val = "y" if qs1[0].baseline_value.lower() == "yes" else "n"
+
+        if qs1[0].latest_value == None:
+            cur_val = " "
+        else:
+            cur_val = "y" if qs1[0].latest_value.lower() == "yes" else "n"
+
         values_baseline.append(base_val)
         values_current.append(cur_val)
     return "".join(values_baseline), "".join(values_current)
