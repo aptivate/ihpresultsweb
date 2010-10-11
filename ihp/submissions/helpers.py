@@ -11,8 +11,8 @@ def parse_file(filename):
         if sheet.name == "Survey Tool":
             if sheet.cell(4, 0).value == "1DP":
                 parse_dp(sheet)
-        elif sheet.name == "Govs":
-            parse_gov(sheet)
+            elif sheet.cell(4, 0).value == "1G":
+                parse_gov(sheet)
         else:
             print >> sys.stderr, "Unknown sheet: %s" % sheet.name
 
@@ -28,7 +28,6 @@ def parse_dp(sheet):
     version = sheet.cell(2, 5).value
     completed_by = sheet.cell(0, 8).value
     job = sheet.cell(1, 8).value
-    print country, agency, version, completed_by, job
 
     agency = Agency.objects.get(agency=agency)
     country = Country.objects.get(country=country)
@@ -59,12 +58,14 @@ def parse_dp(sheet):
 
 def parse_gov(sheet):
 
-    country = sheet.cell(0, 5).value
-    #agency = sheet.cell(1, 5).value
+    country = sheet.cell(0, 3).value
+    agency = sheet.cell(1, 3).value
     version = sheet.cell(2, 5).value
+    completed_by = sheet.cell(0, 8).value
+    job = sheet.cell(1, 8).value
 
-    #agency = Agency.objects.get(agency=agency)
-    agency=None
+    print country, agency, version, completed_by, job
+
     country = Country.objects.get(country=country)
 
     Submission.objects.filter(
