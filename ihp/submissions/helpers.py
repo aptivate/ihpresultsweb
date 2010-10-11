@@ -7,7 +7,6 @@ from submissions.models import Submission, DPQuestion, AgencyCountries, AgencyTa
 def parse_file(filename):
     book = xlrd.open_workbook(filename)
     for sheet in book.sheets():
-        #if sheet.name == "DPs":
         if sheet.name == "Survey Tool":
             if sheet.cell(4, 0).value == "1DP":
                 parse_dp(sheet)
@@ -43,6 +42,8 @@ def parse_dp(sheet):
         agency=agency,
         docversion=version,
         type="DP",
+        completed_by=completed_by,
+        job_title=job
     )
 
     for row in range(4, sheet.nrows):
@@ -64,8 +65,7 @@ def parse_gov(sheet):
     completed_by = sheet.cell(0, 8).value
     job = sheet.cell(1, 8).value
 
-    print country, agency, version, completed_by, job
-
+    agency = Agency.objects.get(agency=agency)
     country = Country.objects.get(country=country)
 
     Submission.objects.filter(
@@ -79,6 +79,8 @@ def parse_gov(sheet):
         agency=agency,
         docversion=version,
         type="Gov",
+        completed_by=completed_by,
+        job_title=job
     )
 
     for row in range(5, sheet.nrows):
