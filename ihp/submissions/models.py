@@ -3,6 +3,7 @@ from django.db import models
 class Agency(models.Model):
     agency = models.CharField(max_length=50, null=False)
     description = models.TextField()
+    type = models.CharField(max_length=15, null=False)
 
     def __unicode__(self):
         return self.agency

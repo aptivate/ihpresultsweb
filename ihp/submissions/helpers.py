@@ -128,7 +128,7 @@ def load_agency_countries(filename=None):
     AgencyCountries.objects.all().delete()
     for datum in agencies:
         countries = datum["Country"]
-        (agency, _) = Agency.objects.get_or_create(agency=datum["Name"])
+        (agency, _) = Agency.objects.get_or_create(agency=datum["Name"], type=datum["Type"])
         agency.description = datum["Description"]
         agency.save()
         for country in countries:

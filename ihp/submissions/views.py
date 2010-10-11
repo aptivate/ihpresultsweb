@@ -10,7 +10,7 @@ def agency_scorecard(request, template_name="submissions/agency_scorecard.html",
     extra_context = extra_context or {}
 
     targets = {} 
-    for agency in Agency.objects.all():
+    for agency in Agency.objects.filter(type="Agency"):
         if agency.submission_set.count() == 0: continue
         targets[agency] = calc_agency_targets(agency)
         for indicator, d in targets[agency].items():
