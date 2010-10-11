@@ -20,8 +20,8 @@ class Submission(models.Model):
     docversion = models.CharField(max_length=10, null=False)
     type = models.CharField(max_length=10, null=False)
     date_submitted = models.DateTimeField(auto_now_add=True)
-    completed_by = models.CharField(max_length=40)
-    job_title = models.CharField(max_length=40)
+    completed_by = models.CharField(max_length=50, null=True)
+    job_title = models.CharField(max_length=50, null=True)
 
 class DPQuestion(models.Model):
     submission = models.ForeignKey(Submission, null=False)

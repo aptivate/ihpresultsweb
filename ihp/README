@@ -1,0 +1,11 @@
+To add a new country
+
+1. Log into dabble db and add a country to the IHP:Countries category
+2. Then for each agency that is active in that country, add that country to their list in IHP:Agency
+3. Run python manage.py loadagencycountries to load the updated data in the application (the cronjob does it automatically but running the command preempts it)
+
+To add a new agency
+
+1. Log into dabble db and add the agency to the IHP:Agency category
+2. Run python manage.py loadagencycountries to load the updated data in the application (the cronjob does it automatically but running the command preempts it)
+

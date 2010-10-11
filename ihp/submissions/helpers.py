@@ -7,10 +7,11 @@ from submissions.models import Submission, DPQuestion, AgencyCountries, AgencyTa
 def parse_file(filename):
     book = xlrd.open_workbook(filename)
     for sheet in book.sheets():
-        if is_dp(sheet):
-            parse_dp(sheet)
-        elif sheet.name == "Govs":
-            parse_gov(sheet)
+        if sheet.name == "Survey Tool":
+            if sheet.cell(4, 0).value == "1DP":
+                parse_dp(sheet)
+            elif sheet.cell(4, 0).value == "1G":
+                parse_gov(sheet)
         else:
             print >> sys.stderr, "Unknown sheet: %s" % sheet.name
 
@@ -19,28 +20,13 @@ def unfloat(val):
         return str(int(val))
     return val
 
-def is_dp(sheet):
-    """
-    Detect whether the given sheet contains a dp questionnaire
-    """
-    try:
-        if sheet.name != "Survey Tool":
-            return False
-
-        question = sheet.cell(4, 2).value
-        if "100% of IHP+ countries" in question:
-            return True 
-    except IndexError:
-        return False
-    return False
-
 def parse_dp(sheet):
 
     country = sheet.cell(0, 3).value
     agency = sheet.cell(1, 3).value
-    version = sheet.cell(2, 3).value
+    version = sheet.cell(2, 5).value
     completed_by = sheet.cell(0, 8).value
-    job_title = sheet.cell(1, 8).value
+    job = sheet.cell(1, 8).value
 
     agency = Agency.objects.get(agency=agency)
     country = Country.objects.get(country=country)
@@ -57,10 +43,10 @@ def parse_dp(sheet):
         docversion=version,
         type="DP",
         completed_by=completed_by,
-        job_title=job_title
+        job_title=job
     )
 
-    for row in range(5, sheet.nrows):
+    for row in range(4, sheet.nrows):
         DPQuestion.objects.create(
            submission=submission,
            question_number=unfloat(sheet.cell(row, 3).value),
@@ -73,12 +59,13 @@ def parse_dp(sheet):
 
 def parse_gov(sheet):
 
-    country = sheet.cell(0, 5).value
-    #agency = sheet.cell(1, 5).value
+    country = sheet.cell(0, 3).value
+    agency = sheet.cell(1, 3).value
     version = sheet.cell(2, 5).value
+    completed_by = sheet.cell(0, 8).value
+    job = sheet.cell(1, 8).value
 
-    #agency = Agency.objects.get(agency=agency)
-    agency=None
+    agency = Agency.objects.get(agency=agency)
     country = Country.objects.get(country=country)
 
     Submission.objects.filter(
@@ -92,6 +79,8 @@ def parse_gov(sheet):
         agency=agency,
         docversion=version,
         type="Gov",
+        completed_by=completed_by,
+        job_title=job
     )
 
     for row in range(5, sheet.nrows):
