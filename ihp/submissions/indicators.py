@@ -236,7 +236,7 @@ g_indicators = [
 #TODO do checks to ensure that questions that aren't answered to break anything
 indicator_funcs = {
     "1DP"  : (country_perc_factory("yes"), ("1",)),
-    "2DPa" : (calc_numdenom, ("3", "2")),
+    "2DPa" : (calc_one_minus_numdenom, ("3", "2")),
     "2DPb" : (calc_numdenom, ("5", "4")),
     "2DPc" : (calc_numdenom, ("7", "6")),
     "3DP"  : (calc_numdenom, ("9", "8")),
