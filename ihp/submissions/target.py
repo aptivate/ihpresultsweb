@@ -191,7 +191,9 @@ def calc_agency_targets(agency):
                 result["target_val"] = (1 + target.tick_criterion_value / 100.0) * base_val
             result["one_minus_base_val"] = 100 - result["base_val"]
             result["one_minus_cur_val"] = 100 - result["cur_val"]
-            result["one_minus_target_val"] = 100 - result["target_val"]
+            if result["target_val"]:
+                result["one_minus_target_val"] = 100 - result["target_val"]
+        
             result["one_minus_diff_direction"] = "a decrease" if base_val - cur_val < 0 else "an increase"
 
             result["commentary"] = commentary_map[indicator] % result
