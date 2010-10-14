@@ -193,6 +193,8 @@ def calc_agency_targets(agency):
             result["one_minus_cur_val"] = 100 - result["cur_val"]
             if result["target_val"]:
                 result["one_minus_target_val"] = 100 - result["target_val"]
+            else:
+                result["one_minus_target_val"] = None
         
             result["one_minus_diff_direction"] = "a decrease" if base_val - cur_val < 0 else "an increase"
 
