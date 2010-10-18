@@ -58,7 +58,7 @@ class AgencyCountriesManager(models.Manager):
         return [r.country for r in res]
 
     def get_country_agencies(self, country):
-        res = self.filter(country=country)
+        res = self.filter(country=country, agency__type="Agency")
         return [r.agency for r in res]
 
 class AgencyCountries(models.Model):

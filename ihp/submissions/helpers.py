@@ -64,6 +64,9 @@ def parse_gov(sheet):
     version = sheet.cell(2, 5).value
     completed_by = sheet.cell(0, 8).value
     job = sheet.cell(1, 8).value
+    # There is a spelling mistake in the instrument
+    # which i am lazily correcting here
+    agency = agency.replace("Goverment", "Government")
 
     agency = Agency.objects.get(agency=agency)
     country = Country.objects.get(country=country)
