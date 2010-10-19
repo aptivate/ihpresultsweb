@@ -143,6 +143,7 @@
                 <th>ER9b</th>
                 <th>ER10a</th>
                 <th>ER10b</th>
+                <th>Header</th>
                 <th>P1</th>
                 <th>P2</th>
                 <th>P3</th>
@@ -156,6 +157,7 @@
                 <th>P11</th>
                 <th>P12</th>
                 <th>P13</th>
+                <th>Header</th>
                 <th>NP1</th>
                 <th>NP2</th>
                 <th>NP3</th>
@@ -172,20 +174,20 @@
             </tr>
             {% for country, country_targets in targets.items %}
             <tr>
-                <td>{{ country.country }}</td>
-                <td>{{ country.country }}</td>
-                <td>{{ country_targets.questions.1.latest_value }}</td>
-                <td>{{ country_targets.questions.1.comments }}</td>
-                <td>{{ country_targets.questions.2.latest_value }}</td>
-                <td>{{ country_targets.questions.3.latest_value }}</td>
-                <td>{{ country_targets.questions.12.latest_value }}</td>
-                <td>{{ country_targets.questions.15.latest_value }}</td>
-                <td>{{ country_targets.indicators.8G.latest_value }}</td>
-                <td></td>
-                <td>{{ country_targets.questions.5.baseline_year }}</td>
-                <td>{{ country_targets.questions.6.baseline_value }}</td>
-                <td>{{ country_targets.questions.5.latest_year }}</td>
-                <td>{{ country_targets.questions.6.latest_value }}</td>
+                <td>{{ country.country }}</td> <!-- B -->
+                <td>{{ country.country }}</td> <!-- C -->
+                <td>{{ country_targets.questions.1.latest_value }}</td> <!-- D -->
+                <td>{{ country_targets.questions.1.comments }}</td> <!-- E -->
+                <td>{{ country_targets.questions.2.latest_value }}</td> <!-- F -->
+                <td>{{ country_targets.questions.3.latest_value }}</td> <!-- G -->
+                <td>{{ country_targets.questions.12.latest_value }}</td> <!-- H -->
+                <td>{{ country_targets.questions.15.latest_value }}</td> <!-- I -->
+                <td>{{ country_targets.indicators.8G.latest_value }}</td> <!-- J -->
+                <td></td> <!-- K -->
+                <td>{{ country_targets.questions.5.baseline_year }}</td> <!-- L -->
+                <td>{{ country_targets.questions.6.baseline_value }}</td> <!-- M -->
+                <td>{{ country_targets.questions.5.latest_year }}</td> <!-- N -->
+                <td>{{ country_targets.questions.6.latest_value }}</td> <!-- O -->
                 <td>??</td>
                 <td>??</td>
                 <td>??</td>
@@ -198,48 +200,46 @@
                 <td>{{ country_targets.indicators.3G.hs_budget_gap }}% increase needed to meet the Abuja target (15%)</td>
                 <td>{{ country_targets.questions.16.latest_value }}</td>
                 <td>{{ country_targets.questions.16.comments }}</td>
-                <td>??</td>
+                <td></td> <!-- AB -->
                 <td>{{ country_targets.questions.9.comments }}</td>
-                <td>??</td>
-                <td>{{ country_targets.questions.10.comments }}</td>
-                <td>??</td>
-                <td>
+                <td></td> <!-- AD -->
+                <td>{{ country_targets.questions.10.comments }}</td> <!-- AE -->
+                <td>??</td> <!-- AF -->
+                <td> <!-- AG -->
                 {% for agency, aqs in country_targets.agencies.items %}
                 {{ agency }}] {{ aqs.4.comments }}<br/>
                 {% endfor %}
                 </td>
-                <td>{{ country_targets.indicators.other.outpatient_visits_baseline }}</td>
-                <td>{{ country_targets.questions.19.baseline_year }}</td>
-                <td>{{ country_targets.indicators.other.outpatient_visits_latest }}</td>
-                <td>{{ country_targets.questions.19.latest_year }}</td>
-                <td>{{ country_targets.indicators.other.outpatient_visits_change }}</td>
-                <td>??</td>
-                <td>{{ country_targets.indicators.other.skilled_personnel_baseline }}</td>
-                <td>{{ country_targets.questions.17.baseline_year }}</td>
-                <td>{{ country_targets.indicators.other.skilled_personnel_latest }}</td>
-                <td>{{ country_targets.questions.17.latest_year }}</td>
-                <td>{{ country_targets.indicators.other.skilled_personnel_change }}</td>
-                <td>??</td>
-                <td>{{ country_targets.questions.20.baseline_value }}</td>
-                <td>{{ country_targets.questions.20.baseline_year }}</td>
-                <td>{{ country_targets.questions.20.latest_value }}</td>
-                <td>{{ country_targets.questions.20.latest_year }}</td>
-                <td>{{ country_targets.indicators.other.health_workforce_spent_change }}</td>
-                <td>??</td>
-                <td>{{ country_targets.questions.11.latest_value }}</td>
-                <td>{{ country_targets.questions.22.latest_value }}</td>
-                <td>{{ country_targets.questions.23.latest_value }}</td>
-                <td>{{ country_targets.questions.21.latest_value }}</td>
-                <td>{{ country_targets.questions.21.comments }}</td>
-                <td>{{ country_targets.questions.12.latest_value }}</td>
-                <td></td>
-                <td>{{ country_targets.questions.24.latest_value }}</td>
-                <td></td>
-                <td></td>
-                <td>{{ country_targets.questions.11.latest_value }}</td>
-                <td>{{ country_targets.questions.11.comments }}</td>
-                <td></td>
-                <td></td>
+                <td>{{ country_targets.indicators.other.outpatient_visits_baseline }}</td> <!-- AH -->
+                <td>{{ country_targets.questions.19.baseline_year }}</td> <!-- AI -->
+                <td>{{ country_targets.indicators.other.outpatient_visits_latest }}</td> <!-- AJ -->
+                <td>{{ country_targets.questions.19.latest_year }}</td> <!-- AK -->
+                <td>{{ country_targets.indicators.other.outpatient_visits_change }}</td> <!-- AL -->
+                <td>??</td> <!-- AM -->
+                <td>{{ country_targets.indicators.other.skilled_personnel_baseline }}</td> <!-- AN -->
+                <td>{{ country_targets.questions.17.baseline_year }}</td> <!-- AO -->
+                <td>{{ country_targets.indicators.other.skilled_personnel_latest }}</td> <!-- AP -->
+                <td>{{ country_targets.questions.17.latest_year }}</td> <!-- AQ -->
+                <td>{{ country_targets.indicators.other.skilled_personnel_change }}</td> <!-- AR -->
+                <td>??</td> <!-- AS -->
+                <td>{{ country_targets.questions.20.baseline_value }}</td> <!-- AT -->
+                <td>{{ country_targets.questions.20.baseline_year }}</td> <!-- AU -->
+                <td>{{ country_targets.questions.20.latest_value }}</td> <!-- AV -->
+                <td>{{ country_targets.questions.20.latest_year }}</td> <!-- AW -->
+                <td>{{ country_targets.indicators.other.health_workforce_spent_change }}</td> <!-- AX -->
+                <td>??</td> <!-- AY -->
+                <td>{{ country_targets.questions.11.latest_value }}</td> <!-- AZ -->
+                <td>{{ country_targets.questions.22.latest_value }}</td> <!-- BA -->
+                <td>{{ country_targets.questions.23.latest_value }}</td> <!-- BB -->
+                <td>{{ country_targets.questions.21.latest_value }}</td> <!-- BC -->
+                <td>{{ country_targets.questions.21.comments }}</td> <!-- BD -->
+                <td>{{ country_targets.questions.12.latest_value }}</td> <!-- BE -->
+                <td></td> <!-- BF -->
+                <td>{{ country_targets.questions.24.latest_value }}</td> <!-- BG -->
+                <td></td> <!-- BH -->
+                <td></td> <!-- BI -->
+                <td>{{ country_targets.questions.11.latest_value }}</td> <!-- BJ -->
+                <td>{{ country_targets.questions.11.comments }}</td> <!-- BK -->
                 <td></td>
                 <td></td>
                 <td></td>
@@ -293,63 +293,66 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>{{ country.country }}</td>
-                <td>{{ country.country }}</td>
-                <td>{{ country.country }}</td>
-                <td>{{ country_targets.questions.1.latest_value }}</td>
-                <td>{{ country_targets.questions.1.comments }}</td>
+                <td></td>
+                <td></td> <!-- DN -->
+                <td>{{ country.country }}</td> <!-- B -->
+                <td>{{ country.country }}</td> <!-- C -->
+                <td>{{ country.country }}</td> <!-- D -->
+                <td>{{ country_targets.questions.1.latest_value }}</td> <!-- E -->
+                <td>{{ country_targets.questions.1.comments }}</td> <!-- F -->
                 <td>
                 {{ country_targets.questions.2.latest_value }}<br/>
                 {{ country_targets.questions.3.latest_value }}
-                </td>
+                </td> <!-- G -->
                 <td>
                 {{ country_targets.questions.2.comments }}<br/>
                 {{ country_targets.questions.3.comments }}
-                </td>
-                <td>{{ country_targets.questions.4.latest_value }}</td>
-                <td>{{ country_targets.questions.4.comments }}</td>
-                <td>{{ country_targets.indicators.3G.latest_value }}</td>
-                <td>{{ country_targets.questions.5.comments }}</td>
-                <td>{{ country.country }}</td>
-                <td>{{ country_targets.indicators.4G.latest_value }}</td>
-                <td>{{ country_targets.questions.7.comments }}</td>
-                <td>{{ country_targets.indicators.other.pfm_diff }}</td>
-                <td>{{ country_targets.questions.9.comments }}</td>
-                <td>??</td>
-                <td>{{ country_targets.questions.10.comments }}</td>
-                <td>{{ country_targets.questions.11.latest_value }}</td>
-                <td>{{ country_targets.questions.11.comments }}</td>
-                <td>{{ country_targets.questions.12.latest_value }}</td>
-                <td>{{ country_targets.questions.12.comments }}</td>
-                <td>{{ country_targets.indicators.8G.latest_value }}</td>
-                <td>{{ country_targets.questions.13.comments }}</td>
-                <td>{{ country.country }}</td>
-                <td>{{ country_targets.p.1 }}</td>
-                <td>{{ country_targets.p.2 }}</td>
-                <td>{{ country_targets.p.3 }}</td>
-                <td>{{ country_targets.p.4 }}</td>
-                <td>{{ country_targets.p.5 }}</td>
-                <td>{{ country_targets.p.6 }}</td>
-                <td>{{ country_targets.p.7 }}</td>
-                <td>{{ country_targets.p.8 }}</td>
-                <td>{{ country_targets.p.9 }}</td>
-                <td>{{ country_targets.p.10 }}</td>
-                <td>{{ country_targets.p.11 }}</td>
-                <td>{{ country_targets.p.12 }}</td>
-                <td>{{ country_targets.p.13 }}</td>
-                <td>{{ country_targets.np.1 }}</td>
-                <td>{{ country_targets.np.2 }}</td>
-                <td>{{ country_targets.np.3 }}</td>
-                <td>{{ country_targets.np.4 }}</td>
-                <td>{{ country_targets.np.5 }}</td>
-                <td>{{ country_targets.np.6 }}</td>
-                <td>{{ country_targets.np.7 }}</td>
-                <td>{{ country_targets.np.8 }}</td>
-                <td>{{ country_targets.np.9 }}</td>
-                <td>{{ country_targets.np.10 }}</td>
-                <td>{{ country_targets.np.11 }}</td>
-                <td>{{ country_targets.np.12 }}</td>
-                <td>{{ country_targets.np.13 }}</td>
+                </td> <!-- H -->
+                <td>{{ country_targets.questions.4.latest_value }}</td> <!-- I -->
+                <td>{{ country_targets.questions.4.comments }}</td> <!-- J -->
+                <td>{{ country_targets.indicators.3G.latest_value }}</td> <!-- K -->
+                <td>{{ country_targets.questions.5.comments }}</td> <!-- L -->
+                <td>{{ country.country }}</td> <!-- M -->
+                <td>{{ country_targets.indicators.4G.latest_value }}</td> <!-- N -->
+                <td>{{ country_targets.questions.7.comments }}</td> <!-- O -->
+                <td>{{ country_targets.indicators.other.pfm_diff }}</td> <!-- P -->
+                <td>{{ country_targets.questions.9.comments }}</td> <!-- Q -->
+                <td>??</td> <!-- R -->
+                <td>{{ country_targets.questions.10.comments }}</td> <!-- S -->
+                <td>{{ country_targets.questions.11.latest_value }}</td> <!-- T -->
+                <td>{{ country_targets.questions.11.comments }}</td> <!-- U -->
+                <td>{{ country_targets.questions.12.latest_value }}</td> <!-- V -->
+                <td>{{ country_targets.questions.12.comments }}</td> <!-- W -->
+                <td>{{ country_targets.indicators.8G.latest_value }}</td> <!-- X -->
+                <td>{{ country_targets.questions.13.comments }}</td> <!-- Y -->
+                <td>{{ country.country }}</td> <!-- Z -->
+                <td>{{ country_targets.p.1 }}</td> <!-- AA -->
+                <td>{{ country_targets.p.2 }}</td> <!-- AB -->
+                <td>{{ country_targets.p.3 }}</td> <!-- AC -->
+                <td>{{ country_targets.p.4 }}</td> <!-- AD -->
+                <td>{{ country_targets.p.5 }}</td> <!-- AE -->
+                <td>{{ country_targets.p.6 }}</td> <!-- AF -->
+                <td>{{ country_targets.p.7 }}</td> <!-- AG -->
+                <td>{{ country_targets.p.8 }}</td> <!-- AH -->
+                <td>{{ country_targets.p.9 }}</td> <!-- AI -->
+                <td>{{ country_targets.p.10 }}</td> <!-- AJ -->
+                <td>{{ country_targets.p.11 }}</td> <!-- AK -->
+                <td>{{ country_targets.p.12 }}</td> <!-- AL -->
+                <td>{{ country_targets.p.13 }}</td> <!-- AM -->
+                <td>{{ country.country }}</td> <!-- AN -->
+                <td>{{ country_targets.np.1 }}</td> <!-- AO -->
+                <td>{{ country_targets.np.2 }}</td> <!-- AP -->
+                <td>{{ country_targets.np.3 }}</td> <!-- AQ -->
+                <td>{{ country_targets.np.4 }}</td> <!-- AR -->
+                <td>{{ country_targets.np.5 }}</td> <!-- AS -->
+                <td>{{ country_targets.np.6 }}</td> <!-- AT -->
+                <td>{{ country_targets.np.7 }}</td> <!-- AU -->
+                <td>{{ country_targets.np.8 }}</td> <!-- AV -->
+                <td>{{ country_targets.np.9 }}</td> <!-- AW -->
+                <td>{{ country_targets.np.10 }}</td> <!-- AX -->
+                <td>{{ country_targets.np.11 }}</td> <!-- AY -->
+                <td>{{ country_targets.np.12 }}</td> <!-- AZ -->
+                <td>{{ country_targets.np.13 }}</td> <!-- BA -->
             </tr>
             {% endfor %}
         </table>
