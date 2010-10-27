@@ -85,6 +85,16 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
             qvals["latest_value"] = question.latest_value
             qvals["comments"] = question.comments
 
+        def yn_tickcross(val):
+            if val == "Y":
+                return "tick"
+            else:
+                return "cross"
+        questions = targets[country]["questions"]
+        questions["2"]["target"] = yn_tickcross(questions["2"]["latest_value"])
+        questions["3"]["target"] = yn_tickcross(questions["3"]["latest_value"])
+        questions["12"]["target"] = yn_tickcross(questions["12"]["latest_value"])
+
         questions = targets[country]["questions"]
         def safe_div(val1, val2):
             if val1 == None or val2 == None:
@@ -105,9 +115,9 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
             val2 = float(val2)
             val = val1 / val2 - 1
             if val < 0:
-                dir = "decrease"
+                dir = "down"
             elif val > 0:
-                dir = "increase"
+                dir = "up"
             else:
                 dir = "no change"
             return fabs(val) * 100, dir
@@ -117,12 +127,27 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
         latest_denom = safe_div(questions["18"]["latest_value"], 10000.0)
         other_indicators["outpatient_visits_baseline"] = safe_div(questions["19"]["baseline_value"], baseline_denom)
         other_indicators["outpatient_visits_latest"] = safe_div(questions["19"]["latest_value"], latest_denom)
-        other_indicators["outpatient_visits_change"], _ = calc_change(other_indicators["outpatient_visits_latest"], other_indicators["outpatient_visits_baseline"])
+        other_indicators["outpatient_visits_change"], other_indicators["outpatient_visits_change_dir"] = calc_change(other_indicators["outpatient_visits_latest"], other_indicators["outpatient_visits_baseline"])
         other_indicators["skilled_personnel_baseline"] = safe_div(questions["17"]["baseline_value"], baseline_denom)
         other_indicators["skilled_personnel_latest"] = safe_div(questions["17"]["latest_value"], latest_denom)
-        other_indicators["skilled_personnel_change"], _ = calc_change(other_indicators["skilled_personnel_latest"], other_indicators["skilled_personnel_baseline"])
-        other_indicators["health_workforce_spent_change"], _ = calc_change(questions["20"]["latest_value"], questions["20"]["baseline_value"])
+        other_indicators["skilled_personnel_change"], other_indicators["skilled_personnel_change_dir"] = calc_change(other_indicators["skilled_personnel_latest"], other_indicators["skilled_personnel_baseline"])
+        other_indicators["health_workforce_spent_change"], other_indicators["health_workforce_spent_change_dir"] = calc_change(questions["20"]["latest_value"], questions["20"]["baseline_value"])
         other_indicators["pfm_diff"] = safe_diff(questions["9"]["latest_value"], questions["9"]["baseline_value"])
+        
+        def sum_agency_values(question_number, field):
+            sum = 0
+            for agency in aval:
+                sum += aval[agency.agency][question_number][field]
+            return sum
+
+        coordinated_programmes = safe_diff(sum_agency_values("5", "latest_value"), sum_agency_values("4", "latest_value"))
+        if coordinated_programmes > 0.51:
+            other_indicators["coordinated_programmes"] = "tick"
+        elif coordinated_programmes >= 0.11:
+            other_indicators["coordinated_programmes"] = "arrow"
+        else:
+            other_indicators["coordinated_programmes"] = "cross"
+
     extra_context["targets"] = targets
 
     return direct_to_template(request, template=template_name, extra_context=extra_context)

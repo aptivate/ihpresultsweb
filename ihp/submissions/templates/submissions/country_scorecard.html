@@ -178,9 +178,9 @@
                 <td>{{ country.country }}</td> <!-- C -->
                 <td>{{ country_targets.questions.1.latest_value }}</td> <!-- D -->
                 <td>{{ country_targets.questions.1.comments }}</td> <!-- E -->
-                <td>{{ country_targets.questions.2.latest_value }}</td> <!-- F -->
-                <td>{{ country_targets.questions.3.latest_value }}</td> <!-- G -->
-                <td>{{ country_targets.questions.12.latest_value }}</td> <!-- H -->
+                <td>{{ country_targets.questions.2.target }}</td> <!-- F -->
+                <td>{{ country_targets.questions.3.target }}</td> <!-- G -->
+                <td>{{ country_targets.questions.12.target }}</td> <!-- H -->
                 <td>{{ country_targets.questions.15.latest_value }}</td> <!-- I -->
                 <td>{{ country_targets.indicators.8G.latest_value }}</td> <!-- J -->
                 <td></td> <!-- K -->
@@ -204,7 +204,7 @@
                 <td>{{ country_targets.questions.9.comments }}</td>
                 <td></td> <!-- AD -->
                 <td>{{ country_targets.questions.10.comments }}</td> <!-- AE -->
-                <td>??</td> <!-- AF -->
+                <td>{{ country_targets.indicators.other.coordinated_programmes }}</td> <!-- AF -->
                 <td> <!-- AG -->
                 {% for agency, aqs in country_targets.agencies.items %}
                 {{ agency }}] {{ aqs.4.comments }}<br/>
@@ -215,19 +215,19 @@
                 <td>{{ country_targets.indicators.other.outpatient_visits_latest }}</td> <!-- AJ -->
                 <td>{{ country_targets.questions.19.latest_year }}</td> <!-- AK -->
                 <td>{{ country_targets.indicators.other.outpatient_visits_change }}</td> <!-- AL -->
-                <td>??</td> <!-- AM -->
+                <td>{{ country_targets.indicators.other.outpatient_visits_change_dir }}</td> <!-- AM -->
                 <td>{{ country_targets.indicators.other.skilled_personnel_baseline }}</td> <!-- AN -->
                 <td>{{ country_targets.questions.17.baseline_year }}</td> <!-- AO -->
                 <td>{{ country_targets.indicators.other.skilled_personnel_latest }}</td> <!-- AP -->
                 <td>{{ country_targets.questions.17.latest_year }}</td> <!-- AQ -->
                 <td>{{ country_targets.indicators.other.skilled_personnel_change }}</td> <!-- AR -->
-                <td>??</td> <!-- AS -->
+                <td>{{ country_targets.indicators.other.skilled_personnel_change_dir }}</td> <!-- AS -->
                 <td>{{ country_targets.questions.20.baseline_value }}</td> <!-- AT -->
                 <td>{{ country_targets.questions.20.baseline_year }}</td> <!-- AU -->
                 <td>{{ country_targets.questions.20.latest_value }}</td> <!-- AV -->
                 <td>{{ country_targets.questions.20.latest_year }}</td> <!-- AW -->
                 <td>{{ country_targets.indicators.other.health_workforce_spent_change }}</td> <!-- AX -->
-                <td>??</td> <!-- AY -->
+                <td>{{ country_targets.indicators.other.health_workforce_spent_change_dir }}</td> <!-- AY -->
                 <td>{{ country_targets.questions.11.latest_value }}</td> <!-- AZ -->
                 <td>{{ country_targets.questions.22.latest_value }}</td> <!-- BA -->
                 <td>{{ country_targets.questions.23.latest_value }}</td> <!-- BB -->
@@ -236,8 +236,8 @@
                 <td>{{ country_targets.questions.12.latest_value }}</td> <!-- BE -->
                 <td></td> <!-- BF -->
                 <td>{{ country_targets.questions.24.latest_value }}</td> <!-- BG -->
-                <td></td> <!-- BH -->
-                <td></td> <!-- BI -->
+                <td>{{ country_targets.questions.24.comments }}</td> <!-- BH -->
+                <td>{{ country_targets.questions.24.comments }}</td> <!-- BI -->
                 <td>{{ country_targets.questions.11.latest_value }}</td> <!-- BJ -->
                 <td>{{ country_targets.questions.11.comments }}</td> <!-- BK -->
                 <td></td>
