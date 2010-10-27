@@ -234,6 +234,50 @@ def calc_country_targets(country):
         .
     }
     """
+
+    commentary_text = {
+        "1G": {
+            "tick" : "An [space] was signed in [space] called [space]. Target = An IHP+ Compact or equivalent agreement in place",
+            "arrow" : "There is evidence of a Compact or equivalent agreement under development. The aim is to have this in place by [space]",
+            "cross" : "There are no current plans to develop a Compact or equivalent agreement",
+        },
+        "2Ga" : {
+            "all" : "A National Health Sector Plan/Strategy is in place with current targets & budgets that have been jointly assessed.This one will have to be done manually",
+
+        },
+        "2Gb" : {
+            "tick" : "There is curently a costed and evidence based HRH plan in place that is integrated with the national health plan. Target = A costed comprehensive national HRH plan that is integrated with the national health plan",
+            "arrow" : """At the end of %(cur_year)s a costed and evidence based HRH plan was under development. Target = A costed comprehensive national HRH plan that is integrated with the national health plan
+
+At the end of %(cur_year)s a costed and evidence based HRH plan was in place but not yet integrated with the national health plan. Target = A costed comprehensive national HRH plan that is integrated with the national health plan
+""",
+            "cross" : "At the end of %(cur_year)s there was no costed and evidence based HRH plan in place, or plans to develop one. Target = A costed comprehensive national HRH plan that is integrated with the national health plan",
+        },
+        "3G" : {
+            "all" : "%(country_name)s allocated %(cur_val)s%% of its approved annual national budget to health in %(cur_year)s. Target = 15%% (or an alternative agreed published target)",
+        },
+        "4G" : {
+            "all" : "In %(cur_year)s, %(cur_val)s%% of health sector funding was disbursed against the approved annual budget. Target = to halve the proportion of health sector funding not disbursed against the approved annual budget",
+        },
+        "5Ga" : {
+            "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val)s on the PFM/CPIA scale of performance. Target = Improvement of at least one measure (ie 0.5 points) on the PFM/CPIA scale of performance.  In %(cur_year)s, %(country_name)s achieved a score of %(cur_val)s on the PFM/CPIA scale of performance. Target = Improvement of at least one measure (ie 0.5 points) on the PFM/CPIA scale of performance."
+        },
+        "5Gb" : {
+            "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val)s on the four poin t scale used to assess performance in the the procurement sector. Target = Improvement of at least one measure on the four-point scale used to assess performance for this sector."
+        },
+        "6G" : {
+            "tick" : "There is a transparent and monitorable performance assessment framework in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes. Target = A transparent and monitorable performance assessment framework is in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes.",
+            "arrow" : "At the end of %(cur_year)s there was evidence that a transparent and monitorable performance assessment framework was under development to assess progress against (a) the national development  strategies relevant to health and (b) health sector programmes. Target = A transparent and monitorable performance assessment framework is in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes.",
+            "cross" : "At the end of %(cur_year)s there was no transparent and monitorable performance assessment framework in place and no plans to develop one were clear or being implemented. Target = A transparent and monitorable performance assessment framework is in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes.",
+        },
+        "7G" : {
+            "all" : "This one will have to be done manually. Target = Mutual assessments (such as a joint Annual Health Sector Review) are being made of progress implementing  commitments in the health sector, including on aid effectiveness."
+        },
+        "8G" : {
+            "all" : "At the end of %(cur_year)s %(cur_val)s%% of seats in the Health Sector Coordination Mechanism (or equivalent body) were allocated to Civil Society representatives. Target = Evidence that Civil Society is actively represented in health sector policy processes - including Health Sector planning, coordination & review mechanisms."
+        },
+    }
+
     targets = get_country_targets(country, g_indicators)
     indicators = calc_country_indicators(country)
     results = {}
@@ -248,11 +292,19 @@ def calc_country_targets(country):
             "cur_year" : cur_year,
             "comments" : comments,
             "commentary" : "",
+            "country_name" : country,
         }
 
         result["target"] = evaluate_indicator(target, base_val, cur_val)
-        results[indicator] = result
+        if "all" in commentary_text[indicator]:
+            result["commentary"] = commentary_text[indicator]["all"]
+        else:
+            result["commentary"] = commentary_text[indicator][result["target"]]
 
+        
+        result["commentary"] = result["commentary"] % result
+
+        results[indicator] = result
     return results
 
 def get_country_progress(agency):

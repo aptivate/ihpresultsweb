@@ -229,7 +229,7 @@ dp_indicators = [
 
 g_indicators = [
     "1G" , "2Ga", "2Gb",
-    "3G" , "4G", "5G",
+    "3G" , "4G", "5Ga", "5Gb",
     "6G" , "7G", "8G",
 ]
 
@@ -252,7 +252,8 @@ indicator_funcs = {
     "2Gb"  : (equals_or_zero("yes"), ("4",)),
     "3G"   : (calc_numdenom, ("6", "5")),
     "4G"   : (calc_one_minus_numdenom, ("8", "7")),
-    "5G"   : (sum_values, ("9", "10")),
+    "5Ga"  : (sum_values, ("9",)),
+    "5Gb"  : (sum_values, ("10",)),
     "6G"   : (equals_or_zero("yes"), ("11",)),
     "7G"   : (equals_or_zero("yes"), ("12",)),
     "8G"   : (calc_numdenom, ("13", "14")),

@@ -35,6 +35,26 @@ def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html",
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def country_scorecard(request, template_name="submissions/country_scorecard.html", extra_context=None):
+    def safe_div(val1, val2):
+        try:
+            if val1 == None or val2 == None:
+                return None
+            if val2 == 0:
+                return 0
+            return float(val1) / float(val2)
+        except ValueError:
+            return None
+
+    def safe_diff(val1, val2):
+        try:
+            if val1 == None or val2 == None:
+                return None
+            if val2 == 0:
+                return 0
+            return float(val1) - float(val2)
+        except ValueError:
+            return None
+
     extra_context = extra_context or {}
 
     targets = {} 
@@ -60,7 +80,7 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
         targets[country]["indicators"] = {}
         for indicator in indicators:
             targets[country]["indicators"][indicator] = dict(zip(headings, indicators[indicator][0]))
-        targets[country]["indicators"]["3G"]["hs_budget_gap"] = 15 - targets[country]["indicators"]["3G"]["latest_value"]
+        targets[country]["indicators"]["3G"]["hs_budget_gap"] = safe_diff(15, targets[country]["indicators"]["3G"]["latest_value"])
         targets[country]["indicators"]["other"] = {}
         
 
@@ -86,7 +106,11 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
             qvals["comments"] = question.comments
 
         def yn_tickcross(val):
-            if val == "Y":
+            if val == None:
+                return None
+
+            val = val.lower()
+            if val.startswith("y"):
                 return "tick"
             else:
                 return "cross"
@@ -96,31 +120,23 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
         questions["12"]["target"] = yn_tickcross(questions["12"]["latest_value"])
 
         questions = targets[country]["questions"]
-        def safe_div(val1, val2):
-            if val1 == None or val2 == None:
-                return None
-            if val2 == 0:
-                return 0
-            return float(val1) / float(val2)
-
-        def safe_diff(val1, val2):
-            if val1 == None or val2 == None:
-                return None
-            if val2 == 0:
-                return 0
-            return float(val1) - float(val2)
 
         def calc_change(val1, val2):
-            val1 = float(val1)
-            val2 = float(val2)
-            val = val1 / val2 - 1
-            if val < 0:
-                dir = "down"
-            elif val > 0:
-                dir = "up"
-            else:
-                dir = "no change"
-            return fabs(val) * 100, dir
+            try:
+                if val1 == None or val2 == None:
+                    return None, None
+                val1 = float(val1)
+                val2 = float(val2)
+                val = val1 / val2 - 1
+                if val < 0:
+                    dir = "down"
+                elif val > 0:
+                    dir = "up"
+                else:
+                    dir = "no change"
+                return fabs(val) * 100, dir
+            except ValueError:
+                return None, None
 
         other_indicators = targets[country]["indicators"]["other"]
         baseline_denom = safe_div(questions["18"]["baseline_value"], 10000.0)
@@ -137,7 +153,11 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
         def sum_agency_values(question_number, field):
             sum = 0
             for agency in aval:
-                sum += aval[agency.agency][question_number][field]
+                if question_number in aval[agency]:
+                    try:
+                        sum += float(aval[agency][question_number][field])
+                    except ValueError:
+                        pass
             return sum
 
         coordinated_programmes = safe_diff(sum_agency_values("5", "latest_value"), sum_agency_values("4", "latest_value"))
