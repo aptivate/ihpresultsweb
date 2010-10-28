@@ -40,18 +40,21 @@
                 <th>PHC4</th>
                 <th>PHC5</th>
                 <th>PHC6</th>
+                <th>PHC7</th>
                 <th>HRH1</th>
                 <th>HRH2</th>
                 <th>HRH3</th>
                 <th>HRH4</th>
                 <th>HRH5</th>
                 <th>HRH6</th>
+                <th>HRH7</th>
                 <th>HS1</th>
                 <th>HS2</th>
                 <th>HS3</th>
                 <th>HS4</th>
                 <th>HS5</th>
                 <th>HS6</th>
+                <th>HS7</th>
                 <th>RF1</th>
                 <th>RF2</th>
                 <th>RF3</th>
@@ -171,16 +174,6 @@
                 <th>NP11</th>
                 <th>NP12</th>
                 <th>NP13</th>
-                <th>C1G</th>
-                <th>C2Ga</th>
-                <th>C2Gb</th>
-                <th>C3G</th>
-                <th>C4G</th>
-                <th>C5Ga</th>
-                <th>C5Gb</th>
-                <th>C6G</th>
-                <th>C7G</th>
-                <th>C8G</th>
             </tr>
             {% for country, country_targets in targets.items %}
             <tr>
@@ -226,30 +219,33 @@
                 <td>{{ country_targets.questions.19.latest_year|default_if_none:"" }}</td> <!-- AK -->
                 <td>{{ country_targets.indicators.other.outpatient_visits_change|default_if_none:"" }}</td> <!-- AL -->
                 <td>{{ country_targets.indicators.other.outpatient_visits_change_dir|default_if_none:"" }}</td> <!-- AM -->
-                <td>{{ country_targets.indicators.other.skilled_personnel_baseline|default_if_none:"" }}</td> <!-- AN -->
-                <td>{{ country_targets.questions.17.baseline_year|default_if_none:"" }}</td> <!-- AO -->
-                <td>{{ country_targets.indicators.other.skilled_personnel_latest|default_if_none:"" }}</td> <!-- AP -->
-                <td>{{ country_targets.questions.17.latest_year|default_if_none:"" }}</td> <!-- AQ -->
-                <td>{{ country_targets.indicators.other.skilled_personnel_change|default_if_none:"" }}</td> <!-- AR -->
-                <td>{{ country_targets.indicators.other.skilled_personnel_change_dir|default_if_none:"" }}</td> <!-- AS -->
-                <td>{{ country_targets.questions.20.baseline_value|default_if_none:"" }}</td> <!-- AT -->
-                <td>{{ country_targets.questions.20.baseline_year|default_if_none:"" }}</td> <!-- AU -->
-                <td>{{ country_targets.questions.20.latest_value|default_if_none:"" }}</td> <!-- AV -->
-                <td>{{ country_targets.questions.20.latest_year|default_if_none:"" }}</td> <!-- AW -->
-                <td>{{ country_targets.indicators.other.health_workforce_spent_change|default_if_none:"" }}</td> <!-- AX -->
-                <td>{{ country_targets.indicators.other.health_workforce_spent_change_dir|default_if_none:"" }}</td> <!-- AY -->
-                <td>{{ country_targets.questions.11.latest_value|default_if_none:"" }}</td> <!-- AZ -->
-                <td>{{ country_targets.questions.22.latest_value|default_if_none:"" }}</td> <!-- BA -->
-                <td>{{ country_targets.questions.23.latest_value|default_if_none:"" }}</td> <!-- BB -->
-                <td>{{ country_targets.questions.21.latest_value|default_if_none:"" }}</td> <!-- BC -->
-                <td>{{ country_targets.questions.21.comments|default_if_none:"" }}</td> <!-- BD -->
-                <td>{{ country_targets.questions.12.latest_value|default_if_none:"" }}</td> <!-- BE -->
-                <td></td> <!-- BF -->
-                <td>{{ country_targets.questions.24.latest_value|default_if_none:"" }}</td> <!-- BG -->
-                <td>{{ country_targets.questions.24.comments|default_if_none:"" }}</td> <!-- BH -->
-                <td>{{ country_targets.questions.24.comments|default_if_none:"" }}</td> <!-- BI -->
-                <td>{{ country_targets.questions.11.latest_value|default_if_none:"" }}</td> <!-- BJ -->
-                <td>{{ country_targets.questions.11.comments|default_if_none:"" }}</td> <!-- BK -->
+                <td></td> <!-- AN -->
+                <td>{{ country_targets.indicators.other.skilled_personnel_baseline|default_if_none:"" }}</td> <!-- AO -->
+                <td>{{ country_targets.questions.17.baseline_year|default_if_none:"" }}</td> <!-- AP -->
+                <td>{{ country_targets.indicators.other.skilled_personnel_latest|default_if_none:"" }}</td> <!-- AQ -->
+                <td>{{ country_targets.questions.17.latest_year|default_if_none:"" }}</td> <!-- AR -->
+                <td>{{ country_targets.indicators.other.skilled_personnel_change|default_if_none:"" }}</td> <!-- AS -->
+                <td>{{ country_targets.indicators.other.skilled_personnel_change_dir|default_if_none:"" }}</td> <!-- AT -->
+                <td></td> <!-- AU -->
+                <td>{{ country_targets.questions.20.baseline_value|default_if_none:"" }}</td> <!-- AV -->
+                <td>{{ country_targets.questions.20.baseline_year|default_if_none:"" }}</td> <!-- AW -->
+                <td>{{ country_targets.questions.20.latest_value|default_if_none:"" }}</td> <!-- AX -->
+                <td>{{ country_targets.questions.20.latest_year|default_if_none:"" }}</td> <!-- AY -->
+                <td>{{ country_targets.indicators.other.health_workforce_spent_change|default_if_none:"" }}</td> <!-- AZ -->
+                <td>{{ country_targets.indicators.other.health_workforce_spent_change_dir|default_if_none:"" }}</td> <!-- BA -->
+                <td></td> <!-- BB -->
+                <td>{{ country_targets.questions.11.latest_value|default_if_none:"" }}</td> <!-- BC -->
+                <td>{{ country_targets.questions.22.latest_value|default_if_none:"" }}</td> <!-- BD -->
+                <td>{{ country_targets.questions.23.latest_value|default_if_none:"" }}</td> <!-- BE -->
+                <td>{{ country_targets.questions.21.latest_value|default_if_none:"" }}</td> <!-- BF -->
+                <td>{{ country_targets.questions.21.comments|default_if_none:"" }}</td> <!-- BG -->
+                <td>{{ country_targets.questions.12.latest_value|default_if_none:"" }}</td> <!-- BH -->
+                <td></td> <!-- BI -->
+                <td>{{ country_targets.questions.24.latest_value|default_if_none:"" }}</td> <!-- BJ -->
+                <td>{{ country_targets.questions.24.comments|default_if_none:"" }}</td> <!-- BK -->
+                <td>{{ country_targets.questions.24.comments|default_if_none:"" }}</td> <!-- BL -->
+                <td>{{ country_targets.questions.11.latest_value|default_if_none:"" }}</td> <!-- BM -->
+                <td>{{ country_targets.questions.11.comments|default_if_none:"" }}</td> <!-- BN -->
                 <td></td>
                 <td></td>
                 <td></td>
@@ -309,32 +305,29 @@
                 <td>{{ country.country|default_if_none:"" }}</td> <!-- C -->
                 <td>{{ country.country|default_if_none:"" }}</td> <!-- D -->
                 <td>{{ country_targets.questions.1.latest_value|default_if_none:"" }}</td> <!-- E -->
-                <td>{{ country_targets.questions.1.comments|default_if_none:"" }}</td> <!-- F -->
+                <td>{{ country_targets.1G.commentary|default_if_none:"" }}</td> <!-- F -->
                 <td>
                 {{ country_targets.questions.2.latest_value|default_if_none:"" }}<br/>
                 {{ country_targets.questions.3.latest_value|default_if_none:"" }}
                 </td> <!-- G -->
-                <td>
-                {{ country_targets.questions.2.comments|default_if_none:"" }}<br/>
-                {{ country_targets.questions.3.comments|default_if_none:"" }}
-                </td> <!-- H -->
+                <td>{{ country_targets.2Ga.commentary|default_if_none:"" }}</td> <!-- H -->
                 <td>{{ country_targets.questions.4.latest_value|default_if_none:"" }}</td> <!-- I -->
-                <td>{{ country_targets.questions.4.comments|default_if_none:"" }}</td> <!-- J -->
+                <td>{{ country_targets.2Gb.commentary|default_if_none:"" }}</td> <!-- J -->
                 <td>{{ country_targets.indicators.3G.latest_value|default_if_none:"" }}</td> <!-- K -->
-                <td>{{ country_targets.questions.5.comments|default_if_none:"" }}</td> <!-- L -->
+                <td>{{ country_targets.3G.commentary|default_if_none:"" }}</td> <!-- L -->
                 <td>{{ country.country|default_if_none:"" }}</td> <!-- M -->
                 <td>{{ country_targets.indicators.4G.latest_value|default_if_none:"" }}</td> <!-- N -->
-                <td>{{ country_targets.questions.7.comments|default_if_none:"" }}</td> <!-- O -->
+                <td>{{ country_targets.4G.commentary|default_if_none:"" }}</td> <!-- O -->
                 <td>{{ country_targets.indicators.other.pfm_diff|default_if_none:"" }}</td> <!-- P -->
-                <td>{{ country_targets.questions.9.comments|default_if_none:"" }}</td> <!-- Q -->
-                <td>??</td> <!-- R -->
-                <td>{{ country_targets.questions.10.comments|default_if_none:"" }}</td> <!-- S -->
+                <td>{{ country_targets.5Ga.commentary|default_if_none:"" }}</td> <!-- Q -->
+                <td></td> <!-- R -->
+                <td>{{ country_targets.5Gb.commentary|default_if_none:"" }}</td> <!-- S -->
                 <td>{{ country_targets.questions.11.latest_value|default_if_none:"" }}</td> <!-- T -->
-                <td>{{ country_targets.questions.11.comments|default_if_none:"" }}</td> <!-- U -->
+                <td>{{ country_targets.6G.commentary|default_if_none:"" }}</td> <!-- U -->
                 <td>{{ country_targets.questions.12.latest_value|default_if_none:"" }}</td> <!-- V -->
-                <td>{{ country_targets.questions.12.comments|default_if_none:"" }}</td> <!-- W -->
+                <td>{{ country_targets.7G.commentary|default_if_none:"" }}</td> <!-- W -->
                 <td>{{ country_targets.indicators.8G.latest_value|default_if_none:"" }}</td> <!-- X -->
-                <td>{{ country_targets.questions.13.comments|default_if_none:"" }}</td> <!-- Y -->
+                <td>{{ country_targets.8G.commentary|default_if_none:"" }}</td> <!-- Y -->
                 <td>{{ country.country|default_if_none:"" }}</td> <!-- Z -->
                 <td>{{ country_targets.p.1|default_if_none:"" }}</td> <!-- AA -->
                 <td>{{ country_targets.p.2|default_if_none:"" }}</td> <!-- AB -->
@@ -363,16 +356,6 @@
                 <td>{{ country_targets.np.11|default_if_none:"" }}</td> <!-- AY -->
                 <td>{{ country_targets.np.12|default_if_none:"" }}</td> <!-- AZ -->
                 <td>{{ country_targets.np.13|default_if_none:"" }}</td> <!-- BA -->
-                <td>{{ country_targets.1G.commentary }}</td>
-                <td>{{ country_targets.2Ga.commentary }}</td>
-                <td>{{ country_targets.2Gb.commentary }}</td>
-                <td>{{ country_targets.3G.commentary }}</td>
-                <td>{{ country_targets.4G.commentary }}</td>
-                <td>{{ country_targets.5Ga.commentary }}</td>
-                <td>{{ country_targets.5Gb.commentary }}</td>
-                <td>{{ country_targets.6G.commentary }}</td>
-                <td>{{ country_targets.7G.commentary }}</td>
-                <td>{{ country_targets.8G.commentary }}</td>
             </tr>
             {% endfor %}
         </table>
