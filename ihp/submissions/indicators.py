@@ -98,6 +98,10 @@ def combine_yesnos(qs, agency_or_country, *args):
     values_current = []
     for arg in args:
         qs1 = qs.filter(question_number=arg)
+        if qs1.count() == 0:
+            values_baseline.append(" ")
+            values_current.append(" ")
+            continue
         if qs1[0].baseline_value == None:
             base_val = " "
         else: 
