@@ -13,7 +13,8 @@ def agency_scorecard(request, template_name="submissions/agency_scorecard.html",
 
     targets = {} 
     for agency in Agency.objects.filter(type="Agency"):
-        if agency.submission_set.count() == 0: continue
+        submissions = agency.submission_set.filter(type="DP")
+        if submissions.count() == 0: continue
         targets[agency] = calc_agency_targets(agency)
         for indicator, d in targets[agency].items():
             old_comments = d["comments"]
@@ -59,7 +60,14 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
 
     targets = {} 
     for country in Country.objects.all():
-        if country.submission_set.count() == 0: continue
+        submissions = country.submission_set.filter(type="GP")
+        if submissions.count() == 0: continue
+        assert submissions.count() == 1
+
+        submission = submissions.all()[0] 
+        # Do not process if there are no questions
+        if submission.govquestion_set.all().count() == 0: continue
+        
         country_target = calc_country_targets(country)
         if country_target == None: continue
         targets[country] = country_target

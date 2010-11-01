@@ -77,8 +77,8 @@ def equals_or_zero(val):
         
         qs = qs.filter(question_number=q)
         # TODO not sure what to do here
-        if len(qs) != 1:
-            return 0, 0
+        #if len(qs) != 1:
+        #    return 0, 0
         assert len(qs) == 1
         
         if qs[0].baseline_value == None:
@@ -98,10 +98,10 @@ def combine_yesnos(qs, agency_or_country, *args):
     values_current = []
     for arg in args:
         qs1 = qs.filter(question_number=arg)
-        if qs1.count() == 0:
-            values_baseline.append(" ")
-            values_current.append(" ")
-            continue
+        #if qs1.count() == 0:
+        #    values_baseline.append(" ")
+        #    values_current.append(" ")
+        #    continue
         if qs1[0].baseline_value == None:
             base_val = " "
         else: 
@@ -209,6 +209,7 @@ def calc_country_indicator(country, indicator):
     Calculate the value of a particular indicator for the given country
     Returns a tuple ((base_val, base_year, cur_val, cur_year), indicator comment)
     """
+    print country, indicator
     qs = GovQuestion.objects.filter(submission__country=country)
     return calc_indicator(qs, country, indicator)
 
