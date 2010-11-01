@@ -76,6 +76,9 @@ def equals_or_zero(val):
         value = val.lower()
         
         qs = qs.filter(question_number=q)
+        # TODO not sure what to do here
+        if len(qs) != 1:
+            return 0, 0
         assert len(qs) == 1
         
         if qs[0].baseline_value == None:
