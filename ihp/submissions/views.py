@@ -60,7 +60,7 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
 
     targets = {} 
     for country in Country.objects.all():
-        submissions = country.submission_set.filter(type="GP")
+        submissions = country.submission_set.filter(type="Gov")
         if submissions.count() == 0: continue
         assert submissions.count() == 1
 
