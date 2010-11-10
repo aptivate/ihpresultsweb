@@ -81,6 +81,9 @@ def poll():
     #pop_messages = disk_feed() 
     messages = grab_messages(pop_messages)
     for message in messages:
-        print "Processing messing"
-        for (filename, original_filename) in message["files"]:
-            parse_file(filename)
+        try:
+            print "Processing messing"
+            for (filename, original_filename) in message["files"]:
+                parse_file(filename)
+        except Exception, e:
+            print e
