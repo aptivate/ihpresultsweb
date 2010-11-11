@@ -93,6 +93,28 @@ def equals_or_zero(val):
         return base_val, cur_val
     return test
 
+def equals_yes_or_no(val):
+    def test(qs, agency_or_country, q):
+        value = val.lower()
+        
+        qs = qs.filter(question_number=q)
+        # TODO not sure what to do here
+        #if len(qs) != 1:
+        #    return 0, 0
+        assert len(qs) == 1
+        
+        if qs[0].baseline_value == None:
+            base_val = ""
+        else:
+            base_val = "y" if qs[0].baseline_value.lower() == value else "n"
+
+        if qs[0].latest_value == None:
+            cur_val = ""
+        else:
+            cur_val = "y" if qs[0].latest_value.lower() == value else "n"
+        return base_val, cur_val
+    return test
+
 def combine_yesnos(qs, agency_or_country, *args):
     values_baseline = []
     values_current = []
@@ -154,8 +176,10 @@ def calc_indicator(qs, agency_or_country, indicator):
     func, args = indicator_funcs[indicator]
     # TODO - this is really ugly - probably need to refactor this code
     qs2 = qs.filter(question_number__in=args)
+    
     comments = [(question.question_number, question.submission.country, question.comments) for question in qs2]
     base_val, cur_val = func(qs, agency_or_country, *args)
+    
     # TODO here i assume that the year is the same across all years and all questions. 
     if len(qs2) > 0: 
         cur_year = qs2[0].latest_year
@@ -239,6 +263,8 @@ g_indicators = [
     "1G" , "2Ga", "2Gb",
     "3G" , "4G", "5Ga", "5Gb",
     "6G" , "7G", "8G",
+    "Q2G", "Q3G",
+    "Q12G", "Q21G",
 ]
 
 #TODO do checks to ensure that questions that aren't answered to break anything
@@ -255,14 +281,18 @@ indicator_funcs = {
     "6DP"  : (country_perc_factory("yes"), ("17",)),
     "7DP"  : (country_perc_factory("yes"), ("18",)),
     "8DP"  : (country_perc_factory("yes"), ("20",)),
-    "1G"   : (equals_or_zero("yes"), ("1",)),
+    "1G"   : (equals_yes_or_no("yes"), ("1",)),
     "2Ga"  : (combine_yesnos, ("2", "3")),
     "2Gb"  : (equals_or_zero("yes"), ("4",)),
     "3G"   : (calc_numdenom, ("6", "5")),
     "4G"   : (calc_one_minus_numdenom, ("8", "7")),
     "5Ga"  : (sum_values, ("9",)),
     "5Gb"  : (sum_values, ("10",)),
-    "6G"   : (equals_or_zero("yes"), ("11",)),
-    "7G"   : (equals_or_zero("yes"), ("12",)),
+    "6G"   : (equals_yes_or_no("yes"), ("11",)),
+    "7G"   : (equals_yes_or_no("yes"), ("12",)),
     "8G"   : (calc_numdenom, ("13", "14")),
+    "Q2G" : (equals_yes_or_no("yes"), ("2",)),
+    "Q3G" : (equals_yes_or_no("yes"), ("3",)),
+    "Q12G" : (equals_yes_or_no("yes"), ("12",)),
+    "Q21G" : (equals_yes_or_no("yes"), ("21",)),
 }

@@ -1,6 +1,6 @@
 <html>
     <body>
-        <table>
+        <table border="1">
             <tr>
                 <th>TB1</th>
                 <th>TB2</th>
@@ -179,11 +179,11 @@
             <tr>
                 <td>{{ country.country|default_if_none:"" }}</td> <!-- B -->
                 <td>{{ country.country|default_if_none:"" }}</td> <!-- C -->
-                <td>{{ country_targets.questions.1.latest_value|default_if_none:"" }}</td> <!-- D -->
+                <td>{{ country_targets.1G.target|default_if_none:"question" }}</td> <!-- D -->
                 <td>{{ country_targets.questions.1.comments|default_if_none:"" }}</td> <!-- E -->
-                <td>{{ country_targets.questions.2.target|default_if_none:"" }}</td> <!-- F -->
-                <td>{{ country_targets.questions.3.target|default_if_none:"" }}</td> <!-- G -->
-                <td>{{ country_targets.questions.12.target|default_if_none:"" }}</td> <!-- H -->
+                <td>{{ country_targets.Q2G.target|default_if_none:"question" }}</td> <!-- F -->
+                <td>{{ country_targets.Q3G.target|default_if_none:"question" }}</td> <!-- G -->
+                <td>{{ country_targets.Q12G.target|default_if_none:"question" }}</td> <!-- H -->
                 <td>{{ country_targets.questions.15.latest_value|default_if_none:"" }}</td> <!-- I -->
                 <td>{{ country_targets.indicators.8G.latest_value|default_if_none:"" }}</td> <!-- J -->
                 <td></td> <!-- K -->
@@ -234,17 +234,17 @@
                 <td>{{ country_targets.indicators.other.health_workforce_spent_change|default_if_none:"" }}</td> <!-- AZ -->
                 <td>{{ country_targets.indicators.other.health_workforce_spent_change_dir|default_if_none:"" }}</td> <!-- BA -->
                 <td></td> <!-- BB -->
-                <td>{{ country_targets.questions.11.latest_value|default_if_none:"" }}</td> <!-- BC -->
+                <td>{{ country_targets.6G.target|default_if_none:"question" }}</td> <!-- BC -->
                 <td>{{ country_targets.questions.22.latest_value|default_if_none:"" }}</td> <!-- BD -->
                 <td>{{ country_targets.questions.23.latest_value|default_if_none:"" }}</td> <!-- BE -->
-                <td>{{ country_targets.questions.21.latest_value|default_if_none:"" }}</td> <!-- BF -->
+                <td>{{ country_targets.Q21G.target|default_if_none:"question" }}</td> <!-- BF -->
                 <td>{{ country_targets.questions.21.comments|default_if_none:"" }}</td> <!-- BG -->
-                <td>{{ country_targets.questions.12.latest_value|default_if_none:"" }}</td> <!-- BH -->
+                <td>{{ country_targets.Q12G.target|default_if_none:"question" }}</td> <!-- BH -->
                 <td></td> <!-- BI -->
                 <td>{{ country_targets.questions.24.latest_value|default_if_none:"" }}</td> <!-- BJ -->
                 <td>{{ country_targets.questions.24.comments|default_if_none:"" }}</td> <!-- BK -->
                 <td>{{ country_targets.questions.24.comments|default_if_none:"" }}</td> <!-- BL -->
-                <td>{{ country_targets.questions.11.latest_value|default_if_none:"" }}</td> <!-- BM -->
+                <td>{{ country_targets.6G.target|default_if_none:"question" }}</td> <!-- BM -->
                 <td>{{ country_targets.questions.11.comments|default_if_none:"" }}</td> <!-- BN -->
                 <td></td>
                 <td></td>
@@ -304,29 +304,26 @@
                 <td>{{ country.country|default_if_none:"" }}</td> <!-- B -->
                 <td>{{ country.country|default_if_none:"" }}</td> <!-- C -->
                 <td>{{ country.country|default_if_none:"" }}</td> <!-- D -->
-                <td>{{ country_targets.questions.1.latest_value|default_if_none:"" }}</td> <!-- E -->
+                <td>{{ country_targets.1G.target|default_if_none:"question" }}</td> <!-- E -->
                 <td>{{ country_targets.1G.commentary|default_if_none:"" }}</td> <!-- F -->
-                <td>
-                {{ country_targets.questions.2.latest_value|default_if_none:"" }}<br/>
-                {{ country_targets.questions.3.latest_value|default_if_none:"" }}
-                </td> <!-- G -->
+                <td>{{ country_targets.2Ga.target|default_if_none:"question" }}<br/></td> <!-- G -->
                 <td>{{ country_targets.2Ga.commentary|default_if_none:"" }}</td> <!-- H -->
-                <td>{{ country_targets.questions.4.latest_value|default_if_none:"" }}</td> <!-- I -->
+                <td>{{ country_targets.2Gb.target|default_if_none:"question" }}</td> <!-- I -->
                 <td>{{ country_targets.2Gb.commentary|default_if_none:"" }}</td> <!-- J -->
-                <td>{{ country_targets.indicators.3G.latest_value|default_if_none:"" }}</td> <!-- K -->
+                <td>{{ country_targets.3G.target|default_if_none:"question" }}</td> <!-- K -->
                 <td>{{ country_targets.3G.commentary|default_if_none:"" }}</td> <!-- L -->
                 <td>{{ country.country|default_if_none:"" }}</td> <!-- M -->
-                <td>{{ country_targets.indicators.4G.latest_value|default_if_none:"" }}</td> <!-- N -->
+                <td>{{ country_targets.4G.target|default_if_none:"question" }}</td> <!-- N -->
                 <td>{{ country_targets.4G.commentary|default_if_none:"" }}</td> <!-- O -->
                 <td>{{ country_targets.indicators.other.pfm_diff|default_if_none:"" }}</td> <!-- P -->
                 <td>{{ country_targets.5Ga.commentary|default_if_none:"" }}</td> <!-- Q -->
                 <td></td> <!-- R -->
                 <td>{{ country_targets.5Gb.commentary|default_if_none:"" }}</td> <!-- S -->
-                <td>{{ country_targets.questions.11.latest_value|default_if_none:"" }}</td> <!-- T -->
+                <td>{{ country_targets.6G.target|default_if_none:"question" }}</td> <!-- T -->
                 <td>{{ country_targets.6G.commentary|default_if_none:"" }}</td> <!-- U -->
-                <td>{{ country_targets.questions.12.latest_value|default_if_none:"" }}</td> <!-- V -->
+                <td>{{ country_targets.7G.target|default_if_none:"question" }}</td> <!-- V -->
                 <td>{{ country_targets.7G.commentary|default_if_none:"" }}</td> <!-- W -->
-                <td>{{ country_targets.indicators.8G.latest_value|default_if_none:"" }}</td> <!-- X -->
+                <td>{{ country_targets.8G.target|default_if_none:"question" }}</td> <!-- X -->
                 <td>{{ country_targets.8G.commentary|default_if_none:"" }}</td> <!-- Y -->
                 <td>{{ country.country|default_if_none:"" }}</td> <!-- Z -->
                 <td>{{ country_targets.p.1|default_if_none:"" }}</td> <!-- AA -->

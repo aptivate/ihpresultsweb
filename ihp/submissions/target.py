@@ -4,46 +4,53 @@ import math
 
 def criterion_absolute(base_val, cur_val, criterion_param):
     
-    if cur_val == None: return None
+    if cur_val == None: 
+        raise MissingValueException() 
     if math.fabs(cur_val - criterion_param) < 0.000000001:
         return True
     return False
 
 def criterion_relative_increase(base_val, cur_val, criterion_param):
-    if cur_val == None or base_val == None: return None
+    if cur_val == None or base_val == None: 
+        raise MissingValueException() 
+
     if cur_val >= base_val * (1 + criterion_param / 100.0):
         return True
     return False
 
 def criterion_relative_decrease(base_val, cur_val, criterion_param):
-    if cur_val == None or base_val == None: return None
+    if cur_val == None or base_val == None: 
+        raise MissingValueException() 
 
     if cur_val <= base_val * (1 - criterion_param / 100.0):
         return True
     return False
 
 def criterion_increase(base_val, cur_val, criterion_param):
-    if cur_val == None or base_val == None: return None
+    if cur_val == None or base_val == None: 
+        raise MissingValueException() 
 
     if cur_val > base_val:
         return True
     return False
 
 def criterion_decrease(base_val, cur_val, criterion_param):
-    if cur_val == None or base_val == None: return None
+    if cur_val == None or base_val == None: 
+        raise MissingValueException()
 
     if cur_val < base_val:
         return True
     return False
 
 def criterion_absolute_greater_than(base_val, cur_val, criterion_param):
-    if cur_val == None: return None
+
+    if cur_val == None: raise MissingValueException()
     if cur_val > criterion_param:
         return True
     return False
 
 def criterion_absolute_less_than(base_val, cur_val, criterion_param):
-    if cur_val == None: return None
+    if cur_val == None: raise MissingValueException()
     if cur_val < criterion_param:
         return True
     return False
@@ -59,11 +66,20 @@ def criterion_absolute_decrease(base_val, cur_val, criterion_param):
     return False
 
 def criterion_both_yes(base_val, cur_val, criterion_param):
+    if len(cur_val.strip()) != 2:
+        raise MissingValueException()
+
     if cur_val.lower() == "yy":
         return True
     return False
 
+class MissingValueException(Exception):
+    pass
+
 def criterion_first_yes(base_val, cur_val, criterion_param):
+    if len(cur_val) == 0:
+        raise MissingValueException()
+
     if cur_val.lower()[0] == "y":
         return True
     return False
@@ -116,12 +132,15 @@ def evaluate_indicator(target, base_val, cur_val):
     tick_func = criteria_funcs[target.tick_criterion_type]
     arrow_func = criteria_funcs[target.arrow_criterion_type]
 
-    if tick_func(base_val, cur_val, target.tick_criterion_value):
-        return "tick"
-    elif arrow_func(base_val, cur_val, target.arrow_criterion_value):
-        return "arrow"
-    else:
-        return "cross"
+    try:
+        if tick_func(base_val, cur_val, target.tick_criterion_value):
+            return "tick"
+        elif arrow_func(base_val, cur_val, target.arrow_criterion_value):
+            return "arrow"
+        else:
+            return "cross"
+    except MissingValueException:
+        return None
 
 def calc_agency_targets(agency):
     """
@@ -295,14 +314,19 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
             "country_name" : country,
         }
 
+        print indicator
         result["target"] = evaluate_indicator(target, base_val, cur_val)
-        if "all" in commentary_text[indicator]:
-            result["commentary"] = commentary_text[indicator]["all"]
-        else:
-            result["commentary"] = commentary_text[indicator][result["target"]]
-
+        if indicator in commentary_text:
+            if "all" in commentary_text[indicator]:
+                result["commentary"] = commentary_text[indicator]["all"]
+            else:
+                target_value = result["target"]
+                if target_value == None:
+                    result["commentary"] = "Missing Data"
+                else:
+                    result["commentary"] = commentary_text[indicator][target_value]
         
-        result["commentary"] = result["commentary"] % result
+            result["commentary"] = result["commentary"] % result
 
         results[indicator] = result
     return results

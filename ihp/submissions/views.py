@@ -113,20 +113,6 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
             qvals["latest_value"] = question.latest_value
             qvals["comments"] = question.comments
 
-        def yn_tickcross(val):
-            if val == None:
-                return None
-
-            val = val.lower()
-            if val.startswith("y"):
-                return "tick"
-            else:
-                return "cross"
-        questions = targets[country]["questions"]
-        questions["2"]["target"] = yn_tickcross(questions["2"]["latest_value"])
-        questions["3"]["target"] = yn_tickcross(questions["3"]["latest_value"])
-        questions["12"]["target"] = yn_tickcross(questions["12"]["latest_value"])
-
         questions = targets[country]["questions"]
 
         def calc_change(val1, val2):
