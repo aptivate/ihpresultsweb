@@ -66,14 +66,24 @@ def parse_dp(sheet):
 
 def parse_gov(sheet):
 
-    country = sheet.cell(0, 3).value
-    agency = sheet.cell(1, 3).value
-    version = sheet.cell(2, 5).value
-    completed_by = sheet.cell(0, 8).value
-    job = sheet.cell(1, 8).value
+    if sheet.cell(3, 2).value == "Objectif":
+        # French submission
+        country = sheet.cell(0, 4).value
+        agency = sheet.cell(1, 4).value
+        version = sheet.cell(2, 5).value
+        completed_by = sheet.cell(0, 8).value
+        job = sheet.cell(1, 8).value
+    else:
+        country = sheet.cell(0, 3).value
+        agency = sheet.cell(1, 3).value
+        version = sheet.cell(2, 5).value
+        completed_by = sheet.cell(0, 8).value
+        job = sheet.cell(1, 8).value
     # There is a spelling mistake in the instrument
     # which i am lazily correcting here
     agency = agency.replace("Goverment", "Government")
+    if not agency.startswith("Government"):
+        agency = "Government of " + agency
 
     agency = Agency.objects.get(agency=agency)
     country = Country.objects.get(country=country)
