@@ -69,6 +69,8 @@ INSTALLED_APPS = (
 )
 
 # Poll Email Account Settings
-POLL_USERNAME = "ihp@burgercom.co.za"
-POLL_PASSWORD = "paddycake"
+#POLL_USERNAME = "ihp@burgercom.co.za"
+#POLL_PASSWORD = "paddycake"
+POLL_USERNAME = "ihpresults2010survey@human-scale.net"
+POLL_PASSWORD = "changeme"
 POLL_HOST = "pop.gmail.com"
