@@ -38,6 +38,12 @@ def parse_dp(sheet):
     agency = Agency.objects.get(agency=agency)
     country = Country.objects.get(country=country)
 
+    DPQuestion.objects.filter(
+        submission__country=country,
+        submission__agency=agency,
+        submission__type="DP"
+    ).delete()
+
     Submission.objects.filter(
         country=country,
         agency=agency,
@@ -87,6 +93,12 @@ def parse_gov(sheet):
 
     agency = Agency.objects.get(agency=agency)
     country = Country.objects.get(country=country)
+
+    GovQuestion.objects.filter(
+        submission__country=country,
+        submission__agency=agency,
+        submission__type="Gov"
+    ).delete()
 
     Submission.objects.filter(
         country=country,
