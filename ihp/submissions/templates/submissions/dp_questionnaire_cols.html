@@ -1,0 +1,161 @@
+<html>
+    <body>
+        <table border="1">
+            <tr>
+                <th>Key</th>
+                <th>Agency</th>
+                <th>Country</th>
+                <th>Q1 BYear</th>
+                <th>Q1 BValue</th>
+                <th>Q1 LYear</th>
+                <th>Q1 LValue</th>
+                <th>Q1 Comments</th>
+                <th>Q10 BYear</th>
+                <th>Q10 BValue</th>
+                <th>Q10 LYear</th>
+                <th>Q10 LValue</th>
+                <th>Q10 Comments</th>
+                <th>Q11 BYear</th>
+                <th>Q11 BValue</th>
+                <th>Q11 LYear</th>
+                <th>Q11 LValue</th>
+                <th>Q11 Comments</th>
+                <th>Q12 BYear</th>
+                <th>Q12 BValue</th>
+                <th>Q12 LYear</th>
+                <th>Q12 LValue</th>
+                <th>Q12 Comments</th>
+                <th>Q13 BYear</th>
+                <th>Q13 BValue</th>
+                <th>Q13 LYear</th>
+                <th>Q13 LValue</th>
+                <th>Q13 Comments</th>
+                <th>Q14 BYear</th>
+                <th>Q14 BValue</th>
+                <th>Q14 LYear</th>
+                <th>Q14 LValue</th>
+                <th>Q14 Comments</th>
+                <th>Q15 BYear</th>
+                <th>Q15 BValue</th>
+                <th>Q15 LYear</th>
+                <th>Q15 LValue</th>
+                <th>Q15 Comments</th>
+                <th>Q16 BYear</th>
+                <th>Q16 BValue</th>
+                <th>Q16 LYear</th>
+                <th>Q16 LValue</th>
+                <th>Q16 Comments</th>
+                <th>Q17 BYear</th>
+                <th>Q17 BValue</th>
+                <th>Q17 LYear</th>
+                <th>Q17 LValue</th>
+                <th>Q17 Comments</th>
+                <th>Q18 BYear</th>
+                <th>Q18 BValue</th>
+                <th>Q18 LYear</th>
+                <th>Q18 LValue</th>
+                <th>Q18 Comments</th>
+                <th>Q19 BYear</th>
+                <th>Q19 BValue</th>
+                <th>Q19 LYear</th>
+                <th>Q19 LValue</th>
+                <th>Q19 Comments</th>
+                <th>Q2 BYear</th>
+                <th>Q2 BValue</th>
+                <th>Q2 LYear</th>
+                <th>Q2 LValue</th>
+                <th>Q2 Comments</th>
+                <th>Q20 BYear</th>
+                <th>Q20 BValue</th>
+                <th>Q20 LYear</th>
+                <th>Q20 LValue</th>
+                <th>Q20 Comments</th>
+                <th>Q21 BYear</th>
+                <th>Q21 BValue</th>
+                <th>Q21 LYear</th>
+                <th>Q21 LValue</th>
+                <th>Q21 Comments</th>
+                <th>Q22 BYear</th>
+                <th>Q22 BValue</th>
+                <th>Q22 LYear</th>
+                <th>Q22 LValue</th>
+                <th>Q22 Comments</th>
+                <th>Q23 BYear</th>
+                <th>Q23 BValue</th>
+                <th>Q23 LYear</th>
+                <th>Q23 LValue</th>
+                <th>Q23 Comments</th>
+                <th>Q3 BYear</th>
+                <th>Q3 BValue</th>
+                <th>Q3 LYear</th>
+                <th>Q3 LValue</th>
+                <th>Q3 Comments</th>
+                <th>Q4 BYear</th>
+                <th>Q4 BValue</th>
+                <th>Q4 LYear</th>
+                <th>Q4 LValue</th>
+                <th>Q4 Comments</th>
+                <th>Q5 BYear</th>
+                <th>Q5 BValue</th>
+                <th>Q5 LYear</th>
+                <th>Q5 LValue</th>
+                <th>Q5 Comments</th>
+                <th>Q6 BYear</th>
+                <th>Q6 BValue</th>
+                <th>Q6 LYear</th>
+                <th>Q6 LValue</th>
+                <th>Q6 Comments</th>
+                <th>Q7 BYear</th>
+                <th>Q7 BValue</th>
+                <th>Q7 LYear</th>
+                <th>Q7 LValue</th>
+                <th>Q7 Comments</th>
+                <th>Q8 BYear</th>
+                <th>Q8 BValue</th>
+                <th>Q8 LYear</th>
+                <th>Q8 LValue</th>
+                <th>Q8 Comments</th>
+                <th>Q9 BYear</th>
+                <th>Q9 BValue</th>
+                <th>Q9 LYear</th>
+                <th>Q9 LValue</th>
+                <th>Q9 Comments</th>
+            </tr>
+            {% regroup questions by submission.agency as agency_list %}
+            {% for agency in agency_list %}
+                {% regroup agency.list by submission.country as agencycountry_list %}
+                {% for agencycountry in agencycountry_list %}
+                    <tr>
+                        <td>{{ agency.grouper }}_{{ agencycountry.grouper }}</td>
+                        <td>{{ agency.grouper }}</td>
+                        <td>{{ agencycountry.grouper }}</td>
+                        {% for question in agencycountry.list %}
+                            <td>{{ question.baseline_year }}</td>
+                            <td>{{ question.baseline_value }}</td>
+                            <td>{{ question.latest_year }}</td>
+                            <td>{{ question.latest_value }}</td>
+                            <td>{{ question.comments }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            
+                
+            {% comment %}
+            {% for question in questions %}
+                <tr>
+                    <td>{{ question.submission.agency }}_{{ question.submission.country }}_{{ question.question_number }}</td>
+                    <td>{{ question.submission.agency }}</td>
+                    <td>{{ question.submission.country }}</td>
+                    <td>{{ question.question_number }}</td>
+                    <td>{{ question.baseline_year }}</td>
+                    <td>{{ question.baseline_value }}</td>
+                    <td>{{ question.latest_year }}</td>
+                    <td>{{ question.latest_value }}</td>
+                    <td>{{ question.comments }}</td>
+                </tr>
+            {% endfor %}
+            {% endcomment %}
+        </table>
+    </body>
+</html>

@@ -32,7 +32,7 @@ def agency_scorecard(request, template_name="submissions/agency_scorecard.html",
 def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html", extra_context=None):
 
     extra_context = extra_context or {}
-    extra_context["questions"] = DPQuestion.objects.all()
+    extra_context["questions"] = DPQuestion.objects.all().order_by("submission__agency", "submission__country", "question_number")
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def country_scorecard(request, template_name="submissions/country_scorecard.html", extra_context=None):
