@@ -1,3 +1,4 @@
+{% load agencycountryindicators %}
 <html>
     <body>
         <table border="1">
@@ -129,6 +130,8 @@
                         <td>{{ agency.grouper }}_{{ agencycountry.grouper }}</td>
                         <td>{{ agency.grouper }}</td>
                         <td>{{ agencycountry.grouper }}</td>
+                        {% agencycountryindicators agency.grouper agencycountry.grouper as indicators %}
+                        <td>{{ indicators }}</td>
                         {% for question in agencycountry.list %}
                             <td>{{ question.baseline_year }}</td>
                             <td>{{ question.baseline_value }}</td>

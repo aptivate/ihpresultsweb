@@ -6,7 +6,7 @@ from django.views.generic.simple import direct_to_template
 
 from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country
 from target import calc_agency_targets, get_country_progress, calc_country_targets, get_agency_progress
-from indicators import calc_country_indicators
+from indicators import calc_country_indicators, calc_agency_country_indicators
 
 def agency_scorecard(request, template_name="submissions/agency_scorecard.html", extra_context=None):
     extra_context = extra_context or {}
@@ -33,6 +33,9 @@ def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html",
 
     extra_context = extra_context or {}
     extra_context["questions"] = DPQuestion.objects.all().order_by("submission__agency", "submission__country", "question_number")
+    indicators =  calc_agency_country_indicators(Agency.objects.get(agency="GAVI"), Country.objects.get(country="Burundi"))
+    #for indicator in indicators.items():
+    #    print indicator
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def country_scorecard(request, template_name="submissions/country_scorecard.html", extra_context=None):
