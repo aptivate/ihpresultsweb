@@ -6,6 +6,54 @@
                 <th>Key</th>
                 <th>Agency</th>
                 <th>Country</th>
+                <th>1DP BValue</th>
+                <th>1DP BYear</th>
+                <th>1DP LValue</th>
+                <th>1DP LYear</th>
+                <th>2DPa BValue</th>
+                <th>2DPa BYear</th>
+                <th>2DPa LValue</th>
+                <th>2DPa LYear</th>
+                <th>2DPb BValue</th>
+                <th>2DPb BYear</th>
+                <th>2DPb LValue</th>
+                <th>2DPb LYear</th>
+                <th>2DPc BValue</th>
+                <th>2DPc BYear</th>
+                <th>2DPc LValue</th>
+                <th>2DPc LYear</th>
+                <th>3DP BValue</th>
+                <th>3DP BYear</th>
+                <th>3DP LValue</th>
+                <th>3DP LYear</th>
+                <th>4DP BValue</th>
+                <th>4DP BYear</th>
+                <th>4DP LValue</th>
+                <th>4DP LYear</th>
+                <th>5DPa BValue</th>
+                <th>5DPa BYear</th>
+                <th>5DPa LValue</th>
+                <th>5DPa LYear</th>
+                <th>5DPb BValue</th>
+                <th>5DPb BYear</th>
+                <th>5DPb LValue</th>
+                <th>5DPb LYear</th>
+                <th>5DPc BValue</th>
+                <th>5DPc BYear</th>
+                <th>5DPc LValue</th>
+                <th>5DPc LYear</th>
+                <th>6DP BValue</th>
+                <th>6DP BYear</th>
+                <th>6DP LValue</th>
+                <th>6DP LYear</th>
+                <th>7DP BValue</th>
+                <th>7DP BYear</th>
+                <th>7DP LValue</th>
+                <th>7DP LYear</th>
+                <th>8DP BValue</th>
+                <th>8DP BYear</th>
+                <th>8DP LValue</th>
+                <th>8DP LYear</th>
                 <th>Q1 BYear</th>
                 <th>Q1 BValue</th>
                 <th>Q1 LYear</th>
@@ -131,7 +179,54 @@
                         <td>{{ agency.grouper }}</td>
                         <td>{{ agencycountry.grouper }}</td>
                         {% agencycountryindicators agency.grouper agencycountry.grouper as indicators %}
-                        <td>{{ indicators }}</td>
+                        <td>{{ indicators.1DP.0.0|default_if_none:"" }}</td>
+                        <td>{{ indicators.1DP.0.1|default_if_none:"" }}</td>
+                        <td>{{ indicators.1DP.0.2|default_if_none:"" }}</td>
+                        <td>{{ indicators.1DP.0.3|default_if_none:"" }}</td>
+                        <td>{{ indicators.2DPa.0.0|default_if_none:"" }}</td>
+                        <td>{{ indicators.2DPa.0.1|default_if_none:"" }}</td>
+                        <td>{{ indicators.2DPa.0.2|default_if_none:"" }}</td>
+                        <td>{{ indicators.2DPa.0.3|default_if_none:"" }}</td>
+                        <td>{{ indicators.2DPb.0.0|default_if_none:"" }}</td>
+                        <td>{{ indicators.2DPb.0.1|default_if_none:"" }}</td>
+                        <td>{{ indicators.2DPb.0.2|default_if_none:"" }}</td>
+                        <td>{{ indicators.2DPb.0.3|default_if_none:"" }}</td>
+                        <td>{{ indicators.2DPc.0.0|default_if_none:"" }}</td>
+                        <td>{{ indicators.2DPc.0.1|default_if_none:"" }}</td>
+                        <td>{{ indicators.2DPc.0.2|default_if_none:"" }}</td>
+                        <td>{{ indicators.2DPc.0.3|default_if_none:"" }}</td>
+                        <td>{{ indicators.3DP.0.0|default_if_none:"" }}</td>
+                        <td>{{ indicators.3DP.0.1|default_if_none:"" }}</td>
+                        <td>{{ indicators.3DP.0.2|default_if_none:"" }}</td>
+                        <td>{{ indicators.3DP.0.3|default_if_none:"" }}</td>
+                        <td>{{ indicators.4DP.0.0|default_if_none:"" }}</td>
+                        <td>{{ indicators.4DP.0.1|default_if_none:"" }}</td>
+                        <td>{{ indicators.4DP.0.2|default_if_none:"" }}</td>
+                        <td>{{ indicators.4DP.0.3|default_if_none:"" }}</td>
+                        <td>{{ indicators.5DPa.0.0|default_if_none:"" }}</td>
+                        <td>{{ indicators.5DPa.0.1|default_if_none:"" }}</td>
+                        <td>{{ indicators.5DPa.0.2|default_if_none:"" }}</td>
+                        <td>{{ indicators.5DPa.0.3|default_if_none:"" }}</td>
+                        <td>{{ indicators.5DPb.0.0|default_if_none:"" }}</td>
+                        <td>{{ indicators.5DPb.0.1|default_if_none:"" }}</td>
+                        <td>{{ indicators.5DPb.0.2|default_if_none:"" }}</td>
+                        <td>{{ indicators.5DPb.0.3|default_if_none:"" }}</td>
+                        <td>{{ indicators.5DPc.0.0|default_if_none:"" }}</td>
+                        <td>{{ indicators.5DPc.0.1|default_if_none:"" }}</td>
+                        <td>{{ indicators.5DPc.0.2|default_if_none:"" }}</td>
+                        <td>{{ indicators.5DPc.0.3|default_if_none:"" }}</td>
+                        <td>{{ indicators.6DP.0.0|default_if_none:"" }}</td>
+                        <td>{{ indicators.6DP.0.1|default_if_none:"" }}</td>
+                        <td>{{ indicators.6DP.0.2|default_if_none:"" }}</td>
+                        <td>{{ indicators.6DP.0.3|default_if_none:"" }}</td>
+                        <td>{{ indicators.7DP.0.0|default_if_none:"" }}</td>
+                        <td>{{ indicators.7DP.0.1|default_if_none:"" }}</td>
+                        <td>{{ indicators.7DP.0.2|default_if_none:"" }}</td>
+                        <td>{{ indicators.7DP.0.3|default_if_none:"" }}</td>
+                        <td>{{ indicators.8DP.0.0|default_if_none:"" }}</td>
+                        <td>{{ indicators.8DP.0.1|default_if_none:"" }}</td>
+                        <td>{{ indicators.8DP.0.2|default_if_none:"" }}</td>
+                        <td>{{ indicators.8DP.0.3|default_if_none:"" }}</td>
                         {% for question in agencycountry.list %}
                             <td>{{ question.baseline_year }}</td>
                             <td>{{ question.baseline_value }}</td>
