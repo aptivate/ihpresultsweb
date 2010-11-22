@@ -80,18 +80,21 @@ def equals_or_zero(val):
         # TODO not sure what to do here
         #if len(qs) != 1:
         #    return 0, 0
-        #assert len(qs) == 1
-        
-        if qs[0].baseline_value == None:
-            base_val = 0
-        else:
-            base_val = 100 if qs[0].baseline_value.lower() == value else 0
+        try:
+            assert len(qs) == 1
+            
+            if qs[0].baseline_value == None:
+                base_val = 0
+            else:
+                base_val = 100 if qs[0].baseline_value.lower() == value else 0
 
-        if qs[0].latest_value == None:
-            cur_val = 0
-        else:
-            cur_val = 100 if qs[0].latest_value.lower() == value else 0
-        return base_val, cur_val
+            if qs[0].latest_value == None:
+                cur_val = 0
+            else:
+                cur_val = 100 if qs[0].latest_value.lower() == value else 0
+            return base_val, cur_val
+        except AssertException:
+            return None
     return test
 
 def equals_yes_or_no(val):

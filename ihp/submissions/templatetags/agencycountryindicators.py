@@ -22,6 +22,11 @@ class AgencyCountryIndicatorNode(Node):
             raise TemplateSyntaxError('"agencycountryindicators" tag got an unknown variable: %r' % self.country)
 
         indicators = calc_agency_country_indicators(agency, country)
+        for ind in ["2DPa", "4DP", "5DPa", "5DPb"]:
+            (base_val, base_year, latest_val, latest_year), comments = indicators[ind]
+            if base_val != None and latest_val != None and base_val != 0:
+                target_val = (latest_val - base_val) / base_val
+                indicators[ind] = ((base_val, base_year, latest_val, latest_year, target_val), comments)
         context[self.out_var] = indicators
         return ""
 
