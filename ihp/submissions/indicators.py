@@ -151,8 +151,8 @@ def calc_numdenom(qs, agency_or_country, numq, denomq):
 
 def calc_one_minus_numdenom(qs, agency_or_country, numq, denomq):
     (base_ratio, cur_ratio) = calc_numdenom(qs, agency_or_country, numq, denomq)
-    base_ratio = 100 - base_ratio if base_ratio
-    cur_ratio = 100 - cur_ratio if cur_ratio
+    base_ratio = 100 - base_ratio if base_ratio != None else None
+    cur_ratio = 100 - cur_ratio if cur_ratio != None else None
     
     return base_ratio, cur_ratio
 
