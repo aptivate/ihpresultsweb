@@ -67,6 +67,7 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
         assert submissions.count() == 1
 
         submission = submissions.all()[0] 
+
         # don't process if the update flag is set to false
         if not submission.agency.updateagency.update:
             continue
@@ -96,7 +97,6 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
             targets[country]["indicators"][indicator] = dict(zip(headings, indicators[indicator][0]))
         targets[country]["indicators"]["3G"]["hs_budget_gap"] = safe_diff(15, targets[country]["indicators"]["3G"]["latest_value"])
         targets[country]["indicators"]["other"] = {}
-        
 
         # Add agency submissions
         agencies = AgencyCountries.objects.get_country_agencies(country)

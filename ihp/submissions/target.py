@@ -193,7 +193,7 @@ def calc_agency_targets(agency):
             "cur_val" : cur_val,
             "cur_year" : cur_year,
             "comments" : comments,
-            "commentary" : "",
+            "commentary" : None,
         }
 
         result["target"] = evaluate_indicator(target, base_val, cur_val)

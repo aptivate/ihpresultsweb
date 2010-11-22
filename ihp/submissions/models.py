@@ -8,6 +8,9 @@ class Agency(models.Model):
     def __unicode__(self):
         return self.agency
 
+    class Meta:
+       verbose_name_plural = "Agencies" 
+
 class Country(models.Model):
     country = models.CharField(max_length=50, null=False)
     description = models.TextField()
@@ -15,9 +18,18 @@ class Country(models.Model):
     def __unicode__(self):
         return self.country
 
+    class Meta:
+       verbose_name_plural = "Countries" 
+
 class UpdateAgency(models.Model):
     agency = models.OneToOneField(Agency, null=False)
     update = models.BooleanField(null=False)
+
+    def __unicode__(self):
+        return unicode(self.agency)
+
+    class Meta:
+       verbose_name_plural = "Update Agencies" 
 
 
 class Submission(models.Model):
@@ -78,6 +90,9 @@ class AgencyCountries(models.Model):
     def __unicode__(self):
         return "<<AgencyCountry Object>>%s %s" % (self.agency, self.country)
 
+    class Meta:
+       verbose_name_plural = "Agency Countries" 
+
 class AgencyTargets(models.Model):
     indicator = models.CharField(max_length=10, null=False)
     agency = models.ForeignKey(Agency, null=True)
@@ -88,6 +103,9 @@ class AgencyTargets(models.Model):
 
     def __unicode__(self):
         return "<<AgencyTargets Object>>%s %s" % (self.agency, self.indicator)
+
+    class Meta:
+       verbose_name_plural = "Agency Targets" 
 
 class CountryTargets(models.Model):
     indicator = models.CharField(max_length=10, null=False)
@@ -104,4 +122,8 @@ Indicator:%s
 Tick Criterion:%s (%s)
 Arrow Criterion:%s (%s)
 """ % (self.country, self.indicator, self.tick_criterion_type, self.tick_criterion_value, self.arrow_criterion_type, self.arrow_criterion_value)
+
+    class Meta:
+       verbose_name_plural = "Country Targets" 
+
 
