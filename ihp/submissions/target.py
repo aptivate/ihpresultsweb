@@ -314,7 +314,6 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
             "country_name" : country,
         }
 
-        print indicator
         result["target"] = evaluate_indicator(target, base_val, cur_val)
         if indicator in commentary_text:
             if "all" in commentary_text[indicator]:

@@ -12,7 +12,7 @@ def agency_scorecard(request, template_name="submissions/agency_scorecard.html",
     extra_context = extra_context or {}
 
     targets = {} 
-    for agency in Agency.objects.filter(type="Agency"):
+    for agency in Agency.objects.filter(type="Agency").filter(updateagency__update=True):
         submissions = agency.submission_set.filter(type="DP")
         if submissions.count() == 0: continue
         targets[agency] = calc_agency_targets(agency)
@@ -32,10 +32,9 @@ def agency_scorecard(request, template_name="submissions/agency_scorecard.html",
 def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html", extra_context=None):
 
     extra_context = extra_context or {}
-    extra_context["questions"] = DPQuestion.objects.all().order_by("submission__agency", "submission__country", "question_number")
-    indicators =  calc_agency_country_indicators(Agency.objects.get(agency="GAVI"), Country.objects.get(country="Burundi"))
-    #for indicator in indicators.items():
-    #    print indicator
+    extra_context["questions"] = DPQuestion.objects.filter(
+        submission__agency__updateagency__update=True
+    ).order_by("submission__agency", "submission__country", "question_number")
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def country_scorecard(request, template_name="submissions/country_scorecard.html", extra_context=None):
@@ -68,6 +67,10 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
         assert submissions.count() == 1
 
         submission = submissions.all()[0] 
+        # don't process if the update flag is set to false
+        if not submission.agency.updateagency.update:
+            continue
+
         # Do not process if there are no questions
         if submission.govquestion_set.all().count() == 0: continue
         
@@ -172,5 +175,7 @@ def country_scorecard(request, template_name="submissions/country_scorecard.html
 def gov_questionnaire(request, template_name="submissions/gov_questionnaire.html", extra_context=None):
 
     extra_context = extra_context or {}
-    extra_context["questions"] = GovQuestion.objects.all()
+    extra_context["questions"] = GovQuestion.objects.filter(
+        submission__agency__updateagency__update=True
+    )
     return direct_to_template(request, template=template_name, extra_context=extra_context)

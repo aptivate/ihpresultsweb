@@ -15,6 +15,11 @@ class Country(models.Model):
     def __unicode__(self):
         return self.country
 
+class UpdateAgency(models.Model):
+    agency = models.OneToOneField(Agency, null=False)
+    update = models.BooleanField(null=False)
+
+
 class Submission(models.Model):
     country = models.ForeignKey(Country, null=False)
     agency = models.ForeignKey(Agency, null=True)
@@ -23,6 +28,9 @@ class Submission(models.Model):
     date_submitted = models.DateTimeField(auto_now_add=True)
     completed_by = models.CharField(max_length=50, null=True)
     job_title = models.CharField(max_length=50, null=True)
+
+    def __unicode__(self):
+        return "%s %s" % (self.country, self.agency)
 
 class DPQuestion(models.Model):
     submission = models.ForeignKey(Submission, null=False)

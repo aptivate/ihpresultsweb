@@ -2,7 +2,7 @@ import sys
 import xlrd
 import urllib2
 import json
-from submissions.models import Submission, DPQuestion, AgencyCountries, AgencyTargets, Agency, Country, GovQuestion, CountryTargets
+from submissions.models import Submission, DPQuestion, AgencyCountries, AgencyTargets, Agency, Country, GovQuestion, CountryTargets, UpdateAgency
 
 def parse_file(filename):
     book = xlrd.open_workbook(filename)
@@ -163,6 +163,13 @@ def load_agency_countries(filename=None):
         (agency, _) = Agency.objects.get_or_create(agency=datum["Name"], type=datum["Type"])
         agency.description = datum["Description"]
         agency.save()
+        try:
+            update_agency = UpdateAgency.objects.get(agency=agency)
+        except UpdateAgency.DoesNotExist:
+            update_agency = UpdateAgency.objects.create(agency=agency, update=True)
+        update_agency.update = True if datum["Update"] == "Yes" else False
+        update_agency.save()
+        
         for country in countries:
             (country, _) = Country.objects.get_or_create(country=country)
             AgencyCountries.objects.create(agency=agency, country=country)  
