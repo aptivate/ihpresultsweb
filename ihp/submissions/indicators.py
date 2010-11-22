@@ -151,10 +151,10 @@ def calc_numdenom(qs, agency_or_country, numq, denomq):
 
 def calc_one_minus_numdenom(qs, agency_or_country, numq, denomq):
     (base_ratio, cur_ratio) = calc_numdenom(qs, agency_or_country, numq, denomq)
-    if base_ratio and cur_ratio:
-        return (100 - base_ratio, 100 - cur_ratio)
-    else:
-        return base_ratio, cur_ratio
+    base_ratio = 100 - base_ratio if base_ratio
+    cur_ratio = 100 - cur_ratio if cur_ratio
+    
+    return base_ratio, cur_ratio
 
 def sum_values(qs, agency_or_country, *args):
     qs = qs.filter(question_number__in=args)
@@ -218,6 +218,9 @@ def calc_agency_country_indicator(agency, country, indicator):
     """
     Same as calc_agency_indicator above but only looks at a specific country
     """
+    if country.country == "Mozambique" and agency.agency == "EC":
+        import pdb
+        pdb.set_trace()
     qs = DPQuestion.objects.filter(submission__agency=agency, submission__country=country)
     return calc_indicator(qs, agency, indicator)
 
