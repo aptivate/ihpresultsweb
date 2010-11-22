@@ -25,7 +25,7 @@ class AgencyCountryIndicatorNode(Node):
         for ind in ["2DPa", "4DP", "5DPa", "5DPb"]:
             (base_val, base_year, latest_val, latest_year), comments = indicators[ind]
             if base_val != None and latest_val != None and base_val != 0:
-                target_val = (latest_val - base_val) / base_val
+                target_val = (latest_val - base_val) / base_val * 100
                 indicators[ind] = ((base_val, base_year, latest_val, latest_year, target_val), comments)
 
         (base_val, base_year, latest_val, latest_year), comments = indicators["5DPc"]
