@@ -1,4 +1,5 @@
 from models import Submission, DPQuestion, AgencyCountries, GovQuestion
+import traceback
 
 def float_or_zero(val):
     try:
@@ -79,7 +80,7 @@ def equals_or_zero(val):
         # TODO not sure what to do here
         #if len(qs) != 1:
         #    return 0, 0
-        assert len(qs) == 1
+        #assert len(qs) == 1
         
         if qs[0].baseline_value == None:
             base_val = 0
@@ -172,8 +173,10 @@ def sum_values(qs, agency_or_country, *args):
 #
 #    return calc_indicator(qs, indicator)
 
-def calc_indicator(qs, agency_or_country, indicator):
-    func, args = indicator_funcs[indicator]
+def calc_indicator(qs, agency_or_country, indicator, funcs=None):
+    if funcs == None:
+        funcs = indicator_funcs
+    func, args = funcs[indicator]
     # TODO - this is really ugly - probably need to refactor this code
     qs2 = qs.filter(question_number__in=args)
     
@@ -194,8 +197,6 @@ def calc_agency_indicator(agency, indicator):
     Calculate the value of a particular indicator for the given agency
     Returns a tuple ((base_val, base_year, cur_val, cur_year), indicator comment)
     """
-    print "Agency: %s" % agency
-    print "Indicator: %s"  % indicator
     qs = DPQuestion.objects.filter(submission__agency=agency)
     return calc_indicator(qs, agency, indicator)
 
@@ -219,7 +220,16 @@ def calc_agency_country_indicator(agency, country, indicator):
     Same as calc_agency_indicator above but only looks at a specific country
     """
     qs = DPQuestion.objects.filter(submission__agency=agency, submission__country=country)
-    return calc_indicator(qs, agency, indicator)
+    funcs = dict(indicator_funcs)
+    try:
+        funcs["1DP"] = (equals_or_zero("yes"), ("1",))
+        funcs["6DP"] = (equals_or_zero("yes"), ("17",))
+        funcs["7DP"] = (equals_or_zero("yes"), ("18",))
+        funcs["8DP"] = (equals_or_zero("yes"), ("20",))
+        return calc_indicator(qs, agency, indicator, funcs)
+    except:
+        traceback.print_exc()
+        
 
 def calc_agency_country_indicators(agency, country):
     """
@@ -233,7 +243,6 @@ def calc_country_indicator(country, indicator):
     Calculate the value of a particular indicator for the given country
     Returns a tuple ((base_val, base_year, cur_val, cur_year), indicator comment)
     """
-    print country, indicator
     qs = GovQuestion.objects.filter(submission__country=country)
     return calc_indicator(qs, country, indicator)
 
