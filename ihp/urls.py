@@ -7,6 +7,7 @@ urlpatterns = patterns('',
 
     # New csv views
     (r'^scorecard/export/agencies/$', 'submissions.views.agency_export', {}, 'agency_export'),
+    (r'^scorecard/export/countries/$', 'submissions.views.country_export', {}, 'country_export'),
 
     # Old views
     (r'^scorecard/agency/$', 'submissions.views.agency_scorecard', {}, 'agency_scorecard'),
