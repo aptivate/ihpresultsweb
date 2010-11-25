@@ -93,8 +93,8 @@ def equals_or_zero(val):
             else:
                 cur_val = 100 if qs[0].latest_value.lower() == value else 0
             return base_val, cur_val
-        except AssertException:
-            return None
+        except AssertionError:
+            return None, None
     return test
 
 def equals_yes_or_no(val):

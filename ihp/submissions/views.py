@@ -1,4 +1,5 @@
 from collections import defaultdict
+import traceback
 from math import fabs
 
 from django.http import HttpResponse
@@ -8,26 +9,92 @@ from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion,
 from target import calc_agency_targets, get_country_progress, calc_country_targets, get_agency_progress
 from indicators import calc_country_indicators, calc_agency_country_indicators
 
+def get_agency_scorecard_data(agency):
+    """
+    Return data relevant to this agency's submissions
+    Returns None if no submission has yet been submitted
+    """
+
+    submissions = agency.submission_set.filter(type="DP")
+    if submissions.count() == 0: return None
+
+    agency_data = calc_agency_targets(agency)
+
+    # Include aggegated comments
+    for indicator, d in agency_data.items():
+        old_comments = d["comments"]
+        comments = []
+        for question_number, country, comment in old_comments:
+            comments.append("%s %s] %s" % (question_number, country, comment))
+        d["comments"] = "\n".join([comment for comment in comments if comment])
+        d["key"] = "%s_%s" % (agency, indicator)
+    # TODO Still need to add the erb data - i.e. consolidated comments 
+
+    # Include a list of countries in which progress isn't/is being made
+    agency_data["np"], agency_data["p"] = get_country_progress(agency)
+
+    return agency_data
+
+def get_agencies_scorecard_data():
+    return dict([(agency, get_agency_scorecard_data(agency))
+        for agency in Agency.objects.filter(type="Agency")
+        if agency.submission_set.filter(type="DP").count() > 0
+    ])
+
 def agency_scorecard(request, template_name="submissions/agency_scorecard.html", extra_context=None):
     extra_context = extra_context or {}
-
-    targets = {} 
-    for agency in Agency.objects.filter(type="Agency").filter(updateagency__update=True):
-        submissions = agency.submission_set.filter(type="DP")
-        if submissions.count() == 0: continue
-        targets[agency] = calc_agency_targets(agency)
-        for indicator, d in targets[agency].items():
-            old_comments = d["comments"]
-            comments = []
-            for question_number, country, comment in old_comments:
-                comments.append("%s %s] %s" % (question_number, country, comment))
-            d["comments"] = "\n".join([comment for comment in comments if comment])
-            d["key"] = "%s_%s" % (agency, indicator)
-        targets[agency]["np"], targets[agency]["p"] = get_country_progress(agency)
-        
-        extra_context["targets"] = targets
+    extra_context["targets"] = get_agencies_scorecard_data()
 
     return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def agency_export(request):
+    import csv
+
+    headers = [
+        "file", "agency", "profile", 
+        "er1", "r1", "er2a", "r2a", "er2b", "r2b", "er2c", "r2c",
+        "er3", "r3", "er4", "r4", "er5a", "r5a", "er5b", "r5b", "er5c", "r5c",
+        "er6", "r6", "er7", "r7", "er8", "r8",
+        "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10",
+        "np1", "np2", "np3", "np4", "np5", "np6", "np7", "np8", "np9", "np10",
+        "erb1", "erb2", "erb3", "erb4", "erb5", "erb6", "erb7", "erb8"
+    ]
+
+    default_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
+    commentary_none = lambda commentary : commentary if commentary else default_text
+    target_none = lambda target : target if target else "question"
+
+    data = get_agencies_scorecard_data()
+    for agency, datum in data.items():
+        try:
+            datum["file"] = agency.agency
+            datum["agency"] = agency.agency 
+            datum["profile"] = agency.description
+            for indicator in ["1DP", "2DPa", "2DPb", "2DPc", 
+                "3DP", "4DP", "5DPa", "5DPb", "5DPc", "6DP", "7DP", "8DP"]:
+
+                h = indicator.replace("DP", "")
+                datum["er%s" % h] = commentary_none(datum[indicator]["commentary"])
+                datum["r%s" % h] = target_none(datum[indicator]["target"])
+
+            for i in range(1, 9):
+                # TODO - still need to add this stuff
+                datum["erb%d" % i] = "Nothing yet"
+            for i, val in datum["p"].items():
+                datum["p%d" % (i + 1)] = val
+            for i, val in datum["np"].items():
+                datum["np%d" % (i + 1)] = val
+
+        except Exception, e:
+            traceback.print_exc()
+
+    response = HttpResponse(mimetype="text/csv")
+    response["Content-Disposition"] = "attachment; filename=agency_export.csv"
+    writer = csv.writer(response)
+    writer.writerow(headers)
+    for agency in data:
+        writer.writerow([data[agency].get(header, "") for header in headers])
+    return response
 
 def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html", extra_context=None):
 
