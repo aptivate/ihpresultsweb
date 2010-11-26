@@ -273,16 +273,16 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
             "cross" : "At the end of %(cur_year)s there was no costed and evidence based HRH plan in place, or plans to develop one. Target = A costed comprehensive national HRH plan that is integrated with the national health plan",
         },
         "3G" : {
-            "all" : "%(country_name)s allocated %(cur_val)s%% of its approved annual national budget to health in %(cur_year)s. Target = 15%% (or an alternative agreed published target)",
+            "all" : "%(country_name)s allocated %(cur_val).2f%% of its approved annual national budget to health in %(cur_year)s. Target = 15%% (or an alternative agreed published target)",
         },
         "4G" : {
-            "all" : "In %(cur_year)s, %(cur_val)s%% of health sector funding was disbursed against the approved annual budget. Target = to halve the proportion of health sector funding not disbursed against the approved annual budget",
+            "all" : "In %(cur_year)s, %(cur_val).2f%% of health sector funding was disbursed against the approved annual budget. Target = to halve the proportion of health sector funding not disbursed against the approved annual budget",
         },
         "5Ga" : {
-            "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val)s on the PFM/CPIA scale of performance. Target = Improvement of at least one measure (ie 0.5 points) on the PFM/CPIA scale of performance.  In %(cur_year)s, %(country_name)s achieved a score of %(cur_val)s on the PFM/CPIA scale of performance. Target = Improvement of at least one measure (ie 0.5 points) on the PFM/CPIA scale of performance."
+            "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).2f on the PFM/CPIA scale of performance. Target = Improvement of at least one measure (ie 0.5 points) on the PFM/CPIA scale of performance.  In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).2f on the PFM/CPIA scale of performance. Target = Improvement of at least one measure (ie 0.5 points) on the PFM/CPIA scale of performance."
         },
         "5Gb" : {
-            "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val)s on the four poin t scale used to assess performance in the the procurement sector. Target = Improvement of at least one measure on the four-point scale used to assess performance for this sector."
+            "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).2f on the four poin t scale used to assess performance in the the procurement sector. Target = Improvement of at least one measure on the four-point scale used to assess performance for this sector."
         },
         "6G" : {
             "tick" : "There is a transparent and monitorable performance assessment framework in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes. Target = A transparent and monitorable performance assessment framework is in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes.",
@@ -293,7 +293,7 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
             "all" : "This one will have to be done manually. Target = Mutual assessments (such as a joint Annual Health Sector Review) are being made of progress implementing  commitments in the health sector, including on aid effectiveness."
         },
         "8G" : {
-            "all" : "At the end of %(cur_year)s %(cur_val)s%% of seats in the Health Sector Coordination Mechanism (or equivalent body) were allocated to Civil Society representatives. Target = Evidence that Civil Society is actively represented in health sector policy processes - including Health Sector planning, coordination & review mechanisms."
+            "all" : "At the end of %(cur_year)s %(cur_val).2f%% of seats in the Health Sector Coordination Mechanism (or equivalent body) were allocated to Civil Society representatives. Target = Evidence that Civil Society is actively represented in health sector policy processes - including Health Sector planning, coordination & review mechanisms."
         },
     }
 
