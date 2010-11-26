@@ -2,7 +2,45 @@ import sys
 import xlrd
 import urllib2
 import json
-from submissions.models import Submission, DPQuestion, AgencyCountries, AgencyTargets, Agency, Country, GovQuestion, CountryTargets, UpdateAgency
+from submissions.models import Submission, DPQuestion, AgencyCountries, AgencyTargets, Agency, Country, GovQuestion, CountryTargets, UpdateAgency, MDGData
+
+def parse_mdg_file(filename):
+    year = lambda x : int(x) if x else x
+    empty = lambda x : x if x else None
+
+    def create_mdg_datum(country, target, row, first_col):
+        return MDGData.objects.create(
+            country=country,
+            mdg_target=target,
+            baseline_year=empty(year(sheet.cell(row, first_col + 5).value)), 
+            baseline_value=empty(sheet.cell(row, first_col + 4).value),
+            latest_year=empty(year(sheet.cell(row, first_col + 1).value)), 
+            latest_value=empty(sheet.cell(row, first_col + 0).value),
+            arrow=empty(sheet.cell(row, first_col + 2).value)
+        )
+        
+        
+    book = xlrd.open_workbook(filename)
+    for sheet in book.sheets():
+        if sheet.cell(0, 0).value == "MILLENNIUM DEVELOPMENT GOALS":
+            MDGData.objects.all().delete()
+            for row in range(sheet.nrows):
+                country = sheet.cell(row, 0).value 
+                try:
+                    country = Country.objects.get(country=country)
+                    create_mdg_datum(country, "MDG1", row, 1)
+                    create_mdg_datum(country, "MDG2", row, 13)
+                    create_mdg_datum(country, "MDG3", row, 19)
+                    create_mdg_datum(country, "MDG4", row, 25)
+                    create_mdg_datum(country, "MDG5a", row, 31)
+                    create_mdg_datum(country, "MDG5b", row, 37)
+                    create_mdg_datum(country, "MDG6a", row, 43)
+                    create_mdg_datum(country, "MDG6b", row, 49)
+                    create_mdg_datum(country, "MDG6c", row, 55)
+                    create_mdg_datum(country, "MDG7a", row, 61)
+                    create_mdg_datum(country, "MDG7b", row, 67)
+                except Country.DoesNotExist:
+                    pass
 
 def parse_file(filename):
     book = xlrd.open_workbook(filename)

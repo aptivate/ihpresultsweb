@@ -126,4 +126,18 @@ Arrow Criterion:%s (%s)
     class Meta:
        verbose_name_plural = "Country Targets" 
 
+class MDGData(models.Model):
+    country = models.ForeignKey(Country, null=False)
+    mdg_target = models.CharField(max_length=20, null=False)
+    baseline_year = models.CharField(max_length=4, null=True)
+    baseline_value = models.FloatField(null=True)
+    latest_year = models.CharField(max_length=4, null=True)
+    latest_value = models.FloatField(null=True)
+    arrow = models.CharField(max_length=20, null=True)
 
+    @property
+    def change(self):
+        if self.latest_value == None or self.baseline_value == None:
+            return None
+        else:
+            return self.latest_value - self.baseline_value

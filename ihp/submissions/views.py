@@ -6,7 +6,7 @@ import csv
 from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template
 
-from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country
+from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData
 from target import calc_agency_targets, get_country_progress, calc_country_targets, get_agency_progress
 from indicators import calc_country_indicators, calc_agency_country_indicators
 
@@ -249,6 +249,17 @@ def country_export(request):
         "HMIS1", "HMIS2",
         "JAR1", "JAR2", "JAR3", "JAR4", "JAR5",
         "DBR1", "DBR2",
+        "MDG1a", "MDG1b", "MDG1c", "MDG1d", "MDG1e",
+        "MDG2a", "MDG2b", "MDG2c", "MDG2d", "MDG2e",
+        "MDG3a", "MDG3b", "MDG3c", "MDG3d", "MDG3e",
+        "MDG4a", "MDG4b", "MDG4c", "MDG4d", "MDG4e",
+        "MDG5a1", "MDG5a2", "MDG5a3", "MDG5a4", "MDG5a5",
+        "MDG5b1", "MDG5b2", "MDG5b3", "MDG5b4", "MDG5b5",
+        "MDG6a1", "MDG6a2", "MDG6a3", "MDG6a4", "MDG6a5",
+        "MDG6b1", "MDG6b2", "MDG6b3", "MDG6b4", "MDG6b5",
+        "MDG6c1", "MDG6c2", "MDG6c3", "MDG6c4", "MDG6c5",
+        "MDG7a1", "MDG7a2", "MDG7a3", "MDG7a4", "MDG7a5",
+        "MDG7b1", "MDG7b2", "MDG7b3", "MDG7b4", "MDG7b5",
         
         # Back of scorecard
         "F1", "CN1", "GN1",
@@ -351,6 +362,21 @@ def country_export(request):
             datum["DBR1"] = target_none(datum["6G"]["target"])
             datum["DBR2"] = datum["questions"]["11"]["comments"]
 
+            group1 = ["MDG1", "MDG2", "MDG3", "MDG4"]
+            group2 = ["MDG5a", "MDG5b", "MDG6a", "MDG6b", "MDG6c", "MDG7a", "MDG7b"]
+            group1_index = "abcde"
+            group2_index = "12345"
+            for mdg in group1 + group2:
+                index = group1_index if mdg in group1 else group2_index
+
+                mdgdata = MDGData.objects.get(mdg_target=mdg, country=country)
+                datum[mdg + index[0]] = mdgdata.latest_value
+                datum[mdg + index[1]] = mdgdata.latest_year
+                datum[mdg + index[2]] = mdgdata.arrow
+                datum[mdg + index[3]] = mdgdata.change
+                datum[mdg + index[4]] = mdgdata.baseline_year
+            print [(key, datum[key]) for key in datum.keys() if key.startswith("MDG")]
+
             datum["F1"] = country.country
             datum["CN1"] = country.country
             datum["GN1"] = country.country
@@ -387,7 +413,7 @@ def country_export(request):
             traceback.print_exc()
 
     response = HttpResponse(mimetype="text/csv")
-    response["Content-Disposition"] = "attachment; filename=agency_export.csv"
+    response["Content-Disposition"] = "attachment; filename=country_export.csv"
     writer = csv.writer(response)
     writer.writerow(headers)
 

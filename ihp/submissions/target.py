@@ -325,7 +325,11 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
                 else:
                     result["commentary"] = commentary_text[indicator][target_value]
         
-            result["commentary"] = result["commentary"] % result
+            
+            try:
+                result["commentary"] = result["commentary"] % result
+            except TypeError:
+                result["commentary"] = None
 
         results[indicator] = result
     return results
