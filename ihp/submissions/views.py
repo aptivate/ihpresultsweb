@@ -6,9 +6,10 @@ import csv
 from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template
 
-from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData
+from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary
 from target import calc_agency_targets, get_country_progress, calc_country_targets, get_agency_progress
 from indicators import calc_country_indicators, calc_agency_country_indicators
+from forms import DPSummaryForm
 
 def get_agency_scorecard_data(agency):
     """
@@ -214,6 +215,18 @@ def agency_export(request):
                 datum["p%d" % (i + 1)] = val
             for i, val in datum["np"].items():
                 datum["np%d" % (i + 1)] = val
+            try:
+                summary = DPScorecardSummary.objects.get(agency=agency)
+                datum["erb1"] = summary.erb1
+                datum["erb2"] = summary.erb2
+                datum["erb3"] = summary.erb3
+                datum["erb4"] = summary.erb4
+                datum["erb5"] = summary.erb5
+                datum["erb6"] = summary.erb6
+                datum["erb7"] = summary.erb7
+                datum["erb8"] = summary.erb8
+            except DPScorecardSummary.DoesNotExist:
+                pass
 
         except Exception, e:
             traceback.print_exc()
@@ -568,4 +581,17 @@ def gov_questionnaire(request, template_name="submissions/gov_questionnaire.html
     extra_context["questions"] = GovQuestion.objects.filter(
         submission__agency__updateagency__update=True
     )
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def dp_summary_edit(request, template_name="submissions/dp_summary_edit.html", extra_context=None):
+    extra_context = extra_context or {}
+
+    if request.method == "POST":
+        form = DPSummaryForm(request.POST)
+        if form.is_valid():
+            pass
+    else:
+        form = DPSummaryForm()
+
+    extra_context["form"] = form
     return direct_to_template(request, template=template_name, extra_context=extra_context)

@@ -141,3 +141,17 @@ class MDGData(models.Model):
             return None
         else:
             return self.latest_value - self.baseline_value
+
+class DPScorecardSummary(models.Model):
+    agency = models.OneToOneField(Agency, null=False)
+    erb1 = models.TextField()
+    erb2 = models.TextField()
+    erb3 = models.TextField()
+    erb4 = models.TextField()
+    erb5 = models.TextField()
+    erb6 = models.TextField()
+    erb7 = models.TextField()
+    erb8 = models.TextField()
+
+    def __unicode__(self):
+        return unicode(self.agency)
