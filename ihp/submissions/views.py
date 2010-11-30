@@ -192,8 +192,6 @@ def agency_export(request):
         "workingdraft",
     ]
 
-    default_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
-    commentary_none = lambda commentary : commentary if commentary else default_text
     target_none = lambda target : target if target else "question"
 
     data = get_agencies_scorecard_data()
@@ -206,7 +204,7 @@ def agency_export(request):
                 "3DP", "4DP", "5DPa", "5DPb", "5DPc", "6DP", "7DP", "8DP"]:
 
                 h = indicator.replace("DP", "")
-                datum["er%s" % h] = commentary_none(datum[indicator]["commentary"])
+                datum["er%s" % h] = datum[indicator]["commentary"]
                 datum["r%s" % h] = target_none(datum[indicator]["target"])
 
             for i in range(1, 9):
@@ -290,8 +288,6 @@ def country_export(request):
         "workingdraft",
     ]
 
-    #default_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
-    #commentary_none = lambda commentary : commentary if commentary else default_text
     target_none = lambda target : target if target else "question"
 
     data = get_countries_scorecard_data()
