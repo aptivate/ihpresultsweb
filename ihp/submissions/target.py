@@ -1,4 +1,5 @@
 from django.template import Context, Template
+from indicators import NA_STR
 from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
 from models import AgencyTargets, AgencyCountries, Submission, CountryTargets
 import math
@@ -133,6 +134,9 @@ def evaluate_indicator(target, base_val, cur_val):
     tick_func = criteria_funcs[target.tick_criterion_type]
     arrow_func = criteria_funcs[target.arrow_criterion_type]
 
+    if cur_val == NA_STR or base_val == NA_STR:
+        return "none"
+
     try:
         if tick_func(base_val, cur_val, target.tick_criterion_value):
             return "tick"
@@ -218,7 +222,7 @@ def calc_agency_targets(agency):
         result["target_val"] = target.tick_criterion_value
 
         # create commentary
-        if base_val != None and cur_val != None:
+        if (base_val not in [None, NA_STR]) and (cur_val not in [None, NA_STR]):
             result["diff_val"] = math.fabs(base_val - cur_val)
             if base_val - cur_val > 0:
                 result["diff_direction"] = "a decrease" 
@@ -389,7 +393,6 @@ def get_country_progress(agency):
         p_dict[i] = country
     for i, country in enumerate(sorted(np, key=lambda x : x.country)):
         np_dict[i] = country
-    print np_dict
         
     return np_dict, p_dict
 

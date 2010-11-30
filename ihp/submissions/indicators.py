@@ -1,6 +1,15 @@
 from models import Submission, DPQuestion, AgencyCountries, GovQuestion
 import traceback
 
+NA_STR = "__NA__"
+def is_not_applicable(val):
+    val = val.strip().lower()
+    variations = ["na", "n/a", "n.a.", "not applicable", "-"]
+    if val in variations:
+        return True
+    else:
+        return False
+
 def float_or_zero(val):
     try:
         return float(val)
@@ -184,7 +193,15 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
     qs2 = qs.filter(question_number__in=args)
     
     comments = [(question.question_number, question.submission.country, question.comments) for question in qs2]
-    base_val, cur_val = func(qs, agency_or_country, *args)
+
+    # TODO this is currently applied to both DP and Gov surveys - the DP survey
+    # might need to be implemented differently
+    for q in qs2:
+        if is_not_applicable(q.baseline_value) or is_not_applicable(q.latest_value):
+            base_val, cur_val = NA_STR, NA_STR
+            break
+    else: 
+        base_val, cur_val = func(qs, agency_or_country, *args)
     
     # TODO here i assume that the year is the same across all years and all questions. 
     if len(qs2) > 0: 
