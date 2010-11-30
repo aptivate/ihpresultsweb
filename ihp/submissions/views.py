@@ -6,7 +6,7 @@ import csv
 from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template
 
-from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary
+from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft
 from target import calc_agency_targets, get_country_progress, calc_country_targets, get_agency_progress
 from indicators import calc_country_indicators, calc_agency_country_indicators
 from forms import DPSummaryForm
@@ -188,7 +188,8 @@ def agency_export(request):
         "er6", "r6", "er7", "r7", "er8", "r8",
         "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10",
         "np1", "np2", "np3", "np4", "np5", "np6", "np7", "np8", "np9", "np10",
-        "erb1", "erb2", "erb3", "erb4", "erb5", "erb6", "erb7", "erb8"
+        "erb1", "erb2", "erb3", "erb4", "erb5", "erb6", "erb7", "erb8",
+        "workingdraft",
     ]
 
     default_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
@@ -227,6 +228,9 @@ def agency_export(request):
                 datum["erb8"] = summary.erb8
             except DPScorecardSummary.DoesNotExist:
                 pass
+
+            working_draft, _ = AgencyWorkingDraft.objects.get_or_create(agency=agency)
+            datum["workingdraft"] = "workingdraft" if working_draft.is_draft else ""
 
         except Exception, e:
             traceback.print_exc()
@@ -282,6 +286,8 @@ def country_export(request):
         "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13",
         "Header",
         "NP1", "NP2", "NP3", "NP4", "NP5", "NP6", "NP7", "NP8", "NP9", "NP10", "NP11", "NP12", "NP13",
+
+        "workingdraft",
     ]
 
     #default_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
@@ -388,7 +394,6 @@ def country_export(request):
                 datum[mdg + index[2]] = mdgdata.arrow
                 datum[mdg + index[3]] = mdgdata.change
                 datum[mdg + index[4]] = mdgdata.baseline_year
-            print [(key, datum[key]) for key in datum.keys() if key.startswith("MDG")]
 
             datum["F1"] = country.country
             datum["CN1"] = country.country
@@ -421,6 +426,9 @@ def country_export(request):
             for i in range(1, 14):
                 datum["P%d" % i] = datum["p"].get(i, "")
                 datum["NP%d" % i] = datum["np"].get(i, "")
+
+            working_draft, _ = CountryWorkingDraft.objects.get_or_create(country=country)
+            datum["workingdraft"] = "workingdraft" if working_draft.is_draft else ""
 
         except Exception, e:
             traceback.print_exc()

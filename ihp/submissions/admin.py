@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Agency, Country, UpdateAgency, Submission, DPQuestion, GovQuestion, AgencyCountries, AgencyTargets, CountryTargets
+from models import Agency, Country, UpdateAgency, Submission, DPQuestion, GovQuestion, AgencyCountries, AgencyTargets, CountryTargets, AgencyWorkingDraft, CountryWorkingDraft
 
 admin.site.register(Agency)
 admin.site.register(Country)
@@ -10,3 +10,5 @@ admin.site.register(GovQuestion)
 admin.site.register(AgencyCountries)
 admin.site.register(AgencyTargets)
 admin.site.register(CountryTargets)
+admin.site.register(AgencyWorkingDraft)
+admin.site.register(CountryWorkingDraft)

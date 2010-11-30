@@ -11,6 +11,13 @@ class Agency(models.Model):
     class Meta:
        verbose_name_plural = "Agencies" 
 
+class AgencyWorkingDraft(models.Model):
+    agency = models.OneToOneField(Agency, null=False)
+    is_draft = models.BooleanField(null=False, default=True)
+
+    def __unicode__(self):
+        return unicode(self.agency)
+
 class Country(models.Model):
     country = models.CharField(max_length=50, null=False)
     description = models.TextField()
@@ -20,6 +27,14 @@ class Country(models.Model):
 
     class Meta:
        verbose_name_plural = "Countries" 
+
+class CountryWorkingDraft(models.Model):
+    country = models.OneToOneField(Country, null=False)
+    is_draft = models.BooleanField(null=False, default=True)
+
+    def __unicode__(self):
+        return unicode(self.country)
+
 
 class UpdateAgency(models.Model):
     agency = models.OneToOneField(Agency, null=False)
