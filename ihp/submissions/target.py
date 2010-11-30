@@ -1,3 +1,4 @@
+from django.template import Context, Template
 from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
 from models import AgencyTargets, AgencyCountries, Submission, CountryTargets
 import math
@@ -174,7 +175,7 @@ def calc_agency_targets(agency):
         "4DP" : "In %(cur_year)s, %(cur_val).2f%% of health sector aid disbursements were not released according to agreed schedules in annual or multi-year frameworks - %(diff_direction)s from %(base_val).2f%% in %(base_year)s. Target = Halve the proportion of health sector aid not disbursed within the fiscal year for which it was scheduled.",
         "5DPa" : "By the end of %(cur_year)s, %(cur_val).2f%% of health sector aid did not use government partner country public financial management systems: %(diff_direction)s from %(base_val).2f%% since %(base_year)s. Target = One-third reduction in the %% of health sector aid to the public sector not using partner countries' procurement systems.",
         "5DPb" : "By end %(cur_year)s, %(cur_val).2f%% of health sector aid did not use country procurement systems in IHP+ partner countries: %(diff_direction)s from %(base_val).2f%% in %(base_year)s. Target = One-third reduction in the %% of health sector aid to the public sector not using partner countries' PFM systems.",
-        "5DPc" : "There are no more than %(cur_val).2f parallel Project Implementation Units (PIUs) in any IHP+ country: %(diff_direction2)s from %(base_val).2f in %(base_year)s. Reduce by two-thirds the stock of parallel project implementation units (PIUs).",
+        "5DPc" : Template("""In {{ cur_year }}, the stock of parallel PIUs in the surveyed countries was {{ cur_val }} - {{ diff_direction2 }} from {% if diff_direction3 %} {{ base_val }} in {% endif %} {{ base_year }} {% if diff_direction3 %} ({{ diff_direction3 }} of {{ abs_perc_change|floatformat }}%) {% endif %}. Target = Reduce by two-thirds the stock of parallel project implementation units."""),
         "6DP" : "Where they exist, national performance assessment frameworks are used to assess progress in %(cur_val).2f%% of IHP+ countries: increased from %(base_val).2f%% in %(base_year)s. Target = 100%%.",
         "7DP" : "In %(cur_year)s, participated in annual mutual assessments of progress in implementing health sector commitments & agreements in %(cur_val).2f%% IHP+ countries; %(diff_direction)s from %(base_val).2f%% in %(base_year)s.  Target: 100%%.",
         "8DP" : "By end %(cur_year)s, evidence exists in %(cur_val).2f%% of countries of support to civil society engagement in health sector policy processes; %(diff_direction)s from %(base_val).2f%% in %(base_year)s. Target = 100%%",
@@ -204,12 +205,22 @@ def calc_agency_targets(agency):
             if base_val - cur_val > 0:
                 result["diff_direction"] = "a decrease" 
                 result["diff_direction2"] = "down" 
+                result["diff_direction3"] = "a reduction" 
             elif base_val - cur_val == 0:
                 result["diff_direction"] = "no change"
                 result["diff_direction2"] = "no change"
+                result["diff_direction3"] = None
             else:
                result["diff_direction"] = "an increase"
                result["diff_direction2"] = "up"
+               result["diff_direction3"] = "an increase"
+
+            if (result["base_val"] > 0):
+                result["perc_change"] = (result["cur_val"] - result["base_val"]) / float(result["base_val"]) * 100
+                result["abs_perc_change"] = math.fabs(result["perc_change"])
+            else:
+                result["perc_change"] = 0
+                result["abs_perc_change"] = 0
 
             result["target_val"] = target.tick_criterion_value
             if target.tick_criterion_type == "Minimum x% Decrease relative to baseline":
@@ -225,7 +236,11 @@ def calc_agency_targets(agency):
         
             result["one_minus_diff_direction"] = "a decrease" if base_val - cur_val < 0 else "an increase"
 
-            result["commentary"] = commentary_map[indicator] % result
+            template = commentary_map[indicator]
+            if type(template) == Template:
+                result["commentary"] = template.render(Context(result))
+            else:
+                result["commentary"] = template % result
 
         results[indicator] = result
 
