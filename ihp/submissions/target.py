@@ -216,11 +216,6 @@ def calc_agency_targets(agency):
 
         result["target"] = evaluate_indicator(target, base_val, cur_val)
         result["target_val"] = target.tick_criterion_value
-        if target.tick_criterion_type == "Minimum x% Decrease relative to baseline":
-            result["target_val"] = none_mul(1 - target.tick_criterion_value / 100.0, base_val)
-        elif target.tick_criterion_type == "Minimum x% Increase relative to baseline":
-            result["target_val"] = none_mul(1 + target.tick_criterion_value / 100.0, base_val)
-        result["one_minus_target_val"] = none_sub(100, result["target_val"])
 
         # create commentary
         if base_val != None and cur_val != None:
@@ -238,17 +233,12 @@ def calc_agency_targets(agency):
                result["diff_direction2"] = "up"
                result["diff_direction3"] = "an increase"
 
-            if (result["base_val"] > 0):
+            if result["base_val"] > 0:
                 result["perc_change"] = (result["cur_val"] - result["base_val"]) / float(result["base_val"]) * 100
                 result["abs_perc_change"] = math.fabs(result["perc_change"])
             else:
                 result["perc_change"] = 0
                 result["abs_perc_change"] = 0
-
-            result["one_minus_base_val"] = 100 - result["base_val"]
-            result["one_minus_cur_val"] = 100 - result["cur_val"]
-
-            result["one_minus_diff_direction"] = "a decrease" if base_val - cur_val < 0 else "an increase"
 
             template = commentary_map[indicator]
             if type(template) == Template:
@@ -258,10 +248,7 @@ def calc_agency_targets(agency):
         else:
             result["commentary"] = default_text
 
-        if result["target_val"]:
-            result["commentary"] = result["commentary"] + " " + target_map[indicator] % result
-        result["commentary"] = result["commentary"].strip()
-
+        result["commentary"] = (result["commentary"] + " " + target_map[indicator] % result).strip()
         results[indicator] = result
 
     return results
