@@ -1,4 +1,6 @@
 from django.conf.urls.defaults import *
+from django.views.static import serve
+from django.conf import settings
 
 from django.contrib import admin
 admin.autodiscover()
@@ -8,6 +10,11 @@ urlpatterns = patterns('',
     # New csv views
     (r'^scorecard/export/agencies/$', 'submissions.views.agency_export', {}, 'agency_export'),
     (r'^scorecard/export/countries/$', 'submissions.views.country_export', {}, 'country_export'),
+    #(r'^api/dp/comments/$', 'submissions.api.dp_comments', {}, 'api_dp_comments')
+
+    # Edit views
+    (r'^scorecard/edit/agencies/summary/$', 'submissions.views.dp_summary_edit', {}, 'dp_summary_edit'),
+    
 
     # Old views
     (r'^scorecard/agency/$', 'submissions.views.agency_scorecard', {}, 'agency_scorecard'),
@@ -18,4 +25,11 @@ urlpatterns = patterns('',
     (r'^scorecard/country/questionnaires/$', 'submissions.views.gov_questionnaire', {}, 'gov_questionnaire'),
 
     (r'^admin/', include(admin.site.urls)),
+
 )
+
+_media_url = settings.MEDIA_URL
+if _media_url.startswith('/'):
+    _media_url = _media_url[1:]
+urlpatterns += patterns('', (r'^%s(?P<path>.*)$' % _media_url, serve, {'document_root' : settings.MEDIA_ROOT}))
+del(_media_url, serve)
