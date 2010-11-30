@@ -167,18 +167,18 @@ def calc_agency_targets(agency):
     """
 
     commentary_map = {
-        "1DP" : "An IHP+ Country Compact or equivalent was signed in %(cur_val).2f%% of IHP+ countries where these exist, by the end of %(cur_year)s. Target = %(target_val).2f%%.",
-        "2DPa" : "%(cur_val).2f%% of health sector aid was not reported on national health sector budgets by the end of %(cur_year)s - %(diff_direction)s from %(base_val).2f%% in 2006. Target = Halve the proportion of aid flows to the health sector not reported on government's budget(s) (with at least 85%% reported on budget).",
-        "2DPb" :"%(cur_val).2f%% of capacity development support was provided through co-ordinated programmes in %(cur_year)s - %(diff_direction)s from %(base_val).2f%% in %(base_year)s. Target = %(target_val).2f%%",
-        "2DPc" : "%(cur_val).2f%% of health sector aid was provided through programme based approaches by the end of %(cur_year)s, %(diff_direction)s from %(base_val).2f%% in the %(base_year)s baseline. Target = %(target_val).2f%%.",
-        "3DP" : "%(cur_val).2f%% of health sector funding was provided through multi-year commitments by the end of %(cur_year)s: %(diff_direction)s from %(base_val).2f%% in %(base_year)s. Target = %(target_val).2f%%.",
-        "4DP" : "In %(cur_year)s, %(cur_val).2f%% of health sector aid disbursements were not released according to agreed schedules in annual or multi-year frameworks - %(diff_direction)s from %(base_val).2f%% in %(base_year)s. Target = Halve the proportion of health sector aid not disbursed within the fiscal year for which it was scheduled.",
-        "5DPa" : "By the end of %(cur_year)s, %(cur_val).2f%% of health sector aid did not use government partner country public financial management systems: %(diff_direction)s from %(base_val).2f%% since %(base_year)s. Target = One-third reduction in the %% of health sector aid to the public sector not using partner countries' procurement systems.",
-        "5DPb" : "By end %(cur_year)s, %(cur_val).2f%% of health sector aid did not use country procurement systems in IHP+ partner countries: %(diff_direction)s from %(base_val).2f%% in %(base_year)s. Target = One-third reduction in the %% of health sector aid to the public sector not using partner countries' PFM systems.",
-        "5DPc" : Template("""In {{ cur_year }}, the stock of parallel PIUs in the surveyed countries was {{ cur_val }} - {{ diff_direction2 }} from {% if diff_direction3 %} {{ base_val }} in {% endif %} {{ base_year }} {% if diff_direction3 %} ({{ diff_direction3 }} of {{ abs_perc_change|floatformat }}%) {% endif %}. Target = Reduce by two-thirds the stock of parallel project implementation units."""),
-        "6DP" : "Where they exist, national performance assessment frameworks are used to assess progress in %(cur_val).2f%% of IHP+ countries: increased from %(base_val).2f%% in %(base_year)s. Target = 100%%.",
-        "7DP" : "In %(cur_year)s, participated in annual mutual assessments of progress in implementing health sector commitments & agreements in %(cur_val).2f%% IHP+ countries; %(diff_direction)s from %(base_val).2f%% in %(base_year)s.  Target: 100%%.",
-        "8DP" : "By end %(cur_year)s, evidence exists in %(cur_val).2f%% of countries of support to civil society engagement in health sector policy processes; %(diff_direction)s from %(base_val).2f%% in %(base_year)s. Target = 100%%",
+        "1DP" : "An IHP+ Country Compact or equivalent was signed in %(cur_val).0f%% of IHP+ countries where these exist, by the end of %(cur_year)s. Target = %(target_val).0f%%.",
+        "2DPa" : "%(cur_val).0f%% of health sector aid was not reported on national health sector budgets by the end of %(cur_year)s - %(diff_direction)s from %(base_val).0f%% in 2006. Target = Halve the proportion of aid flows to the health sector not reported on government's budget(s) (with at least 85%% reported on budget).",
+        "2DPb" :"%(cur_val).0f%% of capacity development support was provided through co-ordinated programmes in %(cur_year)s - %(diff_direction)s from %(base_val).0f%% in %(base_year)s. Target = %(target_val).0f%%",
+        "2DPc" : "%(cur_val).0f%% of health sector aid was provided through programme based approaches by the end of %(cur_year)s, %(diff_direction)s from %(base_val).0f%% in the %(base_year)s baseline. Target = %(target_val).0f%%.",
+        "3DP" : "%(cur_val).0f%% of health sector funding was provided through multi-year commitments by the end of %(cur_year)s: %(diff_direction)s from %(base_val).0f%% in %(base_year)s. Target = %(target_val).0f%%.",
+        "4DP" : "In %(cur_year)s, %(cur_val).0f%% of health sector aid disbursements were not released according to agreed schedules in annual or multi-year frameworks - %(diff_direction)s from %(base_val).0f%% in %(base_year)s. Target = Halve the proportion of health sector aid not disbursed within the fiscal year for which it was scheduled.",
+        "5DPa" : "By the end of %(cur_year)s, %(cur_val).0f%% of health sector aid did not use government partner country public financial management systems: %(diff_direction)s from %(base_val).0f%% since %(base_year)s. Target = One-third reduction in the %% of health sector aid to the public sector not using partner countries' procurement systems.",
+        "5DPb" : "By end %(cur_year)s, %(cur_val).0f%% of health sector aid did not use country procurement systems in IHP+ partner countries: %(diff_direction)s from %(base_val).0f%% in %(base_year)s. Target = One-third reduction in the %% of health sector aid to the public sector not using partner countries' PFM systems.",
+        "5DPc" : Template("""In {{ cur_year }}, the stock of parallel PIUs in the surveyed countries was {{ cur_val }} - {{ diff_direction2 }} from {% if diff_direction3 %} {{ base_val }} in {% endif %} {{ base_year }} {% if diff_direction3 %} ({{ diff_direction3 }} of {{ abs_perc_change|floatformat:0 }}%) {% endif %}. Target = Reduce by two-thirds the stock of parallel project implementation units."""),
+        "6DP" : "Where they exist, national performance assessment frameworks are used to assess progress in %(cur_val).0f%% of IHP+ countries: increased from %(base_val).0f%% in %(base_year)s. Target = 100%%.",
+        "7DP" : "In %(cur_year)s, participated in annual mutual assessments of progress in implementing health sector commitments & agreements in %(cur_val).0f%% IHP+ countries; %(diff_direction)s from %(base_val).0f%% in %(base_year)s.  Target: 100%%.",
+        "8DP" : "By end %(cur_year)s, evidence exists in %(cur_val).0f%% of countries of support to civil society engagement in health sector policy processes; %(diff_direction)s from %(base_val).0f%% in %(base_year)s. Target = 100%%",
     }
         
     targets = get_agency_targets(agency, dp_indicators)
@@ -288,16 +288,16 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
             "cross" : "At the end of %(cur_year)s there was no costed and evidence based HRH plan in place, or plans to develop one. Target = A costed comprehensive national HRH plan that is integrated with the national health plan",
         },
         "3G" : {
-            "all" : "%(country_name)s allocated %(cur_val).2f%% of its approved annual national budget to health in %(cur_year)s. Target = 15%% (or an alternative agreed published target)",
+            "all" : "%(country_name)s allocated %(cur_val).0f%% of its approved annual national budget to health in %(cur_year)s. Target = 15%% (or an alternative agreed published target)",
         },
         "4G" : {
-            "all" : "In %(cur_year)s, %(cur_val).2f%% of health sector funding was disbursed against the approved annual budget. Target = to halve the proportion of health sector funding not disbursed against the approved annual budget",
+            "all" : "In %(cur_year)s, %(cur_val).0f%% of health sector funding was disbursed against the approved annual budget. Target = to halve the proportion of health sector funding not disbursed against the approved annual budget",
         },
         "5Ga" : {
-            "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).2f on the PFM/CPIA scale of performance. Target = Improvement of at least one measure (ie 0.5 points) on the PFM/CPIA scale of performance.  In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).2f on the PFM/CPIA scale of performance. Target = Improvement of at least one measure (ie 0.5 points) on the PFM/CPIA scale of performance."
+            "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).0f on the PFM/CPIA scale of performance. Target = Improvement of at least one measure (ie 0.5 points) on the PFM/CPIA scale of performance.  In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).0f on the PFM/CPIA scale of performance. Target = Improvement of at least one measure (ie 0.5 points) on the PFM/CPIA scale of performance."
         },
         "5Gb" : {
-            "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).2f on the four poin t scale used to assess performance in the the procurement sector. Target = Improvement of at least one measure on the four-point scale used to assess performance for this sector."
+            "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).0f on the four poin t scale used to assess performance in the the procurement sector. Target = Improvement of at least one measure on the four-point scale used to assess performance for this sector."
         },
         "6G" : {
             "tick" : "There is a transparent and monitorable performance assessment framework in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes. Target = A transparent and monitorable performance assessment framework is in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes.",
@@ -308,7 +308,7 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
             "all" : "This one will have to be done manually. Target = Mutual assessments (such as a joint Annual Health Sector Review) are being made of progress implementing  commitments in the health sector, including on aid effectiveness."
         },
         "8G" : {
-            "all" : "At the end of %(cur_year)s %(cur_val).2f%% of seats in the Health Sector Coordination Mechanism (or equivalent body) were allocated to Civil Society representatives. Target = Evidence that Civil Society is actively represented in health sector policy processes - including Health Sector planning, coordination & review mechanisms."
+            "all" : "At the end of %(cur_year)s %(cur_val).0f%% of seats in the Health Sector Coordination Mechanism (or equivalent body) were allocated to Civil Society representatives. Target = Evidence that Civil Society is actively represented in health sector policy processes - including Health Sector planning, coordination & review mechanisms."
         },
     }
 
