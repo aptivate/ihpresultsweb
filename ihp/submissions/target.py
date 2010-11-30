@@ -385,10 +385,11 @@ def get_country_progress(agency):
                 p.append(country)
             else:
                 np.append(country)
-    for i, country in enumerate(sorted(p)):
-        p_dict[i + 1] = country
-    for i, country in enumerate(sorted(np)):
-        np_dict[i + 1] = country
+    for i, country in enumerate(sorted(p, key=lambda x : x.country)):
+        p_dict[i] = country
+    for i, country in enumerate(sorted(np, key=lambda x : x.country)):
+        np_dict[i] = country
+    print np_dict
         
     return np_dict, p_dict
 
@@ -421,9 +422,9 @@ def get_agency_progress(country):
                 p.append(agency)
             else:
                 np.append(agency)
-    for i, agency in enumerate(sorted(p)):
-        p_dict[i + 1] = agency
-    for i, agency in enumerate(sorted(np)):
-        np_dict[i + 1] = agency
+    for i, agency in enumerate(sorted(p, key=lambda x : x.agency)):
+        p_dict[i] = agency
+    for i, agency in enumerate(sorted(np, key=lambda x : x.agency)):
+        np_dict[i] = agency
         
     return np_dict, p_dict
