@@ -11,6 +11,14 @@ from target import calc_agency_targets, get_country_progress, calc_country_targe
 from indicators import calc_country_indicators, calc_agency_country_indicators
 from forms import DPSummaryForm
 
+def calc_agency_comments(indicator, agency_data):
+    old_comments = agency_data[indicator]["comments"]
+    comments = []
+    for question_number, country, comment in old_comments:
+        comments.append("%s %s] %s" % (question_number, country, comment))
+    comments = "\n".join([comment for comment in comments if comment])
+    return comments
+
 def get_agency_scorecard_data(agency):
     """
     Return data relevant to this agency's submissions

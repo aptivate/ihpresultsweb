@@ -14,6 +14,9 @@ urlpatterns = patterns('',
 
     # Edit views
     (r'^scorecard/edit/agencies/summary/$', 'submissions.views.dp_summary_edit', {}, 'dp_summary_edit'),
+
+    # Api views
+    (r'^api/dp_summary/(?P<agency_id>\d+)/$', 'submissions.api.dp_summary', {}, 'api_dp_summary'),
     
 
     # Old views

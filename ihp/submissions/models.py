@@ -170,3 +170,6 @@ class DPScorecardSummary(models.Model):
 
     def __unicode__(self):
         return unicode(self.agency)
+
+    class Meta:
+       verbose_name_plural = "DP Scorecard Summaries" 
