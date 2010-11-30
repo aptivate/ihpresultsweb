@@ -210,10 +210,9 @@ def agency_export(request):
             for i in range(1, 9):
                 # TODO - still need to add this stuff
                 datum["erb%d" % i] = "Nothing yet"
-            for i, val in datum["p"].items():
-                datum["p%d" % (i + 1)] = val
-            for i, val in datum["np"].items():
-                datum["np%d" % (i + 1)] = val
+            for i in range(1, 11):
+                datum["p%d" % i] = datum["p"].get(i - 1, "pgreen")
+                datum["np%d" % i] = datum["np"].get(i - 1, "npwhite")
             try:
                 summary = DPScorecardSummary.objects.get(agency=agency)
                 datum["erb1"] = summary.erb1
@@ -420,8 +419,8 @@ def country_export(request):
             datum["Header"] = country.country
 
             for i in range(1, 14):
-                datum["P%d" % i] = datum["p"].get(i, "")
-                datum["NP%d" % i] = datum["np"].get(i, "")
+                datum["P%d" % i] = datum["p"].get(i, "pgreen")
+                datum["NP%d" % i] = datum["np"].get(i, "npwhite")
 
             working_draft, _ = CountryWorkingDraft.objects.get_or_create(country=country)
             datum["workingdraft"] = "workingdraft" if working_draft.is_draft else ""
