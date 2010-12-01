@@ -62,6 +62,10 @@ form.styleform input[type="text"] {
     width: 300px;
 }
 
+form.styleform textarea {
+    width: 100%;
+}
+
 
 form.styleform #datetime input[type="text"] {
     width: 80px;

@@ -3,6 +3,9 @@ import traceback
 
 NA_STR = "__NA__"
 def is_not_applicable(val):
+    if val == None:
+        return False
+
     val = val.strip().lower()
     variations = ["na", "n/a", "n.a.", "not applicable", "-"]
     if val in variations:

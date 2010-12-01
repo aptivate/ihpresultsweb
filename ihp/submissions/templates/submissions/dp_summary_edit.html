@@ -1,8 +1,10 @@
-<html>
-<head>
+{% extends "base.html" %}
+
+{% block head %}
 {{ form.media }}
-</head>
-<body>
+{% endblock %}
+
+{% block body %}
 <form class="styleform">
     <fieldset>
         <legend>Agency</legend>
@@ -134,5 +136,4 @@
         </ol>
     <fieldset>
 </form>
-</body>
-</html>
+{% endblock %}

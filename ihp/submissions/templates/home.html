@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block body %}
+
+<h2>Forms</h2>
+<ol>
+    <li><a href="{% url dp_summary_edit %}">DP Summary Form</a></li>
+</ol>
+<h2>Views</h2>
+<ol>
+    <li><a href="{% url agency_export %}">Agency Export</a></li>
+    <li><a href="{% url country_export %}">Country Export</a></li>
+    <li><a href="{% url agency_questionnaire %}">Raw DP Questions</a></li>
+    <li><a href="{% url agency_questionnaire_cols %}">Raw DP Questions (Cols)</a></li>
+    <li><a href="{% url gov_questionnaire %}">Raw Gov Questions</a></li>
+</ol>
+{% endblock %}

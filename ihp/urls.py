@@ -2,10 +2,13 @@ from django.conf.urls.defaults import *
 from django.views.static import serve
 from django.conf import settings
 
+from django.views.generic.simple import direct_to_template
 from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
+
+    (r'^$', direct_to_template, {"template" : "home.html"}, "home"),
 
     # New csv views
     (r'^scorecard/export/agencies/$', 'submissions.views.agency_export', {}, 'agency_export'),
