@@ -1,8 +1,7 @@
 import sys, os
-os.environ["DJANGO_SETTINGS_MODULE"] = "ihp.settings"
+os.environ["DJANGO_SETTINGS_MODULE"] = "ihp.settings_prod"
 
 INTERP = os.path.join(os.environ["HOME"], ".virtualenvs", "ihp", "bin", "python")
-print INTERP
 if sys.executable != INTERP:
     os.execl(INTERP, INTERP, *sys.argv)
 cwd = os.getcwd()
