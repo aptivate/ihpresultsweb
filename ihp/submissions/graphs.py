@@ -26,7 +26,7 @@ def format_fig(x):
         return "0.0"
     return "%.1f" % x
 
-def allgraphs(request, agency_name, template_name="submissions/allgraphs.html", extra_context=None):
+def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.html", extra_context=None):
     extra_context = extra_context or {}
 
     agency = Agency.objects.get(agency__iexact=agency_name)
@@ -42,6 +42,26 @@ def allgraphs(request, agency_name, template_name="submissions/allgraphs.html", 
 
     extra_context["countries"] = agency.countries    
     extra_context["agency"] = agency.agency    
+    extra_context["data"] = data
+    
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+    
+def countrygraphs(request, country_name, template_name="submissions/countrygraphs.html", extra_context=None):
+    extra_context = extra_context or {}
+
+    country = Country.objects.get(country__iexact=country_name)
+    
+    data = {}
+    for agency in country.agencies:
+        agency_data = {}
+        indicators = calc_agency_country_indicators(agency, country)
+        for indicator in ["2DPa", "2DPb", "2DPc", "3DP", "4DP", "5DPa", "5DPb", "5DPc"]:
+            base_val, _, latest_val, _ = indicators[indicator][0]
+            agency_data[indicator] = safe_mul(safe_div(safe_diff(latest_val, base_val), base_val), 100)
+        data[agency.agency] = agency_data
+
+    extra_context["agencies"] = country.agencies    
+    extra_context["country"] = country.country    
     extra_context["data"] = data
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)

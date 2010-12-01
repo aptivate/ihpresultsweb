@@ -1,0 +1,153 @@
+{% extends "submissions/graph_base.html" %}
+
+{% block graphdefs %}
+<script>
+Event.observe(window, 'load', function() {
+    var bargraph_2dpa = new Grafico.BarGraph(
+        $('graph_2dpa'), [{% for agency, datum in data.items %}{{ datum.2DPa|default_if_none:"0" }},{% endfor %}],
+        {
+            labels : [{% for agency in agencies %}"{{ agency.agency }}",{% endfor %}],
+            color :  "#4b80b6",
+            vertical_label_unit : "%",
+            datalabels : {one: [{% for agency, datum in data.items %}{{ datum.2DPa|default_if_none:"0"|floatformat }},{% endfor %}]}
+        }
+    );
+});
+
+Event.observe(window, 'load', function() {
+    var bargraph_2dpb = new Grafico.BarGraph(
+        $('graph_2dpb'), [{% for agency, datum in data.items %}{{ datum.2DPb|default_if_none:"0" }},{% endfor %}],
+        {
+            labels : [{% for agency in agencies %}"{{ agency.agency }}",{% endfor %}],
+            color :  "#4b80b6",
+            vertical_label_unit : "%",
+            datalabels : {one: [{% for agency, datum in data.items %}{{ datum.2DPb|default_if_none:"0"|floatformat }},{% endfor %}]}
+        }
+    );
+
+    var bargraph_2dpc = new Grafico.BarGraph(
+        $('graph_2dpc'), [{% for agency, datum in data.items %}{{ datum.2DPc|default_if_none:"0" }},{% endfor %}],
+        {
+            labels : [{% for agency in agencies %}"{{ agency.agency }}",{% endfor %}],
+            color :  "#4b80b6",
+            vertical_label_unit : "%",
+            datalabels : {one: [{% for agency, datum in data.items %}{{ datum.2DPc|default_if_none:"0"|floatformat }},{% endfor %}]}
+        }
+    );
+
+    var bargraph_3dp = new Grafico.BarGraph(
+        $('graph_3dp'), [{% for agency, datum in data.items %}{{ datum.3DP|default_if_none:"0" }},{% endfor %}],
+        {
+            labels : [{% for agency in agencies %}"{{ agency.agency }}",{% endfor %}],
+            color :  "#4b80b6",
+            vertical_label_unit : "%",
+            datalabels : {one: [{% for agency, datum in data.items %}{{ datum.3DP|default_if_none:"0"|floatformat }},{% endfor %}]}
+        }
+    );
+
+    var bargraph_4dp = new Grafico.BarGraph(
+        $('graph_4dp'), [{% for agency, datum in data.items %}{{ datum.4DP|default_if_none:"0" }},{% endfor %}],
+        {
+            labels : [{% for agency in agencies %}"{{ agency.agency }}",{% endfor %}],
+            color :  "#4b80b6",
+            vertical_label_unit : "%",
+            datalabels : {one: [{% for agency, datum in data.items %}{{ datum.4DP|default_if_none:"0"|floatformat }},{% endfor %}]}
+        }
+    );
+
+    var bargraph_5dpa = new Grafico.BarGraph(
+        $('graph_5dpa'), [{% for agency, datum in data.items %}{{ datum.5DPa|default_if_none:"0" }},{% endfor %}],
+        {
+            labels : [{% for agency in agencies %}"{{ agency.agency }}",{% endfor %}],
+            color :  "#4b80b6",
+            vertical_label_unit : "%",
+            datalabels : {one: [{% for agency, datum in data.items %}{{ datum.5DPa|default_if_none:"0"|floatformat }},{% endfor %}]}
+        }
+    );
+
+    var bargraph_5dpb = new Grafico.BarGraph(
+        $('graph_5dpb'), [{% for agency, datum in data.items %}{{ datum.5DPb|default_if_none:"0" }},{% endfor %}],
+        {
+            labels : [{% for agency in agencies %}"{{ agency.agency }}",{% endfor %}],
+            color :  "#4b80b6",
+            vertical_label_unit : "%",
+            datalabels : {one: [{% for agency, datum in data.items %}{{ datum.5DPb|default_if_none:"0"|floatformat }},{% endfor %}]}
+        }
+    );
+
+    var bargraph_5dpc = new Grafico.BarGraph(
+        $('graph_5dpc'), [{% for agency, datum in data.items %}{{ datum.5DPc|default_if_none:"0" }},{% endfor %}],
+        {
+            labels : [{% for agency in agencies %}"{{ agency.agency }}",{% endfor %}],
+            color :  "#4b80b6",
+            vertical_label_unit : "%",
+            datalabels : {one: [{% for agency, datum in data.items %}{{ datum.5DPc|default_if_none:"0"|floatformat }},{% endfor %}]}
+        }
+    );
+
+});
+</script>
+<style>
+.graph {
+    height: 200px;
+    width: 600px;
+}
+
+.graphblock {
+    float: left;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+body {
+    font-family: verdana;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<h1>{{ agency }}</h1>
+<div class="graphblock">
+    <h2>2DPa</h2>
+    <div id="graph_2dpa" class="graph"></div>
+</div>
+
+<div class="graphblock">
+    <h2>2DPb</h2>
+    <div id="graph_2dpb" class="graph"></div>
+</div>
+
+<div class="graphblock">
+    <h2>2DPc</h2>
+    <div id="graph_2dpc" class="graph"></div>
+</div>
+
+<div class="graphblock">
+    <h2>3DP</h2>
+    <div id="graph_3dp" class="graph"></div>
+</div>
+
+<div class="graphblock">
+    <h2>4DP</h2>
+    <div id="graph_4dp" class="graph"></div>
+</div>
+
+<div class="graphblock">
+    <h2>5DPa</h2>
+    <div id="graph_5dpa" class="graph"></div>
+</div>
+
+<div class="graphblock">
+    <h2>5DPb</h2>
+    <div id="graph_5dpb" class="graph"></div>
+</div>
+
+<div class="graphblock">
+    <h2>5DPc</h2>
+    <div id="graph_5dpc" class="graph"></div>
+</div>
+
+{% endblock %}

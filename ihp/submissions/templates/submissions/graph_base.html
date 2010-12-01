@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script type="text/javascript" src="{{ MEDIA_URL }}/js/raphael-min.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}/js/prototype.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}/js/grafico.base.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}/js/grafico.bar.js"></script>
+<!--<script type="text/javascript" src="/media/js/grafico.min.js"></script>-->
+
+{% block graphdefs %}
+{% endblock graphdefs %}
+
+<style>
+.graph {
+    height: 200px;
+    width: 600px;
+}
+
+.graphblock {
+    float: left;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+body {
+    font-family: verdana;
+}
+</style>
+
+{% endblock %}

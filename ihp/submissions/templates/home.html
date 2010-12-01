@@ -14,10 +14,17 @@
     <li><a href="{% url agency_questionnaire_cols %}">Raw DP Questions (Cols)</a></li>
     <li><a href="{% url gov_questionnaire %}">Raw Gov Questions</a></li>
 </ol>
-<h2>Graphs</h2>
+<h2>Graphs (by Agency)</h2>
 <ol>
     {% for agency in agencies %}
-    <li><a href="{% url allgraphs agency.agency %}">{{ agency.agency }}</a></li>
+    <li><a href="{% url agencygraphs agency.agency %}">{{ agency.agency }}</a></li>
+    {% endfor %}
+</ol>
+
+<h2>Graphs (by Country)</h2>
+<ol>
+    {% for country in countries %}
+    <li><a href="{% url countrygraphs country.country %}">{{ country.country }}</a></li>
     {% endfor %}
 </ol>
 

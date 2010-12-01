@@ -1,12 +1,6 @@
-{% extends "base.html" %}
+{% extends "submissions/graph_base.html" %}
 
-{% block head %}
-<script type="text/javascript" src="{{ MEDIA_URL }}/js/raphael-min.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}/js/prototype.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}/js/grafico.base.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}/js/grafico.bar.js"></script>
-<!--<script type="text/javascript" src="/media/js/grafico.min.js"></script>-->
-
+{% block graphdefs %}
 
 <script>
 Event.observe(window, 'load', function() {
@@ -19,7 +13,9 @@ Event.observe(window, 'load', function() {
             datalabels : {one: [{% for country, datum in data.items %}{{ datum.2DPa|default_if_none:"0"|floatformat }},{% endfor %}]}
         }
     );
+});
 
+Event.observe(window, 'load', function() {
     var bargraph_2dpb = new Grafico.BarGraph(
         $('graph_2dpb'), [{% for country, datum in data.items %}{{ datum.2DPb|default_if_none:"0" }},{% endfor %}],
         {
@@ -92,25 +88,6 @@ Event.observe(window, 'load', function() {
 
 });
 </script>
-<style>
-.graph {
-    height: 200px;
-    width: 600px;
-}
-
-.graphblock {
-    float: left;
-    text-align: center;
-}
-
-h1 {
-    text-align: center;
-}
-
-body {
-    font-family: verdana;
-}
-</style>
 {% endblock %}
 
 {% block body %}

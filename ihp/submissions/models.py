@@ -26,6 +26,10 @@ class Country(models.Model):
     country = models.CharField(max_length=50, null=False)
     description = models.TextField()
 
+    @property
+    def agencies(self):
+        return Agency.objects.filter(agencycountries__country=self).filter(type="Agency").order_by("agency")
+
     def __unicode__(self):
         return self.country
 
