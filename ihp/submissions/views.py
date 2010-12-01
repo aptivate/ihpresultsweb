@@ -257,6 +257,8 @@ def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html",
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def country_export(request):
+
+    fformat_front = lambda x : "%.1f" % x if type(x) == float else x
     headers = [
         # Front of scorecard
         "file", "TB2", "CD1", "CD2", "HSP1", "HSP2",
@@ -307,14 +309,14 @@ def country_export(request):
             datum["HSP1"] = target_none(datum["Q2G"]["target"])
             datum["HSP2"] = target_none(datum["Q3G"]["target"])
             datum["HSM1"] = target_none(datum["Q12G"]["target"])
-            datum["HSM2"] = datum["questions"]["15"]["latest_value"]
-            datum["HSM3"] = datum["indicators"]["8G"]["latest_value"]
+            datum["HSM2"] = fformat_front(datum["questions"]["15"]["latest_value"])
+            datum["HSM3"] = fformat_front(datum["indicators"]["8G"]["latest_value"])
             datum["HSM4"] = ""
 
             datum["BC1"] = datum["questions"]["5"]["baseline_year"]
-            datum["BC2"] = datum["questions"]["6"]["baseline_value"]
+            datum["BC2"] = fformat_front(datum["questions"]["6"]["baseline_value"])
             datum["BC3"] = datum["questions"]["5"]["latest_year"]
-            datum["BC4"] = datum["questions"]["6"]["latest_value"]
+            datum["BC4"] = fformat_front(datum["questions"]["6"]["latest_value"])
             datum["BC5"] = "?????"
             datum["BC6"] = "?????"
             datum["BC7"] = "?????"
@@ -322,12 +324,12 @@ def country_export(request):
             datum["BC9"] = "?????"
             datum["BC10"] = "?????"
 
-            datum["PC1"] = datum["indicators"]["3G"]["latest_value"]
+            datum["PC1"] = fformat_front(datum["indicators"]["3G"]["latest_value"])
             datum["PC2"] = datum["indicators"]["3G"]["hs_budget_gap"]
             datum["PC3"] = "%s %% allocated to health" % datum["PC1"]
             datum["PC4"] = "%s %% increase needed to meet the Abuja target (15%%)" % datum["PC2"]
 
-            datum["PF1"] = datum["questions"]["16"]["latest_value"]
+            datum["PF1"] = fformat_front(datum["questions"]["16"]["latest_value"])
             datum["PF2"] = datum["questions"]["16"]["comments"]
 
             datum["PFM1"] = ""
@@ -344,40 +346,40 @@ def country_export(request):
                     datum["TA2"] += "%s %s" % (agency, aqs["4"]["comments"].replace("%", "%%"))
                     datum["TA2"] += "\n"
 
-            datum["PHC1"] = datum["indicators"]["other"]["outpatient_visits_baseline"]
+            datum["PHC1"] = fformat_front(datum["indicators"]["other"]["outpatient_visits_baseline"])
             datum["PHC2"] = datum["questions"]["19"]["baseline_year"]
-            datum["PHC3"] = datum["indicators"]["other"]["outpatient_visits_latest"]
+            datum["PHC3"] = fformat_front(datum["indicators"]["other"]["outpatient_visits_latest"])
             datum["PHC4"] = datum["questions"]["19"]["latest_year"]
-            datum["PHC5"] = datum["indicators"]["other"]["outpatient_visits_change"]
+            datum["PHC5"] = fformat_front(datum["indicators"]["other"]["outpatient_visits_change"])
             datum["PHC6"] = datum["indicators"]["other"]["outpatient_visits_change_dir"]
             datum["PHC7"] = ""
 
-            datum["HRH1"] = datum["indicators"]["other"]["skilled_personnel_baseline"]
+            datum["HRH1"] = fformat_front(datum["indicators"]["other"]["skilled_personnel_baseline"])
             datum["HRH2"] = datum["questions"]["17"]["baseline_year"]
-            datum["HRH3"] = datum["indicators"]["other"]["skilled_personnel_latest"]
+            datum["HRH3"] = fformat_front(datum["indicators"]["other"]["skilled_personnel_latest"])
             datum["HRH4"] = datum["questions"]["17"]["latest_year"]
-            datum["HRH5"] = datum["indicators"]["other"]["skilled_personnel_change"]
+            datum["HRH5"] = fformat_front(datum["indicators"]["other"]["skilled_personnel_change"])
             datum["HRH6"] = datum["indicators"]["other"]["skilled_personnel_change_dir"]
             datum["HRH7"] = ""
 
-            datum["HS1"] = datum["questions"]["20"]["baseline_value"]
+            datum["HS1"] = fformat_front(datum["questions"]["20"]["baseline_value"])
             datum["HS2"] = datum["questions"]["20"]["baseline_year"]
-            datum["HS3"] = datum["questions"]["20"]["latest_value"]
+            datum["HS3"] = fformat_front(datum["questions"]["20"]["latest_value"])
             datum["HS4"] = datum["questions"]["20"]["latest_year"]
-            datum["HS5"] = datum["indicators"]["other"]["health_workforce_spent_change"]
+            datum["HS5"] = fformat_front(datum["indicators"]["other"]["health_workforce_spent_change"])
             datum["HS6"] = datum["indicators"]["other"]["health_workforce_spent_change_dir"]
             datum["HS7"] = ""
 
             datum["RF1"] = target_none(datum["6G"]["target"])
-            datum["RF2"] = datum["questions"]["22"]["latest_value"]
-            datum["RF3"] = datum["questions"]["23"]["latest_value"]
+            datum["RF2"] = fformat_front(datum["questions"]["22"]["latest_value"])
+            datum["RF3"] = fformat_front(datum["questions"]["23"]["latest_value"])
 
             datum["HMIS1"] = target_none(datum["Q21G"]["target"])
             datum["HMIS2"] = datum["questions"]["21"]["comments"]
 
             datum["JAR1"] = target_none(datum["Q12G"]["target"])
             datum["JAR2"] = ""
-            datum["JAR3"] = datum["questions"]["24"]["latest_value"]
+            datum["JAR3"] = fformat_front(datum["questions"]["24"]["latest_value"])
             datum["JAR4"] = datum["questions"]["24"]["comments"]
             datum["JAR5"] = datum["questions"]["24"]["comments"]
 
@@ -392,10 +394,10 @@ def country_export(request):
                 index = group1_index if mdg in group1 else group2_index
 
                 mdgdata = MDGData.objects.get(mdg_target=mdg, country=country)
-                datum[mdg + index[0]] = mdgdata.latest_value
+                datum[mdg + index[0]] = fformat_front(mdgdata.latest_value)
                 datum[mdg + index[1]] = mdgdata.latest_year
                 datum[mdg + index[2]] = mdgdata.arrow
-                datum[mdg + index[3]] = mdgdata.change
+                datum[mdg + index[3]] = fformat_front(mdgdata.change)
                 datum[mdg + index[4]] = mdgdata.baseline_year
 
             datum["F1"] = country.country
