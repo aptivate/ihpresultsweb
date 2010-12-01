@@ -13,7 +13,6 @@ urlpatterns = patterns('',
     # New csv views
     (r'^scorecard/export/agencies/$', 'submissions.views.agency_export', {}, 'agency_export'),
     (r'^scorecard/export/countries/$', 'submissions.views.country_export', {}, 'country_export'),
-    #(r'^api/dp/comments/$', 'submissions.api.dp_comments', {}, 'api_dp_comments')
 
     # Edit views
     (r'^scorecard/edit/agencies/summary/$', 'submissions.views.dp_summary_edit', {}, 'dp_summary_edit'),

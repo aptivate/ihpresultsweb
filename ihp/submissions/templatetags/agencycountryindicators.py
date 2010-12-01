@@ -1,6 +1,7 @@
 from django.template import Library, Node, TemplateSyntaxError, Variable, VariableDoesNotExist
 from django.template import resolve_variable
-from submissions.indicators import calc_agency_country_indicators
+from submissions.indicators import calc_agency_country_indicators, NA_STR
+import traceback
 
 register = Library()
 
@@ -12,29 +13,32 @@ class AgencyCountryIndicatorNode(Node):
 
     def render(self, context):
         try:
-            agency = self.agency.resolve(context)
-        except VariableDoesNotExist:
-            raise TemplateSyntaxError('"agencycountryindicators" tag got an unknown variable: %r' % self.agency)
+            try:
+                agency = self.agency.resolve(context)
+            except VariableDoesNotExist:
+                raise TemplateSyntaxError('"agencycountryindicators" tag got an unknown variable: %r' % self.agency)
 
-        try:
-            country = self.country.resolve(context)
-        except VariableDoesNotExist:
-            raise TemplateSyntaxError('"agencycountryindicators" tag got an unknown variable: %r' % self.country)
+            try:
+                country = self.country.resolve(context)
+            except VariableDoesNotExist:
+                raise TemplateSyntaxError('"agencycountryindicators" tag got an unknown variable: %r' % self.country)
 
-        indicators = calc_agency_country_indicators(agency, country)
-        for ind in ["2DPa", "4DP", "5DPa", "5DPb"]:
-            (base_val, base_year, latest_val, latest_year), comments = indicators[ind]
-            if base_val != None and latest_val != None and base_val != 0:
-                target_val = (latest_val - base_val) / base_val * 100
-                indicators[ind] = ((base_val, base_year, latest_val, latest_year, target_val), comments)
+            indicators = calc_agency_country_indicators(agency, country)
+            for ind in ["2DPa", "4DP", "5DPa", "5DPb"]:
+                (base_val, base_year, latest_val, latest_year), comments = indicators[ind]
+                if not base_val in (None, NA_STR) and not latest_val in (None, NA_STR) and base_val != 0:
+                    target_val = (latest_val - base_val) / base_val * 100
+                    indicators[ind] = ((base_val, base_year, latest_val, latest_year, target_val), comments)
 
-        (base_val, base_year, latest_val, latest_year), comments = indicators["5DPc"]
-        if base_val != None and latest_val != None and base_val != 0:
-            target_val = (1.0 - (latest_val / float(base_val)))  * 100
-            indicators["5DPc"] = ((base_val, base_year, latest_val, latest_year, target_val), comments)
-        
-        context[self.out_var] = indicators
-        return ""
+            (base_val, base_year, latest_val, latest_year), comments = indicators["5DPc"]
+            if not base_val in (None, NA_STR) and not latest_val in (None, NA_STR) and base_val != 0:
+                target_val = (1.0 - (latest_val / float(base_val)))  * 100
+                indicators["5DPc"] = ((base_val, base_year, latest_val, latest_year, target_val), comments)
+            
+            context[self.out_var] = indicators
+            return ""
+        except:
+            traceback.print_exc()
 
 
 def parse_agencycountryindicators(parser, token):
