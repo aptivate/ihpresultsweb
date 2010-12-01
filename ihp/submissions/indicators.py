@@ -78,9 +78,9 @@ def country_perc_factory(value):
         # the watchlist reduces the denominator if the agency
         # is active in such a country for a particular question
         watchlist = {
-            "1" : ["Burkina Faso", "DRC", "Nigeria"],
-            "17" : ["DRC"],
-            "18" : ["Burkina Faso", "Nigeria"],
+            "1" : ["Burkina Faso", "DRC", "Nigeria", "Djibouti"],
+            "17" : ["DRC", "Burundi", "Djibouti"],
+            "18" : ["Burkina Faso", "Nigeria", "Djibouti"],
         }
 
         watch = watchlist.get(q, [])
