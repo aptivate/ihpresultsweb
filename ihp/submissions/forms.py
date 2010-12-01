@@ -37,3 +37,6 @@ class DPSummaryForm(forms.Form):
 
     class Media:
         js = ("js/jquery-1.4.4.min.js ", "js/dpsummaryform.js", )
+        css = {
+            "all": ('css/dp_summary.css', )
+        }

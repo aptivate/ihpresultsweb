@@ -3,12 +3,136 @@
 {{ form.media }}
 </head>
 <body>
-<form>
-    <table>
-    {{ form }}
-    </table>
-    <input type="button" id="id_submit">
-    <button id="id_submit2">Save</button>
+<form class="styleform">
+    <fieldset>
+        <legend>Agency</legend>
+        <ol><li>{{ form.agency }}</li></ol>
+    </fieldset>
+    <fieldset>
+        <legend>1DP</legend>
+        <ol>
+            <li>
+            {{ form.text1.label_tag }}
+            {{ form.text1 }}
+            </li>
+            <li>
+            {{ form.summary1.label_tag }}
+            {{ form.summary1 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>2DP</legend>
+        <ol>
+            <li>
+            {{ form.text2a.label_tag }}
+            {{ form.text2a }}
+            </li>
+            <li>
+            {{ form.text2b.label_tag }}
+            {{ form.text2b }}
+            </li>
+            <li>
+            {{ form.text2c.label_tag }}
+            {{ form.text2c }}
+            </li>
+            <li>
+            {{ form.summary2.label_tag }}
+            {{ form.summary2 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>3DP</legend>
+        <ol>
+            <li>
+            {{ form.text3.label_tag }}
+            {{ form.text3 }}
+            </li>
+            <li>
+            {{ form.summary3.label_tag }}
+            {{ form.summary3 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>4DP</legend>
+        <ol>
+            <li>
+            {{ form.text4.label_tag }}
+            {{ form.text4 }}
+            </li>
+            <li>
+            {{ form.summary4.label_tag }}
+            {{ form.summary4 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>5DP</legend>
+        <ol>
+            <li>
+            {{ form.text5a.label_tag }}
+            {{ form.text5a }}
+            </li>
+            <li>
+            {{ form.text5b.label_tag }}
+            {{ form.text5b }}
+            </li>
+            <li>
+            {{ form.text5c.label_tag }}
+            {{ form.text5c }}
+            </li>
+            <li>
+            {{ form.summary5.label_tag }}
+            {{ form.summary5 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>6DP</legend>
+        <ol>
+            <li>
+            {{ form.text6.label_tag }}
+            {{ form.text6 }}
+            </li>
+            <li>
+            {{ form.summary6.label_tag }}
+            {{ form.summary6 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>7DP</legend>
+        <ol>
+            <li>
+            {{ form.text7.label_tag }}
+            {{ form.text7 }}
+            </li>
+            <li>
+            {{ form.summary7.label_tag }}
+            {{ form.summary7 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>8DP</legend>
+        <ol>
+            <li>
+            {{ form.text8.label_tag }}
+            {{ form.text8 }}
+            </li>
+            <li>
+            {{ form.summary8.label_tag }}
+            {{ form.summary8 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <ol>
+            <li><button id="id_submit">Save</button></li>
+        </ol>
+    <fieldset>
 </form>
 </body>
 </html>

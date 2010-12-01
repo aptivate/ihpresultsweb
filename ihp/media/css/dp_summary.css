@@ -1,0 +1,84 @@
+form.styleform {
+    background: #FCAC39;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding: 20px;
+    width: 500px;
+}
+
+form.styleform fieldset {
+    border: none;
+    margin-bottom: 10px;
+}
+
+form.styleform fieldset:last-of-type {
+    margin-bottom: 0;
+}
+
+form.styleform legend {
+    color: #343434;
+    font-size: 16px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    text-shadow: 0 2px 2px #B07728;
+}
+
+form.styleform ol {
+    padding: 0px;
+    margin: 0px;
+}
+
+form.styleform ol li {
+    background: #b9cf6a;
+    background: rgba(255,255,255,.3);
+    border-color: #e3ebc3;
+    border-color: rgba(255,255,255,.6);
+    border-style: solid;
+    border-width: 2px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    line-height: 30px;
+    list-style: none;
+    padding: 5px 10px;
+    margin-bottom: 2px;
+}
+
+form.styleform ol li label {
+    display: block;
+}
+
+form.styleform ol ol li {
+    background: none;
+    border: none;
+    float: left;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+}
+
+form.styleform input[type="text"] {
+    width: 300px;
+}
+
+
+form.styleform #datetime input[type="text"] {
+    width: 80px;
+}
+
+form.styleform input.disabled, form.styleform textarea.disabled {
+    background: #efefef;
+    border: solid thin #999;
+}
+
+form.styleform .errors {
+    margin-top: 5px;
+}
+
+form.styleform .errors li {
+    background-color: red;
+    color: white;
+    font-size: 12pt;
+}
+
