@@ -3,7 +3,6 @@ agency_select = function(e) {
     if (option.text() == "") {
         $("textarea").text("");
     }
-    $.loading({onAjax:true, text: 'Loading...'});
     $.getJSON("/api/dp_summary/" + option.val(), function(data) {
         $("#id_text1").text(data["1DP"]);
         $("#id_text2a").text(data["2DPa"]);
@@ -30,13 +29,13 @@ agency_select = function(e) {
 }
 
 $(document).ready(function(){
+    $.loading({onAjax:true, text: 'Loading...'});
     $("#id_agency").change(agency_select);
     $("#id_agency").keyup(agency_select);
 
     $("#id_submit").click(function(e) {
         option = $("#id_agency option:selected");
 
-        $.loading({onAjax:true, text: 'Saving...'});
         $.post("/api/dp_summary/" + option.val() + "/", 
             { 
                 summary1: $("#id_summary1").val(),
