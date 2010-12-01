@@ -19,6 +19,9 @@ urlpatterns = patterns('',
 
     # Api views
     (r'^api/dp_summary/(?P<agency_id>\d+)/$', 'submissions.api.dp_summary', {}, 'api_dp_summary'),
+
+    # Graph Views
+    (r"^graph/(?P<agency_name>[a-zA-Z]+)/$", "submissions.graphs.allgraphs", {}, "allgraphs"),
     
 
     # Old views

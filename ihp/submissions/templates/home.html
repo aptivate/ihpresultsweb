@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% block body %}
 
 <h2>Forms</h2>
@@ -13,4 +14,9 @@
     <li><a href="{% url agency_questionnaire_cols %}">Raw DP Questions (Cols)</a></li>
     <li><a href="{% url gov_questionnaire %}">Raw Gov Questions</a></li>
 </ol>
+<h2>Graphs</h2>
+<ol>
+    <li><a href="{% url allgraphs %}">All Graphs</a></li>
+</ol>
+
 {% endblock %}

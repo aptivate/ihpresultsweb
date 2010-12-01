@@ -5,6 +5,10 @@ class Agency(models.Model):
     description = models.TextField()
     type = models.CharField(max_length=15, null=False)
 
+    @property
+    def countries(self):
+        return Country.objects.filter(agencycountries__agency=self).order_by("country")
+
     def __unicode__(self):
         return self.agency
 
