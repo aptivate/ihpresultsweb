@@ -20,6 +20,36 @@ Event.observe(window, 'load', function() {
         }
     );
 
+    var bargraph_2dpb = new Grafico.BarGraph(
+        $('graph_2dpb'), [{% for country, datum in data.items %}{{ datum.2DPb|default_if_none:"0" }},{% endfor %}],
+        {
+            labels : [{% for country in countries %}"{{ country.country }}",{% endfor %}],
+            color :  "#4b80b6",
+            vertical_label_unit : "%",
+            datalabels : {one: [{% for country, datum in data.items %}{{ datum.2DPb|default_if_none:"0"|floatformat }},{% endfor %}]}
+        }
+    );
+
+    var bargraph_2dpc = new Grafico.BarGraph(
+        $('graph_2dpc'), [{% for country, datum in data.items %}{{ datum.2DPc|default_if_none:"0" }},{% endfor %}],
+        {
+            labels : [{% for country in countries %}"{{ country.country }}",{% endfor %}],
+            color :  "#4b80b6",
+            vertical_label_unit : "%",
+            datalabels : {one: [{% for country, datum in data.items %}{{ datum.2DPc|default_if_none:"0"|floatformat }},{% endfor %}]}
+        }
+    );
+
+    var bargraph_3dp = new Grafico.BarGraph(
+        $('graph_3dp'), [{% for country, datum in data.items %}{{ datum.3DP|default_if_none:"0" }},{% endfor %}],
+        {
+            labels : [{% for country in countries %}"{{ country.country }}",{% endfor %}],
+            color :  "#4b80b6",
+            vertical_label_unit : "%",
+            datalabels : {one: [{% for country, datum in data.items %}{{ datum.3DP|default_if_none:"0"|floatformat }},{% endfor %}]}
+        }
+    );
+
     var bargraph_4dp = new Grafico.BarGraph(
         $('graph_4dp'), [{% for country, datum in data.items %}{{ datum.4DP|default_if_none:"0" }},{% endfor %}],
         {
@@ -67,19 +97,62 @@ Event.observe(window, 'load', function() {
     height: 200px;
     width: 600px;
 }
+
+.graphblock {
+    float: left;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+body {
+    font-family: verdana;
+}
 </style>
 {% endblock %}
 
 {% block body %}
 <h1>{{ agency }}</h1>
-<h2>2DPa</h2>
-<div id="graph_2dpa" class="graph"></div>
-<h2>4DP</h2>
-<div id="graph_4dp" class="graph"></div>
-<h2>5DPa</h2>
-<div id="graph_5dpa" class="graph"></div>
-<h2>5DPb</h2>
-<div id="graph_5dpb" class="graph"></div>
-<h2>5DPc</h2>
-<div id="graph_5dpc" class="graph"></div>
+<div class="graphblock">
+    <h2>2DPa</h2>
+    <div id="graph_2dpa" class="graph"></div>
+</div>
+
+<div class="graphblock">
+    <h2>2DPb</h2>
+    <div id="graph_2dpb" class="graph"></div>
+</div>
+
+<div class="graphblock">
+    <h2>2DPc</h2>
+    <div id="graph_2dpc" class="graph"></div>
+</div>
+
+<div class="graphblock">
+    <h2>3DP</h2>
+    <div id="graph_3dp" class="graph"></div>
+</div>
+
+<div class="graphblock">
+    <h2>4DP</h2>
+    <div id="graph_4dp" class="graph"></div>
+</div>
+
+<div class="graphblock">
+    <h2>5DPa</h2>
+    <div id="graph_5dpa" class="graph"></div>
+</div>
+
+<div class="graphblock">
+    <h2>5DPb</h2>
+    <div id="graph_5dpb" class="graph"></div>
+</div>
+
+<div class="graphblock">
+    <h2>5DPc</h2>
+    <div id="graph_5dpc" class="graph"></div>
+</div>
+
 {% endblock %}
