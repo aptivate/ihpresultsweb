@@ -429,7 +429,7 @@ def country_export(request):
             datum["Header"] = country.country
 
             for i in range(1, 14):
-                datum["P%d" % i] = datum["p"].get(i, "pgreen")
+                datum["P%d" % i] = datum["p"].get(i, "pwhite")
                 datum["NP%d" % i] = datum["np"].get(i, "npwhite")
 
             working_draft, _ = CountryWorkingDraft.objects.get_or_create(country=country)
