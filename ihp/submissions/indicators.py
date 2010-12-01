@@ -74,10 +74,21 @@ def exclude_count_factory(value):
 
 def country_perc_factory(value):
     def perc_value(qs, agency, q):
+        # In some countries certain processes do not exists
+        # the watchlist reduces the denominator if the agency
+        # is active in such a country for a particular question
+        watchlist = {
+            "1" : ["Burkina Faso", "DRC", "Nigeria"],
+            "17" : ["DRC"],
+            "18" : ["Burkina Faso", "Nigeria"],
+        }
+
+        watch = watchlist.get(q, [])
         count_value = count_factory(value)
 
         base_value, cur_value = count_value(qs, agency, q)
-        num_countries = float(len(AgencyCountries.objects.get_agency_countries(agency)))
+        countries = [country for country in AgencyCountries.objects.get_agency_countries(agency) if country.country not in watch]
+        num_countries = float(len(countries))
         if num_countries == 0:
             return None, None
         else:
