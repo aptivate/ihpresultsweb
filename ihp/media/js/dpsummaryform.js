@@ -35,6 +35,7 @@ $(document).ready(function(){
     $("#id_submit").click(function(e) {
         option = $("#id_agency option:selected");
 
+        new Spinner('id').play();
         $.post("/api/dp_summary/" + option.val() + "/", 
             { 
                 summary1: $("#id_summary1").val(),

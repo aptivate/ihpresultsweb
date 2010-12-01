@@ -36,7 +36,7 @@ class DPSummaryForm(forms.Form):
     summary8 = forms.CharField(widget=forms.Textarea, label="8DP Summary")
 
     class Media:
-        js = ("js/jquery-1.4.4.min.js ", "js/dpsummaryform.js", )
+        js = ("js/jquery-1.4.4.min.js ", "js/bridge.js", "js/spinners.js", "js/dpsummaryform.js", )
         css = {
             "all": ('css/dp_summary.css', )
         }
