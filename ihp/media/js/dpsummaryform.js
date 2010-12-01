@@ -3,6 +3,7 @@ agency_select = function(e) {
     if (option.text() == "") {
         $("textarea").text("");
     }
+    $.loading({onAjax:true, text: 'Loading...'});
     $.getJSON("/api/dp_summary/" + option.val(), function(data) {
         $("#id_text1").text(data["1DP"]);
         $("#id_text2a").text(data["2DPa"]);
@@ -35,7 +36,7 @@ $(document).ready(function(){
     $("#id_submit").click(function(e) {
         option = $("#id_agency option:selected");
 
-        new Spinner('id').play();
+        $.loading({onAjax:true, text: 'Saving...'});
         $.post("/api/dp_summary/" + option.val() + "/", 
             { 
                 summary1: $("#id_summary1").val(),
@@ -48,7 +49,6 @@ $(document).ready(function(){
                 summary8: $("#id_summary8").val()
             },
             function(data) {
-                alert(data);
             }
         );
         return false;
