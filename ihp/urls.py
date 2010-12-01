@@ -4,11 +4,12 @@ from django.conf import settings
 
 from django.views.generic.simple import direct_to_template
 from django.contrib import admin
+from submissions.models import Agency
 admin.autodiscover()
 
 urlpatterns = patterns('',
 
-    (r'^$', direct_to_template, {"template" : "home.html"}, "home"),
+    (r'^$', direct_to_template, {"template" : "home.html", "extra_context" : {"agencies" : Agency.objects.filter(type="Agency")}}, "home"),
 
     # New csv views
     (r'^scorecard/export/agencies/$', 'submissions.views.agency_export', {}, 'agency_export'),
@@ -21,7 +22,7 @@ urlpatterns = patterns('',
     (r'^api/dp_summary/(?P<agency_id>\d+)/$', 'submissions.api.dp_summary', {}, 'api_dp_summary'),
 
     # Graph Views
-    (r"^graph/(?P<agency_name>[a-zA-Z]+)/$", "submissions.graphs.allgraphs", {}, "allgraphs"),
+    (r"^graph/(?P<agency_name>[a-zA-Z\s]+)/$", "submissions.graphs.allgraphs", {}, "allgraphs"),
     
 
     # Old views

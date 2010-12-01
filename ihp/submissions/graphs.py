@@ -31,7 +31,6 @@ def allgraphs(request, agency_name, template_name="submissions/allgraphs.html", 
 
     agency = Agency.objects.get(agency__iexact=agency_name)
     
-    
     data = {}
     for country in agency.countries:
         country_data = {}
