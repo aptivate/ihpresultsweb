@@ -101,7 +101,7 @@ def country_perc_factory(value):
                 if country.country not in watch
             ]
             num_countries = float(len(countries))
-            return base_value / num_countries * 100 if num_countries > 0 else None
+            return val / num_countries * 100 if num_countries > 0 else None
         base_value = calc_val(baseline_watchlist, base_value)
         cur_value = calc_val(latest_watchlist, cur_value)
 
