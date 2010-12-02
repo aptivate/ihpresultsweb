@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.functional import curry
 
 class Agency(models.Model):
     agency = models.CharField(max_length=50, null=False)
@@ -181,3 +182,48 @@ class DPScorecardSummary(models.Model):
 
     class Meta:
        verbose_name_plural = "DP Scorecard Summaries" 
+
+
+RatingsField = curry(models.CharField, max_length=20, null=True, blank=True)
+CommentsField = curry(models.TextField, null=True, blank=True)
+
+class DPScorecardRatings(models.Model):
+    agency = models.OneToOneField(Agency, null=False)
+    r1 = RatingsField()
+    er1 = CommentsField()
+
+    r2a = RatingsField()
+    er2a = CommentsField()
+    r2b = RatingsField()
+    er2b = CommentsField()
+    r2c = RatingsField()
+    er2c = CommentsField()
+
+    r3 = RatingsField()
+    er3 = CommentsField()
+
+    r4 = RatingsField()
+    er4 = CommentsField()
+
+    r5a = RatingsField()
+    er5a = CommentsField()
+    r5b = RatingsField()
+    er5b = CommentsField()
+    r5c = RatingsField()
+    er5c = CommentsField()
+
+    r6 = RatingsField()
+    er6 = CommentsField()
+
+    r7 = RatingsField()
+    er7 = CommentsField()
+
+    r8 = RatingsField()
+    er8 = CommentsField()
+
+
+    def __unicode__(self):
+        return unicode(self.agency)
+
+    class Meta:
+       verbose_name_plural = "DP Scorecard Ratings" 

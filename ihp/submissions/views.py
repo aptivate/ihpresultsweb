@@ -6,10 +6,10 @@ import csv
 from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template
 
-from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft
+from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardRatings
 from target import calc_agency_targets, get_country_progress, calc_country_targets, get_agency_progress
 from indicators import calc_country_indicators, calc_agency_country_indicators
-from forms import DPSummaryForm
+from forms import DPSummaryForm, DPRatingsForm
 
 def calc_agency_comments(indicator, agency_data):
     old_comments = agency_data[indicator]["comments"]
@@ -205,6 +205,7 @@ def agency_export(request):
     data = get_agencies_scorecard_data()
     for agency, datum in data.items():
         try:
+            ratings, _ = DPScorecardRatings.objects.get_or_create(agency=agency)
             datum["file"] = agency.agency
             datum["agency"] = agency.agency 
             datum["profile"] = agency.description
@@ -212,12 +213,9 @@ def agency_export(request):
                 "3DP", "4DP", "5DPa", "5DPb", "5DPc", "6DP", "7DP", "8DP"]:
 
                 h = indicator.replace("DP", "")
-                datum["er%s" % h] = datum[indicator]["commentary"]
-                datum["r%s" % h] = target_none(datum[indicator]["target"])
+                datum["er%s" % h] = ratings.__dict__["er%s" % h] or datum[indicator]["commentary"]
+                datum["r%s" % h] = target_none(ratings.__dict__["r%s" % h] or datum[indicator]["target"])
 
-            for i in range(1, 9):
-                # TODO - still need to add this stuff
-                datum["erb%d" % i] = "Nothing yet"
             for i in range(1, 11):
                 datum["p%d" % i] = datum["p"].get(i - 1, "pgreen")
                 datum["np%d" % i] = datum["np"].get(i - 1, "npwhite")
@@ -605,6 +603,19 @@ def dp_summary_edit(request, template_name="submissions/dp_summary_edit.html", e
             pass
     else:
         form = DPSummaryForm()
+
+    extra_context["form"] = form
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def dp_ratings_edit(request, template_name="submissions/dp_ratings_edit.html", extra_context=None):
+    extra_context = extra_context or {}
+
+    if request.method == "POST":
+        form = DPRatingsForm(request.POST)
+        if form.is_valid():
+            pass
+    else:
+        form = DPRatingsForm()
 
     extra_context["form"] = form
     return direct_to_template(request, template=template_name, extra_context=extra_context)
