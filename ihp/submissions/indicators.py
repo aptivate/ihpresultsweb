@@ -77,22 +77,35 @@ def country_perc_factory(value):
         # In some countries certain processes do not exists
         # the watchlist reduces the denominator if the agency
         # is active in such a country for a particular question
-        watchlist = {
-            "1" : ["Burkina Faso", "DRC", "Nigeria", "Djibouti"],
-            "17" : ["DRC", "Burundi", "Djibouti"],
-            "18" : ["Burkina Faso", "Nigeria", "Djibouti"],
+        baseline_watchlist = {
+            "1" : ["Burkina Faso", "Burundi", "Djibouti", "DRC", "Ethiopia", "Mozambique", "Nepal", "Nigeria"],
+            "17" : ["Burundi", "Djibouti", "DRC", "Nigeria"],
+            "18" : ["Burkina Faso", "Djibouti", "Nepal", "Nigeria"],
         }
 
-        watch = watchlist.get(q, [])
-        count_value = count_factory(value)
+        latest_watchlist = {
+            "1" : ["Burkina Faso", "Djibouti", "DRC", "Nigeria"],
+            "17" : ["Burundi", "Djibouti", "DRC"],
+            "18" : ["Burkina Faso", "Djibouti", "Nigeria"],
+        }
 
+        count_value = count_factory(value)
         base_value, cur_value = count_value(qs, agency, q)
-        countries = [country for country in AgencyCountries.objects.get_agency_countries(agency) if country.country not in watch]
-        num_countries = float(len(countries))
-        if num_countries == 0:
-            return None, None
-        else:
-            return (base_value / num_countries * 100), (cur_value / num_countries * 100)
+
+        def calc_val(watchlist, val):
+            watch = watchlist.get(q, [])
+            count_value = count_factory(value)
+            countries = [
+                country 
+                for country in AgencyCountries.objects.get_agency_countries(agency) 
+                if country.country not in watch
+            ]
+            num_countries = float(len(countries))
+            return base_value / num_countries * 100 if num_countries > 0 else None
+        base_value = calc_val(baseline_watchlist, base_value)
+        cur_value = calc_val(latest_watchlist, cur_value)
+
+        return base_value, cur_value
     return perc_value
 
 def equals_or_zero(val):
