@@ -619,3 +619,6 @@ def dp_ratings_edit(request, template_name="submissions/dp_ratings_edit.html", e
 
     extra_context["form"] = form
     return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def dp_grid(request, template_name="submissions/dp_grid.html", extra_context=None):
+    pass

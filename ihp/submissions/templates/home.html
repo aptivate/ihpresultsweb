@@ -18,7 +18,7 @@
 <h2>Graphs (by Agency)</h2>
 <ol>
     {% for agency in agencies %}
-    <li><a href="{% url agencygraphs agency.agency %}">{{ agency.agency }}</a></li>
+    <li><a href="{% url agencygraphs agency.agency %}">{{ agency.agency }}</a> (<a href="{% url agencygraphs_absolute agency.agency %}">absolute</a>)</li>
     {% endfor %}
 </ol>
 

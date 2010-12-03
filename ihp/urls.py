@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     # Edit views
     (r'^scorecard/edit/agencies/summary/$', 'submissions.views.dp_summary_edit', {}, 'dp_summary_edit'),
     (r'^scorecard/edit/agencies/ratings/$', 'submissions.views.dp_ratings_edit', {}, 'dp_ratings_edit'),
+    (r'^scorecard/edit/agencies/8dpgrid/$', 'submissions.views.dp_grid', {}, 'dp_grid'),
 
     # Api views
     (r'^api/dp_summary/(?P<agency_id>\d+)/$', 'submissions.api.dp_summary', {}, 'api_dp_summary'),
@@ -28,6 +29,9 @@ urlpatterns = patterns('',
 
     # Graph Views
     (r"^graph/agency/(?P<agency_name>[a-zA-Z\s]+)/$", "submissions.graphs.agencygraphs", {}, "agencygraphs"),
+    (r"^graph/agency/(?P<agency_name>[a-zA-Z\s]+)/absolute$", "submissions.graphs.agencygraphs", {
+        "template_name" : "submissions/agencygraphs_absolute.html"
+    }, "agencygraphs_absolute"),
     (r"^graph/country/(?P<country_name>[a-zA-Z\s]+)/$", "submissions.graphs.countrygraphs", {}, "countrygraphs"),
     
 

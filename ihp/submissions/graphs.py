@@ -32,19 +32,22 @@ def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.h
     agency = Agency.objects.get(agency__iexact=agency_name)
     
     data = {}
+    abs_values = {}
     for country in agency.countries:
         country_data = {}
+        country_abs_values = {}
         indicators = calc_agency_country_indicators(agency, country)
         for indicator in ["2DPa", "2DPb", "2DPc", "3DP", "4DP", "5DPa", "5DPb", "5DPc"]:
             base_val, _, latest_val, _ = indicators[indicator][0]
-            if agency.agency == "GFATM" and indicator == "2DPa":
-                print country, base_val, latest_val, safe_mul(safe_div(safe_diff(latest_val, base_val), base_val), 100)
+            country_abs_values[indicator] = (base_val, latest_val) 
             country_data[indicator] = safe_mul(safe_div(safe_diff(latest_val, base_val), base_val), 100)
         data[country.country] = country_data
+        abs_values[country.country] = country_abs_values
 
     extra_context["countries"] = agency.countries    
     extra_context["agency"] = agency.agency    
     extra_context["data"] = sorted(data.items())
+    extra_context["abs_values"] = sorted(abs_values.items())
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
     
