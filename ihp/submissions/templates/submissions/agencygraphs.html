@@ -5,84 +5,84 @@
 <script>
 Event.observe(window, 'load', function() {
     var bargraph_2dpa = new Grafico.BarGraph(
-        $('graph_2dpa'), [{% for country, datum in data.items %}{{ datum.2DPa|default_if_none:"0" }},{% endfor %}],
+        $('graph_2dpa'), [{% for country, datum in data %}{{ datum.2DPa|default_if_none:"0" }},{% endfor %}],
         {
-            labels : [{% for country in countries %}"{{ country.country }}",{% endfor %}],
+            labels : [{% for country, _ in data %}"{{ country }}",{% endfor %}],
             color :  "#4b80b6",
             vertical_label_unit : "%",
-            datalabels : {one: [{% for country, datum in data.items %}{{ datum.2DPa|default_if_none:"0"|floatformat }},{% endfor %}]}
+            datalabels : {one: [{% for country, datum in data %}{{ datum.2DPa|default_if_none:"0"|floatformat }},{% endfor %}]}
         }
     );
 });
 
 Event.observe(window, 'load', function() {
     var bargraph_2dpb = new Grafico.BarGraph(
-        $('graph_2dpb'), [{% for country, datum in data.items %}{{ datum.2DPb|default_if_none:"0" }},{% endfor %}],
+        $('graph_2dpb'), [{% for country, datum in data %}{{ datum.2DPb|default_if_none:"0" }},{% endfor %}],
         {
-            labels : [{% for country in countries %}"{{ country.country }}",{% endfor %}],
+            labels : [{% for country, _ in data %}"{{ country }}",{% endfor %}],
             color :  "#4b80b6",
             vertical_label_unit : "%",
-            datalabels : {one: [{% for country, datum in data.items %}{{ datum.2DPb|default_if_none:"0"|floatformat }},{% endfor %}]}
+            datalabels : {one: [{% for country, datum in data %}{{ datum.2DPb|default_if_none:"0"|floatformat }},{% endfor %}]}
         }
     );
 
     var bargraph_2dpc = new Grafico.BarGraph(
-        $('graph_2dpc'), [{% for country, datum in data.items %}{{ datum.2DPc|default_if_none:"0" }},{% endfor %}],
+        $('graph_2dpc'), [{% for country, datum in data %}{{ datum.2DPc|default_if_none:"0" }},{% endfor %}],
         {
-            labels : [{% for country in countries %}"{{ country.country }}",{% endfor %}],
+            labels : [{% for country, _ in data %}"{{ country }}",{% endfor %}],
             color :  "#4b80b6",
             vertical_label_unit : "%",
-            datalabels : {one: [{% for country, datum in data.items %}{{ datum.2DPc|default_if_none:"0"|floatformat }},{% endfor %}]}
+            datalabels : {one: [{% for country, datum in data %}{{ datum.2DPc|default_if_none:"0"|floatformat }},{% endfor %}]}
         }
     );
 
     var bargraph_3dp = new Grafico.BarGraph(
-        $('graph_3dp'), [{% for country, datum in data.items %}{{ datum.3DP|default_if_none:"0" }},{% endfor %}],
+        $('graph_3dp'), [{% for country, datum in data %}{{ datum.3DP|default_if_none:"0" }},{% endfor %}],
         {
-            labels : [{% for country in countries %}"{{ country.country }}",{% endfor %}],
+            labels : [{% for country, _ in data %}"{{ country }}",{% endfor %}],
             color :  "#4b80b6",
             vertical_label_unit : "%",
-            datalabels : {one: [{% for country, datum in data.items %}{{ datum.3DP|default_if_none:"0"|floatformat }},{% endfor %}]}
+            datalabels : {one: [{% for country, datum in data %}{{ datum.3DP|default_if_none:"0"|floatformat }},{% endfor %}]}
         }
     );
 
     var bargraph_4dp = new Grafico.BarGraph(
-        $('graph_4dp'), [{% for country, datum in data.items %}{{ datum.4DP|default_if_none:"0" }},{% endfor %}],
+        $('graph_4dp'), [{% for country, datum in data %}{{ datum.4DP|default_if_none:"0" }},{% endfor %}],
         {
-            labels : [{% for country in countries %}"{{ country.country }}",{% endfor %}],
+            labels : [{% for country, _ in data %}"{{ country }}",{% endfor %}],
             color :  "#4b80b6",
             vertical_label_unit : "%",
-            datalabels : {one: [{% for country, datum in data.items %}{{ datum.4DP|default_if_none:"0"|floatformat }},{% endfor %}]}
+            datalabels : {one: [{% for country, datum in data %}{{ datum.4DP|default_if_none:"0"|floatformat }},{% endfor %}]}
         }
     );
 
     var bargraph_5dpa = new Grafico.BarGraph(
-        $('graph_5dpa'), [{% for country, datum in data.items %}{{ datum.5DPa|default_if_none:"0" }},{% endfor %}],
+        $('graph_5dpa'), [{% for country, datum in data %}{{ datum.5DPa|default_if_none:"0" }},{% endfor %}],
         {
-            labels : [{% for country in countries %}"{{ country.country }}",{% endfor %}],
+            labels : [{% for country, _ in data %}"{{ country }}",{% endfor %}],
             color :  "#4b80b6",
             vertical_label_unit : "%",
-            datalabels : {one: [{% for country, datum in data.items %}{{ datum.5DPa|default_if_none:"0"|floatformat }},{% endfor %}]}
+            datalabels : {one: [{% for country, datum in data %}{{ datum.5DPa|default_if_none:"0"|floatformat }},{% endfor %}]}
         }
     );
 
     var bargraph_5dpb = new Grafico.BarGraph(
-        $('graph_5dpb'), [{% for country, datum in data.items %}{{ datum.5DPb|default_if_none:"0" }},{% endfor %}],
+        $('graph_5dpb'), [{% for country, datum in data %}{{ datum.5DPb|default_if_none:"0" }},{% endfor %}],
         {
-            labels : [{% for country in countries %}"{{ country.country }}",{% endfor %}],
+            labels : [{% for country, _ in data %}"{{ country }}",{% endfor %}],
             color :  "#4b80b6",
             vertical_label_unit : "%",
-            datalabels : {one: [{% for country, datum in data.items %}{{ datum.5DPb|default_if_none:"0"|floatformat }},{% endfor %}]}
+            datalabels : {one: [{% for country, datum in data %}{{ datum.5DPb|default_if_none:"0"|floatformat }},{% endfor %}]}
         }
     );
 
     var bargraph_5dpc = new Grafico.BarGraph(
-        $('graph_5dpc'), [{% for country, datum in data.items %}{{ datum.5DPc|default_if_none:"0" }},{% endfor %}],
+        $('graph_5dpc'), [{% for country, datum in data %}{{ datum.5DPc|default_if_none:"0" }},{% endfor %}],
         {
-            labels : [{% for country in countries %}"{{ country.country }}",{% endfor %}],
+            labels : [{% for country, _ in data %}"{{ country }}",{% endfor %}],
             color :  "#4b80b6",
             vertical_label_unit : "%",
-            datalabels : {one: [{% for country, datum in data.items %}{{ datum.5DPc|default_if_none:"0"|floatformat }},{% endfor %}]}
+            datalabels : {one: [{% for country, datum in data %}{{ datum.5DPc|default_if_none:"0"|floatformat }},{% endfor %}]}
         }
     );
 
