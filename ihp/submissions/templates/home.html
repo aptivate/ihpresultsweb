@@ -25,7 +25,7 @@
 <h2>Graphs (by Country)</h2>
 <ol>
     {% for country in countries %}
-    <li><a href="{% url countrygraphs country.country %}">{{ country.country }}</a></li>
+    <li><a href="{% url countrygraphs country.country %}">{{ country.country }}</a> (<a href="{% url countrygraphs_absolute country.country %}">absolute</a>)</li>
     {% endfor %}
 </ol>
 

@@ -57,17 +57,22 @@ def countrygraphs(request, country_name, template_name="submissions/countrygraph
     country = Country.objects.get(country__iexact=country_name)
     
     data = {}
+    abs_values = {}
     for agency in country.agencies:
         agency_data = {}
+        agency_abs_values = {}
         indicators = calc_agency_country_indicators(agency, country)
         for indicator in ["2DPa", "2DPb", "2DPc", "3DP", "4DP", "5DPa", "5DPb", "5DPc"]:
             base_val, _, latest_val, _ = indicators[indicator][0]
+            agency_abs_values[indicator] = (base_val, latest_val) 
             agency_data[indicator] = safe_mul(safe_div(safe_diff(latest_val, base_val), base_val), 100)
         data[agency.agency] = agency_data
+        abs_values[agency.agency] = agency_abs_values
 
     extra_context["agencies"] = country.agencies    
     extra_context["country"] = country.country    
     extra_context["data"] = sorted(data.items())
+    extra_context["abs_values"] = sorted(abs_values.items())
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
     

@@ -3,16 +3,19 @@
 
 {% block graphdefs %}
 
-<script>
-{% ratiograph agency 2DPa data graph_2dpa %}
-{% ratiograph agency 2DPb data graph_2dpb %}
-{% ratiograph agency 2DPc data graph_2dpc %}
-{% ratiograph agency 3DP data graph_3dp %}
-{% ratiograph agency 4DP data graph_4dp %}
-{% ratiograph agency 5DPa data graph_5dpa %}
-{% ratiograph agency 5DPb data graph_5dpb %}
-{% ratiograph agency 5DPc data graph_5dpc %}
-</script>
+
+<script id="source" language="javascript" type="text/javascript"> 
+
+{% absgraph country 2DPa abs_values graph_2dpa %}
+{% absgraph country 2DPb abs_values graph_2dpb %}
+{% absgraph country 2DPc abs_values graph_2dpc %}
+{% absgraph country 3DP abs_values graph_3dp %}
+{% absgraph country 4DP abs_values graph_4dp %}
+{% absgraph country 5DPa abs_values graph_5dpa %}
+{% absgraph country 5DPb abs_values graph_5dpb %}
+{% absgraph country 5DPc abs_values graph_5dpc %}
+
+</script> 
 {% endblock %}
 
 {% block body %}

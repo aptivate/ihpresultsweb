@@ -33,6 +33,9 @@ urlpatterns = patterns('',
         "template_name" : "submissions/agencygraphs_absolute.html"
     }, "agencygraphs_absolute"),
     (r"^graph/country/(?P<country_name>[a-zA-Z\s]+)/$", "submissions.graphs.countrygraphs", {}, "countrygraphs"),
+    (r"^graph/country/(?P<country_name>[a-zA-Z\s]+)/absolute$", "submissions.graphs.countrygraphs", {
+        "template_name" : "submissions/countrygraphs_absolute.html"
+    }, "countrygraphs_absolute"),
     
 
     # Old views

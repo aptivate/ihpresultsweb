@@ -67,6 +67,58 @@ class AbsGraphNode(Node):
         except:
             traceback.print_exc()
 
+class RatioGraphNode(Node):
+    def __init__(self, agency, indicator, data, element):
+        self.agency = Variable(agency)
+        self.indicator = indicator
+        self.data = Variable(data)
+        self.element = element
+
+    def render(self, context):
+        try:
+            try:
+                agency = self.agency.resolve(context)
+            except VariableDoesNotExist:
+                raise TemplateSyntaxError('"absgraph" tag got an unknown variable: %r' % self.agency)
+
+            try:
+                data = self.data.resolve(context)
+            except VariableDoesNotExist:
+                raise TemplateSyntaxError('"absgraph" tag got an unknown variable: %r' % self.data)
+
+            countries_list = ",".join('"%s"' % country for country, _ in data)
+            data_vals = ",".join(ffloat(datum[self.indicator]) for country, datum in data)
+            var_name = "chart_%s" % (random.randint(0, 10000000))
+            s = """
+                var %s; // globally available
+                $(document).ready(function() {
+                    %s = new Highcharts.Chart({
+                        chart: {
+                            renderTo: '%s',
+                            defaultSeriesType: 'column'
+                        },
+                        title: {
+                           text: '%s'
+                        },
+                        xAxis: {
+                           categories: [%s],
+                        },
+                        yAxis: {
+                            title: {
+                               text: '%%'
+                            }
+                        },
+                        series: [{
+                           name: 'data',
+                           data: [%s]
+                        }]
+                    });
+                });
+            """ % (var_name, var_name, self.element, self.indicator, countries_list, data_vals)
+            return s
+        except:
+            traceback.print_exc()
+
 def parse_absolute_graph(parser, token):
     """
     Output the javascript code for an absgraph
@@ -81,4 +133,19 @@ def parse_absolute_graph(parser, token):
         
     return AbsGraphNode(tokens[1], tokens[2], tokens[3], tokens[4])
 
+def parse_ratio_graph(parser, token):
+    """
+    Output the javascript code for a ratiograph
+
+    e.g.
+    {% ratiograph agency indicator data element %}
+
+    """
+    tokens = token.contents.split()
+    if len(tokens) != 5:
+        raise TemplateSyntaxError(u"'%r' tag requires 4 arguments." % tokens[0])
+        
+    return RatioGraphNode(tokens[1], tokens[2], tokens[3], tokens[4])
+
 register.tag('absgraph', parse_absolute_graph)
+register.tag('ratiograph', parse_ratio_graph)
