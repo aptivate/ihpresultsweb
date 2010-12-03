@@ -171,30 +171,30 @@ def calc_agency_targets(agency):
     """
 
     commentary_map = {
-        "1DP" : "An IHP+ Country Compact or equivalent was signed in %(cur_val).0f%% of IHP+ countries where these exist, by the end of %(cur_year)s.",
-        "2DPa" : "%(cur_val).0f%% of health sector aid was not reported on national health sector budgets by the end of %(cur_year)s - %(diff_direction)s from %(base_val).0f%% in 2006.",
-        "2DPb" :"%(cur_val).0f%% of capacity development support was provided through co-ordinated programmes in %(cur_year)s - %(diff_direction)s from %(base_val).0f%% in %(base_year)s.",
-        "2DPc" : "%(cur_val).0f%% of health sector aid was provided through programme based approaches by the end of %(cur_year)s, %(diff_direction)s from %(base_val).0f%% in the %(base_year)s baseline.",
-        "3DP" : "%(cur_val).0f%% of health sector funding was provided through multi-year commitments by the end of %(cur_year)s: %(diff_direction)s from %(base_val).0f%% in %(base_year)s.",
-        "4DP" : "In %(cur_year)s, %(cur_val).0f%% of health sector aid disbursements were not released according to agreed schedules in annual or multi-year frameworks - %(diff_direction)s from %(base_val).0f%% in %(base_year)s.",
-        "5DPa" : "By end %(cur_year)s, %(cur_val).0f%% of health sector aid did not use country procurement systems in IHP+ partner countries: %(diff_direction)s from %(base_val).0f%% in %(base_year)s.",
-        "5DPb" : "By the end of %(cur_year)s, %(cur_val).0f%% of health sector aid did not use government partner country public financial management systems: %(diff_direction)s from %(base_val).0f%% since %(base_year)s.",
-        "5DPc" : Template("""In {{ cur_year }}, the stock of parallel PIUs in the surveyed countries was {{ cur_val }} - {{ diff_direction2 }} from {% if diff_direction3 %} {{ base_val }} in {% endif %} {{ base_year }} {% if diff_direction3 %} ({{ diff_direction3 }} of {{ abs_perc_change|floatformat:0 }}%) {% endif %}. """),
-        "6DP" : "Where they exist, national performance assessment frameworks are used to assess progress in %(cur_val).0f%% of IHP+ countries: increased from %(base_val).0f%% in %(base_year)s.",
-        "7DP" : "In %(cur_year)s, participated in annual mutual assessments of progress in implementing health sector commitments & agreements in %(cur_val).0f%% IHP+ countries; %(diff_direction)s from %(base_val).0f%% in %(base_year)s. ",
-        "8DP" : "By end %(cur_year)s, evidence exists in %(cur_val).0f%% of countries of support to civil society engagement in health sector policy processes; %(diff_direction)s from %(base_val).0f%% in %(base_year)s.",
+        "1DP" : "An IHP+ Country Compact or equivalent has been signed in %(cur_val).0f%% of IHP+ countries where they exist.",
+        "2DPa" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was not reported on national health sector budgets - %(diff_direction)s from %(base_val).0f%%.",
+        "2DPb" :"In %(cur_year)s %(cur_val).0f%% of capacity development was provided through coordinated programmes - %(diff_direction)s from %(base_val).0f%%.",
+        "2DPc" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided through programme based approaches - %(diff_direction)s from %(base_val).0f%%.",
+        "3DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided through multi-year commitments - %(diff_direction)s from %(base_val).0f%%.",
+        "4DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid disbursements were not released according to agreed schedules - %(diff_direction)s from %(base_val).0f%% in %(base_year)s.",
+        "5DPa" : "In %(cur_year)s %(cur_val).0f%% of health sector aid did not use country procurement systems - %(diff_direction)s from %(base_val).0f%%.",
+        "5DPb" : "In %(cur_year)s %(cur_val).0f%% of health sector aid did not use national public financial management systems - %(diff_direction)s from %(base_val).0f%%.",
+        "5DPc" : "In %(cur_year)s the stock of parallel project implementation units (PIUs) in the surveyed countries was %(cur_val)s - %(diff_direction)s from %(base_val)s.",
+        "6DP" : "In %(cur_year)s national performance assessment frameworks were used to assess progress in %(cur_val).0f%% of IHP+ countries - %(diff_direction)s from %(base_val).0f%%",
+        "7DP" : "In %(cur_year)s %(agency_name)s participated in health sector annual mutual assessments of progress in %(cur_val).0f%% IHP+ countries - %(diff_direction)s from %(base_val).0f%%.",
+        "8DP" : "In %(cur_year)s, evidence exists in %(cur_val).0f%% of IHP+ countries of support to civil society engagement in health sector policy processes.",
     }
 
     target_map = {
-        "1DP" : "Target = %(target_val).0f%%.",
-        "2DPa" : "Target = Halve the proportion of aid flows to the health sector not reported on government's budget(s) (with at least 85%% reported on budget).",
-        "2DPb" :"Target = %(target_val).0f%%",
-        "2DPc" : "Target = %(target_val).0f%%.",
-        "3DP" : "Target = %(target_val).0f%%.",
-        "4DP" : "Target = Halve the proportion of health sector aid not disbursed within the fiscal year for which it was scheduled.",
-        "5DPa" : "Target = One-third reduction in the %% of health sector aid to the public sector not using partner countries' procurement systems.",
-        "5DPb" : "Target = One-third reduction in the %% of health sector aid to the public sector not using partner countries' PFM systems.",
-        "5DPc" : "Target = Reduce by two-thirds the stock of parallel project implementation units.",
+        "1DP" : "Target = 100%%.",
+        "2DPa" : "Target = Halve the %% of aid flows not reported on budget (with at least 85%% reported on budget).",
+        "2DPb" :"Target = 50%%",
+        "2DPc" : "Target = 66%%",
+        "3DP" : "Target = 90%%",
+        "4DP" : "Target = Halve the %% of health sector aid not disbursed within the calendar year for which it was scheduled.",
+        "5DPa" : "Target = One third reduction in the %% of health sector aid to the public sector not using national procurement systems.",
+        "5DPb" : "Target = One third reduction in the %% of health sector aid to the public sector not using national PFM systems.",
+        "5DPc" : "Target = two-third reduction in the stock of parallel PIUs.",
         "6DP" : "Target = 100%%.",
         "7DP" : "Target: 100%%.",
         "8DP" : "Target = 100%%",
@@ -216,6 +216,7 @@ def calc_agency_targets(agency):
             "cur_year" : cur_year,
             "comments" : comments,
             "commentary" : "",
+            "agency_name" : agency.agency,
         }
 
         result["target"] = evaluate_indicator(target, base_val, cur_val)
@@ -227,15 +228,12 @@ def calc_agency_targets(agency):
             if base_val - cur_val > 0:
                 result["diff_direction"] = "a decrease" 
                 result["diff_direction2"] = "down" 
-                result["diff_direction3"] = "a reduction" 
             elif base_val - cur_val == 0:
                 result["diff_direction"] = "no change"
                 result["diff_direction2"] = "no change"
-                result["diff_direction3"] = None
             else:
                result["diff_direction"] = "an increase"
                result["diff_direction2"] = "up"
-               result["diff_direction3"] = "an increase"
 
             if result["base_val"] > 0:
                 result["perc_change"] = (result["cur_val"] - result["base_val"]) / float(result["base_val"]) * 100
