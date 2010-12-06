@@ -1,4 +1,4 @@
-from models import Submission, DPQuestion, AgencyCountries, GovQuestion
+from models import Submission, DPQuestion, AgencyCountries, GovQuestion, Country8DPFix
 import traceback
 
 NA_STR = "__NA__"
@@ -24,6 +24,17 @@ def sum_current_values(qs):
 
 def sum_baseline_values(qs):
     return sum([float_or_zero(el.baseline_value) for el in qs if el.baseline_value != None])
+
+def func_8dpfix(qs, agency, q):
+    countries = Country8DPFix.objects.filter(agency=agency)
+    denom = float(len(countries))
+    base_num = len([country for country in countries if country.baseline_progress])
+    cur_num = len([country for country in countries if country.latest_progress])
+
+    if denom > 0:
+        return base_num / denom * 100, cur_num / denom * 100
+    else:
+        return None, None
 
 def question_values(qs, agency_or_country, q):
     qs = qs.filter(
@@ -345,7 +356,7 @@ indicator_funcs = {
     "5DPc" : (sum_values, ("16",)),
     "6DP"  : (country_perc_factory("yes"), ("17",)),
     "7DP"  : (country_perc_factory("yes"), ("18",)),
-    "8DP"  : (country_perc_factory("yes"), ("20",)),
+    "8DP"  : (func_8dpfix, ("20",)),
     "1G"   : (equals_yes_or_no("yes"), ("1",)),
     "2Ga"  : (combine_yesnos, ("2", "3")),
     "2Gb"  : (equals_or_zero("yes"), ("4",)),
