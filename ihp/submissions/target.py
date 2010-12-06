@@ -209,10 +209,10 @@ def calc_agency_targets(agency):
 
         (base_val, base_year, cur_val, cur_year), comments = indicators[indicator]
 
-        if round(cur_val, 0) == 0:
+        if type(cur_val) == float and round(cur_val, 0) == 0:
             cur_val = 0.0
 
-        if round(base_val, 0) == 0:
+        if type(base_val) == float and round(base_val, 0) == 0:
             base_val = 0.0
 
         target = targets[indicator]
