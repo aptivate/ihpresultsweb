@@ -5,9 +5,33 @@ admin.site.register(Agency)
 admin.site.register(Country)
 admin.site.register(UpdateAgency)
 admin.site.register(Submission)
-admin.site.register(DPQuestion)
+
+class DPQuestionAdmin(admin.ModelAdmin):
+    list_filter = ("question_number", "submission")
+    list_display = ("question_number", "country", "agency")
+
+    def country(self, question):
+        return question.submission.country
+
+    def agency(self, question):
+        return question.submission.agency
+        
+        
+
+admin.site.register(DPQuestion, DPQuestionAdmin)
+
 admin.site.register(GovQuestion)
-admin.site.register(AgencyCountries)
+
+class AgencyCountriesAdmin(admin.ModelAdmin):
+    list_filter = ("agency", "country")
+
+    def country(self, question):
+        return question.submission.country
+
+    def agency(self, question):
+        return question.submission.agency
+        
+admin.site.register(AgencyCountries, AgencyCountriesAdmin)
 admin.site.register(AgencyTargets)
 admin.site.register(CountryTargets)
 admin.site.register(AgencyWorkingDraft)

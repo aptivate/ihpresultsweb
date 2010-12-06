@@ -82,6 +82,9 @@ class DPQuestion(models.Model):
             self.submission.country, self.submission.agency, self.question_number
         )
 
+    class Meta:
+       verbose_name_plural = "DP Questions" 
+
 class GovQuestion(models.Model):
     submission = models.ForeignKey(Submission, null=False)
     question_number = models.CharField(max_length=10, null=False)
@@ -119,11 +122,11 @@ class AgencyCountries(models.Model):
 
 class AgencyTargets(models.Model):
     indicator = models.CharField(max_length=10, null=False)
-    agency = models.ForeignKey(Agency, null=True)
+    agency = models.ForeignKey(Agency, null=True, blank=True)
     tick_criterion_type = models.CharField(max_length=50, null=False)
     tick_criterion_value = models.FloatField(null=True)
     arrow_criterion_type = models.CharField(max_length=50, null=False)
-    arrow_criterion_value = models.FloatField(null=True)
+    arrow_criterion_value = models.FloatField(null=True, blank=True)
 
     def __unicode__(self):
         return "<<AgencyTargets Object>>%s %s" % (self.agency, self.indicator)

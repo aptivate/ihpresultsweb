@@ -90,7 +90,16 @@ def country_perc_factory(value):
         }
 
         count_value = count_factory(value)
-        base_value, cur_value = count_value(qs, agency, q)
+        base_value, _ = count_value(
+            qs.exclude(submission__country__country__in=baseline_watchlist.get(q, [])),
+            agency, q
+        )
+
+        _, cur_value = count_value(qs.exclude(
+            submission__country__country__in=latest_watchlist.get(q, [])), 
+            agency, q
+        )
+        #base_value, cur_value = count_value(qs, agency, q)
 
         def calc_val(watchlist, val):
             watch = watchlist.get(q, [])
@@ -100,6 +109,7 @@ def country_perc_factory(value):
                 for country in AgencyCountries.objects.get_agency_countries(agency) 
                 if country.country not in watch
             ]
+            
             num_countries = float(len(countries))
             return val / num_countries * 100 if num_countries > 0 else None
         base_value = calc_val(baseline_watchlist, base_value)
