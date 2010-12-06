@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.functional import curry
 
 class Agency(models.Model):
-    agency = models.CharField(max_length=50, null=False)
+    agency = models.CharField(max_length=50, null=False, unique=True)
     description = models.TextField()
     type = models.CharField(max_length=15, null=False)
 
@@ -24,7 +24,7 @@ class AgencyWorkingDraft(models.Model):
         return unicode(self.agency)
 
 class Country(models.Model):
-    country = models.CharField(max_length=50, null=False)
+    country = models.CharField(max_length=50, null=False, unique=True)
     description = models.TextField()
 
     @property
@@ -227,3 +227,17 @@ class DPScorecardRatings(models.Model):
 
     class Meta:
        verbose_name_plural = "DP Scorecard Ratings" 
+
+class Country8DPFix(models.Model):
+    agency = models.ForeignKey(Agency, null=False)
+    country = models.ForeignKey(Country, null=False)
+    baseline_progress = models.BooleanField(null=False)
+    latest_progress = models.BooleanField(null=False)
+
+    def __unicode__(self):
+        return "%s - %s" % (self.agency, self.country)
+
+    class Meta:
+        verbose_name_plural = "Country 8DP Fixes" 
+        unique_together = ["agency", "country"]
+    

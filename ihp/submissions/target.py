@@ -1,7 +1,7 @@
 from django.template import Context, Template
 from indicators import NA_STR
 from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
-from models import AgencyTargets, AgencyCountries, Submission, CountryTargets
+from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix
 import math
 
 def criterion_absolute(base_val, cur_val, criterion_param):
@@ -358,32 +358,43 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
         results[indicator] = result
     return results
 
+def country_agency_progress(country, agency):
+    targets = get_agency_targets(agency, dp_indicators)
+    country_indicators = calc_agency_country_indicators(agency, country)
+
+    num_indicators = ticks = 0
+    for indicator in country_indicators:
+        (base_val, base_year, cur_val, cur_year), comments = country_indicators[indicator]
+        # TODO this is a hack - it might be better to extract this
+        # logic out of here
+        result = "cross"
+        if indicator in ["1DP", "6DP", "7DP"]:
+            if cur_val > 0: result = "tick" 
+        elif indicator == "8DP":
+            try:
+                fix = Country8DPFix.objects.get(agency=agency, country=country)
+                if fix.latest_progress:
+                    result = "tick"
+            except Country8DPFix.DoesNotExist:
+                result = "cross"
+        else:
+            target = targets[indicator]
+            result = evaluate_indicator(target, base_val, cur_val)
+        if result != "cross":
+            ticks += 1.0
+        num_indicators += 1.0
+    return ticks / num_indicators > 0.5
+
 def get_country_progress(agency):
     np = []
     p = []
     np_dict = {}
     p_dict = {}
-    targets = get_agency_targets(agency, dp_indicators)
     for country in AgencyCountries.objects.get_agency_countries(agency):
-        country_indicators = calc_agency_country_indicators(agency, country)
         if Submission.objects.filter(agency=agency, country=country).count() == 0:
             np.append(country)
         else:
-            num_indicators = ticks = 0
-            for indicator in country_indicators:
-                (base_val, base_year, cur_val, cur_year), comments = country_indicators[indicator]
-                # TODO this is a hack - it might be better to extract this
-                # logic out of here
-                result = "cross"
-                if indicator in ["1DP", "6DP", "7DP", "8DP"]:
-                    if cur_val > 0: result = "tick" 
-                else:
-                    target = targets[indicator]
-                    result = evaluate_indicator(target, base_val, cur_val)
-                if result != "cross":
-                    ticks += 1.0
-                num_indicators += 1.0
-            if ticks / num_indicators > 0.5:
+            if country_agency_progress(country, agency):
                 p.append(country)
             else:
                 np.append(country)
@@ -400,26 +411,10 @@ def get_agency_progress(country):
     np_dict = {}
     p_dict = {}
     for agency in AgencyCountries.objects.get_country_agencies(country):
-        targets = get_agency_targets(agency, dp_indicators)
-        country_indicators = calc_agency_country_indicators(agency, country)
         if Submission.objects.filter(agency=agency, country=country).count() == 0:
             np.append(agency)
         else:
-            num_indicators = ticks = 0
-            for indicator in country_indicators:
-                (base_val, base_year, cur_val, cur_year), comments = country_indicators[indicator]
-                # TODO this is a hack - it might be better to extract this
-                # logic out of here
-                result = "cross"
-                if indicator in ["1DP", "6DP", "7DP", "8DP"]:
-                    if cur_val > 0: result = "tick" 
-                else:
-                    target = targets[indicator]
-                    result = evaluate_indicator(target, base_val, cur_val)
-                if result != "cross":
-                    ticks += 1.0
-                num_indicators += 1.0
-            if ticks / num_indicators > 0.5:
+            if country_agency_progress(country, agency):
                 p.append(agency)
             else:
                 np.append(agency)
