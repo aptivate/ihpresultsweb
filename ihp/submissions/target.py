@@ -206,7 +206,15 @@ def calc_agency_targets(agency):
     indicators = calc_agency_indicators(agency)
     results = {}
     for indicator in indicators:
+
         (base_val, base_year, cur_val, cur_year), comments = indicators[indicator]
+
+        if round(cur_val, 0) == 0:
+            cur_val = 0.0
+
+        if round(base_val, 0) == 0:
+            base_val = 0.0
+
         target = targets[indicator]
 
         result = {
@@ -228,7 +236,6 @@ def calc_agency_targets(agency):
             # This is really dirty but the text is currently formatted using
             # no decimal places and so this calculation should use the rounded
             # value
-            round = lambda x : float("%.0f" % x)
             diff = round(round(base_val) - round(cur_val))
 
             if diff > 0:
@@ -247,13 +254,17 @@ def calc_agency_targets(agency):
             else:
                 result["perc_change"] = 0
                 result["abs_perc_change"] = 0
-
+        
+        try:
             template = commentary_map[indicator]
             if type(template) == Template:
                 result["commentary"] = template.render(Context(result))
             else:
                 result["commentary"] = template % result
-        else:
+        except:
+            pass
+
+        if result["commentary"] == "":
             result["commentary"] = default_text
 
         result["commentary"] = (result["commentary"] + " " + target_map[indicator] % result).strip()
