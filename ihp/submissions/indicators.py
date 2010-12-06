@@ -99,6 +99,9 @@ def country_perc_factory(value):
             submission__country__country__in=latest_watchlist.get(q, [])), 
             agency, q
         )
+
+        if agency.agency == "UNICEF" and q == "1":
+            print base_value, cur_value
         #base_value, cur_value = count_value(qs, agency, q)
 
         def calc_val(watchlist, val):
@@ -109,6 +112,8 @@ def country_perc_factory(value):
                 for country in AgencyCountries.objects.get_agency_countries(agency) 
                 if country.country not in watch
             ]
+            if agency.agency == "UNICEF" and q == "1":
+                print countries
             
             num_countries = float(len(countries))
             return val / num_countries * 100 if num_countries > 0 else None

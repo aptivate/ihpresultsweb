@@ -225,10 +225,16 @@ def calc_agency_targets(agency):
         # create commentary
         if (base_val not in [None, NA_STR]) and (cur_val not in [None, NA_STR]):
             result["diff_val"] = math.fabs(base_val - cur_val)
-            if base_val - cur_val > 0:
+            # This is really dirty but the text is currently formatted using
+            # no decimal places and so this calculation should use the rounded
+            # value
+            round = lambda x : float("%.0f" % x)
+            diff = round(round(base_val) - round(cur_val))
+
+            if diff > 0:
                 result["diff_direction"] = "a decrease" 
                 result["diff_direction2"] = "down" 
-            elif base_val - cur_val == 0:
+            elif diff == 0:
                 result["diff_direction"] = "no change"
                 result["diff_direction2"] = "no change"
             else:
