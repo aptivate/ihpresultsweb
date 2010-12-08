@@ -393,14 +393,17 @@ def country_export(request):
             group2 = ["MDG5a", "MDG5b", "MDG6a", "MDG6b", "MDG6c", "MDG7a", "MDG7b"]
             group1_index = "abcde"
             group2_index = "12345"
+            needs_percent = ["MDG1", "MDG2", "MDG6a", "MDG6b", "MDG7a", "MDG7b"]
+            add_perc = lambda ind : "%%" if ind in needs_percent else ""
             for mdg in group1 + group2:
                 index = group1_index if mdg in group1 else group2_index
 
+            
                 mdgdata = MDGData.objects.get(mdg_target=mdg, country=country)
-                datum[mdg + index[0]] = fformat_front(mdgdata.latest_value)
+                datum[mdg + index[0]] = fformat_front(mdgdata.latest_value) + add_perc(mdg)
                 datum[mdg + index[1]] = mdgdata.latest_year
                 datum[mdg + index[2]] = mdgdata.arrow
-                datum[mdg + index[3]] = fformat_front(mdgdata.change)
+                datum[mdg + index[3]] = fformat_front(mdgdata.change) + add_perc(mdg)
                 datum[mdg + index[4]] = mdgdata.baseline_year
 
             datum["F1"] = country.country
