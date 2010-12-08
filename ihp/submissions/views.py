@@ -331,7 +331,7 @@ def country_export(request):
             datum["PF1"] = fformat_front(datum["questions"]["16"]["latest_value"])
             datum["PF2"] = datum["questions"]["16"]["comments"]
 
-            datum["PFM1"] = ""
+            datum["PFM1"] = target_none(datum["5Ga"]["target"])
             datum["PFM2"] = datum["questions"]["9"]["comments"]
 
             datum["PR1"] = ""
@@ -415,9 +415,9 @@ def country_export(request):
             datum["ER5a"] = target_none(datum["4G"]["target"])
             datum["ER5b"] = datum["4G"]["commentary"]
             datum["ER6a"] = datum["indicators"]["other"]["pfm_diff"]
-            datum["ER6b"] = datum["5Ga"]["commentary"]
-            datum["ER7a"] = ""
-            datum["ER7b"] = datum["5Gb"]["commentary"]
+            datum["ER6b"] = datum["5Gb"]["commentary"]
+            datum["ER7a"] = datum["PFM1"]
+            datum["ER7b"] = datum["5Ga"]["commentary"]
             datum["ER8a"] = target_none(datum["6G"]["target"])
             datum["ER8b"] = datum["6G"]["commentary"]
             datum["ER9a"] = target_none(datum["7G"]["target"])
