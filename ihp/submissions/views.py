@@ -422,7 +422,8 @@ def country_export(request):
             datum["ER8b"] = datum["6G"]["commentary"]
             datum["ER9a"] = target_none(datum["7G"]["target"])
             datum["ER9b"] = datum["7G"]["commentary"]
-            datum["ER10a"] = target_none(datum["8G"]["target"])
+            #datum["ER10a"] = target_none(datum["8G"]["target"])
+            datum["ER10a"] = datum["HSM3"]
             datum["ER10b"] = datum["8G"]["commentary"]
 
             datum["Header"] = country.country
