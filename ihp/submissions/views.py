@@ -334,7 +334,7 @@ def country_export(request):
             datum["PFM1"] = target_none(datum["5Ga"]["target"])
             datum["PFM2"] = datum["questions"]["9"]["comments"]
 
-            datum["PR1"] = ""
+            datum["PR1"] = target_none(datum["5Gb"]["target"])
             datum["PR2"] = datum["questions"]["10"]["comments"]
 
             datum["TA1"] = datum["indicators"]["other"]["coordinated_programmes"]
@@ -414,10 +414,10 @@ def country_export(request):
             datum["ER4c"] = country.country
             datum["ER5a"] = target_none(datum["4G"]["target"])
             datum["ER5b"] = datum["4G"]["commentary"]
-            datum["ER6a"] = datum["indicators"]["other"]["pfm_diff"]
-            datum["ER6b"] = datum["5Gb"]["commentary"]
-            datum["ER7a"] = datum["PFM1"]
-            datum["ER7b"] = datum["5Ga"]["commentary"]
+            datum["ER6a"] = datum["PFM1"]
+            datum["ER6b"] = datum["5Ga"]["commentary"]
+            datum["ER7a"] = datum["PR1"]
+            datum["ER7b"] = datum["5Gb"]["commentary"]
             datum["ER8a"] = target_none(datum["6G"]["target"])
             datum["ER8b"] = datum["6G"]["commentary"]
             datum["ER9a"] = target_none(datum["7G"]["target"])
