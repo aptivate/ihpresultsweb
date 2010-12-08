@@ -37,8 +37,16 @@ class AgencyCountriesAdmin(admin.ModelAdmin):
         return question.submission.agency
         
 admin.site.register(AgencyCountries, AgencyCountriesAdmin)
-admin.site.register(AgencyTargets)
-admin.site.register(CountryTargets)
+class AgencyTargetsAdmin(admin.ModelAdmin):
+    list_filter = ("agency", "indicator")
+    list_display = ("agency", "indicator", "tick_criterion_type", "tick_criterion_value", "arrow_criterion_type", "arrow_criterion_value")
+admin.site.register(AgencyTargets, AgencyTargetsAdmin)
+
+class CountryTargetsAdmin(admin.ModelAdmin):
+    list_filter = ("country", "indicator")
+    list_display = ("country", "indicator", "tick_criterion_type", "tick_criterion_value", "arrow_criterion_type", "arrow_criterion_value")
+admin.site.register(CountryTargets, CountryTargetsAdmin)
+
 admin.site.register(AgencyWorkingDraft)
 admin.site.register(CountryWorkingDraft)
 admin.site.register(DPScorecardSummary)
