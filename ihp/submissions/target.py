@@ -320,7 +320,7 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
             "all" : "In %(cur_year)s, %(cur_val).0f%% of health sector funding was disbursed against the approved annual budget. Target = to halve the proportion of health sector funding not disbursed against the approved annual budget",
         },
         "5Ga" : {
-            "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).0f on the PFM/CPIA scale of performance. Target = Improvement of at least one measure (ie 0.5 points) on the PFM/CPIA scale of performance.  In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).0f on the PFM/CPIA scale of performance. Target = Improvement of at least one measure (ie 0.5 points) on the PFM/CPIA scale of performance."
+            "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).1f on the PFM/CPIA scale of performance. Target = Improvement of at least one measure (ie 0.5 points) on the PFM/CPIA scale of performance."
         },
         "5Gb" : {
             "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).0f on the four poin t scale used to assess performance in the the procurement sector. Target = Improvement of at least one measure on the four-point scale used to assess performance for this sector."

@@ -256,7 +256,11 @@ def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html",
 
 def country_export(request):
 
-    fformat_front = lambda x : "%.1f" % x if type(x) == float else x
+    formatter = lambda decimals : lambda x : round(x, decimals) if type(x) == float else x
+    
+    fformat_front = formatter(1)
+    fformat_none = formatter(0)
+    #fformat_front = lambda x : "%.1f" % x if type(x) == float else x
     headers = [
         # Front of scorecard
         "file", "TB2", "CD1", "CD2", "HSP1", "HSP2",
@@ -307,7 +311,7 @@ def country_export(request):
             datum["HSP1"] = target_none(datum["Q2G"]["target"])
             datum["HSP2"] = target_none(datum["Q3G"]["target"])
             datum["HSM1"] = target_none(datum["Q12G"]["target"])
-            datum["HSM2"] = fformat_front(datum["questions"]["15"]["latest_value"])
+            datum["HSM2"] = fformat_none(datum["questions"]["15"]["latest_value"])
             #datum["HSM3"] = fformat_front(datum["indicators"]["8G"]["latest_value"])
             datum["HSM3"] = target_none(datum["8G"]["target"])
             datum["HSM4"] = ""
@@ -324,11 +328,11 @@ def country_export(request):
             datum["BC10"] = "?????"
 
             datum["PC1"] = fformat_front(datum["indicators"]["3G"]["latest_value"])
-            datum["PC2"] = datum["indicators"]["3G"]["hs_budget_gap"]
+            datum["PC2"] = fformat_front(datum["indicators"]["3G"]["hs_budget_gap"])
             datum["PC3"] = "%s %% allocated to health" % datum["PC1"]
             datum["PC4"] = "%s %% increase needed to meet the Abuja target (15%%)" % datum["PC2"]
 
-            datum["PF1"] = fformat_front(datum["questions"]["16"]["latest_value"])
+            datum["PF1"] = fformat_none(datum["questions"]["16"]["latest_value"])
             datum["PF2"] = datum["questions"]["16"]["comments"]
 
             datum["PFM1"] = target_none(datum["5Ga"]["target"])
@@ -370,8 +374,8 @@ def country_export(request):
             datum["HS7"] = ""
 
             datum["RF1"] = target_none(datum["6G"]["target"])
-            datum["RF2"] = fformat_front(datum["questions"]["22"]["latest_value"])
-            datum["RF3"] = fformat_front(datum["questions"]["23"]["latest_value"])
+            datum["RF2"] = fformat_none(datum["questions"]["22"]["latest_value"])
+            datum["RF3"] = fformat_none(datum["questions"]["23"]["latest_value"])
 
             datum["HMIS1"] = target_none(datum["Q21G"]["target"])
             datum["HMIS2"] = datum["questions"]["21"]["comments"]
