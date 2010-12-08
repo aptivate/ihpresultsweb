@@ -1,4 +1,5 @@
 from django.db import models
+import math
 from django.utils.functional import curry
 
 class Agency(models.Model):
