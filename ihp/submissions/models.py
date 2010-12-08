@@ -169,6 +169,9 @@ class MDGData(models.Model):
         else:
             return self.latest_value - self.baseline_value
 
+    class Meta:
+        verbose_name_plural = "MDG Data" 
+
 class DPScorecardSummary(models.Model):
     agency = models.OneToOneField(Agency, null=False)
     erb1 = models.TextField()
