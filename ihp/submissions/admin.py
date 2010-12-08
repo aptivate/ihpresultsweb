@@ -4,7 +4,12 @@ from models import Agency, Country, UpdateAgency, Submission, DPQuestion, GovQue
 admin.site.register(Agency)
 admin.site.register(Country)
 admin.site.register(UpdateAgency)
-admin.site.register(Submission)
+
+class SubmissionAdmin(admin.ModelAdmin):
+    list_filter = ("agency", "country")
+    list_display = ("country", "agency", "date_submitted", "completed_by", "job_title")
+
+admin.site.register(Submission, SubmissionAdmin)
 
 class DPQuestionAdmin(admin.ModelAdmin):
     list_filter = ("question_number", "submission")
@@ -41,5 +46,6 @@ admin.site.register(DPScorecardRatings)
 
 class Country8DPFixAdmin(admin.ModelAdmin):
     list_filter = ("agency", "country")
+    list_display = ("agency", "country", "baseline_progress", "latest_progress")
 
 admin.site.register(Country8DPFix, Country8DPFixAdmin)
