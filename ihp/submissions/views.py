@@ -308,7 +308,8 @@ def country_export(request):
             datum["HSP2"] = target_none(datum["Q3G"]["target"])
             datum["HSM1"] = target_none(datum["Q12G"]["target"])
             datum["HSM2"] = fformat_front(datum["questions"]["15"]["latest_value"])
-            datum["HSM3"] = fformat_front(datum["indicators"]["8G"]["latest_value"])
+            #datum["HSM3"] = fformat_front(datum["indicators"]["8G"]["latest_value"])
+            datum["HSM3"] = target_none(datum["8G"]["target"])
             datum["HSM4"] = ""
 
             datum["BC1"] = datum["questions"]["5"]["baseline_year"]
