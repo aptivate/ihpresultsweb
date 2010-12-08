@@ -167,7 +167,10 @@ class MDGData(models.Model):
         if self.latest_value == None or self.baseline_value == None:
             return None
         else:
-            return self.latest_value - self.baseline_value
+            val = math.fabs(self.latest_value - self.baseline_value)
+            if round(val, 0) == 0:
+                return "same"
+            return val
 
     class Meta:
         verbose_name_plural = "MDG Data" 
