@@ -420,7 +420,7 @@ def country_export(request):
                     datum[mdg + index[4]] = mdgdata.baseline_year
 
             datum["F1"] = country.country
-            datum["CN1"] = country.country
+            datum["CN1"] = datum["TB2"]
             datum["GN1"] = country.country
 
             datum["ER1a"] = target_none(datum["1G"]["target"])
