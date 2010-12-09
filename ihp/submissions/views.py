@@ -261,10 +261,13 @@ def country_export(request):
         def f(x):
             try:
                 x = float(x)
-                return round(x, decimals)
-            except ValueError:
+                x = round(x, decimals)
+                if decimals == 0: 
+                    return int(x)
                 return x
-            except TypeError:
+            except ValueError, e:
+                return x
+            except TypeError, e:
                 return x
         return f
     

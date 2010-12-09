@@ -169,7 +169,7 @@ class MDGData(models.Model):
             return None
         else:
             val = math.fabs(self.latest_value - self.baseline_value)
-            if round(val, 0) == 0:
+            if round(val, 3) == 0:
                 return "same"
             return val
 
