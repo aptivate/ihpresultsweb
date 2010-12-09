@@ -401,17 +401,17 @@ def country_export(request):
             
                 mdgdata = MDGData.objects.get(mdg_target=mdg, country=country)
                 if not mdgdata.latest_value:
-                    datum[msg + index[0]] = ""
-                    datum[msg + index[1]] = ""
-                    datum[msg + index[2]] = "questionmdg"
-                    datum[msg + index[3]] = ""
-                    datum[msg + index[4]] = ""
+                    datum[mdg + index[0]] = ""
+                    datum[mdg + index[1]] = ""
+                    datum[mdg + index[2]] = "questionmdg"
+                    datum[mdg + index[3]] = ""
+                    datum[mdg + index[4]] = ""
                 elif not mdgdata.baseline_value:
-                    datum[msg + index[0]] = str(fformat_front(mdgdata.latest_value)) + add_perc(mdg)
-                    datum[msg + index[1]] = mdgdata.latest_year
-                    datum[msg + index[2]] = "questionmdg"
-                    datum[msg + index[3]] = ""
-                    datum[msg + index[4]] = ""
+                    datum[mdg + index[0]] = str(fformat_front(mdgdata.latest_value)) + add_perc(mdg)
+                    datum[mdg + index[1]] = mdgdata.latest_year
+                    datum[mdg + index[2]] = "questionmdg"
+                    datum[mdg + index[3]] = ""
+                    datum[mdg + index[4]] = ""
                 else:
                     datum[mdg + index[0]] = str(fformat_front(mdgdata.latest_value)) + add_perc(mdg)
                     datum[mdg + index[1]] = mdgdata.latest_year
