@@ -264,6 +264,8 @@ def country_export(request):
                 return round(x, decimals)
             except ValueError:
                 return x
+            except TypeError:
+                return x
         return f
     
     fformat_front = formatter(1)
@@ -313,11 +315,7 @@ def country_export(request):
     for country, datum in data.items():
         try:
             datum["file"] = country.country
-            datum["TB2"] = "%s COUNTRY SCORECARD"
-            if country.country != "DRC":
-                datum["TB2"] = datum["TB2"] % country.country.title()
-            else:
-                datum["TB2"] = datum["TB2"] % country.country
+            datum["TB2"] = "%s COUNTRY SCORECARD" % country.country.upper()
 
             datum["CD1"] = target_none(datum["1G"]["target"])
             datum["CD2"] = datum["questions"]["1"]["comments"]
