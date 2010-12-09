@@ -257,6 +257,14 @@ def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html",
 def country_export(request):
 
     formatter = lambda decimals : lambda x : round(x, decimals) if type(x) == float else x
+    def formatter(decimals):
+        def f(x):
+            try:
+                x = float(x)
+                return round(x, decimals)
+            except ValueError:
+                return x
+        return f
     
     fformat_front = formatter(1)
     fformat_none = formatter(0)
