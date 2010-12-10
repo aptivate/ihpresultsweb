@@ -380,9 +380,9 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
                     target_value = result["target"]
                     if target_value == None:
                         result["commentary"] = "Missing Data"
-                    elif target_value == "question"]:
+                    elif target_value == "question":
                         result["commentary"] = rating_question_text
-                    elif target_value == "none"]:
+                    elif target_value == "none":
                         result["commentary"] = rating_none_text
                     else:
                         result["commentary"] = commentary_text[indicator][target_value]
