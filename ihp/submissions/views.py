@@ -428,10 +428,12 @@ def country_export(request):
                     datum[mdg + index[3]] = ""
                     datum[mdg + index[4]] = ""
                 else:
-                    datum[mdg + index[0]] = str(fformat_two(mdgdata.latest_value)) + add_perc(mdg)
+                    fmt = fformat_two if mdg == "MDG3" else fformat_front
+            
+                    datum[mdg + index[0]] = str(fmt(mdgdata.latest_value)) + add_perc(mdg)
                     datum[mdg + index[1]] = mdgdata.latest_year
                     datum[mdg + index[2]] = mdgdata.arrow
-                    datum[mdg + index[3]] = str(fformat_two(mdgdata.change)) + add_perc(mdg)
+                    datum[mdg + index[3]] = str(fmt(mdgdata.change)) + add_perc(mdg)
                     datum[mdg + index[4]] = mdgdata.baseline_year
 
             datum["F1"] = country.country
