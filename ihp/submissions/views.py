@@ -273,6 +273,7 @@ def country_export(request):
     
     fformat_front = formatter(1)
     fformat_none = formatter(0)
+    fformat_two = formatter(2)
     #fformat_front = lambda x : "%.1f" % x if type(x) == float else x
     headers = [
         # Front of scorecard
@@ -427,10 +428,10 @@ def country_export(request):
                     datum[mdg + index[3]] = ""
                     datum[mdg + index[4]] = ""
                 else:
-                    datum[mdg + index[0]] = str(fformat_front(mdgdata.latest_value)) + add_perc(mdg)
+                    datum[mdg + index[0]] = str(fformat_two(mdgdata.latest_value)) + add_perc(mdg)
                     datum[mdg + index[1]] = mdgdata.latest_year
                     datum[mdg + index[2]] = mdgdata.arrow
-                    datum[mdg + index[3]] = str(fformat_front(mdgdata.change)) + add_perc(mdg)
+                    datum[mdg + index[3]] = str(fformat_two(mdgdata.change)) + add_perc(mdg)
                     datum[mdg + index[4]] = mdgdata.baseline_year
 
             datum["F1"] = country.country
