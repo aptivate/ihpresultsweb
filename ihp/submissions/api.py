@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson
-from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings
+from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country
 from views import calc_agency_comments
-from target import calc_agency_targets
+from target import calc_agency_targets, calc_country_targets
 import indicators
 
 def dp_summary(request, agency_id):
@@ -100,6 +100,69 @@ def dp_ratings(request, agency_id):
             ratings.er5b = request.POST["er5b"]
             ratings.r5c = request.POST["r5c"]
             ratings.er5c = request.POST["er5c"]
+            ratings.r6 = request.POST["r6"]
+            ratings.er6 = request.POST["er6"]
+            ratings.r7 = request.POST["r7"]
+            ratings.er7 = request.POST["er7"]
+            ratings.r8 = request.POST["r8"]
+            ratings.er8 = request.POST["er8"]
+            ratings.save()
+
+            return HttpResponse("OK")
+    except:
+        import traceback
+        traceback.print_exc()
+    
+def gov_ratings(request, country_id):
+
+    try:
+        country = get_object_or_404(Country, id=country_id)
+        ratings, _ = GovScorecardRatings.objects.get_or_create(country=country)
+
+        if request.method == "GET":
+            country_data = calc_country_targets(country)
+
+            data = {}
+            #for indicator in indicators.g_indicators:
+            #    data[indicator] = calc_agency_comments(indicator, country_data)
+
+            data["rating1"] = ratings.r1
+            data["rating2a"] = ratings.r2a
+            data["rating2b"] = ratings.r2b
+            data["rating3"] = ratings.r3
+            data["rating4"] = ratings.r4
+            data["rating5a"] = ratings.r5a
+            data["rating5b"] = ratings.r5b
+            data["rating6"] = ratings.r6
+            data["rating7"] = ratings.r7
+            data["rating8"] = ratings.r8
+            data["progress1"] = ratings.er1
+            data["progress2a"] = ratings.er2a
+            data["progress2b"] = ratings.er2b
+            data["progress3"] = ratings.er3
+            data["progress4"] = ratings.er4
+            data["progress5a"] = ratings.er5a
+            data["progress5b"] = ratings.er5b
+            data["progress6"] = ratings.er6
+            data["progress7"] = ratings.er7
+            data["progress8"] = ratings.er8
+
+            return HttpResponse(simplejson.dumps(data))
+        elif request.method == "POST":
+            ratings.r1 = request.POST["r1"]
+            ratings.er1 = request.POST["er1"]
+            ratings.r2a = request.POST["r2a"]
+            ratings.er2a = request.POST["er2a"]
+            ratings.r2b = request.POST["r2b"]
+            ratings.er2b = request.POST["er2b"]
+            ratings.r3 = request.POST["r3"]
+            ratings.er3 = request.POST["er3"]
+            ratings.r4 = request.POST["r4"]
+            ratings.er4 = request.POST["er4"]
+            ratings.r5a = request.POST["r5a"]
+            ratings.er5a = request.POST["er5a"]
+            ratings.r5b = request.POST["r5b"]
+            ratings.er5b = request.POST["er5b"]
             ratings.r6 = request.POST["r6"]
             ratings.er6 = request.POST["er6"]
             ratings.r7 = request.POST["r7"]

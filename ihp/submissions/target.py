@@ -1,7 +1,7 @@
 from django.template import Context, Template
 from indicators import NA_STR
 from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
-from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix
+from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings
 import math
 
 def criterion_absolute(base_val, cur_val, criterion_param):
@@ -338,9 +338,23 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
         },
     }
 
+    rating_question_text = "[Insert some standard text here for question ratings]"
+    rating_none_text = "[Insert some standard text here for none ratings]"
+
     targets = get_country_targets(country, g_indicators)
     indicators = calc_country_indicators(country)
     results = {}
+    ratings, _ = GovScorecardRatings.objects.get_or_create(country=country)
+    def ratings_val(tmpl):
+        def _func(indicator):
+            h = indicator.replace("G", "").replace("Q", "")
+            d = ratings.__dict__
+            return d.get(tmpl % h, None)
+        return _func
+
+    ratings_comments = ratings_val("er%s")
+    ratings_target = ratings_val("r%s")
+
     for indicator in indicators:
         (base_val, base_year, cur_val, cur_year), comments = indicators[indicator]
         target = targets[indicator]
@@ -355,22 +369,28 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
             "country_name" : country,
         }
 
-        result["target"] = evaluate_indicator(target, base_val, cur_val)
-        if indicator in commentary_text:
-            if "all" in commentary_text[indicator]:
-                result["commentary"] = commentary_text[indicator]["all"]
-            else:
-                target_value = result["target"]
-                if target_value == None:
-                    result["commentary"] = "Missing Data"
+        result["target"] = ratings_target(indicator) or evaluate_indicator(target, base_val, cur_val)
+        if ratings_comments(indicator):
+            result["commentary"] = ratings_comments(indicator)
+        else:
+            if indicator in commentary_text:
+                if "all" in commentary_text[indicator]:
+                    result["commentary"] = commentary_text[indicator]["all"]
                 else:
-                    result["commentary"] = commentary_text[indicator][target_value]
-        
-            
-            try:
-                result["commentary"] = result["commentary"] % result
-            except TypeError:
-                result["commentary"] = None
+                    target_value = result["target"]
+                    if target_value == None:
+                        result["commentary"] = "Missing Data"
+                    elif target_value == "question"]:
+                        result["commentary"] = rating_question_text
+                    elif target_value == "none"]:
+                        result["commentary"] = rating_none_text
+                    else:
+                        result["commentary"] = commentary_text[indicator][target_value]
+                
+                try:
+                    result["commentary"] = result["commentary"] % result
+                except TypeError:
+                    result["commentary"] = None
 
         results[indicator] = result
     return results

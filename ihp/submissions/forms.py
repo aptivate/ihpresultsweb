@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.functional import curry
 
-from submissions.models import Agency
+from submissions.models import Agency, Country
 
 
 RatingsField = curry(forms.ChoiceField, choices=[
@@ -15,6 +15,18 @@ class AgencyForm(forms.Form):
     agency = forms.ChoiceField(choices=[("", "")] + [
         (a.id, a.agency) 
         for a in Agency.objects.filter(type="Agency")
+    ])
+
+    class Media:
+        js = ("js/jquery-1.4.4.min.js ", "js/jquery.loading.1.6.4.min.js", )
+        css = {
+            "all": ("css/jquery.loading.1.6.css", "css/dp_summary.css")
+        }
+
+class CountryForm(forms.Form):
+    country = forms.ChoiceField(choices=[("", "")] + [
+        (c.id, c.country) 
+        for c in Country.objects.all()
     ])
 
     class Media:
@@ -92,4 +104,37 @@ class DPRatingsForm(AgencyForm):
 
     class Media:
         js = ("js/dpratingsform.js", )
+
+class GovRatingsForm(CountryForm):
+
+    r1 = RatingsField(label="1G Rating", required=False)
+    er1 = TextField(label="1G Progress Text")
+
+    r2a = RatingsField(label="2Ga Rating", required=False)
+    er2a = TextField(label="2Ga Progress Text")
+    r2b = RatingsField(label="2Gb Rating", required=False)
+    er2b = TextField(label="2Gb Progress Text")
+
+    r3 = RatingsField(label="3G Rating", required=False)
+    er3 = TextField(label="3G Progress Text")
+
+    r4 = RatingsField(label="4G Rating", required=False)
+    er4 = TextField(label="4G Progress Text")
+
+    r5a = RatingsField(label="5Ga Rating", required=False)
+    er5a = TextField(label="5Ga Progress Text")
+    r5b = RatingsField(label="5Gb Rating", required=False)
+    er5b = TextField(label="5Gb Progress Text")
+
+    r6 = RatingsField(label="6G Rating", required=False)
+    er6 = TextField(label="6G Progress Text")
+
+    r7 = RatingsField(label="7G Rating", required=False)
+    er7 = TextField(label="7G Progress Text")
+
+    r8 = RatingsField(label="8G Rating", required=False)
+    er8 = TextField(label="8G Progress Text")
+
+    class Media:
+        js = ("js/govratingsform.js", )
 

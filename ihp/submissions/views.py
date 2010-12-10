@@ -6,10 +6,10 @@ import csv
 from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template
 
-from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardRatings
+from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardRatings, GovScorecardRatings
 from target import calc_agency_targets, get_country_progress, calc_country_targets, get_agency_progress
 from indicators import calc_country_indicators, calc_agency_country_indicators
-from forms import DPSummaryForm, DPRatingsForm
+from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm
 
 def calc_agency_comments(indicator, agency_data):
     old_comments = agency_data[indicator]["comments"]
@@ -659,5 +659,15 @@ def dp_ratings_edit(request, template_name="submissions/dp_ratings_edit.html", e
     extra_context["form"] = form
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
-def dp_grid(request, template_name="submissions/dp_grid.html", extra_context=None):
-    pass
+def gov_ratings_edit(request, template_name="submissions/gov_ratings_edit.html", extra_context=None):
+    extra_context = extra_context or {}
+
+    if request.method == "POST":
+        form = GovRatingsForm(request.POST)
+        if form.is_valid():
+            pass
+    else:
+        form = GovRatingsForm()
+
+    extra_context["form"] = form
+    return direct_to_template(request, template=template_name, extra_context=extra_context)

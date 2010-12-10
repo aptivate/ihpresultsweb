@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from models import Agency, Country, UpdateAgency, Submission, DPQuestion, GovQuestion, AgencyCountries, AgencyTargets, CountryTargets, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardSummary, DPScorecardRatings, Country8DPFix, MDGData
+from models import Agency, Country, UpdateAgency, Submission, DPQuestion, GovQuestion, AgencyCountries, AgencyTargets, CountryTargets, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country8DPFix, MDGData
 
 admin.site.register(Agency)
 admin.site.register(Country)
@@ -52,6 +52,7 @@ admin.site.register(AgencyWorkingDraft)
 admin.site.register(CountryWorkingDraft)
 admin.site.register(DPScorecardSummary)
 admin.site.register(DPScorecardRatings)
+admin.site.register(GovScorecardRatings)
 
 class Country8DPFixAdmin(admin.ModelAdmin):
     list_filter = ("agency", "country")

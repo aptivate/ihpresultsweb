@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block head %}
+{{ form.media }}
+{% endblock %}
+
+{% block body %}
+<form class="styleform">
+    <fieldset>
+        <legend>Country</legend>
+        <ol><li>{{ form.country }}</li></ol>
+    </fieldset>
+    <fieldset>
+        <legend>1DP</legend>
+        <ol>
+            <li>
+            {{ form.r1.label_tag }}
+            {{ form.r1 }}
+            </li>
+            <li>
+            {{ form.er1.label_tag }}
+            {{ form.er1 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>2DPa</legend>
+        <ol>
+            <li>
+            {{ form.r2a.label_tag }}
+            {{ form.r2a }}
+            </li>
+            <li>
+            {{ form.er2a.label_tag }}
+            {{ form.er2a }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>2DPb</legend>
+        <ol>
+            <li>
+            {{ form.r2b.label_tag }}
+            {{ form.r2b }}
+            </li>
+            <li>
+            {{ form.er2b.label_tag }}
+            {{ form.er2b }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>3DP</legend>
+        <ol>
+            <li>
+            {{ form.r3.label_tag }}
+            {{ form.r3 }}
+            </li>
+            <li>
+            {{ form.er3.label_tag }}
+            {{ form.er3 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>4DP</legend>
+        <ol>
+            <li>
+            {{ form.r4.label_tag }}
+            {{ form.r4 }}
+            </li>
+            <li>
+            {{ form.er4.label_tag }}
+            {{ form.er4 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>5DPa</legend>
+        <ol>
+            <li>
+            {{ form.r5a.label_tag }}
+            {{ form.r5a }}
+            </li>
+            <li>
+            {{ form.er5a.label_tag }}
+            {{ form.er5a }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>5DPb</legend>
+        <ol>
+            <li>
+            {{ form.r5b.label_tag }}
+            {{ form.r5b }}
+            </li>
+            <li>
+            {{ form.er5b.label_tag }}
+            {{ form.er5b }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>6DP</legend>
+        <ol>
+            <li>
+            {{ form.r6.label_tag }}
+            {{ form.r6 }}
+            </li>
+            <li>
+            {{ form.er6.label_tag }}
+            {{ form.er6 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>7DP</legend>
+        <ol>
+            <li>
+            {{ form.r7.label_tag }}
+            {{ form.r7 }}
+            </li>
+            <li>
+            {{ form.er7.label_tag }}
+            {{ form.er7 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>8DP</legend>
+        <ol>
+            <li>
+            {{ form.r8.label_tag }}
+            {{ form.r8 }}
+            </li>
+            <li>
+            {{ form.er8.label_tag }}
+            {{ form.er8 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <ol>
+            <li><button id="id_submit">Save</button></li>
+        </ol>
+    <fieldset>
+</form>
+{% endblock %}
