@@ -2,7 +2,11 @@ from django.contrib import admin
 from django import forms
 from models import Agency, Country, UpdateAgency, Submission, DPQuestion, GovQuestion, AgencyCountries, AgencyTargets, CountryTargets, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country8DPFix, MDGData
 
-admin.site.register(Agency)
+
+class AgencyAdmin(admin.ModelAdmin):
+    list_filter = ("type",)
+
+admin.site.register(Agency, AgencyAdmin)
 admin.site.register(Country)
 admin.site.register(UpdateAgency)
 
@@ -26,10 +30,18 @@ class DPQuestionAdmin(admin.ModelAdmin):
 
 admin.site.register(DPQuestion, DPQuestionAdmin)
 
-admin.site.register(GovQuestion)
+class GovQuestionAdmin(admin.ModelAdmin):
+    list_filter = ("question_number", "submission")
+    list_display = ("question_number", "country")
+
+    def country(self, question):
+        return question.submission.country
+
+admin.site.register(GovQuestion, GovQuestionAdmin)
 
 class AgencyCountriesAdmin(admin.ModelAdmin):
     list_filter = ("agency", "country")
+    list_display = ("agency", "country")
 
     def country(self, question):
         return question.submission.country
@@ -48,11 +60,23 @@ class CountryTargetsAdmin(admin.ModelAdmin):
     list_display = ("country", "indicator", "tick_criterion_type", "tick_criterion_value", "arrow_criterion_type", "arrow_criterion_value")
 admin.site.register(CountryTargets, CountryTargetsAdmin)
 
-admin.site.register(AgencyWorkingDraft)
-admin.site.register(CountryWorkingDraft)
+class AgencyWorkingDraftAdmin(admin.ModelAdmin):
+    list_display = ("agency", "is_draft")
+admin.site.register(AgencyWorkingDraft, AgencyWorkingDraftAdmin)
+
+class CountryWorkingDraftAdmin(admin.ModelAdmin):
+    list_display = ("country", "is_draft")
+admin.site.register(CountryWorkingDraft, CountryWorkingDraftAdmin)
 admin.site.register(DPScorecardSummary)
-admin.site.register(DPScorecardRatings)
-admin.site.register(GovScorecardRatings)
+
+class DPScorecardRatingsAdmin(admin.ModelAdmin):
+    list_display = ("agency", "r1" , "r2a", "r2b", "r2c", "r3", "r4", "r5a", "r5b", "r5c", "r6", "r7", "r8")
+admin.site.register(DPScorecardRatings, DPScorecardRatingsAdmin)
+
+class GovScorecardRatingsAdmin(admin.ModelAdmin):
+    list_display = ("country", "r1" , "r2a", "r2b", "r3", "r4", "r5a", "r5b", "r6", "r7", "r8")
+
+admin.site.register(GovScorecardRatings, GovScorecardRatingsAdmin)
 
 class Country8DPFixAdmin(admin.ModelAdmin):
     list_filter = ("agency", "country")
