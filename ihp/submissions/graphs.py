@@ -26,10 +26,15 @@ def format_fig(x):
         return "0.0"
     return "%.1f" % x
 
-def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.html", extra_context=None):
+def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.html", extra_context=None, titles=None, yaxes=None):
     extra_context = extra_context or {}
 
     agency = Agency.objects.get(agency__iexact=agency_name)
+    for indicator in titles:
+        titles[indicator] = titles[indicator] % locals()
+    for indicator in yaxes:
+        print yaxes[indicator]
+        yaxes[indicator] = yaxes[indicator] % locals()
     
     data = {}
     abs_values = {}
@@ -48,6 +53,8 @@ def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.h
     extra_context["agency"] = agency.agency    
     extra_context["data"] = sorted(data.items())
     extra_context["abs_values"] = sorted(abs_values.items())
+    extra_context["titles"] = titles
+    extra_context["yaxes"] = yaxes
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
     

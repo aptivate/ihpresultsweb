@@ -4,14 +4,15 @@
 {% block graphdefs %}
 
 <script>
-{% ratiograph agency 2DPa data graph_2dpa %}
-{% ratiograph agency 2DPb data graph_2dpb %}
-{% ratiograph agency 2DPc data graph_2dpc %}
-{% ratiograph agency 3DP data graph_3dp %}
-{% ratiograph agency 4DP data graph_4dp %}
-{% ratiograph agency 5DPa data graph_5dpa %}
-{% ratiograph agency 5DPb data graph_5dpb %}
-{% ratiograph agency 5DPc data graph_5dpc %}
+
+{% ratiograph agency 2DPa data graph_2dpa titles.2DPa yaxes.2DPa %}
+{% ratiograph agency 2DPb data graph_2dpb titles.2DPb yaxes.2DPb %}
+{% ratiograph agency 2DPc data graph_2dpc titles.2DPc yaxes.2DPc %}
+{% ratiograph agency 3DP data graph_3dp titles.3DP yaxes.3DP %}
+{% ratiograph agency 4DP data graph_4dp titles.4DP yaxes.4DP %}
+{% ratiograph agency 5DPa data graph_5dpa titles.5DPa yaxes.5DPa %}
+{% ratiograph agency 5DPb data graph_5dpb titles.5DPb yaxes.5DPb %}
+{% ratiograph agency 5DPc data graph_5dpc titles.5DPc yaxes.5DPc %}
 </script>
 {% endblock %}
 

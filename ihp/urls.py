@@ -7,6 +7,31 @@ from django.contrib import admin
 from submissions.models import Agency, Country
 admin.autodiscover()
 
+agency_ratio_titles = {
+    "2DPa" : "Increase in %(agency_name)s's aid flows to the health sector not reported on goverment's budget (2DPa)",
+    "2DPb" : "%% of technical assistance disbursed through programmes (WB, Target: 50%%)",
+    "2DPc" : "%% of aid flows provided in the context of programme base approaches (Target: 66%%)",
+    "3DP"  : "%% of health sector funding provided through multi-year commitments",
+    "4DP"  : "Increase in %(agency_name)s's health sector aid not disbursed within the year for which it was scheduled (4DP)",
+    "5DPa" : "%% change in health sector aid to the public sector not using partner countries' procurement systems",
+    "5DPb" : "Increase in %(agency_name)s's health sector aid to the public sector not using partner countries' PFM systems (5DPb)",
+    "5DPc" : "Reduction in %(agency_name)s's stock of parallel project implementation (PIUs) units (5DPc)",
+}
+
+agency_abs_titles = dict(agency_ratio_titles)
+agency_abs_titles["5DPa"] = "%% of health sector aid to the public sector not using partner countries' procurement systems"
+
+agency_yaxis = {
+    "2DPa" : "%% increase in funds not reported on government's budget",
+    "2DPb" : "%% of programme-based technical assistance",
+    "2DPc" : "%% of aid flows",
+    "3DP"  : "%% of health sector funding provided through multi-year commitments",
+    "4DP"  : "%% increase in health sector aid not disbursed within the year for which it was scheduled",
+    "5DPa" : "%% change in health sector aid to the public sector not using partner countries' procurement systems",
+    "5DPb" : "%% increase of health sector aid to the public sector not using partner countries' PFM systems",
+    "5DPc" : "%% reduction in stock of parallel project implementation (PIUs) units",
+}
+
 urlpatterns = patterns('',
 
     (r'^$', direct_to_template, {"template" : "home.html", "extra_context" : {
@@ -29,9 +54,15 @@ urlpatterns = patterns('',
     (r'^api/gov_ratings/(?P<country_id>\d+)/$', 'submissions.api.gov_ratings', {}, 'api_gov_ratings'),
 
     # Graph Views
-    (r"^graph/agency/(?P<agency_name>[a-zA-Z\s]+)/$", "submissions.graphs.agencygraphs", {}, "agencygraphs"),
+    (r"^graph/agency/(?P<agency_name>[a-zA-Z\s]+)/$", "submissions.graphs.agencygraphs", {
+        "titles" : agency_ratio_titles,
+        "yaxes" : agency_yaxis,
+    }, "agencygraphs"),
+
     (r"^graph/agency/(?P<agency_name>[a-zA-Z\s]+)/absolute$", "submissions.graphs.agencygraphs", {
-        "template_name" : "submissions/agencygraphs_absolute.html"
+        "template_name" : "submissions/agencygraphs_absolute.html",
+        "titles" : agency_abs_titles,
+        "yaxes" : agency_yaxis,
     }, "agencygraphs_absolute"),
     (r"^graph/country/(?P<country_name>[a-zA-Z\s]+)/$", "submissions.graphs.countrygraphs", {}, "countrygraphs"),
     (r"^graph/country/(?P<country_name>[a-zA-Z\s]+)/absolute$", "submissions.graphs.countrygraphs", {

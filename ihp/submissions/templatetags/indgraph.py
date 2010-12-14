@@ -12,11 +12,13 @@ def ffloat(x):
     return "%.1f" % x
 
 class AbsGraphNode(Node):
-    def __init__(self, agency, indicator, data, element):
+    def __init__(self, agency, indicator, data, element, title, yaxis):
         self.agency = Variable(agency)
         self.indicator = indicator
         self.data = Variable(data)
         self.element = element
+        self.title = Variable(title)
+        self.yaxis = Variable(yaxis)
 
     def render(self, context):
         try:
@@ -29,50 +31,68 @@ class AbsGraphNode(Node):
                 data = self.data.resolve(context)
             except VariableDoesNotExist:
                 raise TemplateSyntaxError('"absgraph" tag got an unknown variable: %r' % self.data)
+
+            try:
+                title = self.title.resolve(context)
+            except VariableDoesNotExist:
+                raise TemplateSyntaxError('"absgraph" tag got an unknown variable: %r' % self.title)
+
+            try:
+                yaxis = self.yaxis.resolve(context)
+            except VariableDoesNotExist:
+                raise TemplateSyntaxError('"absgraph" tag got an unknown variable: %r' % self.yaxis)
 
             countries_list = ",".join('"%s"' % country for country, _ in data)
             baseline_vals = ",".join(ffloat(datum[self.indicator][0]) for country, datum in data)
             latest_vals = ",".join(ffloat(datum[self.indicator][1]) for country, datum in data)
             var_name = "chart_%s" % (random.randint(0, 10000000))
+            target_element = self.element
+            indicator = self.indicator
+
             s = """
-                var %s; // globally available
+                var %(var_name)s; // globally available
                 $(document).ready(function() {
-                    %s = new Highcharts.Chart({
+                    %(var_name)s = new Highcharts.Chart({
                         chart: {
-                            renderTo: '%s',
+                            renderTo: '%(target_element)s',
                             defaultSeriesType: 'column'
                         },
                         title: {
-                           text: '%s'
+                           text: "%(title)s"
                         },
                         xAxis: {
-                           categories: [%s],
+                           categories: [%(countries_list)s],
+                            title : {
+                                text: "IHP+ Agency"
+                            }
                         },
                         yAxis: {
                             title: {
-                               text: '%%'
+                               text: "%(yaxis)s"
                             }
                         },
                         series: [{
                            name: 'baseline',
-                           data: [%s]
+                           data: [%(baseline_vals)s]
                         }, {
                            name: 'latest',
-                           data: [%s]
+                           data: [%(latest_vals)s]
                         }]
                     });
                 });
-            """ % (var_name, var_name, self.element, self.indicator, countries_list, baseline_vals, latest_vals)
+            """ % locals()
             return s
         except:
             traceback.print_exc()
 
 class RatioGraphNode(Node):
-    def __init__(self, agency, indicator, data, element):
+    def __init__(self, agency, indicator, data, element, title, yaxis):
         self.agency = Variable(agency)
         self.indicator = indicator
         self.data = Variable(data)
         self.element = element
+        self.title = Variable(title)
+        self.yaxis = Variable(yaxis)
 
     def render(self, context):
         try:
@@ -86,35 +106,51 @@ class RatioGraphNode(Node):
             except VariableDoesNotExist:
                 raise TemplateSyntaxError('"absgraph" tag got an unknown variable: %r' % self.data)
 
+            try:
+                title = self.title.resolve(context)
+            except VariableDoesNotExist:
+                raise TemplateSyntaxError('"absgraph" tag got an unknown variable: %r' % self.title)
+
+            try:
+                yaxis = self.yaxis.resolve(context)
+            except VariableDoesNotExist:
+                raise TemplateSyntaxError('"absgraph" tag got an unknown variable: %r' % self.yaxis)
+
             countries_list = ",".join('"%s"' % country for country, _ in data)
             data_vals = ",".join(ffloat(datum[self.indicator]) for country, datum in data)
             var_name = "chart_%s" % (random.randint(0, 10000000))
+            target_element = self.element
+            indicator = self.indicator
+
             s = """
-                var %s; // globally available
+                var %(var_name)s; // globally available
                 $(document).ready(function() {
-                    %s = new Highcharts.Chart({
+                    %(var_name)s = new Highcharts.Chart({
                         chart: {
-                            renderTo: '%s',
+                            renderTo: '%(target_element)s',
                             defaultSeriesType: 'column'
                         },
                         title: {
-                           text: '%s'
+                           text: "%(title)s"
                         },
                         xAxis: {
-                           categories: [%s],
+                           categories: [%(countries_list)s],
+                            title : {
+                                text: "IHP+ Agency"
+                            }
                         },
                         yAxis: {
                             title: {
-                               text: '%%'
+                               text: "%(yaxis)s"
                             }
                         },
                         series: [{
                            name: 'data',
-                           data: [%s]
+                           data: [%(data_vals)s]
                         }]
                     });
                 });
-            """ % (var_name, var_name, self.element, self.indicator, countries_list, data_vals)
+            """ % locals() 
             return s
         except:
             traceback.print_exc()
@@ -128,10 +164,11 @@ def parse_absolute_graph(parser, token):
 
     """
     tokens = token.contents.split()
-    if len(tokens) != 5:
-        raise TemplateSyntaxError(u"'%r' tag requires 4 arguments." % tokens[0])
+    print tokens, len(tokens)
+    if len(tokens) != 7:
+        raise TemplateSyntaxError(u"'%r' tag requires 6 arguments." % tokens[0])
         
-    return AbsGraphNode(tokens[1], tokens[2], tokens[3], tokens[4])
+    return AbsGraphNode(tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6])
 
 def parse_ratio_graph(parser, token):
     """
@@ -142,10 +179,10 @@ def parse_ratio_graph(parser, token):
 
     """
     tokens = token.contents.split()
-    if len(tokens) != 5:
-        raise TemplateSyntaxError(u"'%r' tag requires 4 arguments." % tokens[0])
+    if len(tokens) != 7:
+        raise TemplateSyntaxError(u"'%r' tag requires 6 arguments." % tokens[0])
         
-    return RatioGraphNode(tokens[1], tokens[2], tokens[3], tokens[4])
+    return RatioGraphNode(tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6])
 
 register.tag('absgraph', parse_absolute_graph)
 register.tag('ratiograph', parse_ratio_graph)
