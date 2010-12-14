@@ -12,13 +12,14 @@ def ffloat(x):
     return "%.1f" % x
 
 class AbsGraphNode(Node):
-    def __init__(self, agency, indicator, data, element, title, yaxis):
+    def __init__(self, agency, indicator, data, element, title, yaxis, xaxis):
         self.agency = Variable(agency)
         self.indicator = indicator
         self.data = Variable(data)
         self.element = element
         self.title = Variable(title)
         self.yaxis = Variable(yaxis)
+        self.xaxis = Variable(xaxis)
 
     def render(self, context):
         try:
@@ -41,6 +42,12 @@ class AbsGraphNode(Node):
                 yaxis = self.yaxis.resolve(context)
             except VariableDoesNotExist:
                 raise TemplateSyntaxError('"absgraph" tag got an unknown variable: %r' % self.yaxis)
+
+            try:
+                xaxis = self.xaxis.resolve(context)
+            except VariableDoesNotExist:
+                raise TemplateSyntaxError('"absgraph" tag got an unknown variable: %r' % self.xaxis)
+
 
             countries_list = ",".join('"%s"' % country for country, _ in data)
             baseline_vals = ",".join(ffloat(datum[self.indicator][0]) for country, datum in data)
@@ -63,7 +70,7 @@ class AbsGraphNode(Node):
                         xAxis: {
                            categories: [%(countries_list)s],
                             title : {
-                                text: "IHP+ Agency"
+                                text: "%(xaxis)s"
                             }
                         },
                         yAxis: {
@@ -86,13 +93,14 @@ class AbsGraphNode(Node):
             traceback.print_exc()
 
 class RatioGraphNode(Node):
-    def __init__(self, agency, indicator, data, element, title, yaxis):
+    def __init__(self, agency, indicator, data, element, title, yaxis, xaxis):
         self.agency = Variable(agency)
         self.indicator = indicator
         self.data = Variable(data)
         self.element = element
         self.title = Variable(title)
         self.yaxis = Variable(yaxis)
+        self.xaxis = Variable(xaxis)
 
     def render(self, context):
         try:
@@ -116,6 +124,11 @@ class RatioGraphNode(Node):
             except VariableDoesNotExist:
                 raise TemplateSyntaxError('"absgraph" tag got an unknown variable: %r' % self.yaxis)
 
+            try:
+                xaxis = self.xaxis.resolve(context)
+            except VariableDoesNotExist:
+                raise TemplateSyntaxError('"absgraph" tag got an unknown variable: %r' % self.xaxis)
+
             countries_list = ",".join('"%s"' % country for country, _ in data)
             data_vals = ",".join(ffloat(datum[self.indicator]) for country, datum in data)
             var_name = "chart_%s" % (random.randint(0, 10000000))
@@ -136,7 +149,7 @@ class RatioGraphNode(Node):
                         xAxis: {
                            categories: [%(countries_list)s],
                             title : {
-                                text: "IHP+ Agency"
+                                text: "%(xaxis)s"
                             }
                         },
                         yAxis: {
@@ -165,10 +178,10 @@ def parse_absolute_graph(parser, token):
     """
     tokens = token.contents.split()
     print tokens, len(tokens)
-    if len(tokens) != 7:
-        raise TemplateSyntaxError(u"'%r' tag requires 6 arguments." % tokens[0])
+    if len(tokens) != 8:
+        raise TemplateSyntaxError(u"'%r' tag requires 7 arguments." % tokens[0])
         
-    return AbsGraphNode(tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6])
+    return AbsGraphNode(tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7])
 
 def parse_ratio_graph(parser, token):
     """
@@ -179,10 +192,10 @@ def parse_ratio_graph(parser, token):
 
     """
     tokens = token.contents.split()
-    if len(tokens) != 7:
-        raise TemplateSyntaxError(u"'%r' tag requires 6 arguments." % tokens[0])
+    if len(tokens) != 8:
+        raise TemplateSyntaxError(u"'%r' tag requires 7 arguments." % tokens[0])
         
-    return RatioGraphNode(tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6])
+    return RatioGraphNode(tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7])
 
 register.tag('absgraph', parse_absolute_graph)
 register.tag('ratiograph', parse_ratio_graph)

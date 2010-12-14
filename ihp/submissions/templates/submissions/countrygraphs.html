@@ -4,14 +4,14 @@
 {% block graphdefs %}
 
 <script>
-{% ratiograph country 2DPa data graph_2dpa %}
-{% ratiograph country 2DPb data graph_2dpb %}
-{% ratiograph country 2DPc data graph_2dpc %}
-{% ratiograph country 3DP data graph_3dp %}
-{% ratiograph country 4DP data graph_4dp %}
-{% ratiograph country 5DPa data graph_5dpa %}
-{% ratiograph country 5DPb data graph_5dpb %}
-{% ratiograph country 5DPc data graph_5dpc %}
+{% ratiograph country 2DPa data graph_2dpa titles.2DPa yaxes.2DPa xaxis %}
+{% ratiograph country 2DPb data graph_2dpb titles.2DPb yaxes.2DPb xaxis %}
+{% ratiograph country 2DPc data graph_2dpc titles.2DPc yaxes.2DPc xaxis %}
+{% ratiograph country 3DP data graph_3dp titles.3DP yaxes.3DP xaxis %}
+{% ratiograph country 4DP data graph_4dp titles.4DP yaxes.4DP xaxis %}
+{% ratiograph country 5DPa data graph_5dpa titles.5DPa yaxes.5DPa xaxis %}
+{% ratiograph country 5DPb data graph_5dpb titles.5DPb yaxes.5DPb xaxis %}
+{% ratiograph country 5DPc data graph_5dpc titles.5DPc yaxes.5DPc xaxis %}
 </script>
 {% endblock %}
 

@@ -32,6 +32,24 @@ agency_yaxis = {
     "5DPc" : "%% reduction in stock of parallel project implementation (PIUs) units",
 }
 
+agency_xaxis = "IHP+ Country"
+
+country_ratio_titles = {
+    "2DPa" : "Increase in %(country_name)s's aid flows to the health sector not reported on goverment's budget (2DPa)",
+    "2DPb" : "%% of technical assistance disbursed through programmes (WB, Target: 50%%)",
+    "2DPc" : "%% of aid flows provided in the context of programme base approaches (Target: 66%%)",
+    "3DP"  : "%% of health sector funding provided through multi-year commitments",
+    "4DP"  : "Increase in %(country_name)s's health sector aid not disbursed within the year for which it was scheduled (4DP)",
+    "5DPa" : "%% change in health sector aid to the public sector not using partner countries' procurement systems",
+    "5DPb" : "Increase in %(country_name)s's health sector aid to the public sector not using partner countries' PFM systems (5DPb)",
+    "5DPc" : "Reduction in %(country_name)s's stock of parallel project implementation (PIUs) units (5DPc)",
+}
+
+country_abs_titles = dict(country_ratio_titles)
+country_abs_titles["5DPa"] = "%% of health sector aid to the public sector not using partner countries' procurement systems"
+country_yaxis = agency_yaxis
+country_xaxis = "IHP+ Agency"
+
 urlpatterns = patterns('',
 
     (r'^$', direct_to_template, {"template" : "home.html", "extra_context" : {
@@ -57,16 +75,27 @@ urlpatterns = patterns('',
     (r"^graph/agency/(?P<agency_name>[a-zA-Z\s]+)/$", "submissions.graphs.agencygraphs", {
         "titles" : agency_ratio_titles,
         "yaxes" : agency_yaxis,
+        "xaxis" : agency_xaxis,
     }, "agencygraphs"),
 
     (r"^graph/agency/(?P<agency_name>[a-zA-Z\s]+)/absolute$", "submissions.graphs.agencygraphs", {
         "template_name" : "submissions/agencygraphs_absolute.html",
         "titles" : agency_abs_titles,
         "yaxes" : agency_yaxis,
+        "xaxis" : agency_xaxis,
     }, "agencygraphs_absolute"),
-    (r"^graph/country/(?P<country_name>[a-zA-Z\s]+)/$", "submissions.graphs.countrygraphs", {}, "countrygraphs"),
+
+    (r"^graph/country/(?P<country_name>[a-zA-Z\s]+)/$", "submissions.graphs.countrygraphs", {
+        "titles" : country_ratio_titles,
+        "yaxes" : country_yaxis,
+        "xaxis" : country_xaxis,
+    }, "countrygraphs"),
+
     (r"^graph/country/(?P<country_name>[a-zA-Z\s]+)/absolute$", "submissions.graphs.countrygraphs", {
-        "template_name" : "submissions/countrygraphs_absolute.html"
+        "template_name" : "submissions/countrygraphs_absolute.html",
+        "titles" : country_ratio_titles,
+        "yaxes" : country_yaxis,
+        "xaxis" : country_xaxis,
     }, "countrygraphs_absolute"),
     
 

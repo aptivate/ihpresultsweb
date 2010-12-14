@@ -26,14 +26,13 @@ def format_fig(x):
         return "0.0"
     return "%.1f" % x
 
-def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.html", extra_context=None, titles=None, yaxes=None):
+def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.html", extra_context=None, titles=None, yaxes=None, xaxis=None):
     extra_context = extra_context or {}
 
     agency = Agency.objects.get(agency__iexact=agency_name)
     for indicator in titles:
         titles[indicator] = titles[indicator] % locals()
     for indicator in yaxes:
-        print yaxes[indicator]
         yaxes[indicator] = yaxes[indicator] % locals()
     
     data = {}
@@ -55,13 +54,18 @@ def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.h
     extra_context["abs_values"] = sorted(abs_values.items())
     extra_context["titles"] = titles
     extra_context["yaxes"] = yaxes
+    extra_context["xaxis"] = xaxis
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
     
-def countrygraphs(request, country_name, template_name="submissions/countrygraphs.html", extra_context=None):
+def countrygraphs(request, country_name, template_name="submissions/countrygraphs.html", extra_context=None, titles=[], yaxes=[], xaxis=""):
     extra_context = extra_context or {}
 
     country = Country.objects.get(country__iexact=country_name)
+    for indicator in titles:
+        titles[indicator] = titles[indicator] % locals()
+    for indicator in yaxes:
+        yaxes[indicator] = yaxes[indicator] % locals()
     
     data = {}
     abs_values = {}
@@ -80,6 +84,9 @@ def countrygraphs(request, country_name, template_name="submissions/countrygraph
     extra_context["country"] = country.country    
     extra_context["data"] = sorted(data.items())
     extra_context["abs_values"] = sorted(abs_values.items())
+    extra_context["titles"] = titles
+    extra_context["yaxes"] = yaxes
+    extra_context["xaxis"] = xaxis
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
     
