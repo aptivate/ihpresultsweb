@@ -7,6 +7,7 @@ from django.contrib import admin
 from submissions.models import Agency, Country
 admin.autodiscover()
 
+
 agency_ratio_titles = {
     "2DPa" : "Increase in %(agency_name)s's aid flows to the health sector not reported on goverment's budget (2DPa)",
     "2DPb" : "%% of technical assistance disbursed through programmes (WB, Target: 50%%)",

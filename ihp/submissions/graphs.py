@@ -29,6 +29,8 @@ def format_fig(x):
 def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.html", extra_context=None, titles=None, yaxes=None, xaxis=None):
     extra_context = extra_context or {}
 
+    titles = dict(titles)
+    yaxes = dict(yaxes)
     agency = Agency.objects.get(agency__iexact=agency_name)
     for indicator in titles:
         titles[indicator] = titles[indicator] % locals()
@@ -61,6 +63,8 @@ def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.h
 def countrygraphs(request, country_name, template_name="submissions/countrygraphs.html", extra_context=None, titles=[], yaxes=[], xaxis=""):
     extra_context = extra_context or {}
 
+    titles = dict(titles)
+    yaxes = dict(yaxes)
     country = Country.objects.get(country__iexact=country_name)
     for indicator in titles:
         titles[indicator] = titles[indicator] % locals()
