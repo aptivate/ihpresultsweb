@@ -3,6 +3,10 @@
 
 <style>
 
+.year {
+    font-size: 0.8em;
+}
+
 table {
     border: solid thin black
 }
@@ -63,7 +67,7 @@ h1 {
     <tr class="odd">
         <td>{{ spm_map.1DP }} (1DP)</td>
         {% for country, data in abs_values.items %}
-            <td>{{ data.1DP.0|floatformat|default_if_none:"-" }}</td>
+            <td>{{ data.1DP.0|floatformat|default_if_none:"-" }} <span class="year">({{ data.1DP.3 }})</span></td>
             <td>{{ data.1DP.1|floatformat|default_if_none:"-" }}</td>
             <td></td>
         {% endfor %}
@@ -71,7 +75,7 @@ h1 {
     <tr class="even">
         <td>{{ spm_map.2DPa }} (2DPa)</td>
         {% for country, data in abs_values.items %}
-            <td>{{ data.2DPa.0|floatformat|default_if_none:"-" }}</td>
+            <td>{{ data.2DPa.0|floatformat|default_if_none:"-" }} <span class="year">({{ data.1DP.3 }})</span></td>
             <td>{{ data.2DPa.1|floatformat|default_if_none:"-" }}</td>
             <td>{{ data.2DPa.2|floatformat|default_if_none:"-" }}</td>
         {% endfor %}
@@ -79,7 +83,7 @@ h1 {
     <tr class="odd">
         <td>{{ spm_map.2DPb }} (2DPb)</td>
         {% for country, data in abs_values.items %}
-            <td>{{ data.2DPb.0|floatformat|default_if_none:"-" }}</td>
+            <td>{{ data.2DPb.0|floatformat|default_if_none:"-" }} <span class="year">({{ data.1DP.3 }})</span></td>
             <td>{{ data.2DPb.1|floatformat|default_if_none:"-" }}</td>
             <td></td>
         {% endfor %}
@@ -87,7 +91,7 @@ h1 {
     <tr class="even">
         <td>{{ spm_map.2DPc }} (2DPc)</td>
         {% for country, data in abs_values.items %}
-            <td>{{ data.2DPc.0|floatformat|default_if_none:"-" }}</td>
+            <td>{{ data.2DPc.0|floatformat|default_if_none:"-" }} <span class="year">({{ data.1DP.3 }})</span></td>
             <td>{{ data.2DPc.1|floatformat|default_if_none:"-" }}</td>
             <td></td>
         {% endfor %}
@@ -95,7 +99,7 @@ h1 {
     <tr class="odd">
         <td>{{ spm_map.3DP }} (3DP)</td>
         {% for country, data in abs_values.items %}
-            <td>{{ data.3DP.0|floatformat|default_if_none:"-" }}</td>
+            <td>{{ data.3DP.0|floatformat|default_if_none:"-" }} <span class="year">({{ data.1DP.3 }})</span></td>
             <td>{{ data.3DP.1|floatformat|default_if_none:"-" }}</td>
             <td></td>
         {% endfor %}
@@ -103,7 +107,7 @@ h1 {
     <tr class="even">
         <td>{{ spm_map.4DP }} (4DP)</td>
         {% for country, data in abs_values.items %}
-            <td>{{ data.4DP.0|floatformat|default_if_none:"-" }}</td>
+            <td>{{ data.4DP.0|floatformat|default_if_none:"-" }} <span class="year">({{ data.1DP.3 }})</span></td>
             <td>{{ data.4DP.1|floatformat|default_if_none:"-" }}</td>
             <td>{{ data.4DP.2|floatformat|default_if_none:"-" }}</td>
         {% endfor %}
@@ -111,7 +115,7 @@ h1 {
     <tr class="odd">
         <td>{{ spm_map.5DPa }} (5DPa)</td>
         {% for country, data in abs_values.items %}
-            <td>{{ data.5DPa.0|floatformat|default_if_none:"-" }}</td>
+            <td>{{ data.5DPa.0|floatformat|default_if_none:"-" }} <span class="year">({{ data.1DP.3 }})</span></td>
             <td>{{ data.5DPa.1|floatformat|default_if_none:"-" }}</td>
             <td>{{ data.5DPa.2|floatformat|default_if_none:"-" }}</td>
         {% endfor %}
@@ -119,7 +123,7 @@ h1 {
     <tr class="even">
         <td>{{ spm_map.5DPb }} (5DPb)</td>
         {% for country, data in abs_values.items %}
-            <td>{{ data.5DPb.0|floatformat|default_if_none:"-" }}</td>
+            <td>{{ data.5DPb.0|floatformat|default_if_none:"-" }} <span class="year">({{ data.1DP.3 }})</span></td>
             <td>{{ data.5DPb.1|floatformat|default_if_none:"-" }}</td>
             <td>{{ data.5DPb.2|floatformat|default_if_none:"-" }}</td>
         {% endfor %}
@@ -127,7 +131,7 @@ h1 {
     <tr class="odd">
         <td>{{ spm_map.5DPc }} (5DPc)</td>
         {% for country, data in abs_values.items %}
-            <td>{{ data.5DPc.0|floatformat|default_if_none:"-" }}</td>
+            <td>{{ data.5DPc.0|floatformat|default_if_none:"-" }} <span class="year">({{ data.1DP.3 }})</span></td>
             <td>{{ data.5DPc.1|floatformat|default_if_none:"-" }}</td>
             <td>{{ data.5DPc.2|floatformat|default_if_none:"-" }}</td>
         {% endfor %}
@@ -135,7 +139,7 @@ h1 {
     <tr class="even">
         <td>{{ spm_map.6DP }} (6DP)</td>
         {% for country, data in abs_values.items %}
-            <td>{{ data.6DP.0|floatformat|default_if_none:"-" }}</td>
+            <td>{{ data.6DP.0|floatformat|default_if_none:"-" }} <span class="year">({{ data.1DP.3 }})</span></td>
             <td>{{ data.6DP.1|floatformat|default_if_none:"-" }}</td>
             <td></td>
         {% endfor %}
@@ -143,7 +147,7 @@ h1 {
     <tr class="odd">
         <td>{{ spm_map.7DP }} (7DP)</td>
         {% for country, data in abs_values.items %}
-            <td>{{ data.7DP.0|floatformat|default_if_none:"-" }}</td>
+            <td>{{ data.7DP.0|floatformat|default_if_none:"-" }} <span class="year">({{ data.1DP.3 }})</span></td>
             <td>{{ data.7DP.1|floatformat|default_if_none:"-" }}</td>
             <td></td>
         {% endfor %}
@@ -151,7 +155,7 @@ h1 {
     <tr class="even">
         <td>{{ spm_map.8DP }} (8DP)</td>
         {% for country, data in abs_values.items %}
-            <td>{{ data.8DP.0|floatformat:"2"|default_if_none:"-" }}</td>
+            <td>{{ data.8DP.0|floatformat:"2"|default_if_none:"-" }} <span class="year">({{ data.1DP.3 }})</span></td>
             <td>{{ data.8DP.1|floatformat:"2"|default_if_none:"-" }}</td>
             <td></td>
         {% endfor %}
