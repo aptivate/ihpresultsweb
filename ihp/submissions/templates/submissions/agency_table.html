@@ -23,29 +23,28 @@ tr.odd {
     background-color: #989494;
 }
 
-tr {
-    margin: 0;
-    padding: 0;
-}
-
 td {
     border: solid thin black;
     text-align: center;
-    width: 20px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
 }
 
 td:first-child {
+    padding: 3px;
     text-align: left;
     font-size: 0.95em;
-    width: 30%;
+    width: 500px;
 }
 
-
+h1 {
+    text-align: center;
+}
 
 </style>
 {% endblock %}
 {% block body %}
+<h1>{{ institution_name }}</h1>
 <table>
     <tr class="head">
         <th rowspan="2">Standard Performance Measure</th>

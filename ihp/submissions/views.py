@@ -711,6 +711,7 @@ def country_table(request, country_id, template_name="submissions/agency_table.h
         abs_values[agency.agency] = agency_abs_values
     extra_context["abs_values"] = abs_values
     extra_context["spm_map"] = spm_map
+    extra_context["institution_name"] = country.country
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
@@ -728,5 +729,6 @@ def agency_table(request, agency_id, template_name="submissions/agency_table.htm
         abs_values[country.country] = country_abs_values
     extra_context["abs_values"] = abs_values
     extra_context["spm_map"] = spm_map
+    extra_context["institution_name"] = agency.agency
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
