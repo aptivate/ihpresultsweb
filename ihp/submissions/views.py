@@ -709,7 +709,7 @@ def country_table(request, country_id, template_name="submissions/agency_table.h
             base_val, base_year, latest_val, _ = indicators[indicator][0]
             agency_abs_values[indicator] = (base_val, latest_val, perc_change(base_val, latest_val), base_year) 
         abs_values[agency.agency] = agency_abs_values
-    extra_context["abs_values"] = abs_values
+    extra_context["abs_values"] = sorted(abs_values.items())
     extra_context["spm_map"] = spm_map
     extra_context["institution_name"] = country.country
     
@@ -727,7 +727,7 @@ def agency_table(request, agency_id, template_name="submissions/agency_table.htm
             base_val, base_year, latest_val, _ = indicators[indicator][0]
             country_abs_values[indicator] = (base_val, latest_val, perc_change(base_val, latest_val), base_year) 
         abs_values[country.country] = country_abs_values
-    extra_context["abs_values"] = abs_values
+    extra_context["abs_values"] = sorted(abs_values.items())
     extra_context["spm_map"] = spm_map
     extra_context["institution_name"] = agency.agency
     
