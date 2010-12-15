@@ -5,11 +5,13 @@ import csv
 
 from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template
+from django.shortcuts import get_object_or_404
 
 from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardRatings, GovScorecardRatings
 from target import calc_agency_targets, get_country_progress, calc_country_targets, get_agency_progress
-from indicators import calc_country_indicators, calc_agency_country_indicators
+from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR
 from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm
+
 
 def calc_agency_comments(indicator, agency_data):
     old_comments = agency_data[indicator]["comments"]
@@ -670,4 +672,44 @@ def gov_ratings_edit(request, template_name="submissions/gov_ratings_edit.html",
         form = GovRatingsForm()
 
     extra_context["form"] = form
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def perc_change(base_val, latest_val):
+    none_vals = [None, NA_STR]
+    if base_val in none_vals or latest_val in none_vals:
+        return None
+    if base_val == 0:
+        return None
+    return (latest_val - base_val) / base_val * 100.0
+
+def country_table(request, country_id, template_name="submissions/agency_table.html", extra_context=None):
+    extra_context = extra_context or {} 
+    country = get_object_or_404(Country, pk=country_id)
+
+    abs_values = {}
+    for agency in country.agencies:
+        agency_abs_values = {}
+        indicators = calc_agency_country_indicators(agency, country)
+        for indicator in indicators:
+            base_val, base_year, latest_val, _ = indicators[indicator][0]
+            agency_abs_values[indicator] = (base_val, latest_val, perc_change(base_val, latest_val)) 
+        abs_values[agency.agency] = agency_abs_values
+    extra_context["abs_values"] = abs_values
+    
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def agency_table(request, agency_id, template_name="submissions/agency_table.html", extra_context=None):
+    extra_context = extra_context or {} 
+    agency = get_object_or_404(Agency, pk=agency_id)
+
+    abs_values = {}
+    for country in agency.countries:
+        country_abs_values = {}
+        indicators = calc_agency_country_indicators(agency, country)
+        for indicator in indicators:
+            base_val, base_year, latest_val, _ = indicators[indicator][0]
+            country_abs_values[indicator] = (base_val, latest_val, perc_change(base_val, latest_val)) 
+        abs_values[country.country] = country_abs_values
+    extra_context["abs_values"] = abs_values
+    
     return direct_to_template(request, template=template_name, extra_context=extra_context)

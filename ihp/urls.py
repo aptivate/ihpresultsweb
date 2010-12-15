@@ -98,6 +98,11 @@ urlpatterns = patterns('',
         "yaxes" : country_yaxis,
         "xaxis" : country_xaxis,
     }, "countrygraphs_absolute"),
+
+    # Table Views
+    (r'^scorecard/tables/by_country/(?P<country_id>\d+)/$', 'submissions.views.country_table', {}, 'country_table'),
+    (r'^scorecard/tables/by_agency/(?P<agency_id>\d+)/$', 'submissions.views.agency_table', {}, 'agency_table'),
+
     
 
     # Old views

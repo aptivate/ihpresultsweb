@@ -18,17 +18,39 @@
     <li><a href="{% url gov_questionnaire %}">Raw Gov Questions</a></li>
 </ol>
 <h2>Graphs (by Agency)</h2>
-<ol>
+<table>
+    <tr>
+        <th>Agency</th>
+        <th>Graph</th>
+        <th>Abs Graph</th>
+        <th>Table</th>
+    </tr>
     {% for agency in agencies %}
-    <li><a href="{% url agencygraphs agency.agency %}">{{ agency.agency }}</a> (<a href="{% url agencygraphs_absolute agency.agency %}">absolute</a>)</li>
+    <tr>
+        <td>{{ agency.agency }}</td>
+        <td><a href="{% url agencygraphs agency.agency %}">Ratio Graph</a></td> 
+        <td><a href="{% url agencygraphs_absolute agency.agency %}">Absolute Graph</a></td>
+        <td><a href="{% url agency_table agency.id %}">Table</a></td>
+    </tr>
     {% endfor %}
-</ol>
+</table>
 
 <h2>Graphs (by Country)</h2>
-<ol>
+<table>
+    <tr>
+        <th>Country</th>
+        <th>Graph</th>
+        <th>Abs Graph</th>
+        <th>Table</th>
+    </tr>
     {% for country in countries %}
-    <li><a href="{% url countrygraphs country.country %}">{{ country.country }}</a> (<a href="{% url countrygraphs_absolute country.country %}">absolute</a>)</li>
+    <tr>
+        <td>{{ country.country }}</td>
+        <td><a href="{% url countrygraphs country.country %}">Ratio Graph</a></td> 
+        <td><a href="{% url countrygraphs_absolute country.country %}">Absolute Graph</a></td>
+        <td><a href="{% url country_table country.id %}">Table</a></td>
+    </tr>
     {% endfor %}
-</ol>
+</table>
 
 {% endblock %}
