@@ -682,6 +682,21 @@ def perc_change(base_val, latest_val):
         return None
     return (latest_val - base_val) / base_val * 100.0
 
+
+spm_map = {
+    "1DP" : "Proportion of IHP+ countries in which the partner has signed commitment to (or documented support for) the IHP+ Country Compact, or equivalent agreement.",
+    "2DPa" : "Percent of aid flows to the health sector that is reported on national health sector budgets.",
+    "2DPb" : "Percent of current capacity-development support provided through coordinated programmes consistent with national plans/strategies for the health sector.",
+    "2DPc" : "Percent of health sector aid provided as programme based approaches.",
+    "3DP" : "Percent of health sector aid provided through multi-year commitments.",
+    "4DP" : "Percent of health sector aid disbursements released according to agreed schedules in annual or multi-year frameworks.",
+    "5DPa" : "Percent of health sector aid that uses country procurement systems.",
+    "5DPb" : "Percent of health sector aid that uses public financial management systems.",
+    "5DPc" : "Number of parallel Project Implementation Units (PIUs) per country.",
+    "6DP" : "Proportion of countries in which agreed, transparent and monitorable performance assessment frameworks are being used to assess progress in the health sector.",
+    "7DP" : "Proportion of countries where mutual assessments have been made of progress implementing commitments in the health sector, including on aid effectiveness.",
+    "8DP" : "Evidence of support for Civil Society to be actively represented in health sector policy processes - including Health Sector planning, coordination & review mechanisms.",
+}
 def country_table(request, country_id, template_name="submissions/agency_table.html", extra_context=None):
     extra_context = extra_context or {} 
     country = get_object_or_404(Country, pk=country_id)
@@ -695,6 +710,7 @@ def country_table(request, country_id, template_name="submissions/agency_table.h
             agency_abs_values[indicator] = (base_val, latest_val, perc_change(base_val, latest_val)) 
         abs_values[agency.agency] = agency_abs_values
     extra_context["abs_values"] = abs_values
+    extra_context["spm_map"] = spm_map
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
@@ -711,5 +727,6 @@ def agency_table(request, agency_id, template_name="submissions/agency_table.htm
             country_abs_values[indicator] = (base_val, latest_val, perc_change(base_val, latest_val)) 
         abs_values[country.country] = country_abs_values
     extra_context["abs_values"] = abs_values
+    extra_context["spm_map"] = spm_map
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
