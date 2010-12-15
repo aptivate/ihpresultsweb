@@ -697,6 +697,14 @@ spm_map = {
     "7DP" : "Proportion of countries where mutual assessments have been made of progress implementing commitments in the health sector, including on aid effectiveness.",
     "8DP" : "Evidence of support for Civil Society to be actively represented in health sector policy processes - including Health Sector planning, coordination & review mechanisms.",
 }
+
+def tbl_float_format(x):
+    if type(x) == float:
+        return "%.0f" % x
+    elif x == NA_STR:
+        return "N/A"
+    return x
+
 def country_table(request, country_id, template_name="submissions/agency_table.html", extra_context=None):
     extra_context = extra_context or {} 
     country = get_object_or_404(Country, pk=country_id)
@@ -707,7 +715,12 @@ def country_table(request, country_id, template_name="submissions/agency_table.h
         indicators = calc_agency_country_indicators(agency, country)
         for indicator in indicators:
             base_val, base_year, latest_val, _ = indicators[indicator][0]
-            agency_abs_values[indicator] = (base_val, latest_val, perc_change(base_val, latest_val), base_year) 
+            agency_abs_values[indicator] = (
+                tbl_float_format(base_val), 
+                tbl_float_format(latest_val), 
+                tbl_float_format(perc_change(base_val, latest_val)), 
+                base_year
+            ) 
         abs_values[agency.agency] = agency_abs_values
     extra_context["abs_values"] = sorted(abs_values.items())
     extra_context["spm_map"] = spm_map
@@ -725,7 +738,12 @@ def agency_table(request, agency_id, template_name="submissions/agency_table.htm
         indicators = calc_agency_country_indicators(agency, country)
         for indicator in indicators:
             base_val, base_year, latest_val, _ = indicators[indicator][0]
-            country_abs_values[indicator] = (base_val, latest_val, perc_change(base_val, latest_val), base_year) 
+            country_abs_values[indicator] = (
+                tbl_float_format(base_val), 
+                tbl_float_format(latest_val), 
+                tbl_float_format(perc_change(base_val, latest_val)),
+                base_year
+            ) 
         abs_values[country.country] = country_abs_values
     extra_context["abs_values"] = sorted(abs_values.items())
     extra_context["spm_map"] = spm_map
