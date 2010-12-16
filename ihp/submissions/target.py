@@ -201,6 +201,7 @@ def calc_agency_targets(agency):
     }
 
     default_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
+    na_text = "This Standard Performance Measure was deemed not applicable to %s" % agency.agency
         
     targets = get_agency_targets(agency, dp_indicators)
     indicators = calc_agency_indicators(agency)
@@ -264,7 +265,9 @@ def calc_agency_targets(agency):
         except:
             pass
 
-        if result["commentary"] == "":
+        if NA_STR in [base_val, cur_val]:
+            result["commentary"] = na_text
+        elif result["commentary"] == "":
             result["commentary"] = default_text
 
         result["commentary"] = (result["commentary"] + " " + target_map[indicator] % result).strip()
