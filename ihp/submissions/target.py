@@ -201,7 +201,7 @@ def calc_agency_targets(agency):
     }
 
     default_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
-    na_text = "This Standard Performance Measure was deemed not applicable to %s" % agency.agency
+    na_text = "This Standard Performance Measure was deemed not applicable to %s." % agency.agency
         
     targets = get_agency_targets(agency, dp_indicators)
     indicators = calc_agency_indicators(agency)
