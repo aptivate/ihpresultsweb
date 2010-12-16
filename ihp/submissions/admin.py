@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from models import Agency, Country, UpdateAgency, Submission, DPQuestion, GovQuestion, AgencyCountries, AgencyTargets, CountryTargets, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country8DPFix, MDGData
+from models import Agency, Country, UpdateAgency, Submission, DPQuestion, GovQuestion, AgencyCountries, AgencyTargets, CountryTargets, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country8DPFix, MDGData, CountryLanguage
 
 
 class AgencyAdmin(admin.ModelAdmin):
@@ -97,3 +97,14 @@ class MDGDataAdmin(admin.ModelAdmin):
     list_display = ("country", "mdg_target", "baseline_year", "baseline_value", "latest_year", "latest_value", "arrow")
     form = MDGDataAdminForm
 admin.site.register(MDGData, MDGDataAdmin)
+
+class CountryLanguageAdminForm(forms.ModelForm):
+    class Meta:
+        model = CountryLanguage
+    language = forms.ChoiceField(choices=[(x, x) for x in ["English", "French"]])
+
+class CountryLanguageAdmin(admin.ModelAdmin):
+    list_filter = ("language", )
+    list_display = ("country", "language")
+    form = CountryLanguageAdminForm
+admin.site.register(CountryLanguage, CountryLanguageAdmin)
