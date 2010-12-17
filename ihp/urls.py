@@ -103,6 +103,9 @@ urlpatterns = patterns('',
     (r'^scorecard/tables/by_country/(?P<country_id>\d+)/$', 'submissions.views.country_table', {}, 'country_table'),
     (r'^scorecard/tables/by_agency/(?P<agency_id>\d+)/$', 'submissions.views.agency_table', {}, 'agency_table'),
 
+    # Debug Views
+    (r'^scorecard/tables/agency_country_ratings/$', 'submissions.views.agency_country_ratings', {}, 'agency_country_ratings'),
+
     
 
     # Old views

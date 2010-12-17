@@ -8,7 +8,7 @@ from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404
 
 from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardRatings, GovScorecardRatings
-from target import calc_agency_targets, get_country_progress, calc_country_targets, get_agency_progress
+from target import calc_agency_targets, get_country_progress, calc_country_targets, get_agency_progress, country_agency_indicator_ratings
 from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR
 from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm
 
@@ -749,4 +749,18 @@ def agency_table(request, agency_id, template_name="submissions/agency_table.htm
     extra_context["spm_map"] = spm_map
     extra_context["institution_name"] = agency.agency
     
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def agency_country_ratings(request, template_name="submissions/agency_country_ratings.html", extra_context=None):
+    extra_context = extra_context or {}
+    data = []
+    for agency in Agency.objects.all().order_by("agency"):
+        for country in agency.countries:
+            data.append({
+                "agency" : agency,
+                "country" : country,
+                "indicators" : country_agency_indicator_ratings(country, agency),
+            })
+    
+    extra_context["data"] = data
     return direct_to_template(request, template=template_name, extra_context=extra_context)

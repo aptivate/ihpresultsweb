@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block head %}
+
+<style>
+
+.year {
+    font-size: 0.8em;
+}
+
+table {
+    border: solid thin black
+}
+
+tr.head {
+    background-color:black;
+    color: white;
+}
+
+tr.head2 {
+    font-size: 0.8em
+}
+
+tr.even{
+    background-color: #C3C3C3;
+}
+tr.odd {
+    background-color: #989494;
+}
+
+td {
+    border: solid thin black;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+}
+
+td:first-child {
+    text-align: left;
+}
+
+th.spm {
+    padding: 3px;
+    text-align: left;
+    font-size: 0.95em;
+    width: 500px;
+}
+
+h1 {
+    text-align: center;
+}
+
+</style>
+{% endblock %}
+{% block body %}
+<table>
+    <tr class="head">
+        <th>Agency</th>
+        <th>Country</th>
+        <th>1DP</th>
+        <th>2DPa</th>
+        <th>2DPb</th>
+        <th>2DPc</th>
+        <th>3DP</th>
+        <th>4DP</th>
+        <th>5DPa</th>
+        <th>5DPb</th>
+        <th>5DPc</th>
+        <th>6DP</th>
+        <th>7DP</th>
+        <th>8DP</th>
+    </tr>
+    {% for datum in data %}
+        <tr class="{% cycle 'odd' 'even' %}">
+            <td>{{ datum.agency.agency }}</td>
+            <td>{{ datum.country.country }}</td>
+            <td>{{ datum.indicators.1DP }}</td>
+            <td>{{ datum.indicators.2DPa }}</td>
+            <td>{{ datum.indicators.2DPb }}</td>
+            <td>{{ datum.indicators.2DPc }}</td>
+            <td>{{ datum.indicators.3DP }}</td>
+            <td>{{ datum.indicators.4DP }}</td>
+            <td>{{ datum.indicators.5DPa }}</td>
+            <td>{{ datum.indicators.5DPb }}</td>
+            <td>{{ datum.indicators.5DPc }}</td>
+            <td>{{ datum.indicators.6DP }}</td>
+            <td>{{ datum.indicators.7DP }}</td>
+            <td>{{ datum.indicators.8DP }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

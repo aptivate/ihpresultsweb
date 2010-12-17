@@ -464,14 +464,11 @@ def calc_country_targets(country):
         results[indicator] = result
     return results
 
-def country_agency_progress(country, agency):
-    if agency.agency == "Gavi":
-        import pdb
-        pdb.set_trace()
+def country_agency_indicator_ratings(country, agency):
+    indicators = {}
     targets = get_agency_targets(agency, dp_indicators)
     country_indicators = calc_agency_country_indicators(agency, country)
 
-    num_indicators = ticks = 0
     for indicator in country_indicators:
         (base_val, base_year, cur_val, cur_year), comments = country_indicators[indicator]
         # TODO this is a hack - it might be better to extract this
@@ -489,10 +486,13 @@ def country_agency_progress(country, agency):
         else:
             target = targets[indicator]
             result = evaluate_indicator(target, base_val, cur_val)
-        if result != "cross":
-            ticks += 1.0
-        num_indicators += 1.0
-    return ticks / num_indicators > 0.5
+        indicators[indicator] = result
+    return indicators
+
+def country_agency_progress(country, agency):
+    ratings = country_agency_indicator_ratings(country, agency)
+    ticks = filter(lambda x : x == "tick", ratings)
+    return len(ticks) / float(len(ratings)) > 0.5
 
 def get_country_progress(agency):
     np = []
