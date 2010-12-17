@@ -118,13 +118,13 @@ def gov_ratings(request, country_id):
     try:
         country = get_object_or_404(Country, id=country_id)
         ratings, _ = GovScorecardRatings.objects.get_or_create(country=country)
+        get_comment = lambda indicator : results[indicator]["commentary"]
+        data = {}
 
         if request.method == "GET":
-            country_data = calc_country_targets(country)
+            results = calc_country_targets(country)
+            country_data = results
 
-            data = {}
-            #for indicator in indicators.g_indicators:
-            #    data[indicator] = calc_agency_comments(indicator, country_data)
 
             data["rating1"] = ratings.r1
             data["rating2a"] = ratings.r2a
@@ -136,6 +136,7 @@ def gov_ratings(request, country_id):
             data["rating6"] = ratings.r6
             data["rating7"] = ratings.r7
             data["rating8"] = ratings.r8
+
             data["progress1"] = ratings.er1
             data["progress2a"] = ratings.er2a
             data["progress2b"] = ratings.er2b
@@ -146,6 +147,17 @@ def gov_ratings(request, country_id):
             data["progress6"] = ratings.er6
             data["progress7"] = ratings.er7
             data["progress8"] = ratings.er8
+
+            data["gen1"] = get_comment("1G")
+            data["gen2a"] = get_comment("2Ga")
+            data["gen2b"] = get_comment("2Gb")
+            data["gen3"] = get_comment("3G")
+            data["gen4"] = get_comment("4G")
+            data["gen5a"] = get_comment("5Ga")
+            data["gen5b"] = get_comment("5Gb")
+            data["gen6"] = get_comment("6G")
+            data["gen7"] = get_comment("7G")
+            data["gen8"] = get_comment("8G")
 
             return HttpResponse(simplejson.dumps(data))
         elif request.method == "POST":
@@ -171,7 +183,19 @@ def gov_ratings(request, country_id):
             ratings.er8 = request.POST["er8"]
             ratings.save()
 
-            return HttpResponse("OK")
+            results = calc_country_targets(country)
+            data["gen1"] = get_comment("1G")
+            data["gen2a"] = get_comment("2Ga")
+            data["gen2b"] = get_comment("2Gb")
+            data["gen3"] = get_comment("3G")
+            data["gen4"] = get_comment("4G")
+            data["gen5a"] = get_comment("5Ga")
+            data["gen5b"] = get_comment("5Gb")
+            data["gen6"] = get_comment("6G")
+            data["gen7"] = get_comment("7G")
+            data["gen8"] = get_comment("8G")
+
+            return HttpResponse(simplejson.dumps(data))
     except:
         import traceback
         traceback.print_exc()
