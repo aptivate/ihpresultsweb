@@ -756,10 +756,15 @@ def agency_country_ratings(request, template_name="submissions/agency_country_ra
     data = []
     for agency in Agency.objects.all().order_by("agency"):
         for country in agency.countries:
+            ratings = country_agency_indicator_ratings(country, agency)
+            ticks = filter(lambda x : x == "tick", ratings.values())
+            making_progress = len(ticks) / float(len(ratings)) > 0.5
+
             data.append({
                 "agency" : agency,
                 "country" : country,
-                "indicators" : country_agency_indicator_ratings(country, agency),
+                "indicators" : ratings,
+                "making_progress" : making_progress,
             })
     
     extra_context["data"] = data

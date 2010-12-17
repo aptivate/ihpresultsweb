@@ -68,6 +68,7 @@ h1 {
         <th>6DP</th>
         <th>7DP</th>
         <th>8DP</th>
+        <th>Making Progress</th>
     </tr>
     {% for datum in data %}
         <tr class="{% cycle 'odd' 'even' %}">
@@ -85,6 +86,7 @@ h1 {
             <td>{{ datum.indicators.6DP }}</td>
             <td>{{ datum.indicators.7DP }}</td>
             <td>{{ datum.indicators.8DP }}</td>
+            <td>{{ datum.making_progress|yesno:"Yes,No" }}</td>
         </tr>
     {% endfor %}
 </table>

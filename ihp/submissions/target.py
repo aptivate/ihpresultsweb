@@ -491,7 +491,7 @@ def country_agency_indicator_ratings(country, agency):
 
 def country_agency_progress(country, agency):
     ratings = country_agency_indicator_ratings(country, agency)
-    ticks = filter(lambda x : x == "tick", ratings)
+    ticks = filter(lambda x : x == "tick", ratings.values())
     return len(ticks) / float(len(ratings)) > 0.5
 
 def get_country_progress(agency):
