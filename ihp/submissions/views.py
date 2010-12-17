@@ -320,17 +320,61 @@ def country_export(request):
     data = get_countries_scorecard_data()
     for country, datum in data.items():
         try:
+            datum["ER1a"] = target_none(datum["1G"]["target"])
+            datum["ER1b"] = datum["1G"]["commentary"]
+            datum["ER2a"] = target_none(datum["2Ga"]["target"])
+            datum["ER2b"] = datum["2Ga"]["commentary"]
+            datum["ER3a"] = target_none(datum["2Gb"]["target"])
+            datum["ER3b"] = datum["2Gb"]["commentary"]
+            datum["ER4a"] = target_none(datum["3G"]["target"])
+            datum["ER4b"] = datum["3G"]["commentary"]
+            datum["ER4c"] = country.country
+            datum["ER5a"] = target_none(datum["4G"]["target"])
+            datum["ER5b"] = datum["4G"]["commentary"]
+            datum["ER6a"] = target_none(datum["5Ga"]["target"])
+            datum["ER6b"] = datum["5Ga"]["commentary"]
+            datum["ER7a"] = target_none(datum["5Gb"]["target"])
+            datum["ER7b"] = datum["5Gb"]["commentary"]
+            datum["ER8a"] = target_none(datum["6G"]["target"])
+            datum["ER8b"] = datum["6G"]["commentary"]
+            datum["ER9a"] = target_none(datum["7G"]["target"])
+            datum["ER9b"] = datum["7G"]["commentary"]
+            datum["ER10a"] = target_none(datum["8G"]["target"])
+            datum["ER10b"] = datum["8G"]["commentary"]
+
+            #datum["ER1a"] = target_none(datum["1G"]["target"])
+            #datum["ER1b"] = datum["1G"]["commentary"]
+            #datum["ER2a"] = target_none(datum["2Ga"]["target"])
+            #datum["ER2b"] = datum["2Ga"]["commentary"]
+            #datum["ER3a"] = target_none(datum["2Gb"]["target"])
+            #datum["ER3b"] = datum["2Gb"]["commentary"]
+            #datum["ER4a"] = target_none(datum["3G"]["target"])
+            #datum["ER4b"] = datum["3G"]["commentary"]
+            #datum["ER4c"] = country.country
+            #datum["ER5a"] = target_none(datum["4G"]["target"])
+            #datum["ER5b"] = datum["4G"]["commentary"]
+            #datum["ER6a"] = datum["PFM1"]
+            #datum["ER6b"] = datum["5Ga"]["commentary"]
+            #datum["ER7a"] = datum["PR1"]
+            #datum["ER7b"] = datum["5Gb"]["commentary"]
+            #datum["ER8a"] = target_none(datum["6G"]["target"])
+            #datum["ER8b"] = datum["6G"]["commentary"]
+            #datum["ER9a"] = target_none(datum["7G"]["target"])
+            #datum["ER9b"] = datum["7G"]["commentary"]
+            ##datum["ER10a"] = target_none(datum["8G"]["target"])
+            #datum["ER10a"] = datum["HSM3"]
+            #datum["ER10b"] = datum["8G"]["commentary"]
+
             datum["file"] = country.country
             datum["TB2"] = "%s COUNTRY SCORECARD" % country.country.upper()
 
-            datum["CD1"] = target_none(datum["1G"]["target"])
+            datum["CD1"] = datum["ER1a"]
             datum["CD2"] = datum["questions"]["1"]["comments"]
             datum["HSP1"] = target_none(datum["Q2G"]["target"])
             datum["HSP2"] = target_none(datum["Q3G"]["target"])
             datum["HSM1"] = target_none(datum["Q12G"]["target"])
             datum["HSM2"] = fformat_none(datum["questions"]["15"]["latest_value"])
-            #datum["HSM3"] = fformat_front(datum["indicators"]["8G"]["latest_value"])
-            datum["HSM3"] = target_none(datum["8G"]["target"])
+            datum["HSM3"] = datum["ER10a"]
             datum["HSM4"] = ""
 
             datum["BC1"] = datum["questions"]["5"]["baseline_year"]
@@ -352,10 +396,10 @@ def country_export(request):
             datum["PF1"] = fformat_none(datum["questions"]["16"]["latest_value"])
             datum["PF2"] = datum["questions"]["16"]["comments"]
 
-            datum["PFM1"] = target_none(datum["5Ga"]["target"])
+            datum["PFM1"] = datum["ER6a"]
             datum["PFM2"] = datum["questions"]["9"]["comments"]
 
-            datum["PR1"] = target_none(datum["5Gb"]["target"])
+            datum["PR1"] = datum["ER7a"]
             datum["PR2"] = datum["questions"]["10"]["comments"]
 
             datum["TA1"] = datum["indicators"]["other"]["coordinated_programmes"]
@@ -390,7 +434,7 @@ def country_export(request):
             datum["HS6"] = datum["indicators"]["other"]["health_workforce_spent_change_dir"]
             datum["HS7"] = ""
 
-            datum["RF1"] = target_none(datum["6G"]["target"])
+            datum["RF1"] = datum["ER8a"]
             datum["RF2"] = fformat_none(datum["questions"]["22"]["latest_value"])
             datum["RF3"] = fformat_none(datum["questions"]["23"]["latest_value"])
 
@@ -403,7 +447,7 @@ def country_export(request):
             datum["JAR4"] = datum["questions"]["24"]["comments"]
             datum["JAR5"] = datum["questions"]["24"]["comments"]
 
-            datum["DBR1"] = target_none(datum["6G"]["target"])
+            datum["DBR1"] = datum["ER8a"]
             datum["DBR2"] = datum["questions"]["11"]["comments"]
 
             group1 = ["MDG1", "MDG2", "MDG3", "MDG4"]
@@ -441,29 +485,6 @@ def country_export(request):
             datum["F1"] = country.country
             datum["CN1"] = datum["TB2"]
             datum["GN1"] = country.country
-
-            datum["ER1a"] = target_none(datum["1G"]["target"])
-            datum["ER1b"] = datum["1G"]["commentary"]
-            datum["ER2a"] = target_none(datum["2Ga"]["target"])
-            datum["ER2b"] = datum["2Ga"]["commentary"]
-            datum["ER3a"] = target_none(datum["2Gb"]["target"])
-            datum["ER3b"] = datum["2Gb"]["commentary"]
-            datum["ER4a"] = target_none(datum["3G"]["target"])
-            datum["ER4b"] = datum["3G"]["commentary"]
-            datum["ER4c"] = country.country
-            datum["ER5a"] = target_none(datum["4G"]["target"])
-            datum["ER5b"] = datum["4G"]["commentary"]
-            datum["ER6a"] = datum["PFM1"]
-            datum["ER6b"] = datum["5Ga"]["commentary"]
-            datum["ER7a"] = datum["PR1"]
-            datum["ER7b"] = datum["5Gb"]["commentary"]
-            datum["ER8a"] = target_none(datum["6G"]["target"])
-            datum["ER8b"] = datum["6G"]["commentary"]
-            datum["ER9a"] = target_none(datum["7G"]["target"])
-            datum["ER9b"] = datum["7G"]["commentary"]
-            #datum["ER10a"] = target_none(datum["8G"]["target"])
-            datum["ER10a"] = datum["HSM3"]
-            datum["ER10b"] = datum["8G"]["commentary"]
 
             datum["Header"] = country.country
 
