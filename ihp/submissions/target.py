@@ -179,7 +179,7 @@ def calc_agency_targets(agency):
         "3DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided through multi-year commitments - %(diff_direction)s from %(base_val).0f%%.",
         "4DP" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid disbursements were released according to agreed schedules - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%% in %(base_year)s.",
         "5DPa" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid used country procurement systems - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%.",
-        "5DPb" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid used national public financial management systems - %(one_minus_diff_direction)s from %(one_minus_diff_direction).0f%%.",
+        "5DPb" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid used national public financial management systems - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%.",
         "5DPc" : "In %(cur_year)s the stock of parallel project implementation units (PIUs) in the surveyed countries was %(cur_val)s - %(diff_direction)s from %(base_val)s.",
         "6DP" : "In %(cur_year)s national performance assessment frameworks were used to assess progress in %(cur_val).0f%% of IHP+ countries - %(diff_direction)s from %(base_val).0f%%",
         "7DP" : "In %(cur_year)s %(agency_name)s participated in health sector annual mutual assessments of progress in %(cur_val).0f%% IHP+ countries - %(diff_direction)s from %(base_val).0f%%.",
