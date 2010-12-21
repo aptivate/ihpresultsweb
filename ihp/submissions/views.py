@@ -799,6 +799,12 @@ def country_table(request, template_name="submissions/country_table.html", extra
             base_val, base_year, latest_val, _ = indicators[indicator][0]
             if type(base_val) == str: base_val = base_val.upper()
             if type(latest_val) == str: latest_val = latest_val.upper()
+            if indicator == "2Gb":
+                # The indicator turns this into 100/0
+                # This code turns it back - to much effort
+                # to figure out why it does this
+                base_val = "Y" if base_val == 100 else "N"
+                latest_val = "Y" if latest_val == 100 else "N"
             if indicator == "2Ga":
                 country_abs_values["2Ga1"] = (
                     tbl_float_format(base_val[0]), 
