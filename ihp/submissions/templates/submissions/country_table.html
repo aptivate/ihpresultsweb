@@ -30,12 +30,21 @@
         {% endfor %}
     </tr>
     <tr class="even">
-        <td>2Ga</td>
-        <td>{{ spm_map.2Ga }}</td>
+        <td>2Ga1</td>
+        <td>{{ spm_map.2Ga1 }}</td>
         {% for country, data in abs_values %}
-            <td>{{ data.2Ga.0|default_if_none:"-" }} {% if data.2Ga.3 != "2007" %}<br/><span class="year">({{ data.2Ga.3 }})</span>{% endif %}</td>
-            <td>{{ data.2Ga.1|default_if_none:"-" }}</td>
-            <td>{{ data.2Ga.2|default_if_none:"-" }}</td>
+            <td>{{ data.2Ga1.0|default_if_none:"-" }} {% if data.2Ga1.3 != "2007" %}<br/><span class="year">({{ data.2Ga1.3 }})</span>{% endif %}</td>
+            <td>{{ data.2Ga1.1|default_if_none:"-" }}</td>
+            <td>{{ data.2Ga1.2|default_if_none:"-" }}</td>
+        {% endfor %}
+    </tr>
+    <tr class="odd">
+        <td>2Ga2</td>
+        <td>{{ spm_map.2Ga2 }}</td>
+        {% for country, data in abs_values %}
+            <td>{{ data.2Ga2.0|default_if_none:"-" }} {% if data.2Ga2.3 != "2007" %}<br/><span class="year">({{ data.2Ga2.3 }})</span>{% endif %}</td>
+            <td>{{ data.2Ga2.1|default_if_none:"-" }}</td>
+            <td>{{ data.2Ga2.2|default_if_none:"-" }}</td>
         {% endfor %}
     </tr>
     <tr class="odd">
