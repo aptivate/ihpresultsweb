@@ -707,18 +707,18 @@ def perc_change(base_val, latest_val):
 
 
 spm_map = {
-    "1dp" : "proportion of ihp+ countries in which the partner has signed commitment to (or documented support for) the ihp+ country compact, or equivalent agreement.",
-    "2dpa" : "percent of aid flows to the health sector that is reported on national health sector budgets.",
-    "2dpb" : "percent of current capacity-development support provided through coordinated programmes consistent with national plans/strategies for the health sector.",
-    "2dpc" : "percent of health sector aid provided as programme based approaches.",
-    "3dp" : "percent of health sector aid provided through multi-year commitments.",
-    "4dp" : "percent of health sector aid disbursements released according to agreed schedules in annual or multi-year frameworks.",
-    "5dpa" : "percent of health sector aid that uses country procurement systems.",
-    "5dpb" : "percent of health sector aid that uses public financial management systems.",
-    "5dpc" : "number of parallel project implementation units (pius) per country.",
-    "6dp" : "proportion of countries in which agreed, transparent and monitorable performance assessment frameworks are being used to assess progress in the health sector.",
-    "7dp" : "proportion of countries where mutual assessments have been made of progress implementing commitments in the health sector, including on aid effectiveness.",
-    "8dp" : "evidence of support for civil society to be actively represented in health sector policy processes - including health sector planning, coordination & review mechanisms.",
+    "1DP" : "proportion of ihp+ countries in which the partner has signed commitment to (or documented support for) the ihp+ country compact, or equivalent agreement.",
+    "2DPa" : "percent of aid flows to the health sector that is reported on national health sector budgets.",
+    "2DPb" : "percent of current capacity-development support provided through coordinated programmes consistent with national plans/strategies for the health sector.",
+    "2DPc" : "percent of health sector aid provided as programme based approaches.",
+    "3DP" : "percent of health sector aid provided through multi-year commitments.",
+    "4DP" : "percent of health sector aid disbursements released according to agreed schedules in annual or multi-year frameworks.",
+    "5DPa" : "percent of health sector aid that uses country procurement systems.",
+    "5DPb" : "percent of health sector aid that uses public financial management systems.",
+    "5DPc" : "number of parallel project implementation units (pius) per country.",
+    "6DP" : "proportion of countries in which agreed, transparent and monitorable performance assessment frameworks are being used to assess progress in the health sector.",
+    "7DP" : "proportion of countries where mutual assessments have been made of progress implementing commitments in the health sector, including on aid effectiveness.",
+    "8DP" : "evidence of support for civil society to be actively represented in health sector policy processes - including health sector planning, coordination & review mechanisms.",
 }
         
 gov_spm_map = {
@@ -786,6 +786,7 @@ def agency_table_by_agency(request, agency_id, template_name="submissions/agency
     extra_context["abs_values"] = sorted(abs_values.items())
     extra_context["spm_map"] = spm_map
     extra_context["institution_name"] = "%s Data across IHP+ Countries" % agency.agency
+    print extra_context
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
