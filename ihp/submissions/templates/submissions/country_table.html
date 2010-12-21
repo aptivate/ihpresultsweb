@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/table.css"> 
+{% endblock %}
+{% block body %}
+<h1>Country Tables</h1>
+<table>
+    <tr class="head">
+        <th rowspan="2">SPM #</th>
+        <th rowspan="2" class="spm">Standard Performance Measure</th>
+        {% for country, _ in abs_values %}
+        <th colspan="3">{{ country }}</th>
+        {% endfor %}
+    </tr>
+    <tr class="head2">
+        {% for country, _ in abs_values %}
+            <th>2007</th>
+            <th>2009</th>
+            <th>% Change</th>
+        {% endfor %}
+
+    </tr>
+    <tr class="odd">
+        <td>1G</td>
+        <td>{{ spm_map.1G }}</td>
+        {% for country, data in abs_values %}
+            <td>{{ data.1G.0|default_if_none:"-" }}<br/>{% if data.1G.3 != "2007" %}<span class="year">({{ data.1G.3 }})</span>{% endif %}</td>
+            <td>{{ data.1G.1|default_if_none:"-" }}</td>
+            <td>&nbsp;</td>
+        {% endfor %}
+    </tr>
+    <tr class="even">
+        <td>2Ga</td>
+        <td>{{ spm_map.2Ga }}</td>
+        {% for country, data in abs_values %}
+            <td>{{ data.2Ga.0|default_if_none:"-" }} {% if data.2Ga.3 != "2007" %}<br/><span class="year">({{ data.2Ga.3 }})</span>{% endif %}</td>
+            <td>{{ data.2Ga.1|default_if_none:"-" }}</td>
+            <td>{{ data.2Ga.2|default_if_none:"-" }}</td>
+        {% endfor %}
+    </tr>
+    <tr class="odd">
+        <td>2Gb</td>
+        <td>{{ spm_map.2Gb }}</td>
+        {% for country, data in abs_values %}
+            <td>{{ data.2Gb.0|default_if_none:"-" }} {% if data.2Gb.3 != "2007" %}<br/><span class="year">({{ data.2Gb.3 }})</span>{% endif %}</td>
+            <td>{{ data.2Gb.1|default_if_none:"-" }}</td>
+            <td>&nbsp;</td>
+        {% endfor %}
+    </tr>
+    <tr class="even">
+        <td>3G</td>
+        <td>{{ spm_map.3G }}</td>
+        {% for country, data in abs_values %}
+            <td>{{ data.3G.0|default_if_none:"-" }} {% if data.3G.3 != "2007" %}<br/><span class="year">({{ data.3G.3 }})</span>{% endif %}</td>
+            <td>{{ data.3G.1|default_if_none:"-" }}</td>
+            <td>&nbsp;</td>
+        {% endfor %}
+    </tr>
+    <tr class="odd">
+        <td>4G</td>
+        <td>{{ spm_map.4G }}</td>
+        {% for country, data in abs_values %}
+            <td>{{ data.4G.0|default_if_none:"-" }} {% if data.4G.3 != "2007" %}<br/><span class="year">({{ data.4G.3 }})</span>{% endif %}</td>
+            <td>{{ data.4G.1|default_if_none:"-" }}</td>
+            <td>{{ data.4G.2|default_if_none:"-" }}</td>
+        {% endfor %}
+    </tr>
+    <tr class="even">
+        <td>5Ga</td>
+        <td>{{ spm_map.5Ga }}</td>
+        {% for country, data in abs_values %}
+            <td>{{ data.5Ga.0|default_if_none:"-" }} {% if data.5Ga.3 != "2007" %}<br/><span class="year">({{ data.5Ga.3 }})</span>{% endif %}</td>
+            <td>{{ data.5Ga.1|default_if_none:"-" }}</td>
+            <td>{{ data.5Ga.2|default_if_none:"-" }}</td>
+        {% endfor %}
+    </tr>
+    <tr class="odd">
+        <td>5Gb</td>
+        <td>{{ spm_map.5Gb }}</td>
+        {% for country, data in abs_values %}
+            <td>{{ data.5Gb.0|default_if_none:"-" }} {% if data.5Gb.3 != "2007" %}<br/><span class="year">({{ data.5Gb.3 }})</span>{% endif %}</td>
+            <td>{{ data.5Gb.1|default_if_none:"-" }}</td>
+            <td>{{ data.5Gb.2|default_if_none:"-" }}</td>
+        {% endfor %}
+    </tr>
+    <tr class="even">
+        <td>6G</td>
+        <td>{{ spm_map.6G }}</td>
+        {% for country, data in abs_values %}
+            <td>{{ data.6G.0|default_if_none:"-" }} {% if data.6G.3 != "2007" %}<br/><span class="year">({{ data.6G.3 }})</span>{% endif %}</td>
+            <td>{{ data.6G.1|default_if_none:"-" }}</td>
+            <td>&nbsp;</td>
+        {% endfor %}
+    </tr>
+    <tr class="odd">
+        <td>7G</td>
+        <td>{{ spm_map.7G }}</td>
+        {% for country, data in abs_values %}
+            <td>{{ data.7G.0|default_if_none:"-" }} {% if data.7G.3 != "2007" %}<br/><span class="year">({{ data.7G.3 }})</span>{% endif %}</td>
+            <td>{{ data.7G.1|default_if_none:"-" }}</td>
+            <td>&nbsp;</td>
+        {% endfor %}
+    </tr>
+    <tr class="even">
+        <td>8G</td>
+        <td>{{ spm_map.8G }}</td>
+        {% for country, data in abs_values %}
+            <td>{{ data.8G.0|default_if_none:"-" }} {% if data.8G.3 != "2007" %}<br/><span class="year">({{ data.8G.3 }})</span>{% endif %}</td>
+            <td>{{ data.8G.1|default_if_none:"-" }}</td>
+            <td>&nbsp;</td>
+        {% endfor %}
+    </tr>
+
+</table>
+{% endblock %}

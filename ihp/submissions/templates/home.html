@@ -31,7 +31,7 @@
         <td>{{ agency.agency }}</td>
         <td><a href="{% url agencygraphs agency.agency %}">Ratio Graph</a></td> 
         <td><a href="{% url agencygraphs_absolute agency.agency %}">Absolute Graph</a></td>
-        <td><a href="{% url agency_table agency.id %}">Table</a></td>
+        <td><a href="{% url agency_table_by_agency agency.id %}">Table</a></td>
     </tr>
     {% endfor %}
 </table>
@@ -49,9 +49,12 @@
         <td>{{ country.country }}</td>
         <td><a href="{% url countrygraphs country.country %}">Ratio Graph</a></td> 
         <td><a href="{% url countrygraphs_absolute country.country %}">Absolute Graph</a></td>
-        <td><a href="{% url country_table country.id %}">Table</a></td>
+        <td><a href="{% url agency_table_by_country country.id %}">Table</a></td>
     </tr>
     {% endfor %}
 </table>
+
+<h2>Country Table</h2>
+<a href="{% url country_table %}">Country Table</a>
 
 {% endblock %}
