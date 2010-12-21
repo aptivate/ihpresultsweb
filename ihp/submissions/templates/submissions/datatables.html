@@ -21,7 +21,7 @@ th, td {
     {% for agency in agencies %}
     <tr>
         <td>{{ agency.agency }}</td>
-        <td><a href="{% url agency_table_by_agency agency.id %}">Table</a></td>
+        <td><a href="{% url datatables_agency_table_by_agency agency.id %}">Table</a></td>
     </tr>
     {% endfor %}
 </table>
@@ -34,11 +34,11 @@ th, td {
     {% for country in countries %}
     <tr>
         <td>{{ country.country }}</td>
-        <td><a href="{% url agency_table_by_country country.id %}">Table</a></td>
+        <td><a href="{% url datatables_agency_table_by_country country.id %}">Table</a></td>
     </tr>
     {% endfor %}
 </table>
 
 <h2>IHP+ Country Government Data</h2>
-<a href="{% url country_table %}">All Countries</a>
+<a href="{% url datatables_country_table %}">All Countries</a>
 {% endblock %}

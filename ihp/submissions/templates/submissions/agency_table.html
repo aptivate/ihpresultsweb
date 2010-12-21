@@ -1,9 +1,9 @@
-{% extends "base.html" %}
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/table.css"> 
-
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/table.css"> 
 {% endblock %}
-{% block body %}
+
+{% block content %}
 <h1>{{ institution_name }}</h1>
 <table>
     <tr class="head">
