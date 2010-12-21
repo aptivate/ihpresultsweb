@@ -707,18 +707,18 @@ def perc_change(base_val, latest_val):
 
 
 spm_map = {
-    "1DP" : "proportion of ihp+ countries in which the partner has signed commitment to (or documented support for) the ihp+ country compact, or equivalent agreement.",
-    "2DPa" : "percent of aid flows to the health sector that is reported on national health sector budgets.",
-    "2DPb" : "percent of current capacity-development support provided through coordinated programmes consistent with national plans/strategies for the health sector.",
-    "2DPc" : "percent of health sector aid provided as programme based approaches.",
-    "3DP" : "percent of health sector aid provided through multi-year commitments.",
-    "4DP" : "percent of health sector aid disbursements released according to agreed schedules in annual or multi-year frameworks.",
-    "5DPa" : "percent of health sector aid that uses country procurement systems.",
-    "5DPb" : "percent of health sector aid that uses public financial management systems.",
-    "5DPc" : "number of parallel project implementation units (pius) per country.",
-    "6DP" : "proportion of countries in which agreed, transparent and monitorable performance assessment frameworks are being used to assess progress in the health sector.",
-    "7DP" : "proportion of countries where mutual assessments have been made of progress implementing commitments in the health sector, including on aid effectiveness.",
-    "8DP" : "evidence of support for civil society to be actively represented in health sector policy processes - including health sector planning, coordination & review mechanisms.",
+    "1DP" : "Proportion of ihp+ countries in which the partner has signed commitment to (or documented support for) the ihp+ country compact, or equivalent agreement.",
+    "2DPa" : "Percent of aid flows to the health sector that is reported on national health sector budgets.",
+    "2DPb" : "Percent of current capacity-development support provided through coordinated programmes consistent with national plans/strategies for the health sector.",
+    "2DPc" : "Percent of health sector aid provided as programme based approaches.",
+    "3DP" : "Percent of health sector aid provided through multi-year commitments.",
+    "4DP" : "Percent of health sector aid disbursements released according to agreed schedules in annual or multi-year frameworks.",
+    "5DPa" : "Percent of health sector aid that uses country procurement systems.",
+    "5DPb" : "Percent of health sector aid that uses public financial management systems.",
+    "5DPc" : "Number of parallel project implementation units (pius) per country.",
+    "6DP" : "Proportion of countries in which agreed, transparent and monitorable performance assessment frameworks are being used to assess progress in the health sector.",
+    "7DP" : "Proportion of countries where mutual assessments have been made of progress implementing commitments in the health sector, including on aid effectiveness.",
+    "8DP" : "Evidence of support for civil society to be actively represented in health sector policy processes - including health sector planning, coordination & review mechanisms.",
 }
         
 gov_spm_map = {
