@@ -104,6 +104,11 @@ urlpatterns = patterns('',
     (r'^scorecard/tables/agency/by_agency/(?P<agency_id>\d+)/$', 'submissions.views.agency_table_by_agency', {}, 'agency_table_by_agency'),
     (r'^scorecard/tables/country/$', 'submissions.views.country_table', {}, 'country_table'),
 
+    (r'^datatables/$', direct_to_template, {"template" : "submissions/datatables.html", "extra_context" : {
+        "agencies" : Agency.objects.filter(type="Agency"),
+        "countries" : Country.objects.all(),
+    }}, "home"),
+
     # Debug Views
     (r'^scorecard/tables/agency_country_ratings/$', 'submissions.views.agency_country_ratings', {}, 'agency_country_ratings'),
 

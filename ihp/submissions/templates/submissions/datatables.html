@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block head %}
+<style>
+table {
+    
+}
+th, td {
+    text-align: left;
+}
+</style>
+{% endblock %}
+{% block body %}
+<h1>IHP+ Data Tables</h1>
+
+<h2>Data Tables by Agency across IHP+ Agencies</h2>
+<table>
+    <tr>
+        <th>Agency</th>
+        <th>Table</th>
+    </tr>
+    {% for agency in agencies %}
+    <tr>
+        <td>{{ agency.agency }}</td>
+        <td><a href="{% url agency_table_by_agency agency.id %}">Table</a></td>
+    </tr>
+    {% endfor %}
+</table>
+<h2>Data Tables by Country across IHP+ Countries</h2>
+<table>
+    <tr>
+        <th>Country</th>
+        <th>Table</th>
+    </tr>
+    {% for country in countries %}
+    <tr>
+        <td>{{ country.country }}</td>
+        <td><a href="{% url agency_table_by_country country.id %}">Table</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>IHP+ Country Government Data</h2>
+<a href="{% url country_table %}">All Countries</a>
+{% endblock %}
