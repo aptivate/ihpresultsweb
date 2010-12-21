@@ -34,8 +34,22 @@ td {
     height: 50px;
 }
 
+td:nth-child(2n+1)
+
 td:first-child {
     text-align: left;
+}
+
+td:first-child + td {
+    text-align: left;
+}
+
+td:nth-of-type(3n+2) { 
+    border-right: solid 2px black;
+}
+
+td:nth-of-type(3n+3) { 
+    border-left: solid 2px black;
 }
 
 th.spm {
@@ -74,7 +88,7 @@ h1 {
         <td>{{ spm_map.1DP }}</td>
         {% for country, data in abs_values %}
             <td>{{ data.1DP.0|default_if_none:"-" }}<br/>{% if data.1DP.3 != "2007" %}<span class="year">({{ data.1DP.3 }})</span>{% endif %}</td>
-            <td>{{ data.1DP.1|default_if_none:"-" }}<br/><span class="year">&nbsp;</span></td>
+            <td>{{ data.1DP.1|default_if_none:"-" }}</td>
             <td>&nbsp;</td>
         {% endfor %}
     </tr>
@@ -83,7 +97,7 @@ h1 {
         <td>{{ spm_map.2DPa }}</td>
         {% for country, data in abs_values %}
             <td>{{ data.2DPa.0|default_if_none:"-" }} {% if data.2DPa.3 != "2007" %}<br/><span class="year">({{ data.2DPa.3 }})</span>{% endif %}</td>
-            <td>{{ data.2DPa.1|default_if_none:"-" }}<br/><span class="year">&nbsp;</span></td>
+            <td>{{ data.2DPa.1|default_if_none:"-" }}</td>
             <td>{{ data.2DPa.2|default_if_none:"-" }}</td>
         {% endfor %}
     </tr>
@@ -92,7 +106,7 @@ h1 {
         <td>{{ spm_map.2DPb }}</td>
         {% for country, data in abs_values %}
             <td>{{ data.2DPb.0|default_if_none:"-" }} {% if data.2DPb.3 != "2007" %}<br/><span class="year">({{ data.2DPb.3 }})</span>{% endif %}</td>
-            <td>{{ data.2DPb.1|default_if_none:"-" }}<br/><span class="year">&nbsp;</span></td>
+            <td>{{ data.2DPb.1|default_if_none:"-" }}</td>
             <td>&nbsp;</td>
         {% endfor %}
     </tr>
@@ -101,7 +115,7 @@ h1 {
         <td>{{ spm_map.2DPc }}</td>
         {% for country, data in abs_values %}
             <td>{{ data.2DPc.0|default_if_none:"-" }} {% if data.2DPc.3 != "2007" %}<br/><span class="year">({{ data.2DPc.3 }})</span>{% endif %}</td>
-            <td>{{ data.2DPc.1|default_if_none:"-" }}<br/><span class="year">&nbsp;</span></td>
+            <td>{{ data.2DPc.1|default_if_none:"-" }}</td>
             <td>&nbsp;</td>
         {% endfor %}
     </tr>
@@ -110,7 +124,7 @@ h1 {
         <td>{{ spm_map.3DP }}</td>
         {% for country, data in abs_values %}
             <td>{{ data.3DP.0|default_if_none:"-" }} {% if data.3DP.3 != "2007" %}<br/><span class="year">({{ data.3DP.3 }})</span>{% endif %}</td>
-            <td>{{ data.3DP.1|default_if_none:"-" }}<br/><span class="year">&nbsp;</span></td>
+            <td>{{ data.3DP.1|default_if_none:"-" }}</td>
             <td>&nbsp;</td>
         {% endfor %}
     </tr>
@@ -119,7 +133,7 @@ h1 {
         <td>{{ spm_map.4DP }}</td>
         {% for country, data in abs_values %}
             <td>{{ data.4DP.0|default_if_none:"-" }} {% if data.4DP.3 != "2007" %}<br/><span class="year">({{ data.4DP.3 }})</span>{% endif %}</td>
-            <td>{{ data.4DP.1|default_if_none:"-" }}<br/><span class="year">&nbsp;</span></td>
+            <td>{{ data.4DP.1|default_if_none:"-" }}</td>
             <td>{{ data.4DP.2|default_if_none:"-" }}</td>
         {% endfor %}
     </tr>
@@ -128,7 +142,7 @@ h1 {
         <td>{{ spm_map.5DPa }}</td>
         {% for country, data in abs_values %}
             <td>{{ data.5DPa.0|default_if_none:"-" }} {% if data.5DPa.3 != "2007" %}<br/><span class="year">({{ data.5DPa.3 }})</span>{% endif %}</td>
-            <td>{{ data.5DPa.1|default_if_none:"-" }}<br/><span class="year">&nbsp;</span></td>
+            <td>{{ data.5DPa.1|default_if_none:"-" }}</td>
             <td>{{ data.5DPa.2|default_if_none:"-" }}</td>
         {% endfor %}
     </tr>
@@ -137,7 +151,7 @@ h1 {
         <td>{{ spm_map.5DPb }}</td>
         {% for country, data in abs_values %}
             <td>{{ data.5DPb.0|default_if_none:"-" }} {% if data.5DPb.3 != "2007" %}<br/><span class="year">({{ data.5DPb.3 }})</span>{% endif %}</td>
-            <td>{{ data.5DPb.1|default_if_none:"-" }}<br/><span class="year">&nbsp;</span></td>
+            <td>{{ data.5DPb.1|default_if_none:"-" }}</td>
             <td>{{ data.5DPb.2|default_if_none:"-" }}</td>
         {% endfor %}
     </tr>
@@ -146,7 +160,7 @@ h1 {
         <td>{{ spm_map.5DPc }}</td>
         {% for country, data in abs_values %}
             <td>{{ data.5DPc.0|default_if_none:"-" }} {% if data.5DPc.3 != "2007" %}<br/><span class="year">({{ data.5DPc.3 }})</span>{% endif %}</td>
-            <td>{{ data.5DPc.1|default_if_none:"-" }}<br/><span class="year">&nbsp;</span></td>
+            <td>{{ data.5DPc.1|default_if_none:"-" }}</td>
             <td>{{ data.5DPc.2|default_if_none:"-" }}</td>
         {% endfor %}
     </tr>
@@ -155,7 +169,7 @@ h1 {
         <td>{{ spm_map.6DP }}</td>
         {% for country, data in abs_values %}
             <td>{{ data.6DP.0|default_if_none:"-" }} {% if data.6DP.3 != "2007" %}<br/><span class="year">({{ data.6DP.3 }})</span>{% endif %}</td>
-            <td>{{ data.6DP.1|default_if_none:"-" }}<br/><span class="year">&nbsp;</span></td>
+            <td>{{ data.6DP.1|default_if_none:"-" }}</td>
             <td>&nbsp;</td>
         {% endfor %}
     </tr>
@@ -164,7 +178,7 @@ h1 {
         <td>{{ spm_map.7DP }}</td>
         {% for country, data in abs_values %}
             <td>{{ data.7DP.0|default_if_none:"-" }} {% if data.7DP.3 != "2007" %}<br/><span class="year">({{ data.7DP.3 }})</span>{% endif %}</td>
-            <td>{{ data.7DP.1|default_if_none:"-" }}<br/><span class="year">&nbsp;</span></td>
+            <td>{{ data.7DP.1|default_if_none:"-" }}</td>
             <td>&nbsp;</td>
         {% endfor %}
     </tr>
@@ -173,7 +187,7 @@ h1 {
         <td>{{ spm_map.8DP }}</td>
         {% for country, data in abs_values %}
             <td>{{ data.8DP.0|default_if_none:"-" }} {% if data.8DP.3 != "2007" %}<br/><span class="year">({{ data.8DP.3 }})</span>{% endif %}</td>
-            <td>{{ data.8DP.1|default_if_none:"-" }}<br/><span class="year">&nbsp;</span></td>
+            <td>{{ data.8DP.1|default_if_none:"-" }}</td>
             <td>&nbsp;</td>
         {% endfor %}
     </tr>
