@@ -139,10 +139,10 @@ def evaluate_indicator(target, base_val, cur_val):
         return "none"
 
     if target.indicator in ["4DP", "5DPa", "5DPb"]:
-        if cur_val >= 80:
+        if cur_val <= 20:
             return "tick" 
     elif target.indicator in ["2DPa"]:
-        if cur_val >= 85:
+        if cur_val <= 15:
             return "tick" 
 
     try:
