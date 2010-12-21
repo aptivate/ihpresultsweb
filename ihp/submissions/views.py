@@ -782,11 +782,10 @@ def agency_table_by_agency(request, agency_id, template_name="submissions/agency
                 tbl_float_format(perc_change(base_val, latest_val)),
                 base_year
             ) 
-    abs_values[country.country] = country_abs_values
+        abs_values[country.country] = country_abs_values
     extra_context["abs_values"] = sorted(abs_values.items())
     extra_context["spm_map"] = spm_map
     extra_context["institution_name"] = "%s Data across IHP+ Countries" % agency.agency
-    print extra_context
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
