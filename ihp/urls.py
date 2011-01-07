@@ -9,13 +9,13 @@ admin.autodiscover()
 
 
 agency_ratio_titles = {
-    "2DPa" : "Increase in %(agency_name)s's aid flows to the health sector not reported on goverment's budget (2DPa)",
+    "2DPa" : "Increase in %(agency_name)s's aid flows to the health sector reported on goverment's budget (2DPa)",
     "2DPb" : "%% of technical assistance disbursed through programmes (WB, Target: 50%%)",
     "2DPc" : "%% of aid flows provided in the context of programme base approaches (Target: 66%%)",
     "3DP"  : "%% of health sector funding provided through multi-year commitments",
-    "4DP"  : "Increase in %(agency_name)s's health sector aid not disbursed within the year for which it was scheduled (4DP)",
-    "5DPa" : "%% change in health sector aid to the public sector not using partner countries' procurement systems",
-    "5DPb" : "Increase in %(agency_name)s's health sector aid to the public sector not using partner countries' PFM systems (5DPb)",
+    "4DP"  : "Increase in %(agency_name)s's health sector aid disbursed within the year for which it was scheduled (4DP)",
+    "5DPa" : "%% change in health sector aid to the public sector using partner countries' procurement systems",
+    "5DPb" : "Increase in %(agency_name)s's health sector aid to the public sector using partner countries' PFM systems (5DPb)",
     "5DPc" : "Reduction in %(agency_name)s's stock of parallel project implementation (PIUs) units (5DPc)",
 }
 
