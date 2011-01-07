@@ -236,7 +236,7 @@ class OverallGraphNode(Node):
                            text: "%(title)s"
                         },
                         xAxis: [{
-                           categories: ["Baseline", "Latest"],
+                           categories: ["Baseline", "2009"],
                            title : {
                                 text: "%(xaxis)s"
                            },
