@@ -224,14 +224,6 @@ def sum_values(qs, agency_or_country, *args):
 
     return (base_val, cur_val)
 
-
-#def calc_country_indicator(country, indicator):
-#    qs = DPQuestion.objects.filter(
-#       submission__country=country, 
-#    )
-#
-#    return calc_indicator(qs, indicator)
-
 def calc_indicator(qs, agency_or_country, indicator, funcs=None):
     if funcs == None:
         funcs = indicator_funcs
@@ -241,8 +233,6 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
     
     comments = [(question.question_number, question.submission.country, question.comments) for question in qs2]
 
-    # TODO this is currently applied to both DP and Gov surveys - the DP survey
-    # might need to be implemented differently
     exclude = []
     for q in qs2:
         if is_not_applicable(q.baseline_value) or is_not_applicable(q.latest_value):
@@ -294,14 +284,10 @@ def calc_overall_agency_indicators(funcs=None):
 
     """
     indicators = ["2DPa", "2DPb", "2DPc", "5DPa", "5DPb"]
-    indicators = ["2DPa"]
     qs = DPQuestion.objects.all()
-    #for q in qs.filter(question_number=2):
-    #    print q.submission.country, q.submission.agency, q.baseline_value
-    for indicator in indicators:
-        val = calc_indicator(qs, None, indicator, funcs)
-        print len(val)
-        print val[0]
+
+    results = [calc_indicator(qs, None, indicator, funcs) for indicator in indicators]
+    return dict(zip(indicators, results))
 
 def calc_agency_country_indicator(agency, country, indicator, funcs=None):
     """

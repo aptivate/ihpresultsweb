@@ -1,0 +1,25 @@
+{% extends "submissions/graph_base.html" %}
+{% load indgraph %}
+
+{% block graphdefs %}
+
+<script>
+{% overallgraph graph_2dpa indicators.2DPa.baseline_value indicators.2DPa.latest_value indicators.2DPa.target_value indicators.2DPa.title indicators.2DPa.yaxis indicators.2DPa.xaxis %}
+{% overallgraph graph_2dpb indicators.2DPb.baseline_value indicators.2DPb.latest_value indicators.2DPb.target_value indicators.2DPb.title indicators.2DPb.yaxis indicators.2DPb.xaxis %}
+{% overallgraph graph_2dpc indicators.2DPc.baseline_value indicators.2DPc.latest_value indicators.2DPc.target_value indicators.2DPc.title indicators.2DPc.yaxis indicators.2DPc.xaxis %}
+{% overallgraph graph_5dpa indicators.5DPa.baseline_value indicators.5DPa.latest_value indicators.5DPa.target_value indicators.5DPa.title indicators.5DPa.yaxis indicators.5DPa.xaxis %}
+{% overallgraph graph_5dpb indicators.5DPb.baseline_value indicators.5DPb.latest_value indicators.5DPb.target_value indicators.5DPb.title indicators.5DPb.yaxis indicators.5DPb.xaxis %}
+</script>
+
+{% endblock %}
+
+{% block body %}
+<h1>{{ indicator }}</h1>
+
+<div class="graphblock"><div id="graph_2dpa" class="graph"></div></div>
+<div class="graphblock"><div id="graph_2dpb" class="graph"></div></div>
+<div class="graphblock"><div id="graph_2dpc" class="graph"></div></div>
+<div class="graphblock"><div id="graph_5dpa" class="graph"></div></div>
+<div class="graphblock"><div id="graph_5dpb" class="graph"></div></div>
+
+{% endblock %}

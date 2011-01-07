@@ -26,10 +26,38 @@ def format_fig(x):
         return "0.0"
     return "%.1f" % x
 
-def highlevelgraphs(request, indicator, template_name="submissions/highlevelgraphs.html", extra_context=None):
+def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", extra_context=None):
     extra_context = extra_context or {}
 
+    target_values = {
+        "2DPa" : 85,
+        "2DPb" : 50,
+        "2DPc" : 66,
+        "5DPa" : 66, 
+        "5DPb" : 80, 
+    }
+
+    titles = {
+        "2DPa" : "% of total funding on-budget (2DPa)",
+        "2DPb" : "% of TC implemented through coordinated programmes (2DPb)",
+        "2DPc" : "% of funding using Programme Based Approaches (4DP) ",
+        "5DPa" : "% of funding for procurement using national procurement systems (5DPa)", 
+        "5DPb" : "% of funding using national PFM systems (5DPb)", 
+    }
+
     indicators = calc_overall_agency_indicators(funcs=positive_funcs)
+    for indicator in indicators:
+        (baseline_value, _, latest_value, _) = indicators[indicator][0]
+        indicators[indicator] = {
+            "baseline_value" : baseline_value,
+            "latest_value" : latest_value,
+            "title" : titles[indicator],
+            "yaxis" : "",
+            "xaxis" : "",
+            "target_value" : target_values[indicator]
+        }
+
+    extra_context["indicators"] = indicators
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.html", extra_context=None, titles=None, yaxes=None, xaxis=None):
