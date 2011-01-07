@@ -1,6 +1,6 @@
 from django.views.generic.simple import direct_to_template
 from submissions.models import Agency, Country
-from indicators import calc_agency_country_indicators, NA_STR
+from indicators import calc_agency_country_indicators, NA_STR, calc_overall_agency_indicators, positive_funcs
 
 def safe_diff(a, b):
     if a in [None, NA_STR] or b in [None, NA_STR]:
@@ -26,6 +26,12 @@ def format_fig(x):
         return "0.0"
     return "%.1f" % x
 
+def highlevelgraphs(request, indicator, template_name="submissions/highlevelgraphs.html", extra_context=None):
+    extra_context = extra_context or {}
+
+    indicators = calc_overall_agency_indicators(funcs=positive_funcs)
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
 def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.html", extra_context=None, titles=None, yaxes=None, xaxis=None):
     extra_context = extra_context or {}
 
@@ -42,7 +48,7 @@ def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.h
     for country in agency.countries:
         country_data = {}
         country_abs_values = {}
-        indicators = calc_agency_country_indicators(agency, country)
+        indicators = calc_agency_country_indicators(agency, country, positive_funcs)
         for indicator in ["2DPa", "2DPb", "2DPc", "3DP", "4DP", "5DPa", "5DPb", "5DPc"]:
             base_val, _, latest_val, _ = indicators[indicator][0]
             country_abs_values[indicator] = (base_val, latest_val) 
@@ -76,7 +82,7 @@ def countrygraphs(request, country_name, template_name="submissions/countrygraph
     for agency in country.agencies:
         agency_data = {}
         agency_abs_values = {}
-        indicators = calc_agency_country_indicators(agency, country)
+        indicators = calc_agency_country_indicators(agency, country, positive_funcs)
         for indicator in ["2DPa", "2DPb", "2DPc", "3DP", "4DP", "5DPa", "5DPb", "5DPc"]:
             base_val, _, latest_val, _ = indicators[indicator][0]
             agency_abs_values[indicator] = (base_val, latest_val) 

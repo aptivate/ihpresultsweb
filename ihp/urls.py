@@ -73,6 +73,9 @@ urlpatterns = patterns('',
     (r'^api/gov_ratings/(?P<country_id>\d+)/$', 'submissions.api.gov_ratings', {}, 'api_gov_ratings'),
 
     # Graph Views
+    (r"^graph/highlevel/(?P<indicator>.+)/$", "submissions.graphs.highlevelgraphs", {
+    }, "highlevelgraphs"),
+
     (r"^graph/agency/(?P<agency_name>[a-zA-Z\s]+)/$", "submissions.graphs.agencygraphs", {
         "titles" : agency_ratio_titles,
         "yaxes" : agency_yaxis,

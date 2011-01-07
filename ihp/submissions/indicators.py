@@ -243,11 +243,15 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
 
     # TODO this is currently applied to both DP and Gov surveys - the DP survey
     # might need to be implemented differently
+    exclude = []
     for q in qs2:
         if is_not_applicable(q.baseline_value) or is_not_applicable(q.latest_value):
-            base_val, cur_val = NA_STR, NA_STR
-            break
-    else: 
+            exclude.append(q.submission.id)
+    qs2 = qs2.exclude(submission__id__in=exclude)
+        
+    if qs2.count() == 0:
+        base_val, cur_val = NA_STR, NA_STR
+    else:
         base_val, cur_val = func(qs, agency_or_country, *args)
     
     # TODO here i assume that the year is the same across all years and all questions. 
@@ -282,12 +286,29 @@ def calc_agency_indicators(agency):
     results = [calc_agency_indicator(agency, indicator) for indicator in dp_indicators]
     return dict(zip(dp_indicators, results))
 
-def calc_agency_country_indicator(agency, country, indicator):
+def calc_overall_agency_indicators(funcs=None):
+    """
+    Calculates all indicators aggregated across all agencies and agencycountries
+    i.e. there will be two values per indicator, baseline value and latest value
+    currently only calculating for 2DPa, 2DPb, 2DPc, 5DPa, 5DPb
+
+    """
+    indicators = ["2DPa", "2DPb", "2DPc", "5DPa", "5DPb"]
+    indicators = ["2DPa"]
+    qs = DPQuestion.objects.all()
+    #for q in qs.filter(question_number=2):
+    #    print q.submission.country, q.submission.agency, q.baseline_value
+    for indicator in indicators:
+        val = calc_indicator(qs, None, indicator, funcs)
+        print len(val)
+        print val[0]
+
+def calc_agency_country_indicator(agency, country, indicator, funcs=None):
     """
     Same as calc_agency_indicator above but only looks at a specific country
     """
     qs = DPQuestion.objects.filter(submission__agency=agency, submission__country=country)
-    funcs = dict(indicator_funcs)
+    funcs = funcs or dict(indicator_funcs)
     try:
         funcs["1DP"] = (equals_or_zero("yes"), ("1",))
         funcs["6DP"] = (equals_or_zero("yes"), ("17",))
@@ -298,22 +319,22 @@ def calc_agency_country_indicator(agency, country, indicator):
         traceback.print_exc()
         
 
-def calc_agency_country_indicators(agency, country):
+def calc_agency_country_indicators(agency, country, funcs=None):
     """
     Same as calc_agency_indicators above but only looks at a specific country
     """
-    results = [calc_agency_country_indicator(agency, country, indicator) for indicator in dp_indicators]
+    results = [calc_agency_country_indicator(agency, country, indicator, funcs) for indicator in dp_indicators]
     return dict(zip(dp_indicators, results))
 
-def calc_country_indicator(country, indicator):
+def calc_country_indicator(country, indicator, funcs=None):
     """
     Calculate the value of a particular indicator for the given country
     Returns a tuple ((base_val, base_year, cur_val, cur_year), indicator comment)
     """
     qs = GovQuestion.objects.filter(submission__country=country)
-    return calc_indicator(qs, country, indicator)
+    return calc_indicator(qs, country, indicator, funcs)
 
-def calc_country_indicators(country):
+def calc_country_indicators(country, funcs=None):
     """
     Calculates all the indicators for the given agency
     Returns a dict with the following form
@@ -325,7 +346,7 @@ def calc_country_indicators(country):
         .
     }
     """
-    results = [calc_country_indicator(country, indicator) for indicator in g_indicators]
+    results = [calc_country_indicator(country, indicator, funcs) for indicator in g_indicators]
     return dict(zip(g_indicators, results))
 
 dp_indicators = [
@@ -372,3 +393,10 @@ indicator_funcs = {
     "Q12G" : (equals_yes_or_no("yes"), ("12",)),
     "Q21G" : (equals_yes_or_no("yes"), ("21",)),
 }
+
+positive_funcs = dict(indicator_funcs)
+positive_funcs["2DPa"] = (calc_numdenom, ("3", "2"))
+positive_funcs["4DP"] = (calc_numdenom, ("11", "10"))
+positive_funcs["5DPa"] = (calc_numdenom, ("13", "12"))
+positive_funcs["5DPb"] = (calc_numdenom, ("15", "14"))
+positive_funcs["4G"] = (calc_numdenom, ("8", "7"))
