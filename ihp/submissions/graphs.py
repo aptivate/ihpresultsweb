@@ -76,7 +76,7 @@ def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.h
     for country in agency.countries:
         country_data = {}
         country_abs_values = {}
-        indicators = calc_agency_country_indicators(agency, country, positive_funcs)
+        indicators = calc_agency_country_indicators(agency, country)
         for indicator in ["2DPa", "2DPb", "2DPc", "3DP", "4DP", "5DPa", "5DPb", "5DPc"]:
             base_val, _, latest_val, _ = indicators[indicator][0]
             country_abs_values[indicator] = (base_val, latest_val) 
@@ -110,7 +110,7 @@ def countrygraphs(request, country_name, template_name="submissions/countrygraph
     for agency in country.agencies:
         agency_data = {}
         agency_abs_values = {}
-        indicators = calc_agency_country_indicators(agency, country, positive_funcs)
+        indicators = calc_agency_country_indicators(agency, country)
         for indicator in ["2DPa", "2DPb", "2DPc", "3DP", "4DP", "5DPa", "5DPb", "5DPc"]:
             base_val, _, latest_val, _ = indicators[indicator][0]
             agency_abs_values[indicator] = (base_val, latest_val) 
