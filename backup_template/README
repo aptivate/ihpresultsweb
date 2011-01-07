@@ -1,0 +1,6 @@
+This archive contains a backup of ihp survey processing system. 
+
+ihp.db is a sqlite databases containing all collected information
+src contains all the code required to run the website. 
+
+Pre-requisites: django-1.2
