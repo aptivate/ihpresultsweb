@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson
-from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country, CountryScorecardOverride
+from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country, CountryScorecardOverride, GovQuestion
 from views import calc_agency_comments
 from target import calc_agency_targets, calc_country_targets
 import indicators
@@ -213,7 +213,18 @@ def country_scorecard(request, country_id):
             data = ratings.__dict__.copy()
             for key in data.keys():
                 if key.startswith("_"): del data[key]
-
+            # TODO - this is messy. This default data should be contained elsewhere
+            if data["jar4"] == None:
+                questions = GovQuestion.objects.filter(
+                    submission__country=country,
+                    question_number=24,
+                )
+                if len(questions) == 1:
+                    data["jar4"] = """
+Latest Value: %s
+Comment: %s
+""" % (questions[0].latest_value, questions[0].comments)
+                 
             return HttpResponse(simplejson.dumps(data))
         elif request.method == "POST":
             for key in request.POST.keys():

@@ -443,11 +443,15 @@ def country_export(request):
             datum["HMIS1"] = target_none(ratings.hmis1 or datum["Q21G"]["target"])
             datum["HMIS2"] = ratings.hmis2 or datum["questions"]["21"]["comments"]
 
-            datum["JAR1"] = target_none(datum["Q12G"]["target"])
-            datum["JAR2"] = ""
-            datum["JAR3"] = fformat_front(datum["questions"]["24"]["latest_value"])
+            datum["JAR1"] = target_none(ratings.jar1 or datum["Q12G"]["target"])
+            #datum["JAR2"] = ""
+            #datum["JAR3"] = fformat_front(datum["questions"]["24"]["latest_value"])
+            #datum["JAR4"] = datum["questions"]["24"]["comments"]
+            #datum["JAR5"] = datum["questions"]["24"]["comments"]
+            datum["JAR2"] = "Field no longer used"
+            datum["JAR3"] = "Field no longer used"
             datum["JAR4"] = datum["questions"]["24"]["comments"]
-            datum["JAR5"] = datum["questions"]["24"]["comments"]
+            datum["JAR5"] = "Field no longer used"
 
             datum["DBR1"] = datum["ER8a"]
             datum["DBR2"] = ratings.dbr2 or datum["questions"]["11"]["comments"]

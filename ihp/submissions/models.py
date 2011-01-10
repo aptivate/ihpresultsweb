@@ -288,6 +288,9 @@ class CountryScorecardOverride(models.Model):
     hmis1 = RatingsField(verbose_name="HMIS1")
     hmis2 = CommentsField(verbose_name="HMIS2")
 
+    jar1 = RatingsField(verbose_name="JAR1")
+    jar4 = CommentsField(verbose_name="JAR4")
+
     hsp1 = RatingsField(verbose_name="HSP1")
 
     hsp2 = RatingsField(verbose_name="HSP2")
