@@ -193,8 +193,8 @@ class DPScorecardSummary(models.Model):
     class Meta:
        verbose_name_plural = "DP Scorecard Summaries" 
 
-
-RatingsField = curry(models.CharField, max_length=20, null=True, blank=True)
+ratings_choices = [(x, x) for x in ["tick", "arrow", "cross", "question", "none"]]
+RatingsField = curry(models.CharField, max_length=20, null=True, blank=True, choices=ratings_choices)
 CommentsField = curry(models.TextField, null=True, blank=True)
 
 class DPScorecardRatings(models.Model):
@@ -274,6 +274,41 @@ class GovScorecardRatings(models.Model):
 
     class Meta:
        verbose_name_plural = "Gov Scorecard Ratings" 
+
+class CountryScorecardOverride(models.Model):
+    country = models.OneToOneField(Country, null=False)
+
+    rf1 = RatingsField(verbose_name="RF1")
+    rf2 = CommentsField(verbose_name="RF2")
+    rf3 = CommentsField(verbose_name="RF3")
+
+    dbr1 = RatingsField(verbose_name="DBR1")
+    dbr2 = CommentsField(verbose_name="DBR2")
+
+    hmis1 = RatingsField(verbose_name="HMIS1")
+    hmis2 = CommentsField(verbose_name="HMIS2")
+
+    hsp1 = RatingsField(verbose_name="HSP1")
+
+    hsp2 = RatingsField(verbose_name="HSP2")
+
+    hsm1 = RatingsField(verbose_name="HSM1")
+
+    hsm4 = RatingsField(verbose_name="HSM4")
+
+    pfm2 = CommentsField(verbose_name="PFM2")
+
+    pr2 = CommentsField(verbose_name="PR2")
+
+    ta2 = CommentsField(verbose_name="TA2")
+
+    pf2 = CommentsField(verbose_name="PF2")
+
+    def __unicode__(self):
+        return unicode(self.country)
+
+    class Meta:
+       verbose_name_plural = "Country Scorecard Override" 
 
 class Country8DPFix(models.Model):
     agency = models.ForeignKey(Agency, null=False)

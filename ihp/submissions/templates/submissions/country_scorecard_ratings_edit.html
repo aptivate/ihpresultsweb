@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block head %}
+{{ form.media }}
+{% endblock %}
+
+{% block body %}
+<form class="styleform">
+    <fieldset>
+        <legend>Country</legend>
+        <ol><li>{{ form.country }}</li></ol>
+    </fieldset>
+    <fieldset>
+        <legend>National Results Framework Agreed</legend>
+        <ol>
+            <li>
+            {{ form.rf1.label_tag }}
+            {{ form.rf1 }}
+            </li>
+            <li>
+            {{ form.rf2.label_tag }}
+            {{ form.rf2 }}
+            </li>
+            <li>
+            {{ form.rf3.label_tag }}
+            {{ form.rf3 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>Decisions Based on Results</legend>
+        <ol>
+            <li>
+            {{ form.dbr1.label_tag }}
+            {{ form.dbr1 }}
+            </li>
+            <li>
+            {{ form.dbr2.label_tag }}
+            {{ form.dbr2 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>Health Management Information Systems</legend>
+        <ol>
+            <li>
+            {{ form.hmis1.label_tag }}
+            {{ form.hmis1 }}
+            </li>
+            <li>
+            {{ form.hmis2.label_tag }}
+            {{ form.hmis2 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <!-- need clarification here -->
+        <legend>Joint Health Sector Reviews Conducted</legend>
+        <ol>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>Includes targets and budgets</legend>
+        <ol>
+            <li>
+            {{ form.hsp1.label_tag }}
+            {{ form.hsp1 }}
+            </li>
+            <li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>Jointly assessed</legend>
+        <ol>
+            <li>
+            {{ form.hsp2.label_tag }}
+            {{ form.hsp2 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>Active Joint monitoring</legend>
+        <ol>
+            <li>
+            {{ form.hsm1.label_tag }}
+            {{ form.hsm1 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>Quality of civil society engagement</legend>
+        <ol>
+            <li>
+            {{ form.hsm4.label_tag }}
+            {{ form.hsm4 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>PFM blue call out box</legend>
+        <ol>
+            <li>
+            {{ form.pfm2.label_tag }}
+            {{ form.pfm2 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>Procurement blue call out box</legend>
+        <ol>
+            <li>
+            {{ form.pr2.label_tag }}
+            {{ form.pr2 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>Technical Assistance blue call out box</legend>
+        <ol>
+            <li>
+            {{ form.ta2.label_tag }}
+            {{ form.ta2 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>External Financing Using Pooled Mechanisms blue call out box</legend>
+        <ol>
+            <li>
+            {{ form.pf2.label_tag }}
+            {{ form.pf2 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <ol>
+            <li><button id="id_submit">Save</button></li>
+        </ol>
+    <fieldset>
+</form>
+{% endblock %}

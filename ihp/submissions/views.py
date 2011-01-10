@@ -7,10 +7,10 @@ from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404
 
-from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardRatings, GovScorecardRatings
+from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardRatings, CountryScorecardOverride
 from target import calc_agency_targets, get_country_progress, calc_country_targets, get_agency_progress, country_agency_indicator_ratings
 from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs
-from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm
+from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm, CountryScorecardForm
 
 
 def calc_agency_comments(indicator, agency_data):
@@ -319,6 +319,7 @@ def country_export(request):
 
     data = get_countries_scorecard_data()
     for country, datum in data.items():
+        ratings, _ = CountryScorecardOverride.objects.get_or_create(country=country)
         try:
             datum["ER1a"] = target_none(datum["1G"]["target"])
             datum["ER1b"] = datum["1G"]["commentary"]
@@ -370,12 +371,12 @@ def country_export(request):
 
             datum["CD1"] = datum["ER1a"]
             datum["CD2"] = datum["questions"]["1"]["comments"]
-            datum["HSP1"] = target_none(datum["Q2G"]["target"])
-            datum["HSP2"] = target_none(datum["Q3G"]["target"])
-            datum["HSM1"] = target_none(datum["Q12G"]["target"])
+            datum["HSP1"] = target_none(ratings.hsp1 or datum["Q2G"]["target"])
+            datum["HSP2"] = target_none(ratings.hsp2 or datum["Q3G"]["target"])
+            datum["HSM1"] = target_none(ratings.hsm1 or datum["Q12G"]["target"])
             datum["HSM2"] = fformat_none(datum["questions"]["15"]["latest_value"])
             datum["HSM3"] = datum["ER10a"]
-            datum["HSM4"] = ""
+            datum["HSM4"] = ratings.hsm4
 
             datum["BC1"] = datum["questions"]["5"]["baseline_year"]
             datum["BC2"] = fformat_front(datum["questions"]["6"]["baseline_value"])
@@ -394,13 +395,13 @@ def country_export(request):
             datum["PC4"] = "%s %% increase needed to meet the Abuja target (15%%)" % datum["PC2"]
 
             datum["PF1"] = fformat_none(datum["questions"]["16"]["latest_value"])
-            datum["PF2"] = datum["questions"]["16"]["comments"]
+            datum["PF2"] = ratings.pf2 or datum["questions"]["16"]["comments"]
 
             datum["PFM1"] = datum["ER6a"]
-            datum["PFM2"] = datum["questions"]["9"]["comments"]
+            datum["PFM2"] = ratings.pfm2 or datum["questions"]["9"]["comments"]
 
             datum["PR1"] = datum["ER7a"]
-            datum["PR2"] = datum["questions"]["10"]["comments"]
+            datum["PR2"] = ratings.pr2 or datum["questions"]["10"]["comments"]
 
             datum["TA1"] = datum["indicators"]["other"]["coordinated_programmes"]
             datum["TA2"] = ""
@@ -409,6 +410,7 @@ def country_export(request):
                 if "4" in aqs:
                     datum["TA2"] += "%s %s" % (agency, aqs["4"]["comments"].replace("%", "%%"))
                     datum["TA2"] += "\n"
+            datum["TA2"] = ratings.ta2 or datum["TA2"]
 
             datum["PHC1"] = fformat_front(datum["indicators"]["other"]["outpatient_visits_baseline"])
             datum["PHC2"] = datum["questions"]["19"]["baseline_year"]
@@ -435,11 +437,11 @@ def country_export(request):
             datum["HS7"] = ""
 
             datum["RF1"] = datum["ER8a"]
-            datum["RF2"] = fformat_none(datum["questions"]["22"]["latest_value"])
-            datum["RF3"] = fformat_none(datum["questions"]["23"]["latest_value"])
+            datum["RF2"] = fformat_none(ratings.rf2 or datum["questions"]["22"]["latest_value"])
+            datum["RF3"] = fformat_none(ratings.rf3 or datum["questions"]["23"]["latest_value"])
 
-            datum["HMIS1"] = target_none(datum["Q21G"]["target"])
-            datum["HMIS2"] = datum["questions"]["21"]["comments"]
+            datum["HMIS1"] = target_none(ratings.hmis1 or datum["Q21G"]["target"])
+            datum["HMIS2"] = ratings.hmis2 or datum["questions"]["21"]["comments"]
 
             datum["JAR1"] = target_none(datum["Q12G"]["target"])
             datum["JAR2"] = ""
@@ -448,7 +450,7 @@ def country_export(request):
             datum["JAR5"] = datum["questions"]["24"]["comments"]
 
             datum["DBR1"] = datum["ER8a"]
-            datum["DBR2"] = datum["questions"]["11"]["comments"]
+            datum["DBR2"] = ratings.dbr2 or datum["questions"]["11"]["comments"]
 
             group1 = ["MDG1", "MDG2", "MDG3", "MDG4"]
             group2 = ["MDG5a", "MDG5b", "MDG6a", "MDG6b", "MDG6c", "MDG7a", "MDG7b"]
@@ -855,3 +857,15 @@ def agency_country_ratings(request, template_name="submissions/agency_country_ra
     extra_context["data"] = data
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
+def country_scorecard_ratings_edit(request, template_name="submissions/country_scorecard_ratings_edit.html", extra_context=None):
+    extra_context = extra_context or {}
+
+    if request.method == "POST":
+        form = CountryScorecardForm(request.POST)
+        if form.is_valid():
+            pass
+    else:
+        form = CountryScorecardForm()
+
+    extra_context["form"] = form
+    return direct_to_template(request, template=template_name, extra_context=extra_context)

@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson
-from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country
+from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country, CountryScorecardOverride
 from views import calc_agency_comments
 from target import calc_agency_targets, calc_country_targets
 import indicators
@@ -194,6 +194,33 @@ def gov_ratings(request, country_id):
             data["gen6"] = get_comment("6G")
             data["gen7"] = get_comment("7G")
             data["gen8"] = get_comment("8G")
+
+            return HttpResponse(simplejson.dumps(data))
+    except:
+        import traceback
+        traceback.print_exc()
+    
+def country_scorecard(request, country_id):
+
+    try:
+        country = get_object_or_404(Country, id=country_id)
+        ratings, _ = CountryScorecardOverride.objects.get_or_create(country=country)
+        data = {}
+
+        if request.method == "GET":
+            results = calc_country_targets(country)
+            country_data = results
+            data = ratings.__dict__.copy()
+            for key in data.keys():
+                if key.startswith("_"): del data[key]
+
+            return HttpResponse(simplejson.dumps(data))
+        elif request.method == "POST":
+            for key in request.POST.keys():
+                if key in ratings.__dict__:
+                    ratings.__dict__[key] = request.POST[key]
+
+            ratings.save()
 
             return HttpResponse(simplejson.dumps(data))
     except:

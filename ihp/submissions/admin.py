@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from models import Agency, Country, UpdateAgency, Submission, DPQuestion, GovQuestion, AgencyCountries, AgencyTargets, CountryTargets, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country8DPFix, MDGData, CountryLanguage
+from models import Agency, Country, UpdateAgency, Submission, DPQuestion, GovQuestion, AgencyCountries, AgencyTargets, CountryTargets, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country8DPFix, MDGData, CountryLanguage, CountryScorecardOverride
 
 
 class AgencyAdmin(admin.ModelAdmin):
@@ -77,6 +77,11 @@ class GovScorecardRatingsAdmin(admin.ModelAdmin):
     list_display = ("country", "r1" , "r2a", "r2b", "r3", "r4", "r5a", "r5b", "r6", "r7", "r8")
 
 admin.site.register(GovScorecardRatings, GovScorecardRatingsAdmin)
+
+class CountryScorecardOverrideAdmin(admin.ModelAdmin):
+    list_display = ("country", )
+
+admin.site.register(CountryScorecardOverride, CountryScorecardOverrideAdmin)
 
 class Country8DPFixAdmin(admin.ModelAdmin):
     list_filter = ("agency", "country")

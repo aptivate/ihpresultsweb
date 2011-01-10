@@ -66,11 +66,13 @@ urlpatterns = patterns('',
     (r'^scorecard/edit/agencies/summary/$', 'submissions.views.dp_summary_edit', {}, 'dp_summary_edit'),
     (r'^scorecard/edit/agencies/ratings/$', 'submissions.views.dp_ratings_edit', {}, 'dp_ratings_edit'),
     (r'^scorecard/edit/countries/ratings/$', 'submissions.views.gov_ratings_edit', {}, 'gov_ratings_edit'),
+    (r'^scorecard/edit/countries/general/$', 'submissions.views.country_scorecard_ratings_edit', {}, 'country_scorecard_ratings_edit'),
 
     # Api views
     (r'^api/dp_summary/(?P<agency_id>\d+)/$', 'submissions.api.dp_summary', {}, 'api_dp_summary'),
     (r'^api/dp_ratings/(?P<agency_id>\d+)/$', 'submissions.api.dp_ratings', {}, 'api_dp_ratings'),
     (r'^api/gov_ratings/(?P<country_id>\d+)/$', 'submissions.api.gov_ratings', {}, 'api_gov_ratings'),
+    (r'^api/country_scorecard/(?P<country_id>\d+)/$', 'submissions.api.country_scorecard', {}, 'api_country_scorecard'),
 
     # Graph Views
     (r"^graph/highlevel/$", "submissions.graphs.highlevelgraphs", {}, "highlevelgraphs"),

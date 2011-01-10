@@ -1,7 +1,8 @@
 from django import forms
 from django.utils.functional import curry
 
-from submissions.models import Agency, Country
+from submissions.models import Agency, Country, CountryScorecardOverride
+from submissions.utils import classmaker
 
 
 RatingsField = curry(forms.ChoiceField, choices=[
@@ -137,4 +138,14 @@ class GovRatingsForm(CountryForm):
 
     class Media:
         js = ("js/govratingsform.js", )
+
+class _CountryScorecardForm(forms.ModelForm):
+    class Meta:
+        model = CountryScorecardOverride
+
+class CountryScorecardForm(_CountryScorecardForm, CountryForm):
+    __metaclass__ = classmaker()
+
+    class Media:
+        js = ("js/countryscorecardform.js", )
 
