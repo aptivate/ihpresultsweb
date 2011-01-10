@@ -299,6 +299,105 @@ def parse_overall_graph(parser, token):
         
     return OverallGraphNode(tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7])
 
+class ProjectionGraphNode(Node):
+    def __init__(self, element, baseline_value, baseline_year, latest_value, latest_year, target_value, title, yaxis, xaxis):
+        self.element = element
+        self.baseline_value = Variable(baseline_value)
+        self.baseline_year = int(baseline_year)
+        self.latest_value = Variable(latest_value)
+        self.latest_year = int(latest_year)
+        self.target_value = Variable(target_value)
+        self.title = Variable(title)
+        self.yaxis = Variable(yaxis)
+        self.xaxis = Variable(xaxis)
+
+    def render(self, context):
+        try:
+            target_element = self.element
+            baseline_value = (resolve_variable(self.baseline_value, context))
+            baseline_year = self.baseline_year
+            latest_value = (resolve_variable(self.latest_value, context))
+            latest_year = self.latest_year
+            target_value = resolve_variable(self.target_value, context)
+            title = resolve_variable(self.title, context)
+            yaxis = resolve_variable(self.yaxis, context)
+            xaxis = resolve_variable(self.xaxis, context)
+
+            # Find the intersection point between the horizontal target line and the trend line
+            # i.e. x = (y - c)/m 
+            m = (latest_value - baseline_value) / (latest_year - baseline_year)
+            c = baseline_value
+            intersection = (target_value - c) / m  + baseline_year
+            y = lambda x : ffloat(m * (x - baseline_year) + c)
+
+            end_year = int(round(intersection, 0) + 1)
+            x_categories = ",".join([('"%d"' % year) for year in range(baseline_year, end_year + 1)])
+            target_data = ",".join(['%s' % target_value for i in range(baseline_year, end_year + 1)])
+            actual_data = ",".join(['%s' % y(year) for year in range(baseline_year, latest_year + 1)])
+            projected_data = ",".join(['[%s, %s]' % (year - baseline_year, y(year)) for year in range(latest_year, end_year + 1)])
+
+            var_name = "chart_%s" % (random.randint(0, 10000000))
+            s = """
+                var %(var_name)s; // globally available
+                $(document).ready(function() {
+                    %(var_name)s = new Highcharts.Chart({
+                        chart: {
+                            renderTo: '%(target_element)s',
+                            marginTop: 50,
+                        },
+                        title: {
+                           text: "%(title)s"
+                        },
+                        xAxis: {
+                           title : {
+                                text: "%(xaxis)s"
+                           },
+                           categories: [%(x_categories)s]
+                        },
+                        yAxis: {
+                            title: {
+                               text: "%(yaxis)s"
+                            }
+                        },
+                        series: [{
+                           type: 'line',
+                           name: 'Actual',
+                           data: [%(actual_data)s],
+                        }, {
+                           type: 'line',
+                           name: 'Target',
+                           data: [%(target_data)s],
+                           marker: {
+                               enabled: false
+                           },
+                        }, {
+                           type: 'line',
+                           name: 'Projected',
+                           data: [%(projected_data)s],
+                           dashStyle: 'shortDash',
+                        }],
+                    });
+                });
+            """ % locals() 
+            return s
+        except:
+            traceback.print_exc()
+
+def parse_projection_graph(parser, token):
+    """
+    Output the javascript code for an overall graph
+
+    e.g.
+    {% overallgraph element baseline_value baseline_year latest_value latest_year target_value title yaxis xaxis %}
+
+    """
+    tokens = token.contents.split()
+    if len(tokens) != 10:
+        raise TemplateSyntaxError(u"'%r' tag requires 9 arguments." % tokens[0])
+        
+    return ProjectionGraphNode(tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6], tokens[7], tokens[8], tokens[9])
+
 register.tag('absgraph', parse_absolute_graph)
 register.tag('ratiograph', parse_ratio_graph)
 register.tag('overallgraph', parse_overall_graph)
+register.tag('projectiongraph', parse_projection_graph)

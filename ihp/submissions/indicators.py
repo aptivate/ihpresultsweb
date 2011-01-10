@@ -225,8 +225,7 @@ def sum_values(qs, agency_or_country, *args):
     return (base_val, cur_val)
 
 def calc_indicator(qs, agency_or_country, indicator, funcs=None):
-    if funcs == None:
-        funcs = indicator_funcs
+    funcs = funcs or indicator_funcs
     func, args = funcs[indicator]
     # TODO - this is really ugly - probably need to refactor this code
     qs2 = qs.filter(question_number__in=args)
@@ -258,6 +257,8 @@ def calc_agency_indicator(agency, indicator):
     Calculate the value of a particular indicator for the given agency
     Returns a tuple ((base_val, base_year, cur_val, cur_year), indicator comment)
     """
+    if agency.agency == "UK" and indicator == "6DP":
+        import pdb; pdb.set_trace()
     qs = DPQuestion.objects.filter(submission__agency=agency)
     return calc_indicator(qs, agency, indicator)
 

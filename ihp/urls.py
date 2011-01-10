@@ -1,3 +1,4 @@
+from collections import defaultdict
 from django.conf.urls.defaults import *
 from django.views.static import serve
 from django.conf import settings
@@ -76,6 +77,13 @@ urlpatterns = patterns('',
 
     # Graph Views
     (r"^graph/highlevel/$", "submissions.graphs.highlevelgraphs", {}, "highlevelgraphs"),
+    (r"^graph/projection/$", "submissions.graphs.highlevelgraphs", {
+        "titles" : defaultdict(str, {
+            "2DPa" : "Projected time required to meet On Budget target <br>(based on current levels of performance):2007 Baseline",
+            "5DPb" : "Projected time required to meet PFM target <br>(based on current levels of performance):2007 Baseline",
+        }),
+        "template_name" : "submissions/projectiongraphs.html",
+    }, "projectiongraphs"),
 
     (r"^graph/agency/(?P<agency_name>[a-zA-Z\s]+)/$", "submissions.graphs.agencygraphs", {
         "titles" : agency_ratio_titles,
