@@ -478,6 +478,9 @@ def calc_country_targets(country):
     return results
 
 def country_agency_indicator_ratings(country, agency):
+    """
+    Evaluate ratings for a country-agency per indicator
+    """
     indicators = {}
     targets = get_agency_targets(agency, dp_indicators)
     country_indicators = calc_agency_country_indicators(agency, country)
@@ -503,11 +506,18 @@ def country_agency_indicator_ratings(country, agency):
     return indicators
 
 def country_agency_progress(country, agency):
+    """
+    Returns True is an agency is making progress in a particular country
+    Progress is defined as # ticks / # ratings
+    """
     ratings = country_agency_indicator_ratings(country, agency)
     ticks = filter(lambda x : x == "tick", ratings.values())
     return len(ticks) / float(len(ratings)) > 0.5
 
 def get_country_progress(agency):
+    """
+    Get the list of countries in which the agency is making progress and not making progress
+    """
     np = []
     p = []
     np_dict = {}
@@ -528,6 +538,9 @@ def get_country_progress(agency):
     return np_dict, p_dict
 
 def get_agency_progress(country):
+    """
+    Get the list of agencies which are making progress and which are not making progress
+    """
     np = []
     p = []
     np_dict = {}
