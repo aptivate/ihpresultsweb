@@ -52,3 +52,50 @@ def classmaker(left_metas=(), right_metas=()):
         metaclass = get_noconflict_metaclass(bases, left_metas, right_metas)
         return metaclass(name, bases, adict)
     return make_class
+
+# A float class that allows for safe arithmetic operations with nones
+class none_num(float):
+
+    def __new__(cls, value):
+        if value == None:
+            value = 0
+        try:
+            float(value)
+            return float.__new__(cls, value)
+        except:
+            return value
+
+    def _either_none(self, other):
+        return self.ovalue == None or other == None
+
+    def __init__(self, value):
+        self.ovalue = value
+
+    def __add__(self, other):
+        if self._either_none(other): return none_num(None)
+        return none_num(super(none_num, self).__add__(other))
+
+    def __div__(self, other):
+        if self._either_none(other): return none_num(None)
+        if other == 0: return none_num(None)
+        return none_num(super(none_num, self).__div__(other))
+
+    def __mul__(self, other):
+        if self._either_none(other): return none_num(None)
+        return none_num(super(none_num, self).__mul__(other))
+
+    def __sub__(self, other):
+        if self._either_none(other): return none_num(None)
+        return none_num(super(none_num, self).__sub__(other))
+
+    def __neg__(self):
+        if self.ovalue == None: return none_num(None)
+        else:
+            return none_num(super(none_num, self).__neg__())
+
+    def __rsub__(self, other):
+        return -self.__sub__(other)
+
+    def __eq__(self, other):
+        return self.ovalue == other
+

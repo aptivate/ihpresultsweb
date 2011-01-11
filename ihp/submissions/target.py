@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 from django.template import Context, Template
+from django.utils.functional import memoize
 from indicators import NA_STR
 from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
 from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, CountryLanguage

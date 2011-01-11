@@ -1,0 +1,35 @@
+{% extends "submissions/graph_base.html" %}
+{% load indgraph %}
+
+{% block graphdefs %}
+
+<script>
+{% countrybargraph graph_health_workforce hw_spend %}
+{% countrybargraph graph_outpatient_visits outpatient_visits %}
+{% countrybargraph graph_skilled_medical skilled_medical %}
+{% countrybargraph graph_health_budget health_budget %}
+{% stackedbargraph graph_pfm pfm %}
+{% stackedbargraph graph_procurement procurement %}
+{% stackedbargraph graph_multi_year multi_year %}
+{% stackedbargraph graph_pba pba %}
+{% stackedbargraph graph_tc tc %}
+{% stackedbargraph graph_aob aid_on_budget %}
+</script>
+
+{% endblock %}
+
+{% block body %}
+<h1>{{ indicator }}</h1>
+
+<div class="graphblock"><div id="graph_health_workforce" class="graph"></div></div>
+<div class="graphblock"><div id="graph_outpatient_visits" class="graph"></div></div>
+<div class="graphblock"><div id="graph_skilled_medical" class="graph"></div></div>
+<div class="graphblock"><div id="graph_health_budget" class="graph"></div></div>
+<div class="graphblock"><div id="graph_pfm" class="graph"></div></div>
+<div class="graphblock"><div id="graph_procurement" class="graph"></div></div>
+<div class="graphblock"><div id="graph_multi_year" class="graph"></div></div>
+<div class="graphblock"><div id="graph_pba" class="graph"></div></div>
+<div class="graphblock"><div id="graph_tc" class="graph"></div></div>
+<div class="graphblock"><div id="graph_aob" class="graph"></div></div>
+
+{% endblock %}

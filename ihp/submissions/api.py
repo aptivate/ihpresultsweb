@@ -2,9 +2,16 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson
 from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country, CountryScorecardOverride, GovQuestion
-from views import calc_agency_comments
 from target import calc_agency_targets, calc_country_targets
 import indicators
+
+def calc_agency_comments(indicator, agency_data):
+    old_comments = agency_data[indicator]["comments"]
+    comments = []
+    for question_number, country, comment in old_comments:
+        comments.append("%s %s] %s" % (question_number, country, comment))
+    comments = "\n".join([comment for comment in comments if comment])
+    return comments
 
 def dp_summary(request, agency_id):
 

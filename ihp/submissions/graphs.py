@@ -1,6 +1,8 @@
 from django.views.generic.simple import direct_to_template
+from functools import partial
 from submissions.models import Agency, Country
 from indicators import calc_agency_country_indicators, NA_STR, calc_overall_agency_indicators, positive_funcs
+from views import get_countries_scorecard_data, get_agencies_scorecard_data
 
 def safe_diff(a, b):
     if a in [None, NA_STR] or b in [None, NA_STR]:
@@ -164,3 +166,163 @@ def countrygraphs(request, country_name, template_name="submissions/countrygraph
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
     
+def additional_graphs(request, template_name="submissions/additionalgraphs.html", extra_context=None):
+    extra_context = extra_context or {}
+    country_data = get_countries_scorecard_data()
+    agency_data = get_agencies_scorecard_data()
+
+    extra_context["hw_spend"] = {
+        "title" : "% of health sector budget spent on health workforce",
+        "data" : dict(
+            (
+                country, 
+                {
+                    "baseline" : datum["indicators"]["other"]["health_workforce_perc_of_budget_baseline"] * 100,
+                    "latest" : datum["indicators"]["other"]["health_workforce_perc_of_budget_latest"] * 100, 
+                }
+            ) 
+            for country, datum in country_data.items()
+        )
+    }
+
+    extra_context["outpatient_visits"] = {
+        "title" : "Number of outpatient visits per 10,000 population",
+        "y-axis" : "",
+        "data" : dict(
+            (
+                country, 
+                {
+                    "baseline" : datum["indicators"]["other"]["outpatient_visits_latest"],
+                    "latest" : datum["indicators"]["other"]["outpatient_visits_latest"], 
+                }
+            ) 
+            for country, datum in country_data.items()
+        )
+    }
+
+    extra_context["skilled_medical"] = {
+        "title" : "Skilled medical personnel per 10,000 population",
+        "y-axis" : "",
+        "target" : {
+            "name" : "WHO Recommended",
+            "value" : 23,
+        },
+        "data" : dict(
+            (
+                country, 
+                {
+                    "baseline" : datum["indicators"]["other"]["skilled_personnel_baseline"],
+                    "latest" : datum["indicators"]["other"]["skilled_personnel_latest"], 
+                }
+            ) 
+            for country, datum in country_data.items()
+        )
+    }
+
+    extra_context["health_budget"] = {
+        "title" : "% of national budget is allocated to health (IHP+ Results data)",
+        "target" : {
+            "value" : 15,
+        },
+        "y-axis" : "% allocated to health",
+        "data" : dict(
+            (
+                country, 
+                {
+                    "baseline" : datum["indicators"]["3G"]["baseline_value"],
+                    "latest" : datum["indicators"]["3G"]["latest_value"],
+                }
+            ) 
+            for country, datum in country_data.items()
+        )
+    }
+    
+    sort = partial(sorted, key=lambda x : x[1][1])
+
+    def indicator_data(indicator):
+        data = [
+            (
+                agency, [
+                    datum[indicator]["cur_val"], 
+                    100 - datum[indicator]["cur_val"],
+                ]
+            )
+            for (agency, datum) in agency_data.items()
+            if datum[indicator]["cur_val"] not in (NA_STR, None)
+        ]
+        return sort(data)
+
+    extra_context["pfm"] = {
+        "title" : "% of aid using national PFM systems",
+        "target" : {
+            "value" : 80,
+        },
+        "series" : [
+            "Total health aid not using PFM systems (Q14 - Q15)",
+            "Total health aid using PFM systems (Q15)",
+        ],
+        "data" : indicator_data("5DPb"),
+    }
+
+    extra_context["procurement"] = {
+        "title" : "% of aid using national procurement systems",
+        "target" : {
+            "value" : 80,
+        },
+        "series" : [
+            "Total health aid not using procurement systems (Q12 - Q13)",
+            "Total health aid using procurement systems (Q13)",
+        ],
+        "data" : indicator_data("5DPa"),
+    }
+
+    extra_context["multi_year"] = {
+        "title" : "% of aid provided through multi-year commitments",
+        "target" : {
+            "value" : 90,
+        },
+        "series" : [
+            "% not provided through multi-year commitments",
+            "% of multi-year commitments",
+        ],
+        "data" : indicator_data("3DP"),
+    }
+
+    extra_context["pba"] = {
+        "title" : "% of aid using Programme Based Approaches (PBAs)",
+        "target" : {
+            "value" : 66,
+        },
+        "series" : [
+            "% of health sector aid not using PBAs",
+            "% of health sector aid using PBAs",
+        ],
+        "data" : indicator_data("2DPc"),
+    }
+
+    extra_context["tc"] = {
+        "title" : "% of capacity development provided through coordinated programmes",
+        "target" : {
+            "value" : 50,
+        },
+        "series" : [
+            "TC not through coordinated programmes (Q4 - Q5)",
+            "TC through coordinated programmes (Q5)",
+        ],
+        "data" : indicator_data("2DPb"),
+    }
+
+    extra_context["aid_on_budget"] = {
+        "title" : "% of aid reported on budget",
+        "target" : {
+            "value" : 85,
+        },
+        "series" : [
+            "Total health aid not on budget",
+            "Total health aid reported on budget",
+        ],
+        "data" : indicator_data("2DPa"),
+    }
+
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
