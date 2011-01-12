@@ -2,6 +2,13 @@ from django.db import models
 import math
 from django.utils.functional import curry
 
+class Rating(object):
+    QUESTION = "question"
+    TICK = "tick"
+    ARROW = "arrow"
+    CROSS = "cross"
+    NONE = "none"
+
 class Agency(models.Model):
     agency = models.CharField(max_length=50, null=False, unique=True)
     description = models.TextField()
@@ -193,7 +200,7 @@ class DPScorecardSummary(models.Model):
     class Meta:
        verbose_name_plural = "DP Scorecard Summaries" 
 
-ratings_choices = [(x, x) for x in ["tick", "arrow", "cross", "question", "none"]]
+ratings_choices = [(x, x) for x in [Rating.TICK, Rating.ARROW, Rating.CROSS, Rating.QUESTION, Rating.NONE]]
 RatingsField = curry(models.CharField, max_length=20, null=True, blank=True, choices=ratings_choices)
 CommentsField = curry(models.TextField, null=True, blank=True)
 

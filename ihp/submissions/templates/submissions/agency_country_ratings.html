@@ -74,18 +74,18 @@ h1 {
         <tr class="{% cycle 'odd' 'even' %}">
             <td>{{ datum.agency.agency }}</td>
             <td>{{ datum.country.country }}</td>
-            <td>{{ datum.indicators.1DP }}</td>
-            <td>{{ datum.indicators.2DPa }}</td>
-            <td>{{ datum.indicators.2DPb }}</td>
-            <td>{{ datum.indicators.2DPc }}</td>
-            <td>{{ datum.indicators.3DP }}</td>
-            <td>{{ datum.indicators.4DP }}</td>
-            <td>{{ datum.indicators.5DPa }}</td>
-            <td>{{ datum.indicators.5DPb }}</td>
-            <td>{{ datum.indicators.5DPc }}</td>
-            <td>{{ datum.indicators.6DP }}</td>
-            <td>{{ datum.indicators.7DP }}</td>
-            <td>{{ datum.indicators.8DP }}</td>
+            <td><img src="{{ MEDIA_URL }}/images/{{datum.indicators.1DP}}.png"></td>
+            <td><img src="{{ MEDIA_URL }}/images/{{datum.indicators.2DPa}}.png"></td>
+            <td><img src="{{ MEDIA_URL }}/images/{{datum.indicators.2DPb}}.png"></td>
+            <td><img src="{{ MEDIA_URL }}/images/{{datum.indicators.2DPc}}.png"></td>
+            <td><img src="{{ MEDIA_URL }}/images/{{datum.indicators.3DP}}.png"></td>
+            <td><img src="{{ MEDIA_URL }}/images/{{datum.indicators.4DP}}.png"></td>
+            <td><img src="{{ MEDIA_URL }}/images/{{datum.indicators.5DPa}}.png"></td>
+            <td><img src="{{ MEDIA_URL }}/images/{{datum.indicators.5DPb}}.png"></td>
+            <td><img src="{{ MEDIA_URL }}/images/{{datum.indicators.5DPc}}.png"></td>
+            <td><img src="{{ MEDIA_URL }}/images/{{datum.indicators.6DP}}.png"></td>
+            <td><img src="{{ MEDIA_URL }}/images/{{datum.indicators.7DP}}.png"></td>
+            <td><img src="{{ MEDIA_URL }}/images/{{datum.indicators.8DP}}.png"></td>
             <td>{{ datum.making_progress|yesno:"Yes,No" }}</td>
         </tr>
     {% endfor %}

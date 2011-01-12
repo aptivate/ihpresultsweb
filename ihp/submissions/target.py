@@ -3,7 +3,7 @@ from django.template import Context, Template
 from django.utils.functional import memoize
 from indicators import NA_STR
 from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
-from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, CountryLanguage, DPScorecardRatings
+from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, CountryLanguage, DPScorecardRatings, Rating
 import math
 
 def criterion_absolute(base_val, cur_val, criterion_param):
@@ -137,25 +137,25 @@ def evaluate_indicator(target, base_val, cur_val):
     arrow_func = criteria_funcs[target.arrow_criterion_type]
 
     if cur_val == NA_STR or base_val == NA_STR:
-        return "none"
+        return Rating.NONE
 
     if cur_val != None:
         if target.indicator in ["4DP", "5DPa", "5DPb"]:
             if cur_val <= 20:
-                return "tick" 
+                return Rating.TICK
         elif target.indicator in ["2DPa"]:
             if cur_val <= 15:
-                return "tick" 
+                return Rating.TICK
 
     try:
         if tick_func(base_val, cur_val, target.tick_criterion_value):
-            return "tick"
+            return Rating.TICK
         elif arrow_func(base_val, cur_val, target.arrow_criterion_value):
-            return "arrow"
+            return Rating.ARROW
         else:
-            return "cross"
+            return Rating.CROSS
     except MissingValueException:
-        return "question"
+        return Rating.QUESTION
 
 def calc_agency_targets(agency):
     """
@@ -300,23 +300,23 @@ def calc_agency_targets(agency):
 
 gov_commentary_text_en = {
     "1G": {
-        "tick" : "An [space] was signed in [space] called [space]. Target = An IHP+ Compact or equivalent agreement in place",
-        "arrow" : "There is evidence of a Compact or equivalent agreement under development. The aim is to have this in place by [space]. Target = An IHP+ Compact or equivalent agreement in place.",
-        "cross" : "There are no current plans to develop a Compact or equivalent agreement. Target = An IHP+ Compact or equivalent agreement in place.",
+        Rating.TICK : "An [space] was signed in [space] called [space]. Target = An IHP+ Compact or equivalent agreement in place",
+        Rating.ARROW : "There is evidence of a Compact or equivalent agreement under development. The aim is to have this in place by [space]. Target = An IHP+ Compact or equivalent agreement in place.",
+        Rating.CROSS : "There are no current plans to develop a Compact or equivalent agreement. Target = An IHP+ Compact or equivalent agreement in place.",
     },
     "2Ga" : {
-        "tick" : "A National Health Sector Plan/Strategy is in place with current targets & budgets that have been jointly assessed. Target = National Health Sector Plans/Strategy in place with current targets & budgets that have been jointly assessed.",
-        "arrow" : "National Health Sector Plans/Strategy in place with current targets & budgets with evidence of plans for joint assessment. Target = National Health Sector Plans/Strategy in place with current targets & budgets that have been jointly assessed.",
-        "cross" : "National Health Sector Plans/Strategy in place with no plans for joint assessment. Target = National Health Sector Plans/Strategy in place with current targets & budgets that have been jointly assessed.",
+        Rating.TICK : "A National Health Sector Plan/Strategy is in place with current targets & budgets that have been jointly assessed. Target = National Health Sector Plans/Strategy in place with current targets & budgets that have been jointly assessed.",
+        Rating.ARROW : "National Health Sector Plans/Strategy in place with current targets & budgets with evidence of plans for joint assessment. Target = National Health Sector Plans/Strategy in place with current targets & budgets that have been jointly assessed.",
+        Rating.CROSS : "National Health Sector Plans/Strategy in place with no plans for joint assessment. Target = National Health Sector Plans/Strategy in place with current targets & budgets that have been jointly assessed.",
 
     },
     "2Gb" : {
-        "tick" : "There is currently a costed and evidence based HRH plan in place that is integrated with the national health plan. Target = A costed comprehensive national HRH plan that is integrated with the national health plan",
-        "arrow" : """At the end of %(cur_year)s a costed and evidence based HRH plan was under development. Target = A costed comprehensive national HRH plan that is integrated with the national health plan
+        Rating.TICK : "There is currently a costed and evidence based HRH plan in place that is integrated with the national health plan. Target = A costed comprehensive national HRH plan that is integrated with the national health plan",
+        Rating.ARROW : """At the end of %(cur_year)s a costed and evidence based HRH plan was under development. Target = A costed comprehensive national HRH plan that is integrated with the national health plan
 
 At the end of %(cur_year)s a costed and evidence based HRH plan was in place but not yet integrated with the national health plan. Target = A costed comprehensive national HRH plan that is integrated with the national health plan.
 """,
-        "cross" : "At the end of %(cur_year)s there was no costed and evidence based HRH plan in place, or plans to develop one. Target = A costed comprehensive national HRH plan that is integrated with the national health plan",
+        Rating.CROSS : "At the end of %(cur_year)s there was no costed and evidence based HRH plan in place, or plans to develop one. Target = A costed comprehensive national HRH plan that is integrated with the national health plan",
     },
     "3G" : {
         "all" : "In %(cur_year)s %(country_name)s allocated %(cur_val).0f%% of its approved annual national budget to health. Target = 15%% (or an alternative agreed published target)",
@@ -331,14 +331,14 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
         "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).0f on the four point scale used to assess performance in the the procurement sector. Target = Improvement of at least one measure on the four-point scale used to assess performance for this sector."
     },
     "6G" : {
-        "tick" : "In %(cur_year)s there was a transparent and monitorable performance assessment framework in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes. Target = A transparent and monitorable performance assessment framework is in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes.",
-        "arrow" : "At the end of %(cur_year)s there was evidence that a transparent and monitorable performance assessment framework was under development to assess progress against (a) the national development  strategies relevant to health and (b) health sector programmes. Target = A transparent and monitorable performance assessment framework is in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes.",
-        "cross" : "At the end of %(cur_year)s there was no transparent and monitorable performance assessment framework in place and no plans to develop one were clear or being implemented. Target = A transparent and monitorable performance assessment framework is in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes.",
+        Rating.TICK : "In %(cur_year)s there was a transparent and monitorable performance assessment framework in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes. Target = A transparent and monitorable performance assessment framework is in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes.",
+        Rating.ARROW : "At the end of %(cur_year)s there was evidence that a transparent and monitorable performance assessment framework was under development to assess progress against (a) the national development  strategies relevant to health and (b) health sector programmes. Target = A transparent and monitorable performance assessment framework is in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes.",
+        Rating.CROSS : "At the end of %(cur_year)s there was no transparent and monitorable performance assessment framework in place and no plans to develop one were clear or being implemented. Target = A transparent and monitorable performance assessment framework is in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes.",
     },
     "7G" : {
-        "tick" : "Mutual assessments are being made of progress implementing commitments in the health sector, including on aid effectiveness. Target = Mutual assessments (such as a joint Annual Health Sector Review) are being made of progress implementing  commitments in the health sector, including on aid effectiveness.",
-        "arrow" : "Mutual assessments are being made of progress implementing commitments in the health sector, but not on aid effectiveness. Target = Mutual assessments (such as a joint Annual Health Sector Review) are being made of progress implementing  commitments in the health sector, including on aid effectiveness.",
-        "cross" : "Mutual assessments are not being made of progress implementing commitments in the health sector. Target = Mutual assessments (such as a joint Annual Health Sector Review) are being made of progress implementing  commitments in the health sector, including on aid effectiveness. ",
+        Rating.TICK : "Mutual assessments are being made of progress implementing commitments in the health sector, including on aid effectiveness. Target = Mutual assessments (such as a joint Annual Health Sector Review) are being made of progress implementing  commitments in the health sector, including on aid effectiveness.",
+        Rating.ARROW : "Mutual assessments are being made of progress implementing commitments in the health sector, but not on aid effectiveness. Target = Mutual assessments (such as a joint Annual Health Sector Review) are being made of progress implementing  commitments in the health sector, including on aid effectiveness.",
+        Rating.CROSS : "Mutual assessments are not being made of progress implementing commitments in the health sector. Target = Mutual assessments (such as a joint Annual Health Sector Review) are being made of progress implementing  commitments in the health sector, including on aid effectiveness. ",
     },
     "8G" : {
         "all" : "In %(cur_year)s %(cur_val).0f% of seats in the Health Sector Coordination Mechanism (or equivalent body) were allocated to Civil Society representatives. Target = Evidence that Civil Society is actively represented in health sector policy processes, including Health Sector planning, coordination & review mechanisms. "
@@ -347,24 +347,24 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
 
 gov_commentary_text_fr = {
     "1G": {
-        "tick" : u"Un [space] a été signé en [space] qui se nomme [space]. Objectif-cible = Mise en place d’un accord IHP+ ou d’une entente mutuelle équivalente.",
-        "arrow" : u"Certaines données indiquent qu’un accord ou une entente équivalente est en cours d’élaboration. L’objectif poursuivi est la mise en place de cet accord ou de cette entente avant le [space].Objectif-cible = Mise en place d’un accord IHP+ ou d’une entente mutuelle équivalente.",
-        "cross" : u"Il n’y a actuellement aucun plan visant à élaborer un accord ou une entente équivalente. Objectif-cible = Mise en place d’un accord IHP+ ou d’une entente mutuelle équivalente.",
+        Rating.TICK : u"Un [space] a été signé en [space] qui se nomme [space]. Objectif-cible = Mise en place d’un accord IHP+ ou d’une entente mutuelle équivalente.",
+        Rating.ARROW : u"Certaines données indiquent qu’un accord ou une entente équivalente est en cours d’élaboration. L’objectif poursuivi est la mise en place de cet accord ou de cette entente avant le [space].Objectif-cible = Mise en place d’un accord IHP+ ou d’une entente mutuelle équivalente.",
+        Rating.CROSS : u"Il n’y a actuellement aucun plan visant à élaborer un accord ou une entente équivalente. Objectif-cible = Mise en place d’un accord IHP+ ou d’une entente mutuelle équivalente.",
     },
     "2Ga" : {
-        "tick" : u"Un plan et une stratégie nationaux sectoriels de santé ont été mis en place à l’aide des objectifs et des budgets actuels qui ont été évalués conjointement. Objectif-cible = Mise en place d’un plan et d’une stratégie nationaux sectoriels de santé à l’aide des objectifs et des budgets actuels qui ont été évalués conjointement.",
-        "arrow" : u"Mise en place de plans et d'une stratégie nationaux sectoriels de santé à l’aide des objectifs et des budgets actuels qui ont été évalués conjointement. Objectif-cible = Mise en place de plans et d’une stratégie nationaux sectoriels de santé à l’aide des objectifs et des budgets actuels qui ont été évalués conjointement.",
-        "cross" : u"Mise en place de plans et d’une stratégie nationaux sectoriels de santé sans plan d’évaluation conjointe. Objectif-cible = Mise en place de plans et d’une stratégie nationaux sectoriels de santé à l’aide des objectifs et des budgets actuels qui ont été évalués conjointement.",
+        Rating.TICK : u"Un plan et une stratégie nationaux sectoriels de santé ont été mis en place à l’aide des objectifs et des budgets actuels qui ont été évalués conjointement. Objectif-cible = Mise en place d’un plan et d’une stratégie nationaux sectoriels de santé à l’aide des objectifs et des budgets actuels qui ont été évalués conjointement.",
+        Rating.ARROW : u"Mise en place de plans et d'une stratégie nationaux sectoriels de santé à l’aide des objectifs et des budgets actuels qui ont été évalués conjointement. Objectif-cible = Mise en place de plans et d’une stratégie nationaux sectoriels de santé à l’aide des objectifs et des budgets actuels qui ont été évalués conjointement.",
+        Rating.CROSS : u"Mise en place de plans et d’une stratégie nationaux sectoriels de santé sans plan d’évaluation conjointe. Objectif-cible = Mise en place de plans et d’une stratégie nationaux sectoriels de santé à l’aide des objectifs et des budgets actuels qui ont été évalués conjointement.",
 
     },
     "2Gb" : {
-        "tick" : u"Un plan relatif aux HRH chiffré et fondé sur des preuves qui est intégré au plan de santé national a été mis en place. Objectif-cible = Intégration d’un plan national chiffré et complet relatif aux HRH au plan de santé national.",
-        "arrow" : u"""
+        Rating.TICK : u"Un plan relatif aux HRH chiffré et fondé sur des preuves qui est intégré au plan de santé national a été mis en place. Objectif-cible = Intégration d’un plan national chiffré et complet relatif aux HRH au plan de santé national.",
+        Rating.ARROW : u"""
 À la fin de %(cur_year)s, un plan relatif aux HRH chiffré et fondé sur des preuves était en cours d’élaboration. Objectif-cible = Intégration d’un plan national chiffré et complet relatif aux HRH au plan de santé national.
 
 À la fin de %(cur_year)s, un plan relatif aux HRH chiffré et fondé sur des preuves avait été mis en place, mais n’était pas encore intégré au plan de santé national. Objectif-cible = Intégration d’un plan national chiffré et complet relatif aux HRH au plan de santé national.
 """,
-        "cross" : u"À la fin de %(cur_year)s, aucun plan chiffré et fondé sur des preuves relatif aux HRH n’avait été mis en place ni aucun plan visant à en élaborer un. Objectif-cible = Intégration d’un plan national chiffré et complet relatif aux HRH au plan de santé national.",
+        Rating.CROSS : u"À la fin de %(cur_year)s, aucun plan chiffré et fondé sur des preuves relatif aux HRH n’avait été mis en place ni aucun plan visant à en élaborer un. Objectif-cible = Intégration d’un plan national chiffré et complet relatif aux HRH au plan de santé national.",
     },
     "3G" : {
         "all" : u"En %(cur_year)s, %(country_name)s a alloué %(cur_val).0f%% de son budget annuel ayant été approuvé pour le secteur de la santé. Objectif-cible = 15 % (ou autres objectifs-cibles convenus ayant été publiés).",
@@ -379,14 +379,14 @@ gov_commentary_text_fr = {
         "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val).0f sur l’échelle d’évaluation à quatre points utilisée pour évaluer la performance du secteur de l’approvisionnement. Objectif-cible = Augmentation d’au moins une mesure sur l’échelle d’évaluation à quatre points qui est utilisée pour évaluer la performance de ce secteur."
     },
     "6G" : {
-        "tick" : u"En %(cur_year)s, un cadre d’évaluation de la performance transparent et contrôlable a été mis en place pour évaluer les progrès accomplis par rapport aux a) stratégies de développement national relatives à la santé et aux b) programmes sectoriels de santé. Objectif-cible = Mise en place d’un cadre d’évaluation de la performance transparent et contrôlable pour évaluer les progrès accomplis par rapport aux a) stratégies de développement national relatives à la santé et aux b) programmes sectoriels de santé.",
-        "arrow" : u"À la fin de %(cur_year)s, certaines données indiquaient qu’un cadre d’évaluation de la performance transparent et contrôlable était en cours d’élaboration pour évaluer les progrès accomplis par rapport aux a) stratégies de développement national relatives à la santé et aux b) programmes sectoriels de santé. Objectif-cible = Mettre en place un cadre d’évaluation de la performance transparent et contrôlable pour évaluer les progrès accomplis par rapport aux a) stratégies de développement national relatives à la santé et aux b) programmes sectoriels de santé.",
-        "cross" : u"À la fin de %(cur_year)s, aucun cadre d'évaluation de la performance transparent et contrôlable n’avait été mis en place et aucun plan visant à en développer un n’était clair ou sur le point d’être mis en œuvre. Objectif-cible = Mettre en place un cadre d’évaluation de la performance transparent et contrôlable pour évaluer les progrès accomplis par rapport aux a) stratégies de développement national relatives à la santé et aux b) programmes sectoriels de santé.",
+        Rating.TICK : u"En %(cur_year)s, un cadre d’évaluation de la performance transparent et contrôlable a été mis en place pour évaluer les progrès accomplis par rapport aux a) stratégies de développement national relatives à la santé et aux b) programmes sectoriels de santé. Objectif-cible = Mise en place d’un cadre d’évaluation de la performance transparent et contrôlable pour évaluer les progrès accomplis par rapport aux a) stratégies de développement national relatives à la santé et aux b) programmes sectoriels de santé.",
+        Rating.ARROW : u"À la fin de %(cur_year)s, certaines données indiquaient qu’un cadre d’évaluation de la performance transparent et contrôlable était en cours d’élaboration pour évaluer les progrès accomplis par rapport aux a) stratégies de développement national relatives à la santé et aux b) programmes sectoriels de santé. Objectif-cible = Mettre en place un cadre d’évaluation de la performance transparent et contrôlable pour évaluer les progrès accomplis par rapport aux a) stratégies de développement national relatives à la santé et aux b) programmes sectoriels de santé.",
+        Rating.CROSS : u"À la fin de %(cur_year)s, aucun cadre d'évaluation de la performance transparent et contrôlable n’avait été mis en place et aucun plan visant à en développer un n’était clair ou sur le point d’être mis en œuvre. Objectif-cible = Mettre en place un cadre d’évaluation de la performance transparent et contrôlable pour évaluer les progrès accomplis par rapport aux a) stratégies de développement national relatives à la santé et aux b) programmes sectoriels de santé.",
     },
     "7G" : {
-        "tick" : u"Des évaluations conjointes sont faites des progrès accomplis en ce qui concerne la mise en œuvre d’engagements dans le secteur de la santé, notamment en matière d’efficacité de l’aide. Objectif-cible = Effectuer des évaluations conjointes telles que les examens sectoriels annuels conjoints en matière de santé sur les progrès accomplis en ce qui concerne la mise en œuvre d'engagements dans le secteur de la santé, notamment en matière d’efficacité de l'aide.",
-        "arrow" : u"Des évaluations conjointes sont faites des progrès accomplis en ce qui concerne la mise en œuvre d’engagements dans le secteur de la santé, mais pas en matière d’efficacité de l’aide. Objectif-cible = Effectuer des évaluations conjointes telles que les examens sectoriels annuels conjoints en matière de santé sur les progrès accomplis en ce qui concerne la mise en œuvre d'engagements dans le secteur de la santé, notamment en matière d’efficacité de l'aide.",
-        "cross" : u"Des évaluations conjointes sont faites des progrès accomplis en ce qui concerne la mise en œuvre d’engagements dans le secteur de la santé. Objectif-cible = Effectuer des évaluations conjointes telles que les examens sectoriels annuels conjoints en matière de santé sur les progrès accomplis en ce qui concerne la mise en œuvre d'engagements dans le secteur de la santé, notamment en matière d’efficacité de l'aide.",
+        Rating.TICK : u"Des évaluations conjointes sont faites des progrès accomplis en ce qui concerne la mise en œuvre d’engagements dans le secteur de la santé, notamment en matière d’efficacité de l’aide. Objectif-cible = Effectuer des évaluations conjointes telles que les examens sectoriels annuels conjoints en matière de santé sur les progrès accomplis en ce qui concerne la mise en œuvre d'engagements dans le secteur de la santé, notamment en matière d’efficacité de l'aide.",
+        Rating.ARROW : u"Des évaluations conjointes sont faites des progrès accomplis en ce qui concerne la mise en œuvre d’engagements dans le secteur de la santé, mais pas en matière d’efficacité de l’aide. Objectif-cible = Effectuer des évaluations conjointes telles que les examens sectoriels annuels conjoints en matière de santé sur les progrès accomplis en ce qui concerne la mise en œuvre d'engagements dans le secteur de la santé, notamment en matière d’efficacité de l'aide.",
+        Rating.CROSS : u"Des évaluations conjointes sont faites des progrès accomplis en ce qui concerne la mise en œuvre d’engagements dans le secteur de la santé. Objectif-cible = Effectuer des évaluations conjointes telles que les examens sectoriels annuels conjoints en matière de santé sur les progrès accomplis en ce qui concerne la mise en œuvre d'engagements dans le secteur de la santé, notamment en matière d’efficacité de l'aide.",
     },
     "8G" : {
         "all" : u"En %(cur_year)s, %(cur_val).0f%% des voix dans les mécanismes nationaux de coordination du secteur de la santé (ou un organe équivalent) ont été allouées aux représentants de la société civile. Objectif-cible = Prouver que la société civile est représentée activement dans les processus relatifs aux politiques dans le secteur de la santé, notamment la planification, la coordination et les mécanismes d’examen dans le secteur de la santé."
@@ -469,10 +469,11 @@ def calc_country_targets(country):
                 else:
                     target_value = result["target"]
                     if target_value == None:
+                        raise Exception("This shouldn't really be happening")
                         commentary = "Missing Data"
-                    elif target_value == "question":
+                    elif target_value == Rating.QUESTION:
                         commentary = rating_question_text
-                    elif target_value == "none":
+                    elif target_value == Rating.NONE:
                         commentary = rating_none_text
                     else:
                         commentary = gov_commentary_text[indicator][target_value]
@@ -498,16 +499,16 @@ def country_agency_indicator_ratings(country, agency):
         (base_val, base_year, cur_val, cur_year), comments = country_indicators[indicator]
         # TODO this is a hack - it might be better to extract this
         # logic out of here
-        result = "cross"
+        result = Rating.CROSS
         if indicator in ["1DP", "6DP", "7DP"] and cur_val != NA_STR:
-            if cur_val > 0: result = "tick" 
+            if cur_val > 0: result = Rating.TICK
         elif indicator == "8DP":
             try:
                 fix = Country8DPFix.objects.get(agency=agency, country=country)
                 if fix.latest_progress:
-                    result = "tick"
+                    result = Rating.TICK
             except Country8DPFix.DoesNotExist:
-                result = "cross"
+                result = Rating.CROSS
         else:
             target = targets[indicator]
             result = evaluate_indicator(target, base_val, cur_val)
@@ -519,11 +520,13 @@ def country_agency_progress(country, agency):
     Returns True is an agency is making progress in a particular country
     Progress is defined as # ticks / # ratings
     """
-    is_tick = lambda x : x == "tick" or x == "arrow"
+    is_tick = lambda x : x == Rating.TICK or x == Rating.ARROW
     ratings = country_agency_indicator_ratings(country, agency)
-    ratings = dict([(indicator, rating) for (indicator, rating) in ratings.items() if rating  != "none"])
+    ratings = dict([(indicator, rating) for (indicator, rating) in ratings.items() if rating  != Rating.NONE])
     ticks = filter(is_tick, ratings.values())
-    if len(ratings) == 0: return False
+
+    if len(ratings) == 0: 
+        return False
     return len(ticks) / float(len(ratings)) >= 0.5
 
 def get_country_progress(agency):

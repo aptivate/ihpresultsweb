@@ -3,11 +3,12 @@ from django.utils.functional import curry
 
 from submissions.models import Agency, Country, CountryScorecardOverride
 from submissions.utils import classmaker
+from target import Rating
 
 
 RatingsField = curry(forms.ChoiceField, choices=[
     (val, val) 
-    for val in ["", "tick", "arrow", "cross", "question", "none"]
+    for val in ["", Rating.TICK, Rating.ARROW, Rating.CROSS, Rating.QUESTION, Rating.NONE]
 ])
 
 TextField = curry(forms.CharField, widget=forms.Textarea)
