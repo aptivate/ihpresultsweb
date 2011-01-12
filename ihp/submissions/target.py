@@ -18,7 +18,7 @@ def criterion_relative_increase(base_val, cur_val, criterion_param):
     if cur_val == None or base_val == None: 
         raise MissingValueException() 
 
-    if cur_val >= base_val * (1 + criterion_param / 100.0):
+    if cur_val > base_val * (1 + criterion_param / 100.0):
         return True
     return False
 
@@ -26,7 +26,7 @@ def criterion_relative_decrease(base_val, cur_val, criterion_param):
     if cur_val == None or base_val == None: 
         raise MissingValueException() 
 
-    if cur_val <= base_val * (1 - criterion_param / 100.0):
+    if cur_val < base_val * (1 - criterion_param / 100.0):
         return True
     return False
 
@@ -499,7 +499,7 @@ def country_agency_indicator_ratings(country, agency):
         # TODO this is a hack - it might be better to extract this
         # logic out of here
         result = "cross"
-        if indicator in ["1DP", "6DP", "7DP"]:
+        if indicator in ["1DP", "6DP", "7DP"] and cur_val != NA_STR:
             if cur_val > 0: result = "tick" 
         elif indicator == "8DP":
             try:
