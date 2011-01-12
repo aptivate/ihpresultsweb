@@ -171,11 +171,11 @@ def get_countries_scorecard_data():
     ])
 
 
-def agency_scorecard(request, template_name="submissions/agency_scorecard.html", extra_context=None):
-    extra_context = extra_context or {}
-    extra_context["targets"] = get_agencies_scorecard_data()
-
-    return direct_to_template(request, template=template_name, extra_context=extra_context)
+#def agency_scorecard(request, template_name="submissions/agency_scorecard.html", extra_context=None):
+#    extra_context = extra_context or {}
+#    extra_context["targets"] = get_agencies_scorecard_data()
+#
+#    return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def agency_export(request):
 

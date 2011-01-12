@@ -155,7 +155,7 @@ def evaluate_indicator(target, base_val, cur_val):
         else:
             return "cross"
     except MissingValueException:
-        return None
+        return "question"
 
 def calc_agency_targets(agency):
     """
