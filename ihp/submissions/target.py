@@ -3,7 +3,7 @@ from django.template import Context, Template
 from django.utils.functional import memoize
 from indicators import NA_STR
 from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
-from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, CountryLanguage
+from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, CountryLanguage, DPScorecardRatings
 import math
 
 def criterion_absolute(base_val, cur_val, criterion_param):
@@ -216,6 +216,7 @@ def calc_agency_targets(agency):
     targets = get_agency_targets(agency, dp_indicators)
     indicators = calc_agency_indicators(agency)
     results = {}
+    override_ratings, _ = DPScorecardRatings.objects.get_or_create(agency=agency)
     for indicator in indicators:
 
         (base_val, base_year, cur_val, cur_year), comments = indicators[indicator]
@@ -287,6 +288,12 @@ def calc_agency_targets(agency):
             result["commentary"] = default_text
 
         result["commentary"] = (result["commentary"] + " " + target_map[indicator] % result).strip()
+
+        # Apply override
+        h = indicator.replace("DP", "")
+        result["target"] = override_ratings.__dict__["r%s" % h] or evaluate_indicator(target, base_val, cur_val)
+        result["commentary"] = override_ratings.__dict__["er%s" % h] or result["commentary"]
+
         results[indicator] = result
 
     return results

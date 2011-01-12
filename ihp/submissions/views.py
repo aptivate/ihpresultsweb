@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 
 from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardRatings, CountryScorecardOverride
 from target import calc_agency_targets, get_country_progress, calc_country_targets, get_agency_progress, country_agency_indicator_ratings
-from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs
+from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs, dp_indicators
 from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm, CountryScorecardForm
 from utils import none_num
 
@@ -199,12 +199,11 @@ def agency_export(request):
             datum["file"] = agency.agency
             datum["agency"] = agency.agency 
             datum["profile"] = agency.description
-            for indicator in ["1DP", "2DPa", "2DPb", "2DPc", 
-                "3DP", "4DP", "5DPa", "5DPb", "5DPc", "6DP", "7DP", "8DP"]:
+            for indicator in dp_indicators:
 
                 h = indicator.replace("DP", "")
-                datum["er%s" % h] = ratings.__dict__["er%s" % h] or datum[indicator]["commentary"]
-                datum["r%s" % h] = target_none(ratings.__dict__["r%s" % h] or datum[indicator]["target"])
+                datum["er%s" % h] = datum[indicator]["commentary"]
+                datum["r%s" % h] = target_none(datum[indicator]["target"])
 
             for i in range(1, 11):
                 datum["p%d" % i] = datum["p"].get(i - 1, "pgreen")
