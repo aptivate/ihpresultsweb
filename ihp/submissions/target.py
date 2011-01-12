@@ -521,7 +521,9 @@ def country_agency_progress(country, agency):
     """
     is_tick = lambda x : x == "tick" or x == "arrow"
     ratings = country_agency_indicator_ratings(country, agency)
+    ratings = dict([(indicator, rating) for (indicator, rating) in ratings.items() if rating  != "none"])
     ticks = filter(is_tick, ratings.values())
+    if len(ratings) == 0: return False
     return len(ticks) / float(len(ratings)) >= 0.5
 
 def get_country_progress(agency):
