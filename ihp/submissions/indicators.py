@@ -96,7 +96,7 @@ def country_perc_factory(value):
 
         latest_watchlist = {
             "1" : ["Burkina Faso", "Djibouti", "DRC", "Nigeria"],
-            "17" : ["Burundi", "Djibouti", "DRC"],
+            "17" : ["Burundi", "Djibouti", "DRC", "Nigeria"],
             "18" : ["Burkina Faso", "Djibouti", "Nigeria"],
         }
 
