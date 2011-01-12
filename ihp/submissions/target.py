@@ -519,9 +519,10 @@ def country_agency_progress(country, agency):
     Returns True is an agency is making progress in a particular country
     Progress is defined as # ticks / # ratings
     """
+    is_tick = lambda x : x == "tick" or x == "arrow"
     ratings = country_agency_indicator_ratings(country, agency)
-    ticks = filter(lambda x : x == "tick", ratings.values())
-    return len(ticks) / float(len(ratings)) > 0.5
+    ticks = filter(is_tick, ratings.values())
+    return len(ticks) / float(len(ratings)) >= 0.5
 
 def get_country_progress(agency):
     """
