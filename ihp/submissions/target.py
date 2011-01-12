@@ -139,12 +139,13 @@ def evaluate_indicator(target, base_val, cur_val):
     if cur_val == NA_STR or base_val == NA_STR:
         return "none"
 
-    if target.indicator in ["4DP", "5DPa", "5DPb"]:
-        if cur_val <= 20:
-            return "tick" 
-    elif target.indicator in ["2DPa"]:
-        if cur_val <= 15:
-            return "tick" 
+    if cur_val != None:
+        if target.indicator in ["4DP", "5DPa", "5DPb"]:
+            if cur_val <= 20:
+                return "tick" 
+        elif target.indicator in ["2DPa"]:
+            if cur_val <= 15:
+                return "tick" 
 
     try:
         if tick_func(base_val, cur_val, target.tick_criterion_value):
