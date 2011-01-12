@@ -228,7 +228,6 @@ def load_agency_targets(filename=None):
     for key in js["fields"]:
         cols[key] = js["fields"][key]["name"]
 
-    #import pdb; pdb.set_trace();
     for entry in js["entries"]:
         datum = {}
         for field in entry["fields"]:
@@ -272,7 +271,6 @@ def load_dabble_json(url, filename=None):
     for key in js["fields"]:
         cols[key] = js["fields"][key]["name"]
 
-    #import pdb; pdb.set_trace();
     for entry in js["entries"]:
         datum = {}
         for field in entry["fields"]:
