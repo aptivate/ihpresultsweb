@@ -268,7 +268,7 @@ gov_commentary_text_fr = {
         "all" : u"En %(cur_year)s, %(cur_val).0f%% du financement alloué au secteur de la santé a été décaissé en fonction du budget annuel ayant été autorisé. Objectif-cible = Réduire de moitié de la proportion du financement alloué au secteur de la santé qui n’a pas été décaissée en fonction du budget annuel ayant été autorisé.",
     },
     "5Ga" : {
-        "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val) sur l'échelle de performance PFM/CPIA. Objectif-cible = Augmentation d’au moins une mesure (0,5 point) sur l’échelle de performance PFM/CPIA."
+        "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val) sur l'échelle de performance GFP/EPIN. Objectif-cible = Augmentation d’au moins une mesure (0,5 point) sur l’échelle de performance PFM/CPIA."
     },
     "5Gb" : {
         "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val).0f sur l’échelle d’évaluation à quatre points utilisée pour évaluer la performance du secteur de l’approvisionnement. Objectif-cible = Augmentation d’au moins une mesure sur l’échelle d’évaluation à quatre points qui est utilisée pour évaluer la performance de ce secteur."
