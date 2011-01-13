@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson
-from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country, CountryScorecardOverride, GovQuestion
+from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country, CountryScorecardOverride, GovQuestion, DPQuestion
 from target import calc_agency_targets, calc_country_targets
 import indicators
 
@@ -220,17 +220,22 @@ def country_scorecard(request, country_id):
             data = ratings.__dict__.copy()
             for key in data.keys():
                 if key.startswith("_"): del data[key]
+
             # TODO - this is messy. This default data should be contained elsewhere
-            if data["jar4"] == None:
-                questions = GovQuestion.objects.filter(
-                    submission__country=country,
-                    question_number=24,
-                )
-                if len(questions) == 1:
-                    data["jar4"] = """
-Latest Value: %s
-Comment: %s
-""" % (questions[0].latest_value, questions[0].comments)
+            country_questions = GovQuestion.objects.filter(submission__country=country)
+            data["rf2"] = data["rf2"] or country_questions.filter(question_number="22")[0].latest_value
+            data["rf3"] = data["rf3"] or country_questions.filter(question_number="23")[0].latest_value
+            data["dbr2"] = data["dbr2"] or country_questions.filter(question_number="11")[0].comments
+            data["hmis2"] = data["hmis2"] or country_questions.filter(question_number="21")[0].comments
+            jar4_question = country_questions.filter(question_number="24")[0]
+            data["jar4"] = data["jar4"] or "Latest Value: %s\nComment: %s" % (jar4_question.latest_value, jar4_question.comments)
+            data["pfm2"] = data["pfm2"] or country_questions.filter(question_number="9")[0].comments
+            data["pr2"] = data["pr2"] or country_questions.filter(question_number="10")[0].comments
+            data["pf2"] = data["pf2"] or country_questions.filter(question_number="16")[0].comments
+            if not data["ta2"]:
+                data["ta2"] = ""
+                for q in DPQuestion.objects.filter(submission__country=country, question_number="4"):
+                    data["ta2"] += q.submission.agency.agency + ": " + q.comments + "\n\n"
                  
             return HttpResponse(simplejson.dumps(data))
         elif request.method == "POST":

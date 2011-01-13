@@ -183,13 +183,6 @@ def agency_export(request):
         "workingdraft",
     ]
 
-    target_none = lambda target : target if target else "question"
-    def target_none(target):
-        if target:
-            return target
-        else:
-            raise Exception("This shouldn't happen")
-
     data = get_agencies_scorecard_data()
     for agency, datum in data.items():
         try:
@@ -201,7 +194,7 @@ def agency_export(request):
 
                 h = indicator.replace("DP", "")
                 datum["er%s" % h] = datum[indicator]["commentary"]
-                datum["r%s" % h] = target_none(datum[indicator]["target"])
+                datum["r%s" % h] = datum[indicator]["target"]
 
             for i in range(1, 11):
                 datum["p%d" % i] = datum["p"].get(i - 1, "pgreen")
@@ -260,37 +253,30 @@ fformat_none = formatter(0)
 fformat_two = formatter(2)
 
 def get_countries_export_data():
-    target_none = lambda target : target if target else "question"
-    def target_none(target):
-        if target:
-            return target
-        else:
-            raise Exception("This shouldn't happen")
-
     data = get_countries_scorecard_data()
     for country, datum in data.items():
         ratings, _ = CountryScorecardOverride.objects.get_or_create(country=country)
         try:
-            datum["ER1a"] = target_none(datum["1G"]["target"])
+            datum["ER1a"] = datum["1G"]["target"]
             datum["ER1b"] = datum["1G"]["commentary"]
-            datum["ER2a"] = target_none(datum["2Ga"]["target"])
+            datum["ER2a"] = datum["2Ga"]["target"]
             datum["ER2b"] = datum["2Ga"]["commentary"]
-            datum["ER3a"] = target_none(datum["2Gb"]["target"])
+            datum["ER3a"] = datum["2Gb"]["target"]
             datum["ER3b"] = datum["2Gb"]["commentary"]
-            datum["ER4a"] = target_none(datum["3G"]["target"])
+            datum["ER4a"] = datum["3G"]["target"]
             datum["ER4b"] = datum["3G"]["commentary"]
             datum["ER4c"] = country.country
-            datum["ER5a"] = target_none(datum["4G"]["target"])
+            datum["ER5a"] = datum["4G"]["target"]
             datum["ER5b"] = datum["4G"]["commentary"]
-            datum["ER6a"] = target_none(datum["5Ga"]["target"])
+            datum["ER6a"] = datum["5Ga"]["target"]
             datum["ER6b"] = datum["5Ga"]["commentary"]
-            datum["ER7a"] = target_none(datum["5Gb"]["target"])
+            datum["ER7a"] = datum["5Gb"]["target"]
             datum["ER7b"] = datum["5Gb"]["commentary"]
-            datum["ER8a"] = target_none(datum["6G"]["target"])
+            datum["ER8a"] = datum["6G"]["target"]
             datum["ER8b"] = datum["6G"]["commentary"]
-            datum["ER9a"] = target_none(datum["7G"]["target"])
+            datum["ER9a"] = datum["7G"]["target"]
             datum["ER9b"] = datum["7G"]["commentary"]
-            datum["ER10a"] = target_none(datum["8G"]["target"])
+            datum["ER10a"] = datum["8G"]["target"]
             datum["ER10b"] = datum["8G"]["commentary"]
 
             datum["file"] = country.country
@@ -298,9 +284,9 @@ def get_countries_export_data():
 
             datum["CD1"] = datum["ER1a"]
             datum["CD2"] = datum["questions"]["1"]["comments"]
-            datum["HSP1"] = target_none(ratings.hsp1 or datum["Q2G"]["target"])
-            datum["HSP2"] = target_none(ratings.hsp2 or datum["Q3G"]["target"])
-            datum["HSM1"] = target_none(ratings.hsm1 or datum["Q12G"]["target"])
+            datum["HSP1"] = ratings.hsp1 or datum["Q2G"]["target"]
+            datum["HSP2"] = ratings.hsp2 or datum["Q3G"]["target"]
+            datum["HSM1"] = ratings.hsm1 or datum["Q12G"]["target"]
             datum["HSM2"] = fformat_none(datum["questions"]["15"]["latest_value"])
             datum["HSM3"] = datum["ER10a"]
             datum["HSM4"] = ratings.hsm4
@@ -367,10 +353,10 @@ def get_countries_export_data():
             datum["RF2"] = fformat_none(ratings.rf2 or datum["questions"]["22"]["latest_value"])
             datum["RF3"] = fformat_none(ratings.rf3 or datum["questions"]["23"]["latest_value"])
 
-            datum["HMIS1"] = target_none(ratings.hmis1 or datum["Q21G"]["target"])
+            datum["HMIS1"] = ratings.hmis1 or datum["Q21G"]["target"]
             datum["HMIS2"] = ratings.hmis2 or datum["questions"]["21"]["comments"]
 
-            datum["JAR1"] = target_none(ratings.jar1 or datum["Q12G"]["target"])
+            datum["JAR1"] = ratings.jar1 or datum["Q12G"]["target"]
             #datum["JAR2"] = ""
             #datum["JAR3"] = fformat_front(datum["questions"]["24"]["latest_value"])
             #datum["JAR4"] = datum["questions"]["24"]["comments"]
