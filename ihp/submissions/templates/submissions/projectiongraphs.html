@@ -1,11 +1,10 @@
 {% extends "submissions/graph_base.html" %}
-{% load indgraph %}
 
 {% block graphdefs %}
 
 <script>
-{% projectiongraph graph_2dpa indicators.2DPa.baseline_value 2007 indicators.2DPa.latest_value 2009 indicators.2DPa.target_value indicators.2DPa.title indicators.2DPa.yaxis indicators.2DPa.xaxis %}
-{% projectiongraph graph_5dpb indicators.5DPb.baseline_value 2007 indicators.5DPb.latest_value 2009 indicators.5DPb.target_value indicators.5DPb.title indicators.5DPb.yaxis indicators.5DPb.xaxis %}
+{{ graph_2DPa|safe }}
+{{ graph_5DPb|safe }}
 </script>
 
 {% endblock %}

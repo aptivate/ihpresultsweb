@@ -77,13 +77,7 @@ urlpatterns = patterns('',
 
     # Graph Views
     (r"^graph/highlevel/$", "submissions.graphs.highlevelgraphs", {}, "highlevelgraphs"),
-    (r"^graph/projection/$", "submissions.graphs.highlevelgraphs", {
-        "titles" : defaultdict(str, {
-            "2DPa" : "Projected time required to meet On Budget target <br>(based on current levels of performance):2007 Baseline",
-            "5DPb" : "Projected time required to meet PFM target <br>(based on current levels of performance):2007 Baseline",
-        }),
-        "template_name" : "submissions/projectiongraphs.html",
-    }, "projectiongraphs"),
+    (r"^graph/projection/$", "submissions.graphs.projectiongraphs", {}, "projectiongraphs"),
     (r"^graph/additional/$", "submissions.graphs.additional_graphs", {}, "additionalgraphs"),
 
     (r"^graph/agency/(?P<agency_name>[a-zA-Z\s]+)/$", "submissions.graphs.agencygraphs", {

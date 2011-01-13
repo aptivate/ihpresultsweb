@@ -3,6 +3,7 @@ from functools import partial
 from submissions.models import Agency, Country
 from indicators import calc_agency_country_indicators, NA_STR, calc_overall_agency_indicators, positive_funcs
 from views import get_countries_scorecard_data, get_agencies_scorecard_data
+from highcharts import Chart
 
 def safe_diff(a, b):
     if a in [None, NA_STR] or b in [None, NA_STR]:
@@ -28,73 +29,116 @@ def format_fig(x):
         return "0.0"
     return "%.1f" % x
 
+# TODO - this shouldn't be hardcoded like this - should rather from the db but 
+# but these values seem to be different to the ones that i have
+target_values = {
+    "2DPa" : 85,
+    "2DPb" : 50,
+    "2DPc" : 66,
+    "3DP"  : 90,
+    "5DPa" : 66, 
+    "5DPb" : 80, 
+    "5DPc" : 0, 
+}
+
+def projectiongraphs(request, template_name="submissions/projectiongraphs.html", extra_context=None):
+    extra_context = extra_context or {}
+    titles = {
+        "2DPa" : "Projected time required to meet On Budget target <br>(based on current levels of performance):2007 Baseline",
+        "5DPb" : "Projected time required to meet PFM target <br>(based on current levels of performance):2007 Baseline",
+    }
+    indicators = calc_overall_agency_indicators(funcs=positive_funcs)
+
+    for indicator in titles.keys():
+        (baseline_value, baseline_year, latest_value, latest_year) = indicators[indicator][0]
+        baseline_year, latest_year = int(baseline_year), int(latest_year)
+        target_value = target_values[indicator]
+
+        # Find the intersection point between the horizontal target line and the trend line
+        # i.e. x = (y - c)/m 
+        m = (latest_value - baseline_value) / (latest_year - baseline_year)
+        c = baseline_value
+        intersection = (target_value - c) / m  + baseline_year
+        y = lambda x : m * (x - baseline_year) + c
+
+        start_year = baseline_year
+        end_year = int(round(intersection, 0) + 1)
+        target_data = [target_value] * (end_year - start_year + 1)
+        actual_data = [y(year) for year in range(start_year, latest_year + 1)]
+        projected_data = [(year - start_year, y(year)) for year in range(latest_year, end_year + 1)]
+
+        graph = Chart("graph_%s" % indicator.lower())
+        graph.chart = {
+            "marginTop" : 50,
+            "defaultSeriesType": "line",
+        }
+
+        graph.title = {"text" : titles[indicator]}
+        graph.xAxis = {"categories" : range(start_year, end_year + 1)} 
+        graph.yAxis = {"title" : {"text" : ""}} 
+
+        graph.series = [{
+            "name" : "Actual",
+            "data" : actual_data
+        }, {
+            "name" : "Projected",
+            "data" : projected_data,
+            "dashStyle" : "shortDash",
+            "color" : "#89A54E",
+        }, {
+            "name": "Target",
+            "data": target_data,
+            "marker": {
+               "enabled": "false"
+            },
+        }]
+
+        extra_context["graph_%s" % indicator] = graph 
+
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+
 def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", extra_context=None, titles=None):
     extra_context = extra_context or {}
-
-    # TODO - this shouldn't be hardcoded like this - should rather from the db but 
-    # but these values seem to be different to the ones that i have
-    target_values = {
-        "2DPa" : 85,
-        "2DPb" : 50,
-        "2DPc" : 66,
-        "5DPa" : 66, 
-        "5DPb" : 80, 
-    }
 
     titles = titles or {
         "2DPa" : "% of total funding on-budget (2DPa)",
         "2DPb" : "% of TC implemented through coordinated programmes (2DPb)",
-        "2DPc" : "% of funding using Programme Based Approaches (4DP) ",
+        "2DPc" : "% of funding using Programme Based Approaches (2DPc) ",
+        "3DP"  : "% of aid provided through multi-year commitments (3DP) ",
         "5DPa" : "% of funding for procurement using national procurement systems (5DPa)", 
         "5DPb" : "% of funding using national PFM systems (5DPb)", 
+        "5DPc" : "Number of Parallel Project Implementation Units", 
     }
 
     indicators = calc_overall_agency_indicators(funcs=positive_funcs)
     for indicator in indicators:
         (baseline_value, _, latest_value, _) = indicators[indicator][0]
-        indicators[indicator] = {
-            "baseline_value" : float(baseline_value),
-            "latest_value" : float(latest_value),
-            "title" : titles[indicator],
-            "yaxis" : "",
-            "xaxis" : "",
-            "target_value" : target_values[indicator]
-        }
 
-    extra_context["indicators"] = indicators
-    return direct_to_template(request, template=template_name, extra_context=extra_context)
+        graph = Chart("graph_%s" % indicator.lower())
 
-def projectiongraphs(request, template_name="submissions/projectiongraphs.html", extra_context=None):
-    extra_context = extra_context or {}
+        graph.title = {"text" : titles[indicator]}
+        graph.xAxis = {"categories" : ["Baseline", "2009"]} 
 
-    # TODO - this shouldn't be hardcoded like this - should rather from the db but 
-    # but these values seem to be different to the ones that i have
-    target_values = {
-        "2DPa" : 85,
-        "2DPb" : 50,
-        "2DPc" : 66,
-        "5DPa" : 66, 
-        "5DPb" : 80, 
-    }
+        graph.series = [{
+            "name" : "Aggregated Data",
+            "type" : "column",
+            "data" : [float(baseline_value), float(latest_value)]
+        }]
 
-    indicators = calc_overall_agency_indicators(funcs=positive_funcs)
+        if indicator != "5DPc":
+            graph.series.append({
+                "type" : "line",
+                "name" : "Target",
+                "data" : [target_values[indicator]] * 2,
+                "dashStyle" : "shortDash",
+                "marker" : {
+                    "enabled" : "false"
+            },
+        })
 
-    for indicators in ["2DPa"]:
-        (baseline_value, _, latest_value, _) = indicators[indicator][0]
-        indicators[indicator] = {
-            "baseline_value" : baseline_value,
-            "latest_value" : latest_value,
-            "title" : titles[indicator],
-            "yaxis" : "",
-            "xaxis" : "",
-            "target_value" : target_values[indicator]
-        }
-    base_val, _, cur_val, _ = indicators["2DPa"][0]
-    base_year = 2007
-    cur_year = 2009
-    # Find the intersection point between the horizontal target line and the trend line
-    # i.e. x = (y - c)/m 
-    intersection = (target_values["2DPa"] - base_val) * (cur_year - base_year)  / (cur_val - base_val) + base_year
+        extra_context["graph_%s" % indicator] = graph 
+
 
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 

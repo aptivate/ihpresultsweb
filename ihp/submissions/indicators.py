@@ -62,10 +62,10 @@ def calc_overall_agency_indicators(funcs=None):
     """
     Calculates all indicators aggregated across all agencies and agencycountries
     i.e. there will be two values per indicator, baseline value and latest value
-    currently only calculating for 2DPa, 2DPb, 2DPc, 5DPa, 5DPb
+    currently only calculating for 2DPa, 2DPb, 2DPc, 3DP, 5DPa, 5DPb, 5DPc
 
     """
-    indicators = ["2DPa", "2DPb", "2DPc", "5DPa", "5DPb"]
+    indicators = ["2DPa", "2DPb", "2DPc", "3DP", "5DPa", "5DPb", "5DPc"]
     qs = DPQuestion.objects.all()
 
     results = [calc_indicator(qs, None, indicator, funcs) for indicator in indicators]
