@@ -1,4 +1,4 @@
-from models import Submission, DPQuestion, AgencyCountries, GovQuestion, Country8DPFix
+from models import Submission, DPQuestion, AgencyCountries, GovQuestion, Country8DPFix, Country
 import traceback
 
 NA_STR = "__NA__"
@@ -83,23 +83,41 @@ def exclude_count_factory(value):
         return (base_value, cur_value)
     return count_value
 
+baseline_watchlist = {
+    "1" : ["Burkina Faso", "Burundi", "Djibouti", "DRC", "Ethiopia", "Mozambique", "Nepal", "Nigeria"],
+    "17" : ["Burundi", "Djibouti", "DRC", "Nigeria"],
+    "18" : ["Burkina Faso", "Djibouti", "Nepal", "Nigeria"],
+}
+
+latest_watchlist = {
+    "1" : ["Burkina Faso", "Djibouti", "DRC", "Nigeria"],
+    "17" : ["Burundi", "Djibouti", "DRC", "Nigeria"],
+    "18" : ["Burkina Faso", "Djibouti", "Nigeria"],
+}
+
+def is_question_applicable(question, country):
+    """
+    Checks whether a question is applicable to that particular country
+    """
+    if type(country) == Country:
+        country = country.country
+
+    baseline_applicable = True
+    latest_applicable = True
+
+    if question in baseline_watchlist and country in baseline_watchlist[question]:
+        baseline_applicable = False
+
+    if question in latest_watchlist and country in latest_watchlist[question]:
+        latest_applicable = False
+
+    return baseline_applicable, latest_applicable
+
 def country_perc_factory(value):
     def perc_value(qs, agency, q):
         # In some countries certain processes do not exists
         # the watchlist reduces the denominator if the agency
         # is active in such a country for a particular question
-        baseline_watchlist = {
-            "1" : ["Burkina Faso", "Burundi", "Djibouti", "DRC", "Ethiopia", "Mozambique", "Nepal", "Nigeria"],
-            "17" : ["Burundi", "Djibouti", "DRC", "Nigeria"],
-            "18" : ["Burkina Faso", "Djibouti", "Nepal", "Nigeria"],
-        }
-
-        latest_watchlist = {
-            "1" : ["Burkina Faso", "Djibouti", "DRC", "Nigeria"],
-            "17" : ["Burundi", "Djibouti", "DRC", "Nigeria"],
-            "18" : ["Burkina Faso", "Djibouti", "Nigeria"],
-        }
-
         count_value = count_factory(value)
         base_value, _ = count_value(
             qs.exclude(submission__country__country__in=baseline_watchlist.get(q, [])),
@@ -234,7 +252,10 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
 
     exclude = []
     for q in qs2:
+        baseline_applicable, latest_applicable = is_question_applicable(q.question_number, q.submission.country)
         if is_not_applicable(q.baseline_value) or is_not_applicable(q.latest_value):
+            exclude.append(q.submission.id)
+        elif not baseline_applicable or not latest_applicable:
             exclude.append(q.submission.id)
     qs2 = qs2.exclude(submission__id__in=exclude)
         
