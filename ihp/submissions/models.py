@@ -336,3 +336,12 @@ class Country8DPFix(models.Model):
 class CountryLanguage(models.Model):
     country = models.ForeignKey(Country, null=False)
     language = models.CharField(max_length=20, null=False)
+
+class NotApplicable(models.Model):
+    variation = models.CharField(max_length=30, null=False)
+
+    def __unicode__(self):
+        return self.variation
+
+    class Meta:
+       verbose_name_plural = "Not Applicable Variations" 

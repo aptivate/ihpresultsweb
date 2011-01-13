@@ -1,4 +1,4 @@
-from models import Submission, DPQuestion, AgencyCountries, GovQuestion, Country8DPFix, Country
+from models import Submission, DPQuestion, AgencyCountries, GovQuestion, Country8DPFix, Country, NotApplicable
 import traceback
 
 NA_STR = "__NA__"
@@ -7,7 +7,8 @@ def is_not_applicable(val):
         return False
 
     val = val.strip().lower()
-    variations = ["na", "n/a", "n.a.", "not applicable", "-"]
+    variations = [na.variation for na in NotApplicable.objects.all()]
+    print variations
     if val in variations:
         return True
     else:

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from models import Agency, Country, UpdateAgency, Submission, DPQuestion, GovQuestion, AgencyCountries, AgencyTargets, CountryTargets, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country8DPFix, MDGData, CountryLanguage, CountryScorecardOverride
+from models import *
 
 
 class AgencyAdmin(admin.ModelAdmin):
@@ -113,3 +113,5 @@ class CountryLanguageAdmin(admin.ModelAdmin):
     list_display = ("country", "language")
     form = CountryLanguageAdminForm
 admin.site.register(CountryLanguage, CountryLanguageAdmin)
+
+admin.site.register(NotApplicable)
