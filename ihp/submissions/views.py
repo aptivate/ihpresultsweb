@@ -639,9 +639,13 @@ def country_table(request, template_name="submissions/country_table.html", extra
     abs_values = {}
     for country in Country.objects.all().order_by("country"):
         country_abs_values = {}
-        indicators = calc_country_indicators(country)
-        for indicator in indicators:
-            base_val, base_year, latest_val, _ = indicators[indicator][0]
+        country_targets = calc_country_targets(country)
+        for indicator in country_targets:
+            base_val = country_targets[indicator]["base_val"]
+            base_year = country_targets[indicator]["base_year"]
+            latest_val = country_targets[indicator]["cur_val"]
+            target = country_targets[indicator]["target"]
+
             if type(base_val) == str: base_val = base_val.upper()
             if type(latest_val) == str: latest_val = latest_val.upper()
             if indicator == "2Gb":
@@ -655,20 +659,23 @@ def country_table(request, template_name="submissions/country_table.html", extra
                     tbl_float_format(base_val[0]), 
                     tbl_float_format(latest_val[0]), 
                     None,
-                    base_year
+                    base_year,
+                    target
                 ) 
                 country_abs_values["2Ga2"] = (
                     tbl_float_format(base_val[1]), 
                     tbl_float_format(latest_val[1]), 
                     None,
-                    base_year
+                    base_year,
+                    target,
                 ) 
             else:
                 country_abs_values[indicator] = (
                     tbl_float_format(base_val), 
                     tbl_float_format(latest_val), 
                     tbl_float_format(perc_change(base_val, latest_val)),
-                    base_year
+                    base_year,
+                    target
                 ) 
         abs_values[country.country] = country_abs_values
     extra_context["abs_values"] = sorted(abs_values.items())
