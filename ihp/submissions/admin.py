@@ -115,3 +115,9 @@ class CountryLanguageAdmin(admin.ModelAdmin):
 admin.site.register(CountryLanguage, CountryLanguageAdmin)
 
 admin.site.register(NotApplicable)
+
+class CountryExclusionAdmin(admin.ModelAdmin):
+    list_filter = ("question_number", "country" )
+    list_display = ("question_number", "country", "baseline_applicable", "latest_applicable")
+
+admin.site.register(CountryExclusion, CountryExclusionAdmin)

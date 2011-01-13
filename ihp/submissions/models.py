@@ -337,11 +337,58 @@ class CountryLanguage(models.Model):
     country = models.ForeignKey(Country, null=False)
     language = models.CharField(max_length=20, null=False)
 
+class NotApplicableManager(models.Manager):
+    def is_not_applicable(self, val):
+        if val == None:
+            return False
+
+        val = val.strip().lower()
+        variations = [na.variation for na in self.all()]
+        if val in variations:
+            return True
+        else:
+            return False
+
 class NotApplicable(models.Model):
     variation = models.CharField(max_length=30, null=False)
+    objects = NotApplicableManager()
 
     def __unicode__(self):
         return self.variation
 
     class Meta:
        verbose_name_plural = "Not Applicable Variations" 
+
+class CountryExclusionManager(models.Manager):
+
+    def is_applicable(self, question, country):
+        """
+        Checks whether a question is applicable to that particular country
+        """
+        if type(country) == Country:
+            country = country.country
+
+        baseline_applicable = self.filter(question_number=question, country__country=country, baseline_applicable=False).count() == 0
+        latest_applicable = self.filter(question_number=question, country__country=country, latest_applicable=False).count() == 0
+
+        return baseline_applicable, latest_applicable
+
+    def baseline_excluded_countries(self, question):
+        return [ce.country for ce in self.filter(question_number=question, baseline_applicable=False)]
+
+    def latest_excluded_countries(self, question):
+        return [ce.country for ce in self.filter(question_number=question, latest_applicable=False)]
+
+class CountryExclusion(models.Model):
+    country = models.ForeignKey(Country, null=False)
+    question_number = models.CharField(max_length=10, null=False)
+    baseline_applicable = models.BooleanField()
+    latest_applicable = models.BooleanField()
+    objects = CountryExclusionManager()
+
+    def __unicode__(self):
+        return "%s - %s" % (self.question_number, self.country)
+
+    class Meta:
+       verbose_name_plural = "Country Exclusions" 
+       unique_together = ["country", "question_number"]

@@ -33,5 +33,1838 @@
         "fields": {
             "variation": "-"
         }
+    }, 
+    {
+        "pk": 1, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 4, 
+            "latest_applicable": false, 
+            "question_number": "1", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 3, 
+            "latest_applicable": true, 
+            "question_number": "1", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 5, 
+            "latest_applicable": false, 
+            "question_number": "1", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 2, 
+            "latest_applicable": false, 
+            "question_number": "1", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 6, 
+            "latest_applicable": true, 
+            "question_number": "1", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 9, 
+            "latest_applicable": true, 
+            "question_number": "1", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 1, 
+            "latest_applicable": true, 
+            "question_number": "1", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 11, 
+            "latest_applicable": false, 
+            "question_number": "1", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 3, 
+            "latest_applicable": false, 
+            "question_number": "17", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 5, 
+            "latest_applicable": false, 
+            "question_number": "17", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 2, 
+            "latest_applicable": false, 
+            "question_number": "17", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 11, 
+            "latest_applicable": false, 
+            "question_number": "17", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 4, 
+            "latest_applicable": false, 
+            "question_number": "18", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 5, 
+            "latest_applicable": false, 
+            "question_number": "18", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 1, 
+            "latest_applicable": true, 
+            "question_number": "18", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "submissions.countryexclusion", 
+        "fields": {
+            "country": 11, 
+            "latest_applicable": false, 
+            "question_number": "18", 
+            "baseline_applicable": false
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "submissions.country", 
+        "fields": {
+            "country": "Nepal", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "submissions.country", 
+        "fields": {
+            "country": "DRC", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "submissions.country", 
+        "fields": {
+            "country": "Burundi", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "submissions.country", 
+        "fields": {
+            "country": "Burkina Faso", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "submissions.country", 
+        "fields": {
+            "country": "Djibouti", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "submissions.country", 
+        "fields": {
+            "country": "Ethiopia", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "submissions.country", 
+        "fields": {
+            "country": "Mali", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "submissions.country", 
+        "fields": {
+            "country": "Mozambique", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "submissions.country", 
+        "fields": {
+            "country": "Niger", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "submissions.country", 
+        "fields": {
+            "country": "Nigeria", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "AusAID", 
+            "type": "Agency", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Belgium", 
+            "type": "Agency", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "EC", 
+            "type": "Agency", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "GAVI", 
+            "type": "Agency", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "GFATM", 
+            "type": "Agency", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Netherlands", 
+            "type": "Agency", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Norway", 
+            "type": "Agency", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Spain", 
+            "type": "Agency", 
+            "description": "Quality of health aid and capacity building are central points of the Spanish Cooperation. In line with aid effectiveness commitments and the principles of the EU Global Health Communication, Spain aims at allocating the major part of health aid to strenghthening national health systems, mainly through Sector Budget Support, and signed officially the IHP in May 2010."
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Sweden", 
+            "type": "Agency", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "UK", 
+            "type": "Agency", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "UNAIDS", 
+            "type": "Agency", 
+            "description": "Joint United Nations Programme on HIV/Aids"
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "UNFPA", 
+            "type": "Agency", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "UNICEF", 
+            "type": "Agency", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "WHO", 
+            "type": "Agency", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "World Bank", 
+            "type": "Agency", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Government of Burkina Faso", 
+            "type": "Government", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Government of Burundi", 
+            "type": "Government", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Government of Djibouti", 
+            "type": "Government", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Government of DRC", 
+            "type": "Government", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Government of Ethiopia", 
+            "type": "Government", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Government of Mali", 
+            "type": "Government", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Government of Mozambique", 
+            "type": "Government", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Government of Nepal", 
+            "type": "Government", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Government of Niger", 
+            "type": "Government", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "submissions.agency", 
+        "fields": {
+            "agency": "Government of Nigeria", 
+            "type": "Government", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 1, 
+            "agency": 1
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 3
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 3, 
+            "agency": 3
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 2, 
+            "agency": 3
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 8, 
+            "agency": 3
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 10, 
+            "agency": 3
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 11, 
+            "agency": 4
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 4
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 3, 
+            "agency": 4
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 2, 
+            "agency": 4
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 11, 
+            "agency": 6
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 6
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 3, 
+            "agency": 6
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 2, 
+            "agency": 6
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 4, 
+            "agency": 6
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 6, 
+            "agency": 6
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 8, 
+            "agency": 6
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 1, 
+            "agency": 6
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 5, 
+            "agency": 6
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 10, 
+            "agency": 6
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 11, 
+            "agency": 7
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 7
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 3, 
+            "agency": 7
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 2, 
+            "agency": 7
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 4, 
+            "agency": 7
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 6, 
+            "agency": 7
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 8, 
+            "agency": 7
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 1, 
+            "agency": 7
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 5, 
+            "agency": 7
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 10, 
+            "agency": 7
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 4, 
+            "agency": 30
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 3, 
+            "agency": 31
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 5, 
+            "agency": 32
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 2, 
+            "agency": 33
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 6, 
+            "agency": 34
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 8, 
+            "agency": 35
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 36
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 1, 
+            "agency": 37
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 10, 
+            "agency": 38
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 11, 
+            "agency": 39
+        }
+    }, 
+    {
+        "pk": 41, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 20
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 4, 
+            "agency": 20
+        }
+    }, 
+    {
+        "pk": 43, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 6, 
+            "agency": 20
+        }
+    }, 
+    {
+        "pk": 44, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 8, 
+            "agency": 20
+        }
+    }, 
+    {
+        "pk": 45, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 11, 
+            "agency": 21
+        }
+    }, 
+    {
+        "pk": 46, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 10, 
+            "agency": 22
+        }
+    }, 
+    {
+        "pk": 47, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 22
+        }
+    }, 
+    {
+        "pk": 48, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 6, 
+            "agency": 22
+        }
+    }, 
+    {
+        "pk": 49, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 8, 
+            "agency": 22
+        }
+    }, 
+    {
+        "pk": 50, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 23
+        }
+    }, 
+    {
+        "pk": 53, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 4, 
+            "agency": 23
+        }
+    }, 
+    {
+        "pk": 54, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 6, 
+            "agency": 23
+        }
+    }, 
+    {
+        "pk": 55, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 8, 
+            "agency": 23
+        }
+    }, 
+    {
+        "pk": 56, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 11, 
+            "agency": 24
+        }
+    }, 
+    {
+        "pk": 57, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 24
+        }
+    }, 
+    {
+        "pk": 58, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 3, 
+            "agency": 24
+        }
+    }, 
+    {
+        "pk": 59, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 6, 
+            "agency": 24
+        }
+    }, 
+    {
+        "pk": 60, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 1, 
+            "agency": 24
+        }
+    }, 
+    {
+        "pk": 61, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 11, 
+            "agency": 25
+        }
+    }, 
+    {
+        "pk": 62, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 25
+        }
+    }, 
+    {
+        "pk": 63, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 3, 
+            "agency": 25
+        }
+    }, 
+    {
+        "pk": 64, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 2, 
+            "agency": 25
+        }
+    }, 
+    {
+        "pk": 65, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 4, 
+            "agency": 25
+        }
+    }, 
+    {
+        "pk": 66, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 6, 
+            "agency": 25
+        }
+    }, 
+    {
+        "pk": 67, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 8, 
+            "agency": 25
+        }
+    }, 
+    {
+        "pk": 68, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 1, 
+            "agency": 25
+        }
+    }, 
+    {
+        "pk": 69, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 5, 
+            "agency": 25
+        }
+    }, 
+    {
+        "pk": 70, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 10, 
+            "agency": 25
+        }
+    }, 
+    {
+        "pk": 71, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 11, 
+            "agency": 26
+        }
+    }, 
+    {
+        "pk": 72, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 26
+        }
+    }, 
+    {
+        "pk": 73, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 3, 
+            "agency": 26
+        }
+    }, 
+    {
+        "pk": 74, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 2, 
+            "agency": 26
+        }
+    }, 
+    {
+        "pk": 75, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 4, 
+            "agency": 26
+        }
+    }, 
+    {
+        "pk": 76, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 6, 
+            "agency": 26
+        }
+    }, 
+    {
+        "pk": 77, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 8, 
+            "agency": 26
+        }
+    }, 
+    {
+        "pk": 78, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 1, 
+            "agency": 26
+        }
+    }, 
+    {
+        "pk": 79, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 5, 
+            "agency": 26
+        }
+    }, 
+    {
+        "pk": 80, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 10, 
+            "agency": 26
+        }
+    }, 
+    {
+        "pk": 82, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 27
+        }
+    }, 
+    {
+        "pk": 83, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 3, 
+            "agency": 27
+        }
+    }, 
+    {
+        "pk": 84, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 2, 
+            "agency": 27
+        }
+    }, 
+    {
+        "pk": 85, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 4, 
+            "agency": 27
+        }
+    }, 
+    {
+        "pk": 86, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 6, 
+            "agency": 27
+        }
+    }, 
+    {
+        "pk": 88, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 1, 
+            "agency": 27
+        }
+    }, 
+    {
+        "pk": 89, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 5, 
+            "agency": 27
+        }
+    }, 
+    {
+        "pk": 90, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 10, 
+            "agency": 27
+        }
+    }, 
+    {
+        "pk": 91, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 11, 
+            "agency": 28
+        }
+    }, 
+    {
+        "pk": 92, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 28
+        }
+    }, 
+    {
+        "pk": 93, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 3, 
+            "agency": 28
+        }
+    }, 
+    {
+        "pk": 94, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 2, 
+            "agency": 28
+        }
+    }, 
+    {
+        "pk": 95, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 4, 
+            "agency": 28
+        }
+    }, 
+    {
+        "pk": 96, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 6, 
+            "agency": 28
+        }
+    }, 
+    {
+        "pk": 97, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 8, 
+            "agency": 28
+        }
+    }, 
+    {
+        "pk": 98, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 1, 
+            "agency": 28
+        }
+    }, 
+    {
+        "pk": 99, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 5, 
+            "agency": 28
+        }
+    }, 
+    {
+        "pk": 100, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 10, 
+            "agency": 28
+        }
+    }, 
+    {
+        "pk": 101, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 11, 
+            "agency": 29
+        }
+    }, 
+    {
+        "pk": 102, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 29
+        }
+    }, 
+    {
+        "pk": 103, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 3, 
+            "agency": 29
+        }
+    }, 
+    {
+        "pk": 104, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 2, 
+            "agency": 29
+        }
+    }, 
+    {
+        "pk": 105, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 4, 
+            "agency": 29
+        }
+    }, 
+    {
+        "pk": 106, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 6, 
+            "agency": 29
+        }
+    }, 
+    {
+        "pk": 107, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 8, 
+            "agency": 29
+        }
+    }, 
+    {
+        "pk": 108, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 1, 
+            "agency": 29
+        }
+    }, 
+    {
+        "pk": 109, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 5, 
+            "agency": 29
+        }
+    }, 
+    {
+        "pk": 110, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 10, 
+            "agency": 29
+        }
+    }, 
+    {
+        "pk": 111, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 1, 
+            "agency": 21
+        }
+    }, 
+    {
+        "pk": 112, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 9, 
+            "agency": 21
+        }
+    }, 
+    {
+        "pk": 113, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 6, 
+            "agency": 21
+        }
+    }, 
+    {
+        "pk": 114, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 2, 
+            "agency": 21
+        }
+    }, 
+    {
+        "pk": 115, 
+        "model": "submissions.agencycountries", 
+        "fields": {
+            "country": 4, 
+            "agency": 3
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "submissions.agencytargets", 
+        "fields": {
+            "tick_criterion_value": 100.0, 
+            "indicator": "1DP", 
+            "tick_criterion_type": "Absolute % Target", 
+            "agency": null, 
+            "arrow_criterion_type": "Increase relative to baseline (no minimum)", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "submissions.agencytargets", 
+        "fields": {
+            "tick_criterion_value": 50.0, 
+            "indicator": "2DPa", 
+            "tick_criterion_type": "Minimum x% Decrease relative to baseline", 
+            "agency": null, 
+            "arrow_criterion_type": "Decrease relative to baseline (no minimum)", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "submissions.agencytargets", 
+        "fields": {
+            "tick_criterion_value": 50.0, 
+            "indicator": "2DPb", 
+            "tick_criterion_type": "Absolute greater than x%", 
+            "agency": null, 
+            "arrow_criterion_type": "Increase relative to baseline (no minimum)", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "submissions.agencytargets", 
+        "fields": {
+            "tick_criterion_value": 66.0, 
+            "indicator": "2DPc", 
+            "tick_criterion_type": "Absolute greater than x%", 
+            "agency": null, 
+            "arrow_criterion_type": "Increase relative to baseline (no minimum)", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "submissions.agencytargets", 
+        "fields": {
+            "tick_criterion_value": 90.0, 
+            "indicator": "3DP", 
+            "tick_criterion_type": "Absolute greater than x%", 
+            "agency": null, 
+            "arrow_criterion_type": "Increase relative to baseline (no minimum)", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "submissions.agencytargets", 
+        "fields": {
+            "tick_criterion_value": 50.0, 
+            "indicator": "4DP", 
+            "tick_criterion_type": "Minimum x% Decrease relative to baseline", 
+            "agency": null, 
+            "arrow_criterion_type": "Decrease relative to baseline (no minimum)", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "submissions.agencytargets", 
+        "fields": {
+            "tick_criterion_value": 33.0, 
+            "indicator": "5DPa", 
+            "tick_criterion_type": "Minimum x% Decrease relative to baseline", 
+            "agency": null, 
+            "arrow_criterion_type": "Decrease relative to baseline (no minimum)", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "submissions.agencytargets", 
+        "fields": {
+            "tick_criterion_value": 33.0, 
+            "indicator": "5DPb", 
+            "tick_criterion_type": "Minimum x% Decrease relative to baseline", 
+            "agency": null, 
+            "arrow_criterion_type": "Decrease relative to baseline (no minimum)", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "submissions.agencytargets", 
+        "fields": {
+            "tick_criterion_value": 66.0, 
+            "indicator": "5DPc", 
+            "tick_criterion_type": "Minimum x% Decrease relative to baseline", 
+            "agency": null, 
+            "arrow_criterion_type": "Decrease relative to baseline (no minimum)", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "submissions.agencytargets", 
+        "fields": {
+            "tick_criterion_value": 100.0, 
+            "indicator": "6DP", 
+            "tick_criterion_type": "Absolute % Target", 
+            "agency": null, 
+            "arrow_criterion_type": "Increase relative to baseline (no minimum)", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "submissions.agencytargets", 
+        "fields": {
+            "tick_criterion_value": 100.0, 
+            "indicator": "7DP", 
+            "tick_criterion_type": "Absolute % Target", 
+            "agency": null, 
+            "arrow_criterion_type": "Increase relative to baseline (no minimum)", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "submissions.agencytargets", 
+        "fields": {
+            "tick_criterion_value": 100.0, 
+            "indicator": "8DP", 
+            "tick_criterion_type": "Absolute % Target", 
+            "agency": null, 
+            "arrow_criterion_type": "Absolute greater than x%", 
+            "arrow_criterion_value": 0.0
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "submissions.countrytargets", 
+        "fields": {
+            "tick_criterion_value": null, 
+            "indicator": "1G", 
+            "country": null, 
+            "arrow_criterion_type": "First Question Yes", 
+            "tick_criterion_type": "First Question Yes", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "submissions.countrytargets", 
+        "fields": {
+            "tick_criterion_value": null, 
+            "indicator": "2Ga", 
+            "country": null, 
+            "arrow_criterion_type": "Both Questions Yes", 
+            "tick_criterion_type": "Both Questions Yes", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "submissions.countrytargets", 
+        "fields": {
+            "tick_criterion_value": 100.0, 
+            "indicator": "2Gb", 
+            "country": null, 
+            "arrow_criterion_type": "Absolute % Target", 
+            "tick_criterion_type": "Absolute % Target", 
+            "arrow_criterion_value": 100.0
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "submissions.countrytargets", 
+        "fields": {
+            "tick_criterion_value": 14.999000000000001, 
+            "indicator": "3G", 
+            "country": null, 
+            "arrow_criterion_type": "Increase relative to baseline (no minimum)", 
+            "tick_criterion_type": "Absolute greater than x%", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "submissions.countrytargets", 
+        "fields": {
+            "tick_criterion_value": 49.999000000000002, 
+            "indicator": "4G", 
+            "country": null, 
+            "arrow_criterion_type": "Decrease relative to baseline (no minimum)", 
+            "tick_criterion_type": "Minimum x% Decrease relative to baseline", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "submissions.countrytargets", 
+        "fields": {
+            "tick_criterion_value": null, 
+            "indicator": "5Ga", 
+            "country": null, 
+            "arrow_criterion_type": "Increase relative to baseline (no minimum)", 
+            "tick_criterion_type": "Increase relative to baseline (no minimum)", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "submissions.countrytargets", 
+        "fields": {
+            "tick_criterion_value": null, 
+            "indicator": "6G", 
+            "country": null, 
+            "arrow_criterion_type": "First Question Yes", 
+            "tick_criterion_type": "First Question Yes", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "submissions.countrytargets", 
+        "fields": {
+            "tick_criterion_value": null, 
+            "indicator": "7G", 
+            "country": null, 
+            "arrow_criterion_type": "First Question Yes", 
+            "tick_criterion_type": "First Question Yes", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "submissions.countrytargets", 
+        "fields": {
+            "tick_criterion_value": 9.9999000000000002, 
+            "indicator": "8G", 
+            "country": null, 
+            "arrow_criterion_type": "Absolute greater than x%", 
+            "tick_criterion_type": "Absolute greater than x%", 
+            "arrow_criterion_value": 0.0
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "submissions.countrytargets", 
+        "fields": {
+            "tick_criterion_value": null, 
+            "indicator": "5Gb", 
+            "country": null, 
+            "arrow_criterion_type": "Increase relative to baseline (no minimum)", 
+            "tick_criterion_type": "Increase relative to baseline (no minimum)", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "submissions.countrytargets", 
+        "fields": {
+            "tick_criterion_value": null, 
+            "indicator": "Q12G", 
+            "country": null, 
+            "arrow_criterion_type": "First Question Yes", 
+            "tick_criterion_type": "First Question Yes", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "submissions.countrytargets", 
+        "fields": {
+            "tick_criterion_value": null, 
+            "indicator": "Q21G", 
+            "country": null, 
+            "arrow_criterion_type": "First Question Yes", 
+            "tick_criterion_type": "First Question Yes", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "submissions.countrytargets", 
+        "fields": {
+            "tick_criterion_value": null, 
+            "indicator": "Q2G", 
+            "country": null, 
+            "arrow_criterion_type": "First Question Yes", 
+            "tick_criterion_type": "First Question Yes", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "submissions.countrytargets", 
+        "fields": {
+            "tick_criterion_value": null, 
+            "indicator": "Q3G", 
+            "country": null, 
+            "arrow_criterion_type": "First Question Yes", 
+            "tick_criterion_type": "First Question Yes", 
+            "arrow_criterion_value": null
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "submissions.countrylanguage", 
+        "fields": {
+            "country": 4, 
+            "language": "French"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "submissions.countrylanguage", 
+        "fields": {
+            "country": 3, 
+            "language": "French"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "submissions.countrylanguage", 
+        "fields": {
+            "country": 5, 
+            "language": "French"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "submissions.countrylanguage", 
+        "fields": {
+            "country": 2, 
+            "language": "French"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "submissions.countrylanguage", 
+        "fields": {
+            "country": 8, 
+            "language": "French"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "submissions.countrylanguage", 
+        "fields": {
+            "country": 10, 
+            "language": "French"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 1, 
+            "is_draft": true
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 3, 
+            "is_draft": true
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 4, 
+            "is_draft": true
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 6, 
+            "is_draft": true
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 7, 
+            "is_draft": true
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 20, 
+            "is_draft": true
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 21, 
+            "is_draft": true
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 22, 
+            "is_draft": true
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 23, 
+            "is_draft": true
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 24, 
+            "is_draft": true
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 25, 
+            "is_draft": true
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 26, 
+            "is_draft": true
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 27, 
+            "is_draft": true
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 28, 
+            "is_draft": true
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "submissions.agencyworkingdraft", 
+        "fields": {
+            "agency": 29, 
+            "is_draft": true
+        }
     }
 ]

@@ -4,103 +4,8 @@ from django.utils.functional import memoize
 from indicators import NA_STR
 from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
 from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, CountryLanguage, DPScorecardRatings, Rating
+from target_criteria import criteria_funcs, MissingValueException
 import math
-
-def criterion_absolute(base_val, cur_val, criterion_param):
-    
-    if cur_val == None: 
-        raise MissingValueException() 
-    if math.fabs(cur_val - criterion_param) < 0.000000001:
-        return True
-    return False
-
-def criterion_relative_increase(base_val, cur_val, criterion_param):
-    if cur_val == None or base_val == None: 
-        raise MissingValueException() 
-
-    if cur_val > base_val * (1 + criterion_param / 100.0):
-        return True
-    return False
-
-def criterion_relative_decrease(base_val, cur_val, criterion_param):
-    if cur_val == None or base_val == None: 
-        raise MissingValueException() 
-
-    if cur_val < base_val * (1 - criterion_param / 100.0):
-        return True
-    return False
-
-def criterion_increase(base_val, cur_val, criterion_param):
-    if cur_val == None or base_val == None: 
-        raise MissingValueException() 
-
-    if cur_val > base_val:
-        return True
-    return False
-
-def criterion_decrease(base_val, cur_val, criterion_param):
-    if cur_val == None or base_val == None: 
-        raise MissingValueException()
-
-    if cur_val < base_val:
-        return True
-    return False
-
-def criterion_absolute_greater_than(base_val, cur_val, criterion_param):
-
-    if cur_val == None: raise MissingValueException()
-    if cur_val > criterion_param:
-        return True
-    return False
-
-def criterion_absolute_less_than(base_val, cur_val, criterion_param):
-    if cur_val == None: raise MissingValueException()
-    if cur_val < criterion_param:
-        return True
-    return False
-
-def criterion_absolute_increase(base_val, cur_val, criterion_param):
-    if cur_val - criterion_param > base_val:
-        return True
-    return False
-
-def criterion_absolute_decrease(base_val, cur_val, criterion_param):
-    if cur_val + criterion_param < base_val:
-        return True
-    return False
-
-def criterion_both_yes(base_val, cur_val, criterion_param):
-    if len(cur_val.strip()) != 2:
-        raise MissingValueException()
-
-    if cur_val.lower() == "yy":
-        return True
-    return False
-
-class MissingValueException(Exception):
-    pass
-
-def criterion_first_yes(base_val, cur_val, criterion_param):
-    if len(cur_val) == 0:
-        raise MissingValueException()
-
-    if cur_val.lower()[0] == "y":
-        return True
-    return False
-
-criteria_funcs = {
-   "Absolute % Target" : criterion_absolute,
-   "Minimum x% Increase relative to baseline" : criterion_relative_increase,
-   "Minimum x% Decrease relative to baseline" : criterion_relative_decrease,
-   "Increase relative to baseline (no minimum)" : criterion_increase,
-   "Decrease relative to baseline (no minimum)" : criterion_decrease,
-   "Absolute greater than x%" : criterion_absolute_greater_than,
-   "Absolute less than x%" : criterion_absolute_less_than,
-   "Absolute Value Increase" : criterion_absolute_increase,
-   "Absolute Value Decrease" : criterion_absolute_decrease,
-   "Both Questions Yes" : criterion_both_yes,
-   "First Question Yes" : criterion_first_yes,
-}
 
 def get_agency_targets(agency, indicators):
     targets = {}
@@ -121,16 +26,6 @@ def get_country_targets(country, indicators):
             target = CountryTargets.objects.get(country=None, indicator=indicator)
         targets[indicator] = target
     return targets
-
-def none_sub(a, b):
-    if a == None or b == None:
-        return None
-    return a - b
-
-def none_mul(a, b):
-    if a == None or b == None:
-        return None
-    return a * b
 
 def evaluate_indicator(target, base_val, cur_val):
     tick_func = criteria_funcs[target.tick_criterion_type]
