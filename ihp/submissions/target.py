@@ -181,6 +181,7 @@ def calc_agency_targets(agency):
             result["commentary"] = na_text
         elif result["commentary"] == "":
             result["commentary"] = default_text
+        result["commentary"] += u"∆"
 
         #result["commentary"] = (result["commentary"] + " " + target_map[indicator] % result).strip()
 
@@ -371,6 +372,7 @@ def calc_country_targets(country):
                         commentary = rating_none_text
                     else:
                         commentary = gov_commentary_text[indicator][target_value]
+                    commentary += u"∆"
                 
                 #result["commentary"] = result["commentary"].encode("utf-8")
                 try:

@@ -1,7 +1,7 @@
 from collections import defaultdict
 import traceback
 from math import fabs
-import csv
+import unicodecsv as csv
 
 from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template

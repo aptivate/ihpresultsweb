@@ -40,6 +40,7 @@ def count_factory(value):
             return qs.filter(latest_value__iexact=value).count()
     return count_value
 
+# TODO FIX THIS
 def country_perc_factory(value):
     def perc_value(qs, agency, selector, q):
         # In some countries certain processes do not exists
