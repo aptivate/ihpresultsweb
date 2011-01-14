@@ -86,7 +86,8 @@ class none_num(float):
 
     def __sub__(self, other):
         if self._either_none(other): return none_num(None)
-        return none_num(super(none_num, self).__sub__(other))
+        # Adding zero tends to fix -0.0 problems 
+        return none_num(super(none_num, self).__sub__(other) + 0)
 
     def __neg__(self):
         if self.ovalue == None: return none_num(None)
@@ -94,8 +95,50 @@ class none_num(float):
             return none_num(super(none_num, self).__neg__())
 
     def __rsub__(self, other):
-        return -self.__sub__(other)
+        return -self.__sub__(other) + 0
 
     def __eq__(self, other):
         return self.ovalue == other
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __lt__(self, other):
+        if self.ovalue == None and other == None:
+            return False
+        elif self._either_none(other):
+            return NotImplemented
+        else:
+            return self.ovalue < other
+
+    def __le__(self, other):
+        if self.ovalue == None and other == None:
+            return False
+        elif self._either_none(other):
+            return NotImplemented
+        else:
+            return self.ovalue <= other
+
+    def __gt__(self, other):
+        if self.ovalue == None and other == None:
+            return False
+        elif self._either_none(other):
+            return NotImplemented
+        else:
+            return self.ovalue > other
+
+    def __ge__(self, other):
+        if self.ovalue == None and other == None:
+            return False
+        elif self._either_none(other):
+            return NotImplemented
+        else:
+            return self.ovalue >= other
+
+    def __ge__(self, other):
+        if self.ovalue == None and other == None:
+            return False
+        elif self._either_none(other):
+            return NotImplemented
+        else:
+            return self.ovalue >= other

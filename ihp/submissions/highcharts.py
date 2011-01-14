@@ -1,4 +1,5 @@
 import random
+from numbers import Real, Integral
 
 def ffloat(x):
     if x == None: return "0"
@@ -17,7 +18,7 @@ class ChartObject(object):
         return "".join(["\t"] * self._tabs)
 
     def _format(self, v):
-        if type(v) == str:
+        if isinstance(v, basestring):
             if v == "false" or v == "true":
                 return v
             elif v.startswith("function"):
@@ -25,9 +26,9 @@ class ChartObject(object):
             return "'%s'" % v
         elif type(v) == list or type(v) == tuple:
             return "[" + ",".join(self._format(i) for i in v) + "]"
-        elif type(v) == int:
+        elif isinstance(v, Integral):
             return str(v)
-        elif type(v) == float:
+        elif isinstance(v, Real):
             return ffloat(v)
         elif type(v) == dict:
             p = ChartObject(self._tabs + 1)
@@ -38,6 +39,8 @@ class ChartObject(object):
             p.__dict__.update(v.__dict__)
             p.__dict__["_tabs"] = self._tabs + 1
             return str(p)
+        else:
+            import pdb; pdb.set_trace()
 
     def __str__(self):
         padding = self.padding

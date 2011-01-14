@@ -215,158 +215,193 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
     country_data = get_countries_scorecard_data()
     agency_data = get_agencies_scorecard_data()
 
-    extra_context["hw_spend"] = {
-        "title" : "% of health sector budget spent on health workforce",
-        "data" : dict(
-            (
-                country, 
-                {
-                    "baseline" : datum["indicators"]["other"]["health_workforce_perc_of_budget_baseline"] * 100,
-                    "latest" : datum["indicators"]["other"]["health_workforce_perc_of_budget_latest"] * 100, 
-                }
-            ) 
-            for country, datum in country_data.items()
-        )
-    }
+    countries = sorted(country_data.keys(), key=lambda x : x.country)
+    country_names = map(lambda x: x.country, countries)
 
-    extra_context["outpatient_visits"] = {
-        "title" : "Number of outpatient visits per 10,000 population",
-        "y-axis" : "",
-        "data" : dict(
-            (
-                country, 
-                {
-                    "baseline" : datum["indicators"]["other"]["outpatient_visits_latest"],
-                    "latest" : datum["indicators"]["other"]["outpatient_visits_latest"], 
-                }
-            ) 
-            for country, datum in country_data.items()
-        )
-    }
+    class CountryBarGraph(Chart):
+        def __init__(self, chart_name, title, baseline_data, latest_data):
+            super(CountryBarGraph, self).__init__(chart_name)
+            self.chart = {
+                "marginTop" : 50,
+                "defaultSeriesType": "column",
+            }
+            self.title = {"text" : title}
+            self.xAxis = {"categories" : country_names} 
+            self.yAxis = {"title" : {"text" : "%"}} 
+            self.series = [{
+                "name" : "Baseline",
+                "data" : baseline_data
+            }, {
+                "name" : "2009",
+                "data" : latest_data 
+            }]
 
-    extra_context["skilled_medical"] = {
-        "title" : "Skilled medical personnel per 10,000 population",
-        "y-axis" : "",
-        "target" : {
-            "name" : "WHO Recommended",
-            "value" : 23,
-        },
-        "data" : dict(
-            (
-                country, 
-                {
-                    "baseline" : datum["indicators"]["other"]["skilled_personnel_baseline"],
-                    "latest" : datum["indicators"]["other"]["skilled_personnel_latest"], 
-                }
-            ) 
-            for country, datum in country_data.items()
-        )
-    }
+    class TargetCountryBarGraph(CountryBarGraph):
+        def __init__(self, chart_name, title, baseline_data, latest_data, target_name, target):
+            super(TargetCountryBarGraph, self).__init__(chart_name, title, baseline_data, latest_data)
+            self.series.append({
+                "name" : target_name,
+                "data" : [target] * len(latest_data),
+                "type" : "line",
+                "color" : "#ff0000",
+                "marker" : {
+                    "enabled" : "false"
+                },
+            })
 
-    extra_context["health_budget"] = {
-        "title" : "% of national budget is allocated to health (IHP+ Results data)",
-        "target" : {
-            "value" : 15,
-        },
-        "y-axis" : "% allocated to health",
-        "data" : dict(
-            (
-                country, 
-                {
-                    "baseline" : datum["indicators"]["3G"]["baseline_value"],
-                    "latest" : datum["indicators"]["3G"]["latest_value"],
-                }
-            ) 
-            for country, datum in country_data.items()
-        )
-    }
-    
+    extra_context["graph_hw"] = CountryBarGraph(
+        "graph_hw",
+        "% of health sector budget spent on health workforce",
+        [country_data[country]["indicators"]["other"]["health_workforce_perc_of_budget_baseline"] * 100 for country in countries],
+        [country_data[country]["indicators"]["other"]["health_workforce_perc_of_budget_latest"] * 100 for country in countries],
+    )
+
+    extra_context["graph_outpatient_visits"] = CountryBarGraph(
+        "graph_outpatient_visits",
+        "Number of outpatient visits per 10,000 population",
+        [country_data[country]["indicators"]["other"]["outpatient_visits_baseline"] for country in countries],
+        [country_data[country]["indicators"]["other"]["outpatient_visits_latest"] for country in countries],
+    )
+
+    extra_context["graph_skilled_medical"] = TargetCountryBarGraph(
+        "graph_skilled_medical",
+        "Skilled medical personnel per 10,000 population",
+        [country_data[country]["indicators"]["other"]["skilled_personnel_baseline"] for country in countries],
+        [country_data[country]["indicators"]["other"]["skilled_personnel_latest"] for country in countries],
+        "WHO Recommended", 23,
+    )
+
+    extra_context["graph_health_budget"] = TargetCountryBarGraph(
+        "graph_health_budget",
+        "% of national budget is allocated to health (IHP+ Results data)",
+        [country_data[country]["indicators"]["3G"]["baseline_value"] for country in countries],
+        [country_data[country]["indicators"]["3G"]["latest_value"] for country in countries],
+        "Target", 15,
+    )
+            
     sort = partial(sorted, key=lambda x : x[1][1])
 
-    def indicator_data(indicator):
+    def indicator_data(indicator, reverse=False):
+        f = lambda x: x
+        if reverse: f = lambda x : 100.0 - x
         data = [
-            (
-                agency, [
-                    datum[indicator]["cur_val"], 
-                    100 - datum[indicator]["cur_val"],
-                ]
-            )
+            (agency, f(datum[indicator]["cur_val"]))
             for (agency, datum) in agency_data.items()
             if datum[indicator]["cur_val"] not in (NA_STR, None)
         ]
-        return sort(data)
+        data = sorted(data, key=lambda x : x[1])
+        return data
 
-    extra_context["pfm"] = {
-        "title" : "% of aid using national PFM systems",
-        "target" : {
-            "value" : 80,
-        },
-        "series" : [
-            "Total health aid not using PFM systems (Q14 - Q15)",
-            "Total health aid using PFM systems (Q15)",
-        ],
-        "data" : indicator_data("5DPb"),
-    }
+    class StackedAgencyBarGraph(Chart):
+        def __init__(self, chart_name, title, dataset, target_name, target):
+            super(StackedAgencyBarGraph, self).__init__(chart_name)
+            categories = map(lambda x: x[0].agency, dataset["data"])
+            data = map(lambda x: x[1], dataset["data"])
 
-    extra_context["procurement"] = {
-        "title" : "% of aid using national procurement systems",
-        "target" : {
-            "value" : 80,
-        },
-        "series" : [
-            "Total health aid not using procurement systems (Q12 - Q13)",
-            "Total health aid using procurement systems (Q13)",
-        ],
-        "data" : indicator_data("5DPa"),
-    }
+            data1 = data
+            data2 = map(lambda x: 100 - x, data)
 
-    extra_context["multi_year"] = {
-        "title" : "% of aid provided through multi-year commitments",
-        "target" : {
-            "value" : 90,
-        },
-        "series" : [
-            "% not provided through multi-year commitments",
-            "% of multi-year commitments",
-        ],
-        "data" : indicator_data("3DP"),
-    }
+            self.chart = {
+                "marginTop" : 50,
+                "defaultSeriesType": "column",
+            }
+            self.title = {"text" : title}
+            self.xAxis = {
+                "categories" : categories,
+                "labels" : {
+                    "rotation" : 90,
+                    "y" : 40,
+                }
+            } 
+            self.yAxis = {
+                "title" : {"text" : "%"},
+                "max" : 100
+            } 
+            self.series = [{
+                "name" : dataset["name2"],
+                "data" : data2, 
+                "color" : "#AA4643"
+            }, {
+                "name" : dataset["name1"],
+                "data" : data1,
+                "color" : "#4572A7"
+            }, {
+                "name" : target_name,
+                "data" : [target] * len(categories),
+                "type" : "line",
+                "color" : "#ff0000",
+                "marker" : {
+                    "enabled" : "false"
+                },
+            }]
 
-    extra_context["pba"] = {
-        "title" : "% of aid using Programme Based Approaches (PBAs)",
-        "target" : {
-            "value" : 66,
-        },
-        "series" : [
-            "% of health sector aid not using PBAs",
-            "% of health sector aid using PBAs",
-        ],
-        "data" : indicator_data("2DPc"),
-    }
+            self.plotOptions = {"column" : {"stacking" : "percent"}}
 
-    extra_context["tc"] = {
-        "title" : "% of capacity development provided through coordinated programmes",
-        "target" : {
-            "value" : 50,
+    extra_context["graph_pfm"] = StackedAgencyBarGraph(
+        "graph_pfm",
+        "% of aid using national PFM systems",
+        {
+            "name1" : "Total health aid using PFM systems (Q15)",
+            "name2" : "Total health aid not using PFM systems (Q14 - Q15)",
+            "data" : indicator_data("5DPb", reverse=True)
         },
-        "series" : [
-            "TC not through coordinated programmes (Q4 - Q5)",
-            "TC through coordinated programmes (Q5)",
-        ],
-        "data" : indicator_data("2DPb"),
-    }
+        "target", 80
+    )
+        
+    extra_context["graph_procurement"] = StackedAgencyBarGraph(
+        "graph_procurement",
+        "% of aid using national procurement systems",
+        {
+            "name1" : "Total health aid using procurement systems (Q13)",
+            "name2" : "Total health aid not using procurement systems (Q12 - Q13)",
+            "data" : indicator_data("5DPa", reverse=True)
+        },
+        "target", 80
+    )
 
-    extra_context["aid_on_budget"] = {
-        "title" : "% of aid reported on budget",
-        "target" : {
-            "value" : 85,
+    extra_context["graph_multi_year"] = StackedAgencyBarGraph(
+        "graph_multi_year",
+        "% of aid provided through multi-year commitments",
+        {
+            "name1" : "% of multi-year commitments",
+            "name2" : "% not provided through multi-year commitments",
+            "data" : indicator_data("3DP")
         },
-        "series" : [
-            "Total health aid not on budget",
-            "Total health aid reported on budget",
-        ],
-        "data" : indicator_data("2DPa"),
-    }
+        "target", 90
+    )
+
+    extra_context["graph_pba"] = StackedAgencyBarGraph(
+        "graph_pba",
+        "% of aid using Programme Based Approaches (PBAs)",
+        {
+            "name1" : "% of health sector aid using PBAs",
+            "name2" : "% of health sector aid not using PBAs",
+            "data" : indicator_data("2DPc")
+        },
+        "target", 66
+    )
+
+    extra_context["graph_tc"] = StackedAgencyBarGraph(
+        "graph_tc",
+        "% of capacity development provided through coordinated programmes",
+        {
+            "name1" : "TC through coordinated programmes (Q5)",
+            "name2" : "TC not through coordinated programmes (Q4 - Q5)",
+            "data" : indicator_data("2DPb")
+        },
+        "target", 50
+    )
+
+    extra_context["graph_aob"] = StackedAgencyBarGraph(
+        "graph_aob",
+        "% of aid reported on budget",
+        {
+            "name2" : "Total health aid not on budget",
+            "name1" : "Total health aid reported on budget",
+            "data" : indicator_data("2DPa", reverse=True)
+        },
+        "target", 85
+    )
 
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
