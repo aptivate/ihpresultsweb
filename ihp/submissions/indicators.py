@@ -88,8 +88,6 @@ def calc_agency_country_indicator(agency, country, indicator, funcs=None):
     """
     Same as calc_agency_indicator above but only looks at a specific country
     """
-    if agency.agency == "GFATM" and country.country == "Burundi":
-        import pdb; pdb.set_trace()
     qs = DPQuestion.objects.filter(submission__agency=agency, submission__country=country)
     funcs = funcs or dict(indicator_funcs)
     try:
