@@ -1,6 +1,7 @@
-from models import Submission, DPQuestion, AgencyCountries, GovQuestion, Country8DPFix, Country, NotApplicable, CountryExclusion
+from models import Submission, DPQuestion, AgencyCountries, GovQuestion, Country8DPFix, Country, NotApplicable, CountryExclusion, Agency
 from indicator_funcs import *
 import traceback
+from utils import memoize
 
 NA_STR = "__NA__"
 
@@ -12,24 +13,32 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
     
     comments = [(question.question_number, question.submission.country, question.comments) for question in qs2]
 
-    exclude = []
+    exclude_baseline = []
+    exclude_latest = []
     for q in qs2:
         if type(q) == DPQuestion:
             baseline_applicable, latest_applicable = CountryExclusion.objects.is_applicable(q.question_number, q.submission.country)
         else:
             baseline_applicable, latest_applicable = True, True
 
-        if NotApplicable.objects.is_not_applicable(q.baseline_value) or NotApplicable.objects.is_not_applicable(q.latest_value):
-            exclude.append(q.submission.id)
-        elif not baseline_applicable or not latest_applicable:
-            exclude.append(q.submission.id)
-    qs2 = qs2.exclude(submission__id__in=exclude)
-        
-    if qs2.count() == 0:
-        base_val, cur_val = NA_STR, NA_STR
+        if NotApplicable.objects.is_not_applicable(q.baseline_value) or not baseline_applicable:
+            exclude_baseline.append(q.submission.id)
+        if NotApplicable.objects.is_not_applicable(q.latest_value) or not latest_applicable:
+            exclude_latest.append(q.submission.id)
+
+    qs2_baseline = qs2.exclude(submission__id__in=exclude_baseline)
+    qs2_latest = qs2.exclude(submission__id__in=exclude_latest)
+
+    if qs2_baseline.count() == 0:
+        base_val = NA_STR
     else:
-        base_val, cur_val = func(qs, agency_or_country, *args)
-    
+        base_val = func(qs2_baseline, agency_or_country, base_selector, *args)
+
+    if qs2_latest.count() == 0:
+        cur_val = NA_STR
+    else:
+        cur_val = func(qs2_latest, agency_or_country, cur_selector, *args)
+        
     # TODO here i assume that the year is the same across all years and all questions. 
     if len(qs2) > 0: 
         cur_year = qs2[0].latest_year
@@ -79,6 +88,8 @@ def calc_agency_country_indicator(agency, country, indicator, funcs=None):
     """
     Same as calc_agency_indicator above but only looks at a specific country
     """
+    if agency.agency == "GFATM" and country.country == "Burundi":
+        import pdb; pdb.set_trace()
     qs = DPQuestion.objects.filter(submission__agency=agency, submission__country=country)
     funcs = funcs or dict(indicator_funcs)
     try:

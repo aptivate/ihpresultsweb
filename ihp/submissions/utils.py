@@ -142,3 +142,21 @@ class none_num(float):
             return NotImplemented
         else:
             return self.ovalue >= other
+
+import functools
+import cPickle
+def memoize(fctn):
+    memory = {}
+    @functools.wraps(fctn)
+    def memo(*args,**kwargs):
+        sargs = map(str, args)
+        skwargs = [(str(k), str(v)) for k, v in kwargs.iteritems()]
+        haxh = cPickle.dumps((sargs, sorted(skwargs)))
+
+        if haxh not in memory:
+            memory[haxh] = fctn(*args,**kwargs)
+
+        return memory[haxh]
+    if memo.__doc__:
+        memo.__doc__ = "\n".join([memo.__doc__,"This function is memoized."])
+    return memo
