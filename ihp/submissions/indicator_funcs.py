@@ -100,11 +100,11 @@ def equals_yes_or_no(val):
         assert len(qs) == 1
         
         if selector(qs[0]) == None:
-            val = ""
+            _val = ""
         else:
-            val = "y" if selector(qs[0]).lower() == value else "n"
+            _val = "y" if selector(qs[0]).lower() == value else "n"
 
-        return val
+        return _val
     return test
 
 def combine_yesnos(qs, agency_or_country, selector, *args):
