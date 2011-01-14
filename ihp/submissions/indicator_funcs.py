@@ -1,4 +1,5 @@
 from models import AgencyCountries, Country8DPFix, CountryExclusion
+from consts import NA_STR
 
 base_selector = lambda q : q.baseline_value
 cur_selector = lambda q : q.latest_value
@@ -23,7 +24,7 @@ def func_8dpfix(qs, agency, selector, q):
     if denom > 0:
         return num / denom * 100
     else:
-        return None
+        return NA_STR
 
 def count_factory(value):
     def count_value(qs, agency_or_country, selector, q):
@@ -40,7 +41,6 @@ def count_factory(value):
             return qs.filter(latest_value__iexact=value).count()
     return count_value
 
-# TODO FIX THIS
 def country_perc_factory(value):
     def perc_value(qs, agency, selector, q):
         # In some countries certain processes do not exists
@@ -55,7 +55,7 @@ def country_perc_factory(value):
             ]
             
             num_countries = float(len(countries))
-            return val / num_countries * 100 if num_countries > 0 else 0.0
+            return val / num_countries * 100 if num_countries > 0 else NA_STR
 
         count_value = count_factory(value)
         if selector == base_selector:
@@ -125,13 +125,13 @@ def calc_numdenom(qs, agency_or_country, selector, numq, denomq):
     den = float(_sum_values(qs.filter(question_number=denomq), selector))
     num = float(_sum_values(qs.filter(question_number=numq), selector))
 
-    ratio = None
+    ratio = NA_STR
     if den > 0: ratio = num / den * 100
     return ratio
 
 def calc_one_minus_numdenom(qs, agency_or_country, selector, numq, denomq):
     ratio = calc_numdenom(qs, agency_or_country, selector, numq, denomq)
-    ratio = 100 - ratio if ratio != None else None
+    ratio = 100 - ratio if ratio != NA_STR else NA_STR
     return ratio
 
 def sum_values(qs, agency_or_country, selector, *args):

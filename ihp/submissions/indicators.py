@@ -2,8 +2,7 @@ from models import Submission, DPQuestion, AgencyCountries, GovQuestion, Country
 from indicator_funcs import *
 import traceback
 from utils import memoize
-
-NA_STR = "__NA__"
+from consts import NA_STR
 
 def calc_indicator(qs, agency_or_country, indicator, funcs=None):
     funcs = funcs or indicator_funcs
