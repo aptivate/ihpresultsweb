@@ -591,7 +591,7 @@ def agency_table_by_country(request, country_id, template_name="submissions/agen
         abs_values[agency.agency] = agency_abs_values
     extra_context["abs_values"] = sorted(abs_values.items())
     extra_context["spm_map"] = spm_map
-    extra_context["institution_name"] = "Development Partner in %s" % country.country
+    extra_context["institution_name"] = "Development Partners in %s" % country.country
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
@@ -617,6 +617,41 @@ def agency_table_by_agency(request, agency_id, template_name="submissions/agency
     extra_context["abs_values"] = sorted(abs_values.items())
     extra_context["spm_map"] = spm_map
     extra_context["institution_name"] = "%s Data across IHP+ Countries" % agency.agency
+    
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def agency_table_by_indicator(request, indicator, template_name="submissions/agency_table_by_indicator.html", extra_context=None):
+    extra_context = extra_context or {} 
+
+    countries = Country.objects.all().order_by("country")
+    agencies = []
+    for agency in Agency.objects.filter(type="Agency"):
+        agency_values = []
+        for country in countries:
+            if country in agency.countries:
+                indicators = calc_agency_country_indicators(agency, country, positive_funcs)
+                ratings = country_agency_indicator_ratings(country, agency)
+
+                base_val, base_year, latest_val, _ = indicators[indicator][0]
+                country_abs_values = {
+                    "baseline_value" : tbl_float_format(base_val), 
+                    "latest_value" : tbl_float_format(latest_val), 
+                    "rating" : ratings[indicator],
+                } 
+            else:
+                country_abs_values = {
+                    "baseline_value" : "N/A",
+                    "latest_value" : "N/A",
+                    "rating" : "none",
+                } 
+                
+            agency_values.append((country, country_abs_values))
+        agency_values = sorted(agency_values, key=lambda x: x[0].country)
+        agencies.append((agency, agency_values))
+
+    agencies = sorted(agencies, key=lambda x: x[0].agency)
+    extra_context["agencies"] = agencies
+    extra_context["countries"] = countries
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 

@@ -121,6 +121,13 @@ urlpatterns = patterns('',
         }
     }, 'agency_table_by_agency'),
 
+    (r'^scorecard/tables/agency/by_indicator/(?P<indicator>.+)/$', 'submissions.views.agency_table_by_indicator', {
+        "template_name" : "submissions/main_base.html",
+        "extra_context" : {
+            "content_file" : "submissions/agency_table_by_indicator.html"
+        }
+    }, 'agency_table_by_indicator'),
+
     (r'^scorecard/tables/country/$', 'submissions.views.country_table', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {

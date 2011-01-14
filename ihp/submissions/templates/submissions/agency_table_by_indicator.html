@@ -1,0 +1,34 @@
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/table.css"> 
+{% endblock %}
+
+{% block content %}
+<h1>{{ institution_name }}</h1>
+<table class="dpind">
+    <tr class="head">
+        <th>Agency</th>
+        {% for country in countries %}
+        <th colspan="3">{{ country.country }}</th>
+        {% endfor %}
+    </tr>
+    <tr class="head2">
+        {% for country in countries %}
+            <th>2007</th>
+            <th>2009</th>
+            <th>Rating</th>
+        {% endfor %}
+
+    </tr>
+    {% for agency, agency_values in agencies %}
+    <tr class="odd">
+        <td>{{ agency.agency }}</td>
+        {% for country, data in agency_values %}
+            <td>{{ data.baseline_value|default_if_none:"-" }}</td>
+            <td>{{ data.latest_value|default_if_none:"-" }}</td>
+            <td>{% if data.rating %}<img src="{{ MEDIA_URL }}/images/{{ data.rating }}.png">{% endif %}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
