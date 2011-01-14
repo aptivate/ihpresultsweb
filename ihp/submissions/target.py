@@ -396,6 +396,8 @@ def country_agency_indicator_ratings(country, agency):
         result = Rating.CROSS
         if indicator in ["1DP", "6DP", "7DP"] and cur_val != NA_STR:
             if cur_val > 0: result = Rating.TICK
+        elif indicator == "5DPc" and cur_val not in [NA_STR, None]:
+            if cur_val == 0: result = Rating.TICK
         elif indicator == "8DP":
             try:
                 fix = Country8DPFix.objects.get(agency=agency, country=country)
