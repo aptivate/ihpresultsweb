@@ -19,12 +19,12 @@ def get_agency_targets(agency, indicators):
 
 def get_country_targets(country, indicators):
     targets = {}
-    for indicator in indicators:
-        try:
-            target = CountryTargets.objects.get(country=country, indicator=indicator)
-        except CountryTargets.DoesNotExist:
-            target = CountryTargets.objects.get(country=None, indicator=indicator)
-        targets[indicator] = target
+    country_targets = CountryTargets.objects.filter(country=country)
+    none_targets = CountryTargets.objects.filter(country=None)
+    from itertools import chain
+
+    for target in chain(none_targets, country_targets):
+        targets[target.indicator] = target
     return targets
 
 def evaluate_indicator(target, base_val, cur_val):
