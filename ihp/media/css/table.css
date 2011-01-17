@@ -42,6 +42,10 @@ td:first-child + td {
     text-align: left;
 }
 
+.dpind td:first-child + td {
+    text-align: center;
+}
+
 .dpind td:nth-of-type(3n+1) { 
     border-right: solid 2px black;
 }

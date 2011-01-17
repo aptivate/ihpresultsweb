@@ -16,6 +16,7 @@ class Agency(models.Model):
     type = models.CharField(max_length=15, null=False)
 
     @property
+    @memoize
     def countries(self):
         return Country.objects.filter(agencycountries__agency=self).order_by("country")
 

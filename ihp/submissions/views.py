@@ -625,11 +625,21 @@ def agency_table_by_agency(request, agency_id, template_name="submissions/agency
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def agency_table_by_indicator(request, indicator, template_name="submissions/agency_table_by_indicator.html", extra_context=None):
+    dp_gov_map = {
+        "1DP" : "1G",
+        "6DP" : "6G",
+        "7DP" : "7G",
+        "8DP" : "8G",
+    }
     extra_context = extra_context or {} 
 
     countries = Country.objects.all().order_by("country")
+    if indicator in dp_gov_map:
+        gov_indicator = dp_gov_map[indicator]
+        country_calcs = [(c, calc_country_targets(c)[gov_indicator]) for c in countries]
+    
     agencies = []
-    for agency in Agency.objects.filter(type="Agency").select_related():
+    for agency in Agency.objects.filter(type="Agency"):
         agency_values = []
         for country in countries:
             if country in agency.countries:
@@ -656,6 +666,8 @@ def agency_table_by_indicator(request, indicator, template_name="submissions/age
     agencies = sorted(agencies, key=lambda x: x[0].agency)
     extra_context["agencies"] = agencies
     extra_context["countries"] = countries
+    print country_calcs
+    extra_context["country_calcs"] = country_calcs
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 

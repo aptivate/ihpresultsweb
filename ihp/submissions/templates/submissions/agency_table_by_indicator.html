@@ -7,7 +7,7 @@
 <h1>{{ institution_name }}</h1>
 <table class="dpind">
     <tr class="head">
-        <th>Agency</th>
+        <th rowspan="2">Agency</th>
         {% for country in countries %}
         <th colspan="3">{{ country.country }}</th>
         {% endfor %}
@@ -20,8 +20,16 @@
         {% endfor %}
 
     </tr>
+    <tr class="even">
+        <td>Country</td>
+        {% for country, calcs in country_calcs %}
+            <td>{{ calcs.base_val|upper }}</td>
+            <td>{{ calcs.cur_val|upper }}</td>
+            <td><img src="{{ MEDIA_URL }}/images/{{ calcs.target }}.png"></td>
+        {% endfor %}
+    </tr>
     {% for agency, agency_values in agencies %}
-    <tr class="odd">
+    <tr class="{% cycle "odd" "even" %}">
         <td>{{ agency.agency }}</td>
         {% for country, data in agency_values %}
             <td>{{ data.baseline_value|default_if_none:"-" }}</td>
