@@ -1,0 +1,17 @@
+{% extends "submissions/graph_base.html" %}
+
+{% block graphdefs %}
+
+<script>
+{{ graph_3G|safe }}
+{{ graph_4G|safe }}
+</script>
+{% endblock %}
+
+{% block body %}
+<h1>{{ agency }}</h1>
+
+<div class="graphblock"><div id="graph_3G" class="graph"></div></div>
+<div class="graphblock"><div id="graph_4G" class="graph"></div></div>
+
+{% endblock %}

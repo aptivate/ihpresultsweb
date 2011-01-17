@@ -76,66 +76,72 @@ urlpatterns = patterns('',
     (r'^api/country_scorecard/(?P<country_id>\d+)/$', 'submissions.api.country_scorecard', {}, 'api_country_scorecard'),
 
     # Graph Views
-    (r"^graph/highlevel/$", "submissions.graphs.highlevelgraphs", {}, "highlevelgraphs"),
-    (r"^graph/projection/$", "submissions.graphs.projectiongraphs", {}, "projectiongraphs"),
-    (r"^graph/additional/$", "submissions.graphs.additional_graphs", {}, "additionalgraphs"),
+    (r"^agencies/graphs/highlevel/$", "submissions.graphs.highlevelgraphs", {}, "highlevelgraphs"),
+    (r"^agencies/graphs/projection/$", "submissions.graphs.projectiongraphs", {}, "projectiongraphs"),
+    (r"^agencies/graphs/additional/$", "submissions.graphs.additional_graphs", {}, "additionalgraphs"),
 
-    (r"^graph/agency/(?P<agency_name>[a-zA-Z\s]+)/$", "submissions.graphs.agencygraphs", {
+    (r"^agencies/(?P<agency_name>[a-zA-Z\s]+)/graphs/$", "submissions.graphs.agencygraphs", {
         "titles" : agency_ratio_titles,
         "yaxes" : agency_yaxis,
         "xaxis" : agency_xaxis,
     }, "agencygraphs"),
 
-    (r"^graph/agency/(?P<agency_name>[a-zA-Z\s]+)/absolute$", "submissions.graphs.agencygraphs", {
+    (r"^agencies/(?P<agency_name>[a-zA-Z\s]+)/graphs/absolute$", "submissions.graphs.agencygraphs", {
         "template_name" : "submissions/agencygraphs_absolute.html",
         "titles" : agency_abs_titles,
         "yaxes" : agency_yaxis,
         "xaxis" : agency_xaxis,
     }, "agencygraphs_absolute"),
 
-    (r"^graph/country/(?P<country_name>[a-zA-Z\s]+)/$", "submissions.graphs.countrygraphs", {
+    (r"^agencies/graphs/by_country/(?P<country_name>[a-zA-Z\s]+)/ratio_graph/$", "submissions.graphs.countrygraphs", {
         "titles" : country_ratio_titles,
         "yaxes" : country_yaxis,
         "xaxis" : country_xaxis,
     }, "countrygraphs"),
 
-    (r"^graph/country/(?P<country_name>[a-zA-Z\s]+)/absolute$", "submissions.graphs.countrygraphs", {
+    (r"^agencies/graphs/by_country/(?P<country_name>[a-zA-Z\s]+)/absolute_graph/$", "submissions.graphs.countrygraphs", {
         "template_name" : "submissions/countrygraphs_absolute.html",
         "titles" : country_ratio_titles,
         "yaxes" : country_yaxis,
         "xaxis" : country_xaxis,
     }, "countrygraphs_absolute"),
 
+    (r"^countries/graphs/$", "submissions.graphs.government_graphs", {
+        "template_name" : "submissions/main_base.html",
+        "extra_context" : {
+            "content_file" : "submissions/country_graphs_by_indicator.html"
+        }
+    }, "government_graphs"),
+
     # Table Views
-    (r'^scorecard/tables/agency/by_country/(?P<country_id>\d+)/$', 'submissions.views.agency_table_by_country', {
+    (r'^agencies/tables/by_country/(?P<country_id>\d+)/$', 'submissions.views.agency_table_by_country', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/agency_table.html"
         }
     }, 'agency_table_by_country'),
 
-    (r'^scorecard/tables/agency/by_agency/(?P<agency_id>\d+)/$', 'submissions.views.agency_table_by_agency', {
+    (r'^agencies/agency/tables/(?P<agency_id>\d+)/$', 'submissions.views.agency_table_by_agency', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/agency_table.html"
         }
     }, 'agency_table_by_agency'),
 
-    (r'^scorecard/tables/agency/by_indicator/(?P<indicator>.+)/$', 'submissions.views.agency_table_by_indicator', {
+    (r'^agencies/tables/by_indicator/(?P<indicator>.+)/$', 'submissions.views.agency_table_by_indicator', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/agency_table_by_indicator.html"
         }
     }, 'agency_table_by_indicator'),
 
-    (r'^scorecard/tables/country/$', 'submissions.views.country_table', {
+    (r'^countries/tables/$', 'submissions.views.country_table', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/country_table.html"
         }
     }, 'country_table'),
 
-    (r'^scorecard/tables/country/$', 'submissions.views.country_table', {}, 'country_table'),
 
 
     # Data Tables Views
