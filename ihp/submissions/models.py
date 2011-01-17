@@ -1,6 +1,7 @@
 from django.db import models
 import math
 from django.utils.functional import curry
+from utils import memoize
 
 class Rating(object):
     QUESTION = "question"
@@ -108,13 +109,16 @@ class GovQuestion(models.Model):
         )
 
 class AgencyCountriesManager(models.Manager):
+    
+    @memoize
+    def _get_agency_countries(self):
+        return list(self.all().select_related())
+
     def get_agency_countries(self, agency):
-        res = self.filter(agency=agency)
-        return [r.country for r in res]
+        return [r.country for r in self._get_agency_countries() if r.agency==agency]
 
     def get_country_agencies(self, country):
-        res = self.filter(country=country, agency__type="Agency")
-        return [r.agency for r in res]
+        return [r.agency for r in self._get_agency_countries() if r.country==country and r.agency.type=="Agency"]
 
 class AgencyCountries(models.Model):
     agency = models.ForeignKey(Agency, null=False)
@@ -338,12 +342,16 @@ class CountryLanguage(models.Model):
     language = models.CharField(max_length=20, null=False)
 
 class NotApplicableManager(models.Manager):
+    @memoize
+    def _get_variations(self):
+        return list(self.all())
+
     def is_not_applicable(self, val):
         if val == None:
             return False
 
         val = val.strip().lower()
-        variations = [na.variation for na in self.all()]
+        variations = [na.variation for na in self._get_variations()]
         if val in variations:
             return True
         else:
@@ -361,6 +369,15 @@ class NotApplicable(models.Model):
 
 class CountryExclusionManager(models.Manager):
 
+    @memoize
+    def _get_baseline_applicable(self):
+        return list(self.filter(baseline_applicable=False).select_related())
+
+    @memoize
+    def _get_latest_applicable(self):
+        return list(self.filter(latest_applicable=False).select_related())
+        
+    @memoize
     def is_applicable(self, question, country):
         """
         Checks whether a question is applicable to that particular country
@@ -368,16 +385,28 @@ class CountryExclusionManager(models.Manager):
         if type(country) == Country:
             country = country.country
 
-        baseline_applicable = self.filter(question_number=question, country__country=country, baseline_applicable=False).count() == 0
-        latest_applicable = self.filter(question_number=question, country__country=country, latest_applicable=False).count() == 0
+        bapp = self._get_baseline_applicable()
+        lapp = self._get_latest_applicable()
+
+        baseline_applicable = len([
+            ba 
+            for ba in bapp 
+            if ba.question_number==question and ba.country.country==country
+        ]) == 0
+
+        latest_applicable = len([
+            ba 
+            for ba in lapp 
+            if ba.question_number==question and ba.country.country==country
+        ]) == 0
 
         return baseline_applicable, latest_applicable
 
     def baseline_excluded_countries(self, question):
-        return [ce.country for ce in self.filter(question_number=question, baseline_applicable=False)]
+        return [ce.country for ce in self._get_baseline_applicable() if ce.question_number==question]
 
     def latest_excluded_countries(self, question):
-        return [ce.country for ce in self.filter(question_number=question, latest_applicable=False)]
+        return [ce.country for ce in self._get_latest_applicable() if ce.question_number==question]
 
 class CountryExclusion(models.Model):
     country = models.ForeignKey(Country, null=False)

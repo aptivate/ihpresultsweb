@@ -28,17 +28,15 @@ def func_8dpfix(qs, agency, selector, q):
 
 def count_factory(value):
     def count_value(qs, agency_or_country, selector, q):
-        qs = qs.filter(
-            question_number=q, 
-        )
+        qs = [qq for qq in qs if qq.question_number==q]
 
-        if qs.count() == 0:
+        if len(qs) == 0:
             return 0
 
         if selector == base_selector:
-            return qs.filter(baseline_value__iexact=value).count()
+            return len([q for q in qs if q.baseline_value.lower() == value.lower()])
         elif selector == cur_selector:
-            return qs.filter(latest_value__iexact=value).count()
+            return len([q for q in qs if q.latest_value.lower() == value.lower()])
     return count_value
 
 def country_perc_factory(value):
@@ -60,14 +58,14 @@ def country_perc_factory(value):
         count_value = count_factory(value)
         if selector == base_selector:
             _value = count_value(
-                qs.exclude(submission__country__country__in=CountryExclusion.objects.baseline_excluded_countries(q)),
+                [q for q in qs if q.submission.country.country not in CountryExclusion.objects.baseline_excluded_countries(q)],
                 agency, selector, q
             )
             _value = calc_val(CountryExclusion.objects.baseline_excluded_countries(q), _value)
 
         elif selector == cur_selector:
             _value = count_value(
-                qs.exclude(submission__country__country__in=CountryExclusion.objects.latest_excluded_countries(q)), 
+                [q for q in qs if q.submission.country.country not in CountryExclusion.objects.latest_excluded_countries(q)],
                 agency, selector, q
             )
             _value = calc_val(CountryExclusion.objects.latest_excluded_countries(q), _value)
@@ -79,7 +77,7 @@ def equals_or_zero(val):
     def test(qs, agency_or_country, selector, q):
         value = val.lower()
         
-        qs = qs.filter(question_number=q)
+        qs = [qq for qq in qs if qq.question_number==q]
         try:
             assert len(qs) == 1
             
@@ -97,7 +95,7 @@ def equals_yes_or_no(val):
     def test(qs, agency_or_country, selector, q):
         value = val.lower()
         
-        qs = qs.filter(question_number=q)
+        qs = [qq for qq in qs if qq.question_number==q]
         assert len(qs) == 1
         
         if selector(qs[0]) == None:
@@ -111,7 +109,7 @@ def equals_yes_or_no(val):
 def combine_yesnos(qs, agency_or_country, selector, *args):
     values = []
     for arg in args:
-        qs1 = qs.filter(question_number=arg)
+        qs1 = [q for q in qs if q.question_number==arg]
 
         if selector(qs1[0]) == None:
             val = " "
@@ -122,8 +120,8 @@ def combine_yesnos(qs, agency_or_country, selector, *args):
     return "".join(values)
 
 def calc_numdenom(qs, agency_or_country, selector, numq, denomq):
-    den = float(_sum_values(qs.filter(question_number=denomq), selector))
-    num = float(_sum_values(qs.filter(question_number=numq), selector))
+    den = float(_sum_values([q for q in qs if q.question_number==denomq], selector))
+    num = float(_sum_values([q for q in qs if q.question_number==numq], selector))
 
     ratio = NA_STR
     if den > 0: ratio = num / den * 100
@@ -135,6 +133,6 @@ def calc_one_minus_numdenom(qs, agency_or_country, selector, numq, denomq):
     return ratio
 
 def sum_values(qs, agency_or_country, selector, *args):
-    qs = qs.filter(question_number__in=args)
+    qs = [q for q in qs if q.question_number in args]
     return float(_sum_values(qs, selector))
 

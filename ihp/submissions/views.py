@@ -79,7 +79,11 @@ def get_country_scorecard_data(country):
         ind["latest_value"] = none_num(data[2])
         ind["latest_year"] = data[3]
 
-    country_data["indicators"]["3G"]["hs_budget_gap"] = 15 - country_data["indicators"]["3G"]["latest_value"]
+    #TODO hack
+    if country_data["indicators"]["3G"]["latest_value"] != NA_STR:
+        country_data["indicators"]["3G"]["hs_budget_gap"] = 15 - country_data["indicators"]["3G"]["latest_value"]
+    else:
+        country_data["indicators"]["3G"]["hs_budget_gap"] = None
     country_data["indicators"]["other"] = {}
 
     # Add agency submissions
@@ -625,7 +629,7 @@ def agency_table_by_indicator(request, indicator, template_name="submissions/age
 
     countries = Country.objects.all().order_by("country")
     agencies = []
-    for agency in Agency.objects.filter(type="Agency"):
+    for agency in Agency.objects.filter(type="Agency").select_related():
         agency_values = []
         for country in countries:
             if country in agency.countries:

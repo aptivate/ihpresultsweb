@@ -6,22 +6,21 @@ from indicators import calc_agency_indicators, calc_country_indicators, dp_indic
 from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, CountryLanguage, DPScorecardRatings, Rating
 from target_criteria import criteria_funcs, MissingValueException
 import math
+from itertools import chain
 
 def get_agency_targets(agency, indicators):
     targets = {}
-    for indicator in indicators:
-        try:
-            target = AgencyTargets.objects.get(agency=agency, indicator=indicator)
-        except AgencyTargets.DoesNotExist:
-            target = AgencyTargets.objects.get(agency=None, indicator=indicator)
-        targets[indicator] = target
+    agency_targets = AgencyTargets.objects.filter(agency=agency).select_related()
+    none_targets = AgencyTargets.objects.filter(agency=None).select_related()
+
+    for target in chain(none_targets, agency_targets):
+        targets[target.indicator] = target
     return targets
 
 def get_country_targets(country, indicators):
     targets = {}
     country_targets = CountryTargets.objects.filter(country=country)
     none_targets = CountryTargets.objects.filter(country=None)
-    from itertools import chain
 
     for target in chain(none_targets, country_targets):
         targets[target.indicator] = target

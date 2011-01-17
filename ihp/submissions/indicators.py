@@ -3,12 +3,14 @@ from indicator_funcs import *
 import traceback
 from utils import memoize
 from consts import NA_STR
+from django.db.models.query import QuerySet
 
 def calc_indicator(qs, agency_or_country, indicator, funcs=None):
+    if type(qs) == QuerySet: qs = list(qs)
     funcs = funcs or indicator_funcs
     func, args = funcs[indicator]
     # TODO - this is really ugly - probably need to refactor this code
-    qs2 = qs.filter(question_number__in=args)
+    qs2 = [q for q in qs if q.question_number in args]
     
     comments = [(question.question_number, question.submission.country, question.comments) for question in qs2]
 
@@ -25,15 +27,15 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
         if NotApplicable.objects.is_not_applicable(q.latest_value) or not latest_applicable:
             exclude_latest.append(q.submission.id)
 
-    qs2_baseline = qs2.exclude(submission__id__in=exclude_baseline)
-    qs2_latest = qs2.exclude(submission__id__in=exclude_latest)
+    qs2_baseline = [q for q in qs2 if not q.submission.id in exclude_baseline]
+    qs2_latest = [q for q in qs2 if not q.submission.id in exclude_latest]
 
-    if qs2_baseline.count() == 0:
+    if len(qs2_baseline) == 0:
         base_val = NA_STR
     else:
         base_val = func(qs2_baseline, agency_or_country, base_selector, *args)
 
-    if qs2_latest.count() == 0:
+    if len(qs2_latest) == 0:
         cur_val = NA_STR
     else:
         cur_val = func(qs2_latest, agency_or_country, cur_selector, *args)
@@ -47,12 +49,11 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
 
     return (base_val, base_year, cur_val, cur_year), comments
 
-def calc_agency_indicator(agency, indicator):
+def calc_agency_indicator(qs, agency, indicator):
     """
     Calculate the value of a particular indicator for the given agency
     Returns a tuple ((base_val, base_year, cur_val, cur_year), indicator comment)
     """
-    qs = DPQuestion.objects.filter(submission__agency=agency)
     return calc_indicator(qs, agency, indicator)
 
 def calc_agency_indicators(agency):
@@ -67,7 +68,8 @@ def calc_agency_indicators(agency):
         .
     }
     """
-    results = [calc_agency_indicator(agency, indicator) for indicator in dp_indicators]
+    qs = DPQuestion.objects.filter(submission__agency=agency).select_related()
+    results = [calc_agency_indicator(qs, agency, indicator) for indicator in dp_indicators]
     return dict(zip(dp_indicators, results))
 
 def calc_overall_agency_indicators(funcs=None):
@@ -78,16 +80,15 @@ def calc_overall_agency_indicators(funcs=None):
 
     """
     indicators = ["2DPa", "2DPb", "2DPc", "3DP", "5DPa", "5DPb", "5DPc"]
-    qs = DPQuestion.objects.all()
+    qs = DPQuestion.objects.all().select_related()
 
     results = [calc_indicator(qs, None, indicator, funcs) for indicator in indicators]
     return dict(zip(indicators, results))
 
-def calc_agency_country_indicator(agency, country, indicator, funcs=None):
+def calc_agency_country_indicator(qs, agency, country, indicator, funcs=None):
     """
     Same as calc_agency_indicator above but only looks at a specific country
     """
-    qs = DPQuestion.objects.filter(submission__agency=agency, submission__country=country)
     funcs = funcs or dict(indicator_funcs)
     try:
         funcs["1DP"] = (equals_or_zero("yes"), ("1",))
@@ -103,15 +104,15 @@ def calc_agency_country_indicators(agency, country, funcs=None):
     """
     Same as calc_agency_indicators above but only looks at a specific country
     """
-    results = [calc_agency_country_indicator(agency, country, indicator, funcs) for indicator in dp_indicators]
+    qs = list(DPQuestion.objects.filter(submission__agency=agency, submission__country=country).select_related())
+    results = [calc_agency_country_indicator(qs, agency, country, indicator, funcs) for indicator in dp_indicators]
     return dict(zip(dp_indicators, results))
 
-def calc_country_indicator(country, indicator, funcs=None):
+def calc_country_indicator(qs, country, indicator, funcs=None):
     """
     Calculate the value of a particular indicator for the given country
     Returns a tuple ((base_val, base_year, cur_val, cur_year), indicator comment)
     """
-    qs = GovQuestion.objects.filter(submission__country=country)
     return calc_indicator(qs, country, indicator, funcs)
 
 def calc_country_indicators(country, funcs=None):
@@ -126,7 +127,8 @@ def calc_country_indicators(country, funcs=None):
         .
     }
     """
-    results = [calc_country_indicator(country, indicator, funcs) for indicator in g_indicators]
+    qs = GovQuestion.objects.filter(submission__country=country).select_related()
+    results = [calc_country_indicator(qs, country, indicator, funcs) for indicator in g_indicators]
     return dict(zip(g_indicators, results))
 
 dp_indicators = [
