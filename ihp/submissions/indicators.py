@@ -113,8 +113,6 @@ def calc_country_indicator(qs, country, indicator, funcs=None):
     Calculate the value of a particular indicator for the given country
     Returns a tuple ((base_val, base_year, cur_val, cur_year), indicator comment)
     """
-    if country.country == "Mozambique" and indicator == "4G":
-        import pdb; pdb.set_trace()
     return calc_indicator(qs, country, indicator, funcs)
 
 def calc_country_indicators(country, funcs=None):

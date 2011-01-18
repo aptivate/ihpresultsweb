@@ -1,6 +1,12 @@
 {% block head %}
     {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/table.css"> 
+    <style>
+        .countryrow {
+            border-bottom: solid 3px black;
+        }
+
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -20,8 +26,8 @@
         {% endfor %}
 
     </tr>
-    <tr class="even">
-        <td>Country</td>
+    <tr class="countryrow even">
+        <td>Country Data</td>
         {% for country, calcs in country_calcs %}
             <td>{{ calcs.base_val|upper }}</td>
             <td>{{ calcs.cur_val|upper }}</td>

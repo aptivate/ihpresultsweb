@@ -1,3 +1,6 @@
+h1 {
+    font-size: 160%;
+}
 
 .year {
     font-size: 0.8em;
@@ -7,6 +10,11 @@ table {
     border: solid thin black
     float: left;
     margin: auto;
+}
+
+th {
+    text-align: center;
+    font-size: 120%;
 }
 
 tr.head {
@@ -25,16 +33,17 @@ tr.odd {
     background-color: #989494;
 }
 
-td {
+td, th {
     border: solid thin black;
     text-align: center;
+}
+
+td {
     width: 50px;
     height: 50px;
 }
 
-td:nth-child(2n+1)
-
-td:first-child {
+td:nth-child(2n+1) td:first-child {
     text-align: left;
 }
 
@@ -46,12 +55,8 @@ td:first-child + td {
     text-align: center;
 }
 
-.dpind td:nth-of-type(3n+1) { 
+.dpind td:nth-of-type(3n+1), .dpind th:nth-of-type(3n+1) { 
     border-right: solid 2px black;
-}
-
-.dpind td:nth-of-type(3n+1) { 
-    border-left: solid 2px black;
 }
 
 .dp td:nth-of-type(3n+2) { 
