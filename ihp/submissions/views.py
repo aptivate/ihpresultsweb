@@ -174,7 +174,7 @@ def get_countries_scorecard_data():
         if country.submission_set.filter(type="Gov").count() > 0
     ])
 
-def agency_export(request):
+def agency_export(request, language):
 
     headers = [
         "file", "agency", "profile", 
@@ -422,7 +422,7 @@ def get_countries_export_data():
             traceback.print_exc()
     return data
 
-def country_export(request):
+def country_export(request, language):
 
     headers = [
         # Front of scorecard
@@ -475,8 +475,15 @@ def country_export(request):
         if type(x) not in [str, unicode]:
             x = unicode(x)
         return x.encode("utf8")
-    for agency in data:
-        writer.writerow([enc(data[agency].get(header, "")) for header in headers])
+
+    for country in data:
+        country_language = "English"
+        languages = list(country.countrylanguage_set.all())
+        if len(languages) > 0:
+            country_language = languages[0].language
+
+        if country_language == language:
+            writer.writerow([enc(data[country].get(header, "")) for header in headers])
     return response
 
 def gov_questionnaire(request, template_name="submissions/gov_questionnaire.html", extra_context=None):

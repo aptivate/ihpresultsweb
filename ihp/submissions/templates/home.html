@@ -102,7 +102,12 @@
                         <p>
                             <ol>
                                 <li><a href="{% url agency_export %}">Agency Export</a></li>
-                                <li><a href="{% url country_export %}">Country Export</a></li>
+                                <li>Country Export
+                                    <ul style="padding-left: 10px">
+                                        <li><a href="{% url country_export "English" %}">English Speaking Countries</a></li>
+                                        <li><a href="{% url country_export "French" %}">French Speaking Countries</a></li>
+                                    </ul>
+                                </li>
                                 <li><a href="{% url agency_questionnaire %}">Raw DP Questions</a></li>
                                 <li><a href="{% url agency_questionnaire_cols %}">Raw DP Questions (Cols)</a></li>
                                 <li><a href="{% url gov_questionnaire %}">Raw Gov Questions</a></li>
