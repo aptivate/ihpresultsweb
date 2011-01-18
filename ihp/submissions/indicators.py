@@ -113,6 +113,8 @@ def calc_country_indicator(qs, country, indicator, funcs=None):
     Calculate the value of a particular indicator for the given country
     Returns a tuple ((base_val, base_year, cur_val, cur_year), indicator comment)
     """
+    if country.country == "Mozambique" and indicator == "4G":
+        import pdb; pdb.set_trace()
     return calc_indicator(qs, country, indicator, funcs)
 
 def calc_country_indicators(country, funcs=None):
@@ -164,7 +166,7 @@ indicator_funcs = {
     "2Ga"  : (combine_yesnos, ("2", "3")),
     "2Gb"  : (equals_or_zero("yes"), ("4",)),
     "3G"   : (calc_numdenom, ("6", "5")),
-    "4G"   : (calc_one_minus_numdenom, ("8", "7")),
+    "4G"   : (calc_numdenom, ("8", "7")),
     "5Ga"  : (sum_values, ("9",)),
     "5Gb"  : (sum_values, ("10",)),
     "6G"   : (equals_yes_or_no("yes"), ("11",)),
