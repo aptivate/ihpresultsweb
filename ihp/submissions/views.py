@@ -174,7 +174,7 @@ def get_countries_scorecard_data():
         if country.submission_set.filter(type="Gov").count() > 0
     ])
 
-def agency_export(request, language):
+def agency_export(request):
 
     headers = [
         "file", "agency", "profile", 
