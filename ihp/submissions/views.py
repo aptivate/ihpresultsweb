@@ -609,14 +609,15 @@ def agency_table_by_agency(request, agency_id, template_name="submissions/agency
         indicators = calc_agency_country_indicators(agency, country, positive_funcs)
         ratings = country_agency_indicator_ratings(country, agency)
         for indicator in indicators:
-            base_val, base_year, latest_val, _ = indicators[indicator][0]
-            country_abs_values[indicator] = (
-                tbl_float_format(base_val), 
-                tbl_float_format(latest_val), 
-                tbl_float_format(perc_change(base_val, latest_val)),
-                base_year,
-                ratings[indicator]
-            ) 
+            base_val, base_year, latest_val, latest_year = indicators[indicator][0]
+            country_abs_values[indicator] = {
+                "base_val" : tbl_float_format(base_val), 
+                "latest_val" : tbl_float_format(latest_val), 
+                "perc_change" : tbl_float_format(perc_change(base_val, latest_val)),
+                "base_year" : base_year,
+                "latest_year" : latest_year,
+                "rating" : ratings[indicator]
+            } 
         abs_values[country.country] = country_abs_values
     extra_context["abs_values"] = sorted(abs_values.items())
     extra_context["spm_map"] = spm_map
