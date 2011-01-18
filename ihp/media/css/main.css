@@ -1,0 +1,99 @@
+body {
+    color:#ccc;
+    background: #B2C5BF;
+}
+
+h1 {
+    color:#69c;
+    font-size:160%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+#hd {
+    padding:1em 0;
+    color:#999;
+}
+
+#hd h2 {
+    background:#111;
+    color:#fff;
+    padding:.2em;
+    margin-top:.5em;
+}
+
+.yui-u h2,.yui-u p,.yui-u form{
+    padding:.5em;
+}
+
+#yui-main h2 {
+    font-size:150%;
+    color:#393;
+}
+
+#ft {
+    margin-top:1em;
+    background:#111;
+    color:#666;
+}
+
+#ft p{padding:.5em 1em;}
+
+.yui-u:hover {
+}
+
+.yui-u {
+    background: #003232;
+    padding: 0px;
+    border-radius:8px;
+}
+
+#content h2 {
+    color:#66f;
+    padding-bottom:.5em;
+}
+#content a{color:#fff;}
+
+#content p{
+    padding-bottom:.5em;
+}
+
+#ft {
+    background-color: grey;
+}
+
+.acblock {
+    float:left; 
+    border:solid 1px white; 
+    width:99px;
+    padding: 1px;
+}
+
+.acblock:hover {
+    background: black;
+}
+
+.acblock ul {
+    text-align: left;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+.blockcol {
+    text-align: center;
+}
+
+.blockrow {
+    text-align: left;
+    padding-left: 5px;
+}
+
+#hd .yui-u {
+    background-color: white;
+    text-align: right;
+}

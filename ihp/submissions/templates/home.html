@@ -1,79 +1,130 @@
 {% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}/css/main.css">
+{% endblock head %}
 
 {% block body %}
 
-<h2>Forms</h2>
-<ol>
-    <li><a href="{% url dp_summary_edit %}">DP Summary Form</a></li>
-    <li><a href="{% url dp_ratings_edit %}">DP Ratings Form</a></li>
-    <li><a href="{% url gov_ratings_edit %}">Gov Ratings Form</a></li>
-    <li><a href="{% url country_scorecard_ratings_edit %}">Country Scorecard Form</a></li>
-    <li><a href="{% url admin:submissions_mdgdata_changelist %}">MDG Data</a></li>
-    <li><a href="{% url admin:submissions_country8dpfix_changelist %}">8DP Fix</a></li>
-</ol>
-<h2>Views</h2>
-<ol>
-    <li><a href="{% url agency_export %}">Agency Export</a></li>
-    <li><a href="{% url country_export %}">Country Export</a></li>
-    <li><a href="{% url agency_questionnaire %}">Raw DP Questions</a></li>
-    <li><a href="{% url agency_questionnaire_cols %}">Raw DP Questions (Cols)</a></li>
-    <li><a href="{% url gov_questionnaire %}">Raw Gov Questions</a></li>
-    <li><a href="{% url agency_country_ratings %}">Agency Country Ratings</a></li>
-</ol>
-<h2><a href="{% url highlevelgraphs %}">High-level Graphs</a></h2>
-<h2><a href="{% url projectiongraphs %}">Projection Graphs</a></h2>
-<h2><a href="{% url additionalgraphs %}">Additional Graphs</a></h2>
-
-<h2>Graphs (by Agency)</h2>
-<table>
-    <tr>
-        <th>Agency</th>
-        <th>Graph</th>
-        <th>Abs Graph</th>
-        <th>Table</th>
-    </tr>
-    {% for agency in agencies %}
-    <tr>
-        <td>{{ agency.agency }}</td>
-        <td><a href="{% url agencygraphs agency.agency %}">Ratio Graph</a></td> 
-        <td><a href="{% url agencygraphs_absolute agency.agency %}">Absolute Graph</a></td>
-        <td><a href="{% url agency_table_by_agency agency.id %}">Table</a></td>
-    </tr>
-    {% endfor %}
-</table>
-
-<h2>Graphs (by Country)</h2>
-<table>
-    <tr>
-        <th>Country</th>
-        <th>Graph</th>
-        <th>Abs Graph</th>
-        <th>Table</th>
-    </tr>
-    {% for country in countries %}
-    <tr>
-        <td>{{ country.country }}</td>
-        <td><a href="{% url countrygraphs country.country %}">Ratio Graph</a></td> 
-        <td><a href="{% url countrygraphs_absolute country.country %}">Absolute Graph</a></td>
-        <td><a href="{% url agency_table_by_country country.id %}">Table</a></td>
-    </tr>
-    {% endfor %}
-</table>
-
-<h2>Agency Tables by Indicator</h2>
-<ul>
-<li><a href="{% url agency_table_by_indicator "1DP" %}">1DP</a></li>
-<li><a href="{% url agency_table_by_indicator "6DP" %}">6DP</a></li>
-<li><a href="{% url agency_table_by_indicator "7DP" %}">7DP</a></li>
-<li><a href="{% url agency_table_by_indicator "8DP" %}">8DP</a></li>
-</ul>
-
-<h2>Country Table</h2>
-<a href="{% url country_table %}">Country Table</a>
-
-<h2><a href="{% url government_graphs %}">Government Graphs</a></h2>
-
-<h2>Backed up code and database</h2>
-<a href="{{ MEDIA_URL }}/ihp-backup.tgz">Download</a>
+<div id="doc4" class="yui-t7"> 
+    <div id="hd"> 
+        <div class="yui-u" style="width:100% background-color: white"> 
+        <img src="{{ MEDIA_URL}}/images/logo.png"/>
+        </div>
+    </div> 
+    <div id="bd"> 
+        <div id="yui-main"> 
+            <div class="yui-b"> 
+                <div class="yui-gb columnfix"> 
+                    <div class="yui-u first blockcol"> 
+                        <h2>Partner Data by Agency</h2> 
+                        <p>
+                            {% for agency in agencies %}
+                            <div class="acblock">
+                            <h3>{{ agency.agency }}</h3>
+                            <ul>
+                                <li><a href="{% url agencygraphs agency.agency %}">Ratio Graph</a></li> 
+                                <li><a href="{% url agencygraphs_absolute agency.agency %}">Absolute Graph</a></li>
+                                <li><a href="{% url agency_table_by_agency agency.id %}">Table</a></li>
+                            </ul>
+                            </div>
+                            {% endfor %}
+                        </p> 
+                    </div> 
+                    <div class="yui-u blockcol"> 
+                        <h2>Partner Data by Country</h2>
+                        <p>
+                            {% for country in countries %}
+                            <div class="acblock">
+                            <h3>{{ country.country }}</h3>
+                            <ul>
+                                <li><a href="{% url countrygraphs country.country %}">Ratio Graph</a></li>
+                                <li><a href="{% url countrygraphs_absolute country.country %}">Absolute Graph</a></li>
+                                <li><a href="{% url agency_table_by_country country.id %}">Table</a></li>
+                            </ul>
+                            </div>
+                            {% endfor %}
+                        </p>
+                    </div> 
+                    <div class="yui-u blockcol">
+                        <h2>Partner Data by Indicator</h2>
+                        <p>
+                            <ul class="blockrow">
+                                <li><a href="{% url agency_table_by_indicator "1DP" %}">1DP</a></li>
+                                <li><a href="{% url agency_table_by_indicator "6DP" %}">6DP</a></li>
+                                <li><a href="{% url agency_table_by_indicator "7DP" %}">7DP</a></li>
+                                <li><a href="{% url agency_table_by_indicator "8DP" %}">8DP</a></li>
+                            </ul>
+                        </p>
+                    </div>
+                </div> <!-- end row 1 -->
+                <br/>
+                <div class="yui-b"> 
+                    <div class="yui-u blockrow">
+                        <h2>Additional Graphs</h2>
+                        <p>
+                            <ul>
+                                <li><a href="{% url highlevelgraphs %}">High-level Graphs</a></li>
+                                <li><a href="{% url projectiongraphs %}">Projection Graphs</a></li>
+                                <li><a href="{% url additionalgraphs %}">Additional Graphs</a></li>
+                            </ul>
+                        </p>
+                    </div>
+                </div> <!-- end row 2 -->
+                <div class="yui-b"> 
+                    <div class="yui-u blockrow">
+                        <h2>Country Data</h2>
+                        <p>
+                            <ul>
+                                <li><a href="{% url country_table %}">Country Table</a></li>
+                                <li><a href="{% url government_graphs %}">Government Graphs</a></li>
+                            </ul>
+                        </p>
+                    </div>
+                </div> <!-- end row 2 -->
+                <div class="yui-b"> 
+                    <div class="yui-u blockrow">
+                        <h2>Forms</h2>
+                        <p>
+                            <ol>
+                                <li><a href="{% url dp_summary_edit %}">DP Summary Form</a></li>
+                                <li><a href="{% url dp_ratings_edit %}">DP Ratings Form</a></li>
+                                <li><a href="{% url gov_ratings_edit %}">Gov Ratings Form</a></li>
+                                <li><a href="{% url country_scorecard_ratings_edit %}">Country Scorecard Form</a></li>
+                                <li><a href="{% url admin:submissions_mdgdata_changelist %}">MDG Data</a></li>
+                                <li><a href="{% url admin:submissions_country8dpfix_changelist %}">8DP Fix</a></li>
+                            </ol>
+                        </p>
+                    </div>
+                </div> <!-- end row 2 -->
+                <div class="yui-b"> 
+                    <div class="yui-u blockrow">
+                        <h2>Additional Views</h2>
+                        <p>
+                            <ol>
+                                <li><a href="{% url agency_export %}">Agency Export</a></li>
+                                <li><a href="{% url country_export %}">Country Export</a></li>
+                                <li><a href="{% url agency_questionnaire %}">Raw DP Questions</a></li>
+                                <li><a href="{% url agency_questionnaire_cols %}">Raw DP Questions (Cols)</a></li>
+                                <li><a href="{% url gov_questionnaire %}">Raw Gov Questions</a></li>
+                                <li><a href="{% url agency_country_ratings %}">Agency Country Ratings</a></li>
+                            </ol>
+                        </p>
+                    </div>
+                </div> <!-- end row 2 -->
+                <div class="yui-b"> 
+                    <div class="yui-u blockrow">
+                        <h2>Administration</h2>
+                        <p>
+                            <a href="{{ MEDIA_URL }}/ihp-backup.tgz">Download Code and Database Backup</a>
+                        </p>
+                    </div>
+                </div> <!-- end row 2 -->
+            </div>
+        </div> 
+    </div> 
+    <div id="ft"> 
+        <p></p> 
+    </div> 
+</div> 
 
 {% endblock %}
