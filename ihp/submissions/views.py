@@ -667,7 +667,6 @@ def agency_table_by_indicator(request, indicator, template_name="submissions/age
     agencies = sorted(agencies, key=lambda x: x[0].agency)
     extra_context["agencies"] = agencies
     extra_context["countries"] = countries
-    print country_calcs
     extra_context["country_calcs"] = country_calcs
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)

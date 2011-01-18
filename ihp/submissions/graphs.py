@@ -221,7 +221,13 @@ class CountryBarGraph(Chart):
         }
         self.title = {"text" : title}
         country_names = [country.country for country in countries]
-        self.xAxis = {"categories" : country_names} 
+        self.xAxis = {
+            "categories" : country_names,
+            "labels" : {
+                "rotation" : 90,
+                "y" : 40,
+            }
+        } 
         self.yAxis = {"title" : {"text" : "%"}} 
         self.series = [{
             "name" : "Baseline",
