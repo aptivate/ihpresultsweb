@@ -4,7 +4,7 @@ from django.utils.functional import memoize
 from indicators import NA_STR
 from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
 from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, CountryLanguage, DPScorecardRatings, Rating
-from target_criteria import criteria_funcs, MissingValueException
+from target_criteria import criteria_funcs, MissingValueException, CannotCalculateException
 import math
 from itertools import chain
 
@@ -30,9 +30,6 @@ def evaluate_indicator(target, base_val, cur_val):
     tick_func = criteria_funcs[target.tick_criterion_type]
     arrow_func = criteria_funcs[target.arrow_criterion_type]
 
-    if cur_val == NA_STR or base_val == NA_STR:
-        return Rating.NONE
-
     if cur_val != None:
         if target.indicator in ["4DP", "5DPa", "5DPb"]:
             if cur_val <= 20:
@@ -50,6 +47,8 @@ def evaluate_indicator(target, base_val, cur_val):
             return Rating.CROSS
     except MissingValueException:
         return Rating.QUESTION
+    except CannotCalculateException:
+        return Rating.NONE
 
 def calc_agency_targets(agency):
     """

@@ -1,14 +1,20 @@
 import math
+from indicators import NA_STR
 
 def criterion_absolute(base_val, cur_val, criterion_param):
-    
+    if cur_val == NA_STR: 
+        raise CannotCalculateException() 
     if cur_val == None: 
         raise MissingValueException() 
+
     if math.fabs(cur_val - criterion_param) < 0.000000001:
         return True
     return False
 
 def criterion_relative_increase(base_val, cur_val, criterion_param):
+    if cur_val == NA_STR or base_val == NA_STR:
+        raise CannotCalculateException()
+
     if cur_val == None or base_val == None: 
         raise MissingValueException() 
 
@@ -17,6 +23,8 @@ def criterion_relative_increase(base_val, cur_val, criterion_param):
     return False
 
 def criterion_relative_decrease(base_val, cur_val, criterion_param):
+    if cur_val == NA_STR or base_val == NA_STR:
+        raise CannotCalculateException()
     if cur_val == None or base_val == None: 
         raise MissingValueException() 
 
@@ -25,6 +33,8 @@ def criterion_relative_decrease(base_val, cur_val, criterion_param):
     return False
 
 def criterion_increase(base_val, cur_val, criterion_param):
+    if cur_val == NA_STR or base_val == NA_STR:
+        raise CannotCalculateException()
     if cur_val == None or base_val == None: 
         raise MissingValueException() 
 
@@ -33,6 +43,8 @@ def criterion_increase(base_val, cur_val, criterion_param):
     return False
 
 def criterion_decrease(base_val, cur_val, criterion_param):
+    if cur_val == NA_STR or base_val == NA_STR:
+        raise CannotCalculateException()
     if cur_val == None or base_val == None: 
         raise MissingValueException()
 
@@ -42,29 +54,45 @@ def criterion_decrease(base_val, cur_val, criterion_param):
 
 def criterion_absolute_greater_than(base_val, cur_val, criterion_param):
 
+    if cur_val == NA_STR: 
+        raise CannotCalculateException() 
     if cur_val == None: raise MissingValueException()
     if cur_val > criterion_param:
         return True
     return False
 
 def criterion_absolute_less_than(base_val, cur_val, criterion_param):
+    if cur_val == NA_STR: 
+        raise CannotCalculateException() 
     if cur_val == None: raise MissingValueException()
     if cur_val < criterion_param:
         return True
     return False
 
 def criterion_absolute_increase(base_val, cur_val, criterion_param):
+    if cur_val == NA_STR or base_val == NA_STR:
+        raise CannotCalculateException()
+    if cur_val == None or base_val == None: 
+        raise MissingValueException()
+
     if cur_val - criterion_param > base_val:
         return True
     return False
 
 def criterion_absolute_decrease(base_val, cur_val, criterion_param):
+    if cur_val == NA_STR or base_val == NA_STR:
+        raise CannotCalculateException()
+    if cur_val == None or base_val == None: 
+        raise MissingValueException()
+
     if cur_val + criterion_param < base_val:
         return True
     return False
 
 def criterion_both_yes(base_val, cur_val, criterion_param):
-    if len(cur_val.strip()) != 2:
+    if cur_val == NA_STR: 
+        raise CannotCalculateException() 
+    if cur_val == None or len(cur_val.strip()) != 2:
         raise MissingValueException()
 
     if cur_val.lower() == "yy":
@@ -74,7 +102,12 @@ def criterion_both_yes(base_val, cur_val, criterion_param):
 class MissingValueException(Exception):
     pass
 
+class CannotCalculateException(Exception):
+    pass
+
 def criterion_first_yes(base_val, cur_val, criterion_param):
+    if cur_val == NA_STR: 
+        raise CannotCalculateException() 
     if len(cur_val) == 0:
         raise MissingValueException()
 
