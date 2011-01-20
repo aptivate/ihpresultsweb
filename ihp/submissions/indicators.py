@@ -7,6 +7,8 @@ from django.db.models.query import QuerySet
 
 def calc_indicator(qs, agency_or_country, indicator, funcs=None):
     if type(qs) == QuerySet: qs = list(qs)
+    is_none = lambda x : x == None or (unicode(x)).strip() == ""
+
     funcs = funcs or indicator_funcs
     func, args = funcs[indicator]
     # TODO - this is really ugly - probably need to refactor this code
@@ -18,13 +20,15 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
     exclude_latest = []
     for q in qs2:
         if type(q) == DPQuestion:
-            baseline_applicable, latest_applicable = CountryExclusion.objects.is_applicable(q.question_number, q.submission.country)
+            baseline_not_excluded, latest_not_excluded = CountryExclusion.objects.is_applicable(q.question_number, q.submission.country)
+            baseline_excluded = not baseline_not_excluded
+            latest_excluded = not latest_not_excluded
         else:
-            baseline_applicable, latest_applicable = True, True
+            baseline_excluded, latest_excluded = True, True
 
-        if NotApplicable.objects.is_not_applicable(q.baseline_value) or not baseline_applicable:
+        if NotApplicable.objects.is_not_applicable(q.baseline_value) or baseline_excluded or is_none(q.baseline_value):
             exclude_baseline.append(q.submission.id)
-        if NotApplicable.objects.is_not_applicable(q.latest_value) or not latest_applicable:
+        if NotApplicable.objects.is_not_applicable(q.latest_value) or latest_excluded or is_none(q.latest_value):
             exclude_latest.append(q.submission.id)
 
     qs2_baseline = [q for q in qs2 if not q.submission.id in exclude_baseline]
@@ -164,7 +168,7 @@ indicator_funcs = {
     "2Ga"  : (combine_yesnos, ("2", "3")),
     "2Gb"  : (equals_or_zero("yes"), ("4",)),
     "3G"   : (calc_numdenom, ("6", "5")),
-    "4G"   : (calc_numdenom, ("8", "7")),
+    "4G"   : (calc_one_minus_numdenom, ("8", "7")),
     "5Ga"  : (sum_values, ("9",)),
     "5Gb"  : (sum_values, ("10",)),
     "6G"   : (equals_yes_or_no("yes"), ("11",)),

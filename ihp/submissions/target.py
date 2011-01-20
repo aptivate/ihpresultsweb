@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+import numbers
 from django.template import Context, Template
 from django.utils.functional import memoize
 from indicators import NA_STR
@@ -215,7 +216,7 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
         "all" : "In %(cur_year)s %(country_name)s allocated %(cur_val).0f%% of its approved annual national budget to health.",
     },
     "4G" : {
-        "all" : "In %(cur_year)s, %(cur_val).0f%% of health sector funding was disbursed against the approved annual budget.",
+        "all" : "In %(cur_year)s, %(one_minus_cur_val).0f%% of health sector funding was disbursed against the approved annual budget.",
     },
     "5Ga" : {
         "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).1f on the PFM/CPIA scale of performance."
@@ -263,7 +264,7 @@ gov_commentary_text_fr = {
         "all" : u"En %(cur_year)s, %(country_name)s a alloué %(cur_val).0f%% de son budget annuel ayant été approuvé pour le secteur de la santé.",
     },
     "4G" : {
-        "all" : u"En %(cur_year)s, %(cur_val).0f%% du financement alloué au secteur de la santé a été décaissé en fonction du budget annuel ayant été autorisé.",
+        "all" : u"En %(cur_year)s, %(one_minus_cur_val).0f%% du financement alloué au secteur de la santé a été décaissé en fonction du budget annuel ayant été autorisé.",
     },
     "5Ga" : {
         "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val) sur l'échelle de performance GFP/EPIN."
@@ -352,6 +353,14 @@ def calc_country_targets(country):
             "country_name" : country,
         }
 
+        result["one_minus_base_val"] = base_val
+        if isinstance(base_val, numbers.Real):
+            result["one_minus_base_val"] = 100 - base_val
+
+        result["one_minus_cur_val"] = cur_val
+        if isinstance(cur_val, numbers.Real):
+            result["one_minus_cur_val"] = 100 - cur_val
+        
         result["target"] = ratings_target(indicator) or evaluate_indicator(target, base_val, cur_val)
         if ratings_comments(indicator):
             commentary = ratings_comments(indicator)
@@ -372,7 +381,7 @@ def calc_country_targets(country):
                         commentary = gov_commentary_text[indicator][target_value]
                     commentary += u"∆"
                 
-                #result["commentary"] = result["commentary"].encode("utf-8")
+                
                 try:
                     result["commentary"] = commentary % result
                 except TypeError:

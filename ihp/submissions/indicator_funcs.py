@@ -1,4 +1,4 @@
-from models import AgencyCountries, Country8DPFix, CountryExclusion
+from models import AgencyCountries, Country8DPFix, CountryExclusion, NotApplicable
 from consts import NA_STR
 
 base_selector = lambda q : q.baseline_value
@@ -45,32 +45,11 @@ def country_perc_factory(value):
         # the watchlist reduces the denominator if the agency
         # is active in such a country for a particular question
 
-        def calc_val(watchlist, val):
-            countries = [
-                country 
-                for country in AgencyCountries.objects.get_agency_countries(agency) 
-                if country not in watchlist
-            ]
-            
-            num_countries = float(len(countries))
-            return val / num_countries * 100 if num_countries > 0 else NA_STR
-
         count_value = count_factory(value)
-        if selector == base_selector:
-            _value = count_value(
-                [q for q in qs if q.submission.country.country not in CountryExclusion.objects.baseline_excluded_countries(q)],
-                agency, selector, q
-            )
-            _value = calc_val(CountryExclusion.objects.baseline_excluded_countries(q), _value)
+        num_countries = float(len(qs))
+        count = count_value(qs, agency, selector, q)
+        return count / num_countries * 100 if num_countries > 0 else NA_STR
 
-        elif selector == cur_selector:
-            _value = count_value(
-                [q for q in qs if q.submission.country.country not in CountryExclusion.objects.latest_excluded_countries(q)],
-                agency, selector, q
-            )
-            _value = calc_val(CountryExclusion.objects.latest_excluded_countries(q), _value)
-
-        return _value
     return perc_value
 
 def equals_or_zero(val):
