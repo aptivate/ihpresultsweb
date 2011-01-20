@@ -329,8 +329,8 @@ def calc_country_targets(country):
     
     gov_commentary_text = get_country_commentary_text(country)
 
-    rating_question_text = "[Insert some standard text here for question ratings]"
-    rating_none_text = "[Insert some standard text here for none ratings]"
+    rating_question_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
+    rating_none_text = "This Standard Performance Measure was deemed not applicable to %s." % country.country
 
     targets = get_country_targets(country, g_indicators)
     indicators = calc_country_indicators(country)
@@ -390,9 +390,7 @@ def calc_country_targets(country):
                 try:
                     result["commentary"] = commentary % result
                 except TypeError, e:
-                    #import traceback
-                    #traceback.print_exc()
-                    result["commentary"] = rating_none_text
+                    result["commentary"] = ["This text couldn't be generated, possibly because the rating was overriden. Please override the text appropriately as well"]
 
         results[indicator] = result
     return results

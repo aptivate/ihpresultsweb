@@ -18,6 +18,8 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
 
     exclude_baseline = []
     exclude_latest = []
+    baseline_questions = 0
+    latest_questions = 0
     for q in qs2:
         if type(q) == DPQuestion:
             baseline_not_excluded, latest_not_excluded = CountryExclusion.objects.is_applicable(q.question_number, q.submission.country)
@@ -30,17 +32,19 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
             exclude_baseline.append(q.submission.id)
         if NotApplicable.objects.is_not_applicable(q.latest_value) or latest_excluded or is_none(q.latest_value):
             exclude_latest.append(q.submission.id)
+        if is_none(q.baseline_value): baseline_questions += 1
+        if is_none(q.latest_value): latest_questions += 1
 
     qs2_baseline = [q for q in qs2 if not q.submission.id in exclude_baseline]
     qs2_latest = [q for q in qs2 if not q.submission.id in exclude_latest]
 
     if len(qs2_baseline) == 0:
-        base_val = None
+        base_val = None if baseline_questions > 0 else NA_STR
     else:
         base_val = func(qs2_baseline, agency_or_country, base_selector, *args)
 
     if len(qs2_latest) == 0:
-        cur_val = None
+        cur_val = None if latest_questions > 0 else NA_STR
     else:
         cur_val = func(qs2_latest, agency_or_country, cur_selector, *args)
         
