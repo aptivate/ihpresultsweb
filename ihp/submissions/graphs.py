@@ -125,6 +125,14 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
             "type" : "column",
             "data" : [float(baseline_value), float(latest_value)]
         }]
+        
+        graph.subtitle = {
+            "text": '* Questions with baseline values from 2008 are not included',
+            "align": 'left',
+            "x": 50,
+            "y": 388,
+            "floating" : "true",
+        }
 
         if indicator != "5DPc":
             graph.series.append({

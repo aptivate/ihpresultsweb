@@ -84,7 +84,7 @@ def calc_overall_agency_indicators(funcs=None):
 
     """
     indicators = ["2DPa", "2DPb", "2DPc", "3DP", "5DPa", "5DPb", "5DPc"]
-    qs = DPQuestion.objects.all().select_related()
+    qs = DPQuestion.objects.exclude(baseline_year="2008").select_related()
 
     results = [calc_indicator(qs, None, indicator, funcs) for indicator in indicators]
     return dict(zip(indicators, results))
