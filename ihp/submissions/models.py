@@ -12,7 +12,7 @@ class Rating(object):
 
 class Agency(models.Model):
     agency = models.CharField(max_length=50, null=False, unique=True)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     type = models.CharField(max_length=15, null=False)
 
     @property
