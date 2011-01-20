@@ -24,7 +24,7 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
             baseline_excluded = not baseline_not_excluded
             latest_excluded = not latest_not_excluded
         else:
-            baseline_excluded, latest_excluded = True, True
+            baseline_excluded, latest_excluded = False, False
 
         if NotApplicable.objects.is_not_applicable(q.baseline_value) or baseline_excluded or is_none(q.baseline_value):
             exclude_baseline.append(q.submission.id)

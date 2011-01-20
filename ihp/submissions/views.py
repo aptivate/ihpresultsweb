@@ -582,6 +582,8 @@ def tbl_float_format(x):
         return "%.0f" % x
     elif x == NA_STR:
         return "N/A"
+    elif x == None:
+        return None
     return x
 
 def agency_table_by_country(request, country_id, template_name="submissions/agency_table.html", extra_context=None):
@@ -703,16 +705,21 @@ def country_table(request, template_name="submissions/country_table.html", extra
                 base_val = "Y" if base_val == 100 else "N"
                 latest_val = "Y" if latest_val == 100 else "N"
             if indicator == "2Ga":
+                base_val1 = base_val[0] if base_val else None
+                base_val2 = base_val[1] if base_val else None
+                latest_val1 = latest_val[0] if latest_val else None
+                latest_val2 = latest_val[1] if latest_val else None
+
                 country_abs_values["2Ga1"] = (
-                    tbl_float_format(base_val[0]), 
-                    tbl_float_format(latest_val[0]), 
+                    tbl_float_format(base_val1), 
+                    tbl_float_format(latest_val1), 
                     None,
                     base_year,
                     target
                 ) 
                 country_abs_values["2Ga2"] = (
-                    tbl_float_format(base_val[1]), 
-                    tbl_float_format(latest_val[1]), 
+                    tbl_float_format(base_val2), 
+                    tbl_float_format(latest_val2), 
                     None,
                     base_year,
                     target,
