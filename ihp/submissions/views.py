@@ -693,10 +693,10 @@ def country_table(request, template_name="submissions/country_table.html", extra
     for country in Country.objects.all().order_by("country"):
         country_abs_values = {}
         country_targets = calc_country_targets(country)
-        for indicator in country_targets:
-            base_val = country_targets[indicator]["base_val"]
-            base_year = country_targets[indicator]["base_year"]
-            latest_val = country_targets[indicator]["cur_val"]
+        indicators = calc_country_indicators(country, positive_funcs)
+        for indicator in indicators:
+            tpl = indicators[indicator][0]
+            base_val, base_year, latest_val, latest_year = tpl
             target = country_targets[indicator]["target"]
 
             if type(base_val) == str: base_val = base_val.upper()
