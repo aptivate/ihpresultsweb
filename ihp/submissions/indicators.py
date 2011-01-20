@@ -35,12 +35,12 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
     qs2_latest = [q for q in qs2 if not q.submission.id in exclude_latest]
 
     if len(qs2_baseline) == 0:
-        base_val = NA_STR
+        base_val = None
     else:
         base_val = func(qs2_baseline, agency_or_country, base_selector, *args)
 
     if len(qs2_latest) == 0:
-        cur_val = NA_STR
+        cur_val = None
     else:
         cur_val = func(qs2_latest, agency_or_country, cur_selector, *args)
         
