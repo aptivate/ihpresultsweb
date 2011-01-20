@@ -31,7 +31,7 @@ def evaluate_indicator(target, base_val, cur_val):
     tick_func = criteria_funcs[target.tick_criterion_type]
     arrow_func = criteria_funcs[target.arrow_criterion_type]
 
-    if cur_val != None:
+    if cur_val not in [None, NA_STR]:
         if target.indicator in ["4DP", "5DPa", "5DPb"]:
             if cur_val <= 20:
                 return Rating.TICK
@@ -41,6 +41,10 @@ def evaluate_indicator(target, base_val, cur_val):
         elif target.indicator in ["5DPc"]:
             if cur_val == 0:
                 return Rating.TICK
+        elif target.indicator in ["5Ga"]:
+            if base_val not in [None, NA_STR]:
+                if cur_val - base_val >= 0.5:
+                    return Rating.TICK
 
     try:
         if tick_func(base_val, cur_val, target.tick_criterion_value):

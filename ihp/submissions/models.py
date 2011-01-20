@@ -151,9 +151,9 @@ class CountryTargets(models.Model):
     indicator = models.CharField(max_length=10, null=False)
     country = models.ForeignKey(Country, null=True, blank=True)
     tick_criterion_type = models.CharField(max_length=50, null=False)
-    tick_criterion_value = models.FloatField(null=True)
+    tick_criterion_value = models.FloatField(null=True, blank=True)
     arrow_criterion_type = models.CharField(max_length=50, null=False)
-    arrow_criterion_value = models.FloatField(null=True)
+    arrow_criterion_value = models.FloatField(null=True, blank=True)
 
     def __unicode__(self):
         return """<<CountryTargets Object>>

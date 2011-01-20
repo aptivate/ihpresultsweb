@@ -577,9 +577,12 @@ gov_spm_map = {
 }
         
 
-def tbl_float_format(x):
+def tbl_float_format(x, places=0):
     if type(x) == float:
-        return "%.0f" % x
+        if places == 0:
+            return int(round(x, places))
+        else:
+            return round(x, places) 
     elif x == NA_STR:
         return "N/A"
     elif x == None:
@@ -725,10 +728,14 @@ def country_table(request, template_name="submissions/country_table.html", extra
                     target,
                 ) 
             else:
+                decimal_places = {
+                    "5Ga" : 1
+                }
+                places = decimal_places.get(indicator, 0)
                 country_abs_values[indicator] = (
-                    tbl_float_format(base_val), 
-                    tbl_float_format(latest_val), 
-                    tbl_float_format(perc_change(base_val, latest_val)),
+                    tbl_float_format(base_val, places), 
+                    tbl_float_format(latest_val, places), 
+                    tbl_float_format(perc_change(base_val, latest_val), places),
                     base_year,
                     target
                 ) 
