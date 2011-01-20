@@ -108,7 +108,7 @@ class CannotCalculateException(Exception):
 def criterion_first_yes(base_val, cur_val, criterion_param):
     if cur_val == NA_STR: 
         raise CannotCalculateException() 
-    if len(cur_val) == 0:
+    if cur_val == None or len(cur_val) == 0:
         raise MissingValueException()
 
     if cur_val.lower()[0] == "y":

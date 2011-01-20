@@ -369,26 +369,26 @@ def calc_country_targets(country):
             commentary = ratings_comments(indicator)
         else:
             if indicator in gov_commentary_text:
-                if "all" in gov_commentary_text[indicator]:
+                target_value = result["target"]
+                if target_value == Rating.QUESTION:
+                    commentary = rating_question_text
+                elif target_value == Rating.NONE:
+                    commentary = rating_none_text
+                elif target_value == None:
+                    raise Exception("This shouldn't really be happening")
+                    commentary = "Missing Data"
+                elif "all" in gov_commentary_text[indicator]:
                     commentary = gov_commentary_text[indicator]["all"]
                 else:
-                    target_value = result["target"]
-                    if target_value == None:
-                        raise Exception("This shouldn't really be happening")
-                        commentary = "Missing Data"
-                    elif target_value == Rating.QUESTION:
-                        commentary = rating_question_text
-                    elif target_value == Rating.NONE:
-                        commentary = rating_none_text
-                    else:
-                        commentary = gov_commentary_text[indicator][target_value]
-                    commentary += u"∆"
-                
+                    commentary = gov_commentary_text[indicator][target_value]
+                commentary += u"∆"
                 
                 try:
                     result["commentary"] = commentary % result
-                except TypeError:
-                    result["commentary"] = None
+                except TypeError, e:
+                    #import traceback
+                    #traceback.print_exc()
+                    result["commentary"] = rating_none_text
 
         results[indicator] = result
     return results
