@@ -38,6 +38,9 @@ def evaluate_indicator(target, base_val, cur_val):
         elif target.indicator in ["2DPa"]:
             if cur_val <= 15:
                 return Rating.TICK
+        elif target.indicator in ["5DPc"]:
+            if cur_val == 0:
+                return Rating.TICK
 
     try:
         if tick_func(base_val, cur_val, target.tick_criterion_value):
@@ -405,8 +408,6 @@ def country_agency_indicator_ratings(country, agency):
         result = Rating.CROSS
         if indicator in ["1DP", "6DP", "7DP"] and cur_val != NA_STR:
             if cur_val > 0: result = Rating.TICK
-        elif indicator == "5DPc" and cur_val not in [NA_STR, None]:
-            if cur_val == 0: result = Rating.TICK
         elif indicator == "8DP":
             try:
                 fix = Country8DPFix.objects.get(agency=agency, country=country)
