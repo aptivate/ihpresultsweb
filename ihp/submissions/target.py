@@ -405,7 +405,7 @@ def country_agency_indicator_ratings(country, agency):
         (base_val, base_year, cur_val, cur_year), comments = country_indicators[indicator]
         # TODO this is a hack - it might be better to extract this
         # logic out of here
-        result = Rating.CROSS
+        result = None
         if indicator in ["1DP", "6DP", "7DP"] and cur_val != NA_STR:
             if cur_val > 0: result = Rating.TICK
         elif indicator == "8DP":
@@ -415,7 +415,8 @@ def country_agency_indicator_ratings(country, agency):
                     result = Rating.TICK
             except Country8DPFix.DoesNotExist:
                 result = Rating.CROSS
-        else:
+
+        if result == None:
             target = targets[indicator]
             result = evaluate_indicator(target, base_val, cur_val)
         indicators[indicator] = result
