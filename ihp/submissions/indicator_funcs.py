@@ -4,14 +4,23 @@ from consts import NA_STR
 base_selector = lambda q : q.baseline_value
 cur_selector = lambda q : q.latest_value
 
-def float_or_zero(val):
+def float_or_none(x):
+    if NotApplicable.objects.is_not_applicable(x):
+        return NA_STR
     try:
-        return float(val)
-    except: 
-        return 0
+        return float(x)
+    except:
+        return None
 
 def _sum_values(qs, selector):
-    return sum([float_or_zero(selector(q)) for q in qs])
+    nas = [q for q in qs if float_or_none(selector(q)) == NA_STR]
+    nones = [q for q in qs if float_or_none(selector(q)) == None]
+
+    qs = [q for q in qs if float_or_none(selector(q)) not in [None, NA_STR]]
+    if len(qs) == 0:
+        return None if len(nones) > 0 else NA_STR
+    
+    return sum([float(selector(q)) for q in qs])
     
 def func_8dpfix(qs, agency, selector, q):
     countries = Country8DPFix.objects.filter(agency=agency)
@@ -46,6 +55,7 @@ def country_perc_factory(value):
         # is active in such a country for a particular question
 
         count_value = count_factory(value)
+
         num_countries = float(len(qs))
         count = count_value(qs, agency, selector, q)
         return count / num_countries * 100 if num_countries > 0 else NA_STR
@@ -99,19 +109,21 @@ def combine_yesnos(qs, agency_or_country, selector, *args):
     return "".join(values)
 
 def calc_numdenom(qs, agency_or_country, selector, numq, denomq):
-    den = float(_sum_values([q for q in qs if q.question_number==denomq], selector))
-    num = float(_sum_values([q for q in qs if q.question_number==numq], selector))
+    den = _sum_values([q for q in qs if q.question_number==denomq], selector)
+    num = _sum_values([q for q in qs if q.question_number==numq], selector)
 
+    if den in [NA_STR, None] or num in [NA_STR, None]:
+        return den
     ratio = NA_STR
     if den > 0: ratio = num / den * 100
     return ratio
 
 def calc_one_minus_numdenom(qs, agency_or_country, selector, numq, denomq):
     ratio = calc_numdenom(qs, agency_or_country, selector, numq, denomq)
-    ratio = 100 - ratio if ratio != NA_STR else NA_STR
+    ratio = 100 - ratio if ratio not in [NA_STR, None] else ratio
     return ratio
 
 def sum_values(qs, agency_or_country, selector, *args):
     qs = [q for q in qs if q.question_number in args]
-    return float(_sum_values(qs, selector))
+    return _sum_values(qs, selector)
 

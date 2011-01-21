@@ -42,11 +42,15 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
         base_val = None if baseline_questions > 0 else NA_STR
     else:
         base_val = func(qs2_baseline, agency_or_country, base_selector, *args)
+        if base_val == NA_STR and baseline_questions > 0:
+            base_val = None
 
     if len(qs2_latest) == 0:
         cur_val = None if latest_questions > 0 else NA_STR
     else:
         cur_val = func(qs2_latest, agency_or_country, cur_selector, *args)
+        if cur_val == NA_STR and latest_questions > 0:
+            cur_val = None
         
     # TODO here i assume that the year is the same across all years and all questions. 
     if len(qs2) > 0: 
