@@ -106,7 +106,9 @@ def calc_agency_country_indicator(qs, agency, country, indicator, funcs=None):
         funcs["1DP"] = (equals_or_zero("yes"), ("1",))
         funcs["6DP"] = (equals_or_zero("yes"), ("17",))
         funcs["7DP"] = (equals_or_zero("yes"), ("18",))
-        funcs["8DP"] = (equals_or_zero("yes"), ("20",))
+        #funcs["8DP"] = (equals_or_zero("yes"), ("20",))
+        #if agency.agency == "UNAIDS" and indicator == "8DP" and country.country == "Mozambique":
+        #    import pdb; pdb.set_trace()
         return calc_indicator(qs, agency, indicator, funcs)
     except:
         traceback.print_exc()
