@@ -40,6 +40,7 @@ class ChartObject(object):
             p.__dict__["_tabs"] = self._tabs + 1
             return str(p)
         else:
+            return ffloat(0)
             import pdb; pdb.set_trace()
 
     def __str__(self):
