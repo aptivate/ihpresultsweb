@@ -96,37 +96,34 @@ def calc_agency_targets(agency):
         "8DP" : "In %(cur_year)s, evidence exists in %(cur_val).0f%% of IHP+ countries of support to civil society engagement in health sector policy processes.",
     }
 
-    target_map = {
-        "1DP" : "Target = 100%%.",
-        "2DPa" : "Target = Halve the %% of aid flows not reported on budget (with at least 85%% reported on budget).",
-        "2DPb" :"Target = 50%%",
-        "2DPc" : "Target = 66%%",
-        "3DP" : "Target = 90%%",
-        "4DP" : "Target = Halve the %% of health sector aid not disbursed within the calendar year for which it was scheduled.",
-        "5DPa" : "Target = One third reduction in the %% of health sector aid to the public sector not using national procurement systems.",
-        "5DPb" : "Target = One third reduction in the %% of health sector aid to the public sector not using national PFM systems.",
-        "5DPc" : "Target = two-third reduction in the stock of parallel PIUs.",
-        "6DP" : "Target = 100%%.",
-        "7DP" : "Target: 100%%.",
-        "8DP" : "Target = 100%%",
-    }
-
     default_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
     na_text = "This Standard Performance Measure was deemed not applicable to %s." % agency.agency
-        
+
+    def ratings_val(tmpl):
+        def _func(indicator):
+            h = indicator.replace("DP", "")
+            d = ratings.__dict__
+            return d.get(tmpl % h, None)
+        return _func
+
+    def round_to_zero(x):
+        if type(x) == float and round(x, 0) == 0:
+            return 0.0
+        else:
+            return x
+
+    ratings_comments = ratings_val("er%s")
+    ratings_target = ratings_val("r%s")
+
     targets = get_agency_targets(agency, dp_indicators)
     indicators = calc_agency_indicators(agency)
+    ratings, _ = DPScorecardRatings.objects.get_or_create(agency=agency)
     results = {}
-    override_ratings, _ = DPScorecardRatings.objects.get_or_create(agency=agency)
+
     for indicator in indicators:
-
         (base_val, base_year, cur_val, cur_year), comments = indicators[indicator]
-
-        if type(cur_val) == float and round(cur_val, 0) == 0:
-            cur_val = 0.0
-
-        if type(base_val) == float and round(base_val, 0) == 0:
-            base_val = 0.0
+        cur_val = round_to_zero(cur_val)
+        base_val = round_to_zero(base_val)
 
         target = targets[indicator]
 
@@ -140,61 +137,57 @@ def calc_agency_targets(agency):
             "agency_name" : agency.agency,
         }
 
-        result["target"] = evaluate_indicator(target, base_val, cur_val)
+        result["target"] = ratings_target(indicator) or evaluate_indicator(target, base_val, cur_val)
         result["target_val"] = target.tick_criterion_value
 
-        # create commentary
-        if (base_val not in [None, NA_STR]) and (cur_val not in [None, NA_STR]):
-            result["diff_val"] = math.fabs(base_val - cur_val)
-            # This is really dirty but the text is currently formatted using
-            # no decimal places and so this calculation should use the rounded
-            # value
-            diff = round(round(base_val) - round(cur_val))
+        if ratings_comments(indicator):
+            result["commentary"] = ratings_comments(indicator)
+        else:
+            # create commentary
+            if (base_val not in [None, NA_STR]) and (cur_val not in [None, NA_STR]):
+                result["diff_val"] = math.fabs(base_val - cur_val)
+                # This is really dirty but the text is currently formatted using
+                # no decimal places and so this calculation should use the rounded
+                # value
+                diff = round(round(base_val) - round(cur_val))
 
-            if diff > 0:
-                result["diff_direction"] = "a decrease" 
-                result["diff_direction2"] = "down" 
-                result["one_minus_diff_direction"] = "an increase" 
-            elif diff == 0:
-                result["diff_direction"] = "no change"
-                result["diff_direction2"] = "no change"
-                result["one_minus_diff_direction"] = "no change" 
-            else:
-               result["diff_direction"] = "an increase"
-               result["diff_direction2"] = "up"
-               result["one_minus_diff_direction"] = "a decrease" 
+                if diff > 0:
+                    result["diff_direction"] = "a decrease" 
+                    result["diff_direction2"] = "down" 
+                    result["one_minus_diff_direction"] = "an increase" 
+                elif diff == 0:
+                    result["diff_direction"] = "no change"
+                    result["diff_direction2"] = "no change"
+                    result["one_minus_diff_direction"] = "no change" 
+                else:
+                   result["diff_direction"] = "an increase"
+                   result["diff_direction2"] = "up"
+                   result["one_minus_diff_direction"] = "a decrease" 
 
-            if result["base_val"] > 0:
-                result["perc_change"] = (result["cur_val"] - result["base_val"]) / float(result["base_val"]) * 100
-                result["abs_perc_change"] = math.fabs(result["perc_change"])
-            else:
-                result["perc_change"] = 0
-                result["abs_perc_change"] = 0
+                if result["base_val"] > 0:
+                    result["perc_change"] = (result["cur_val"] - result["base_val"]) / float(result["base_val"]) * 100
+                    result["abs_perc_change"] = math.fabs(result["perc_change"])
+                else:
+                    result["perc_change"] = 0
+                    result["abs_perc_change"] = 0
 
-            result["one_minus_base_val"] = 100 - result["base_val"]
-            result["one_minus_cur_val"] = 100 - result["cur_val"]
+                result["one_minus_base_val"] = 100 - result["base_val"]
+                result["one_minus_cur_val"] = 100 - result["cur_val"]
         
-        try:
-            template = commentary_map[indicator]
-            if type(template) == Template:
-                result["commentary"] = template.render(Context(result))
-            else:
-                result["commentary"] = template % result
-        except:
-            pass
+            try:
+                template = commentary_map[indicator]
+                if type(template) == Template:
+                    result["commentary"] = template.render(Context(result))
+                else:
+                    result["commentary"] = template % result
+            except:
+                pass
 
-        if NA_STR in [base_val, cur_val]:
-            result["commentary"] = na_text
-        elif result["commentary"] == "":
-            result["commentary"] = default_text
-        result["commentary"] += u"∆"
-
-        #result["commentary"] = (result["commentary"] + " " + target_map[indicator] % result).strip()
-
-        # Apply override
-        h = indicator.replace("DP", "")
-        result["target"] = override_ratings.__dict__["r%s" % h] or evaluate_indicator(target, base_val, cur_val)
-        result["commentary"] = override_ratings.__dict__["er%s" % h] or result["commentary"]
+            if NA_STR in [base_val, cur_val]:
+                result["commentary"] = na_text
+            elif result["commentary"] == "":
+                result["commentary"] = default_text
+            result["commentary"] += u"∆"
 
         results[indicator] = result
 
@@ -370,7 +363,7 @@ def calc_country_targets(country):
         
         result["target"] = ratings_target(indicator) or evaluate_indicator(target, base_val, cur_val)
         if ratings_comments(indicator):
-            commentary = ratings_comments(indicator)
+            result["commentary"] = ratings_comments(indicator)
         else:
             if indicator in gov_commentary_text:
                 target_value = result["target"]

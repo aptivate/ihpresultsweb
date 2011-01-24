@@ -30,6 +30,17 @@ agency_select = function(e) {
         $("#id_er6").text(data["progress6"]);
         $("#id_er7").text(data["progress7"]);
         $("#id_er8").text(data["progress8"]);
+
+        $("#id_gr1").text(data["gen1"]);
+        $("#id_gr2a").text(data["gen2a"]);
+        $("#id_gr2b").text(data["gen2b"]);
+        $("#id_gr3").text(data["gen3"]);
+        $("#id_gr4").text(data["gen4"]);
+        $("#id_gr5a").text(data["gen5a"]);
+        $("#id_gr5b").text(data["gen5b"]);
+        $("#id_gr6").text(data["gen6"]);
+        $("#id_gr7").text(data["gen7"]);
+        $("#id_gr8").text(data["gen8"]);
     });
 }
 
@@ -69,7 +80,19 @@ $(document).ready(function(){
                 er8: $("#id_er8").val(),
             },
             function(data) {
-            }
+                $("#id_gr1").text(data["gen1"]);
+                $("#id_gr2a").text(data["gen2a"]);
+                $("#id_gr2b").text(data["gen2b"]);
+                $("#id_gr2c").text(data["gen2c"]);
+                $("#id_gr3").text(data["gen3"]);
+                $("#id_gr4").text(data["gen4"]);
+                $("#id_gr5a").text(data["gen5a"]);
+                $("#id_gr5b").text(data["gen5b"]);
+                $("#id_gr5c").text(data["gen5c"]);
+                $("#id_gr6").text(data["gen6"]);
+                $("#id_gr7").text(data["gen7"]);
+                $("#id_gr8").text(data["gen8"]);
+            }, "json"
         );
         return false;
     });
