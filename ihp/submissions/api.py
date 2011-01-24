@@ -51,14 +51,16 @@ def dp_summary(request, agency_id):
     
 def dp_ratings(request, agency_id):
 
+    get_comment = lambda indicator : results[indicator]["commentary"]
     try:
         agency = get_object_or_404(Agency, id=agency_id)
         ratings, _ = DPScorecardRatings.objects.get_or_create(agency=agency)
+        results = calc_agency_targets(agency)
+        data = {}
 
         if request.method == "GET":
             agency_data = calc_agency_targets(agency)
 
-            data = {}
             for indicator in indicators.dp_indicators:
                 data[indicator] = calc_agency_comments(indicator, agency_data)
 
@@ -86,6 +88,19 @@ def dp_ratings(request, agency_id):
             data["progress6"] = ratings.er6
             data["progress7"] = ratings.er7
             data["progress8"] = ratings.er8
+
+            data["gen1"] = get_comment("1DP")
+            data["gen2a"] = get_comment("2DPa")
+            data["gen2b"] = get_comment("2DPb")
+            data["gen2c"] = get_comment("2DPc")
+            data["gen3"] = get_comment("3DP")
+            data["gen4"] = get_comment("4DP")
+            data["gen5a"] = get_comment("5DPa")
+            data["gen5b"] = get_comment("5DPb")
+            data["gen5c"] = get_comment("5DPc")
+            data["gen6"] = get_comment("6DP")
+            data["gen7"] = get_comment("7DP")
+            data["gen8"] = get_comment("8DP")
 
             return HttpResponse(simplejson.dumps(data))
         elif request.method == "POST":
@@ -115,7 +130,21 @@ def dp_ratings(request, agency_id):
             ratings.er8 = request.POST["er8"]
             ratings.save()
 
-            return HttpResponse("OK")
+            results = calc_agency_targets(agency)
+            data["gen1"] = get_comment("1DP")
+            data["gen2a"] = get_comment("2DPa")
+            data["gen2b"] = get_comment("2DPb")
+            data["gen2c"] = get_comment("2DPc")
+            data["gen3"] = get_comment("3DP")
+            data["gen4"] = get_comment("4DP")
+            data["gen5a"] = get_comment("5DPa")
+            data["gen5b"] = get_comment("5DPb")
+            data["gen5c"] = get_comment("5DPc")
+            data["gen6"] = get_comment("6DP")
+            data["gen7"] = get_comment("7DP")
+            data["gen8"] = get_comment("8DP")
+
+            return HttpResponse(simplejson.dumps(data))
     except:
         import traceback
         traceback.print_exc()
