@@ -17,6 +17,7 @@ def dp_summary(request, agency_id):
 
     agency = get_object_or_404(Agency, id=agency_id)
     summary, _ = DPScorecardSummary.objects.get_or_create(agency=agency)
+    erbs = range(1, 9)
 
     if request.method == "GET":
         agency_data = calc_agency_targets(agency)
@@ -25,26 +26,13 @@ def dp_summary(request, agency_id):
         for indicator in indicators.dp_indicators:
             comments[indicator] = calc_agency_comments(indicator, agency_data)
 
-        comments["summary1"] = summary.erb1
-        comments["summary2"] = summary.erb2
-        comments["summary3"] = summary.erb3
-        comments["summary4"] = summary.erb4
-        comments["summary5"] = summary.erb5
-        comments["summary6"] = summary.erb6
-        comments["summary7"] = summary.erb7
-        comments["summary8"] = summary.erb8
+        for i in erbs:
+            comments["summary%d" % i] = getattr(summary, "erb%d" % i)
 
         return HttpResponse(simplejson.dumps(comments))
     elif request.method == "POST":
-        summary.erb1 = request.POST["summary1"]
-        summary.erb2 = request.POST["summary2"]
-        summary.erb3 = request.POST["summary3"]
-        summary.erb4 = request.POST["summary4"]
-        summary.erb5 = request.POST["summary5"]
-        summary.erb6 = request.POST["summary6"]
-        summary.erb7 = request.POST["summary7"]
-        summary.erb8 = request.POST["summary8"]
-        print request.POST
+        for i in erbs:
+            setattr(summary, "erb%d" % i, request.POST["summary%d" % i])
         summary.save()
 
         return HttpResponse("OK")
@@ -52,6 +40,7 @@ def dp_summary(request, agency_id):
 def dp_ratings(request, agency_id):
 
     get_comment = lambda indicator : results[indicator]["commentary"]
+    strip_indicator = lambda x : x.replace("DP", "")
     try:
         agency = get_object_or_404(Agency, id=agency_id)
         ratings, _ = DPScorecardRatings.objects.get_or_create(agency=agency)
@@ -63,86 +52,27 @@ def dp_ratings(request, agency_id):
 
             for indicator in indicators.dp_indicators:
                 data[indicator] = calc_agency_comments(indicator, agency_data)
-
-            data["rating1"] = ratings.r1
-            data["rating2a"] = ratings.r2a
-            data["rating2b"] = ratings.r2b
-            data["rating2c"] = ratings.r2c
-            data["rating3"] = ratings.r3
-            data["rating4"] = ratings.r4
-            data["rating5a"] = ratings.r5a
-            data["rating5b"] = ratings.r5b
-            data["rating5c"] = ratings.r5c
-            data["rating6"] = ratings.r6
-            data["rating7"] = ratings.r7
-            data["rating8"] = ratings.r8
-            data["progress1"] = ratings.er1
-            data["progress2a"] = ratings.er2a
-            data["progress2b"] = ratings.er2b
-            data["progress2c"] = ratings.er2c
-            data["progress3"] = ratings.er3
-            data["progress4"] = ratings.er4
-            data["progress5a"] = ratings.er5a
-            data["progress5b"] = ratings.er5b
-            data["progress5c"] = ratings.er5c
-            data["progress6"] = ratings.er6
-            data["progress7"] = ratings.er7
-            data["progress8"] = ratings.er8
-
-            data["gen1"] = get_comment("1DP")
-            data["gen2a"] = get_comment("2DPa")
-            data["gen2b"] = get_comment("2DPb")
-            data["gen2c"] = get_comment("2DPc")
-            data["gen3"] = get_comment("3DP")
-            data["gen4"] = get_comment("4DP")
-            data["gen5a"] = get_comment("5DPa")
-            data["gen5b"] = get_comment("5DPb")
-            data["gen5c"] = get_comment("5DPc")
-            data["gen6"] = get_comment("6DP")
-            data["gen7"] = get_comment("7DP")
-            data["gen8"] = get_comment("8DP")
+                core_indicator = strip_indicator(indicator)
+                data["rating%s" % core_indicator] == getattr(ratings, "r" % core_indicator)
+                data["progress%s" % core_indicator] == getattr(ratings, "er" % core_indicator)
+                data["gen%s" % core_indicator] = get_comment(indicator)
 
             return HttpResponse(simplejson.dumps(data))
         elif request.method == "POST":
-            ratings.r1 = request.POST["r1"]
-            ratings.er1 = request.POST["er1"]
-            ratings.r2a = request.POST["r2a"]
-            ratings.er2a = request.POST["er2a"]
-            ratings.r2b = request.POST["r2b"]
-            ratings.er2b = request.POST["er2b"]
-            ratings.r2c = request.POST["r2c"]
-            ratings.er2c = request.POST["er2c"]
-            ratings.r3 = request.POST["r3"]
-            ratings.er3 = request.POST["er3"]
-            ratings.r4 = request.POST["r4"]
-            ratings.er4 = request.POST["er4"]
-            ratings.r5a = request.POST["r5a"]
-            ratings.er5a = request.POST["er5a"]
-            ratings.r5b = request.POST["r5b"]
-            ratings.er5b = request.POST["er5b"]
-            ratings.r5c = request.POST["r5c"]
-            ratings.er5c = request.POST["er5c"]
-            ratings.r6 = request.POST["r6"]
-            ratings.er6 = request.POST["er6"]
-            ratings.r7 = request.POST["r7"]
-            ratings.er7 = request.POST["er7"]
-            ratings.r8 = request.POST["r8"]
-            ratings.er8 = request.POST["er8"]
+
+            for indicator in indicators.dp_indicators:
+                core_indicator = strip_indicator(indicator)
+                
+                indicator.setattr(ratings, "r%s" % core_indicator, request.POST["r%s" % core_indicator])
+                indicator.setattr(ratings, "er%s" % core_indicator, request.POST["er%s" % core_indicator])
             ratings.save()
 
             results = calc_agency_targets(agency)
-            data["gen1"] = get_comment("1DP")
-            data["gen2a"] = get_comment("2DPa")
-            data["gen2b"] = get_comment("2DPb")
-            data["gen2c"] = get_comment("2DPc")
-            data["gen3"] = get_comment("3DP")
-            data["gen4"] = get_comment("4DP")
-            data["gen5a"] = get_comment("5DPa")
-            data["gen5b"] = get_comment("5DPb")
-            data["gen5c"] = get_comment("5DPc")
-            data["gen6"] = get_comment("6DP")
-            data["gen7"] = get_comment("7DP")
-            data["gen8"] = get_comment("8DP")
+
+            for indicator in indicators.dp_indicators:
+                core_indicator = strip_indicator(indicator)
+
+                data["gen%s" % core_indicator] = results[indicator]["commentary"]
 
             return HttpResponse(simplejson.dumps(data))
     except:
@@ -160,7 +90,6 @@ def gov_ratings(request, country_id):
         if request.method == "GET":
             results = calc_country_targets(country)
             country_data = results
-
 
             data["rating1"] = ratings.r1
             data["rating2a"] = ratings.r2a
