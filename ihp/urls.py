@@ -56,6 +56,7 @@ urlpatterns = patterns('',
 
     (r'^$', direct_to_template, {"template" : "home.html", "extra_context" : {
         "agencies" : Agency.objects.filter(type="Agency"),
+        "gbsagencies" : Agency.objects.get_by_type("GBS"),
         "countries" : Country.objects.all(),
     }}, "home"),
 
@@ -134,6 +135,13 @@ urlpatterns = patterns('',
             "content_file" : "submissions/agency_table_by_indicator.html"
         }
     }, 'agency_table_by_indicator'),
+
+    (r'^agencies/agency/gbs/(?P<agency_id>.+)/$', 'submissions.views.gbs_table', {
+        "template_name" : "submissions/main_base.html",
+        "extra_context" : {
+            "content_file" : "submissions/gbs_table.html"
+        }
+    }, 'gbs_table'),
 
     (r'^countries/tables/$', 'submissions.views.country_table', {
         "template_name" : "submissions/main_base.html",

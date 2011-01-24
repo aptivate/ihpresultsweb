@@ -36,6 +36,7 @@ tr.odd {
 td, th {
     border: solid thin black;
     text-align: center;
+    padding: 2px;
 }
 
 td {

@@ -1,0 +1,50 @@
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/table.css"> 
+{% endblock %}
+
+{% block content %}
+<h1>{{ agency.agency }}</h1>
+<table class="dpind">
+    <tr class="head">
+        <th rowspan="2">SPM #</th>
+        <th colspan="3">Agency</th>
+        <th colspan="3">GBS Agency</th>
+    </tr>
+    <tr class="head2">
+        <th>Baseline</th>
+        <th>Latest</th>
+        <th>Rating</th>
+        <th>Baseline</th>
+        <th>Latest</th>
+        <th>Rating</th>
+    </tr>
+    <tr class="odd">
+        <td>2DPa</td>
+        <td>{{ agency_data.2DPa.base_val|default_if_none:"-"|floatformat }}</td>
+        <td>{{ agency_data.2DPa.cur_val|default_if_none:"-"|floatformat }}</td>
+        <td><img src="{{ MEDIA_URL }}/images/{{ agency_data.2DPa.target }}.png"></td>
+        <td>{{ gbs_agency_data.2DPa.base_val|default_if_none:"-"|floatformat }}</td>
+        <td>{{ gbs_agency_data.2DPa.cur_val|default_if_none:"-"|floatformat }}</td>
+        <td><img src="{{ MEDIA_URL }}/images/{{ gbs_agency_data.2DPa.target }}.png"></td>
+    </tr>
+    <tr class="even">
+        <td>2DPc</td>
+        <td>{{ agency_data.2DPc.base_val|default_if_none:"-"|floatformat }}</td>
+        <td>{{ agency_data.2DPc.cur_val|default_if_none:"-"|floatformat }}</td>
+        <td><img src="{{ MEDIA_URL }}/images/{{ agency_data.2DPc.target }}.png"></td>
+        <td>{{ gbs_agency_data.2DPc.base_val|default_if_none:"-"|floatformat }}</td>
+        <td>{{ gbs_agency_data.2DPc.cur_val|default_if_none:"-"|floatformat }}</td>
+        <td><img src="{{ MEDIA_URL }}/images/{{ gbs_agency_data.2DPc.target }}.png"></td>
+    </tr>
+    <tr class="odd">
+        <td>5DPb</td>
+        <td>{{ agency_data.5DPb.base_val|default_if_none:"-"|floatformat }}</td>
+        <td>{{ agency_data.5DPb.cur_val|default_if_none:"-"|floatformat }}</td>
+        <td><img src="{{ MEDIA_URL }}/images/{{ agency_data.5DPb.target }}.png"></td>
+        <td>{{ gbs_agency_data.5DPb.base_val|default_if_none:"-"|floatformat }}</td>
+        <td>{{ gbs_agency_data.5DPb.cur_val|default_if_none:"-"|floatformat }}</td>
+        <td><img src="{{ MEDIA_URL }}/images/{{ gbs_agency_data.5DPb.target }}.png"></td>
+    </tr>
+</table>
+{% endblock %}

@@ -55,6 +55,14 @@
                                 <li><a href="{% url agency_table_by_indicator "8DP" %}">8DP</a></li>
                             </ul>
                         </p>
+                        <h2>GBS Comparison Tables</h2>
+                        <p>
+                            <ul class="blockrow">
+                                {% for gbsagency in gbsagencies %}
+                                <li><a href="{% url gbs_table gbsagency.id %}">{{ gbsagency.agency }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </p>
                     </div>
                 </div> <!-- end row 1 -->
                 <br/>

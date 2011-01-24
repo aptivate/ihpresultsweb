@@ -656,7 +656,7 @@ def agency_table_by_indicator(request, indicator, template_name="submissions/age
         country_calcs = [(c, calc_country_targets(c)[gov_indicator]) for c in countries]
     
     agencies = []
-    for agency in Agency.objects.filter(type="Agency"):
+    for agency in Agency.objects.all():
         agency_values = []
         for country in countries:
             if country in agency.countries:
@@ -685,6 +685,17 @@ def agency_table_by_indicator(request, indicator, template_name="submissions/age
     extra_context["countries"] = countries
     extra_context["country_calcs"] = country_calcs
     
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def gbs_table(request, agency_id, template_name="submissions/gbs_table.html", extra_context=None):
+    extra_context = extra_context or {} 
+    gbsagency = Agency.objects.all_types().get(pk=agency_id)
+    agency = get_object_or_404(Agency, agency=gbsagency.agency.replace("GBS", ""))
+
+    extra_context["agency"] = agency
+    extra_context["agency_data"] = calc_agency_targets(agency)
+    extra_context["gbs_agency_data"] = calc_agency_targets(gbsagency)
+
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def country_table(request, template_name="submissions/country_table.html", extra_context=None):
@@ -729,8 +740,7 @@ def country_table(request, template_name="submissions/country_table.html", extra
                 ) 
             else:
                 decimal_places = {
-                    "5Ga" : 1,
-                    "3G" : 1
+                    "5Ga" : 1
                 }
                 places = decimal_places.get(indicator, 0)
                 country_abs_values[indicator] = (

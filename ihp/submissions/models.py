@@ -10,10 +10,21 @@ class Rating(object):
     CROSS = "cross"
     NONE = "none"
 
+class AgencyManager(models.Manager):
+    def get_query_set(self):
+        return super(AgencyManager, self).get_query_set().filter(type="Agency")
+
+    def get_by_type(self, type):
+        return super(AgencyManager, self).get_query_set().filter(type=type)
+
+    def all_types(self):
+        return super(AgencyManager, self).get_query_set()
+
 class Agency(models.Model):
     agency = models.CharField(max_length=50, null=False, unique=True)
     description = models.TextField(blank=True)
     type = models.CharField(max_length=15, null=False)
+    objects = AgencyManager()
 
     @property
     @memoize
@@ -78,6 +89,10 @@ class Submission(models.Model):
     def __unicode__(self):
         return "%s %s" % (self.country, self.agency)
 
+class DPQuestionManager(models.Manager):
+    def get_query_set(self):
+        return super(DPQuestionManager, self).get_query_set().filter(submission__agency__type="Agency")
+    
 class DPQuestion(models.Model):
     submission = models.ForeignKey(Submission, null=False)
     question_number = models.CharField(max_length=10, null=False)
@@ -86,6 +101,7 @@ class DPQuestion(models.Model):
     latest_year = models.CharField(max_length=4, null=False)
     latest_value = models.CharField(max_length=20, null=False)
     comments = models.TextField()
+    objects = DPQuestionManager()
 
     def __unicode__(self):
         return "<<DPQuestion Object>>%s %s - Question: %s" % (

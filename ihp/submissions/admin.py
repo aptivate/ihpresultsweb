@@ -4,6 +4,9 @@ from models import *
 
 
 class AgencyAdmin(admin.ModelAdmin):
+    def queryset(self, request):
+        return Agency.objects.all_types()
+
     list_filter = ("type",)
 
 admin.site.register(Agency, AgencyAdmin)
