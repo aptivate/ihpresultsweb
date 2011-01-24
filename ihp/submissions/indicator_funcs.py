@@ -35,7 +35,7 @@ def func_8dpfix(qs, agency, selector, q):
     if denom > 0:
         return num / denom * 100
     else:
-        return NA_STR
+        return None
 
 def count_factory(value):
     def count_value(qs, agency_or_country, selector, q):
