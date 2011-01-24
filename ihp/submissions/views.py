@@ -729,7 +729,8 @@ def country_table(request, template_name="submissions/country_table.html", extra
                 ) 
             else:
                 decimal_places = {
-                    "5Ga" : 1
+                    "5Ga" : 1,
+                    "3G" : 1
                 }
                 places = decimal_places.get(indicator, 0)
                 country_abs_values[indicator] = (

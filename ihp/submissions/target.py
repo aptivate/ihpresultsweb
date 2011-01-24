@@ -220,7 +220,7 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
         Rating.CROSS : "At the end of %(cur_year)s there was no costed and evidence based HRH plan in place, or plans to develop one. ",
     },
     "3G" : {
-        "all" : "In %(cur_year)s %(country_name)s allocated %(cur_val).0f%% of its approved annual national budget to health.",
+        "all" : "In %(cur_year)s %(country_name)s allocated %(cur_val).1f%% of its approved annual national budget to health.",
     },
     "4G" : {
         "all" : "In %(cur_year)s, %(one_minus_cur_val).0f%% of health sector funding was disbursed against the approved annual budget.",
@@ -268,7 +268,7 @@ gov_commentary_text_fr = {
         Rating.CROSS : u"À la fin de %(cur_year)s, aucun plan chiffré et fondé sur des preuves relatif aux HRH n’avait été mis en place ni aucun plan visant à en élaborer un.",
     },
     "3G" : {
-        "all" : u"En %(cur_year)s, %(country_name)s a alloué %(cur_val).0f%% de son budget annuel ayant été approuvé pour le secteur de la santé.",
+        "all" : u"En %(cur_year)s, %(country_name)s a alloué %(cur_val).1f%% de son budget annuel ayant été approuvé pour le secteur de la santé.",
     },
     "4G" : {
         "all" : u"En %(cur_year)s, %(one_minus_cur_val).0f%% du financement alloué au secteur de la santé a été décaissé en fonction du budget annuel ayant été autorisé.",
