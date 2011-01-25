@@ -8,6 +8,7 @@ class AgencyAdmin(admin.ModelAdmin):
         return Agency.objects.all_types()
 
     list_filter = ("type",)
+    list_display = ("agency", "type")
 
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(Country)
