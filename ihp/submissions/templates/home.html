@@ -1,6 +1,17 @@
 {% extends "base.html" %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}/css/main.css">
+<style>
+    .indicatorblock {
+        width: 60px;
+        padding: 5px;
+        display: inline;
+    }
+    
+    .indicatorblock li {
+        display: inline;
+    }
+</style>
 {% endblock head %}
 
 {% block body %}
@@ -46,15 +57,26 @@
                         </p>
                     </div> 
                     <div class="yui-u blockcol">
+                        <div>
                         <h2>Partner Data by Indicator</h2>
-                        <p>
-                            <ul class="blockrow">
-                                <li><a href="{% url agency_table_by_indicator "1DP" %}">1DP</a></li>
-                                <li><a href="{% url agency_table_by_indicator "6DP" %}">6DP</a></li>
-                                <li><a href="{% url agency_table_by_indicator "7DP" %}">7DP</a></li>
-                                <li><a href="{% url agency_table_by_indicator "8DP" %}">8DP</a></li>
+                        <p style="text-align:left">
+                            <ul style="text-align:left">
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "1DP" %}">1DP</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "2DPa" %}">2DPa</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "2DPb" %}">2DPb</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "2DPc" %}">2DPc</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "3DP" %}">3DP</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "4DP" %}">4DP</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "5DPa" %}">5DPa</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "5DPb" %}">5DPb</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "5DPc" %}">5DPc</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "6DP" %}">6DP</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "7DP" %}">7DP</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "8DP" %}">8DP</a></span></li>
                             </ul>
                         </p>
+                        </div>
+                        <div>
                         <h2>GBS Comparison Tables</h2>
                         <p>
                             <ul class="blockrow">
@@ -63,6 +85,7 @@
                                 {% endfor %}
                             </ul>
                         </p>
+                        </div>
                     </div>
                 </div> <!-- end row 1 -->
                 <br/>

@@ -650,6 +650,7 @@ def agency_table_by_indicator(request, indicator, template_name="submissions/age
     }
     extra_context = extra_context or {} 
 
+    country_calcs = None
     countries = Country.objects.all().order_by("country")
     if indicator in dp_gov_map:
         gov_indicator = dp_gov_map[indicator]

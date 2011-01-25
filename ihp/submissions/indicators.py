@@ -20,6 +20,7 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
     exclude_latest = []
     baseline_questions = 0
     latest_questions = 0
+    
     for q in qs2:
         if type(q) == DPQuestion:
             baseline_not_excluded, latest_not_excluded = CountryExclusion.objects.is_applicable(q.question_number, q.submission.country)

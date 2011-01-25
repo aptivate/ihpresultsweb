@@ -26,6 +26,7 @@
         {% endfor %}
 
     </tr>
+    {% if country_calcs %}
     <tr class="countryrow even">
         <td>Country Data</td>
         {% for country, calcs in country_calcs %}
@@ -34,6 +35,7 @@
             <td><img src="{{ MEDIA_URL }}/images/{{ calcs.target }}.png"></td>
         {% endfor %}
     </tr>
+    {% endif %}
     {% for agency, agency_values in agencies %}
     <tr class="{% cycle "odd" "even" %}">
         <td>{{ agency.agency }}</td>
