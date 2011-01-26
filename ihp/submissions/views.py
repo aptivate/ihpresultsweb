@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404
 
-from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, DPScorecardRatings, CountryScorecardOverride, Rating
+from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, CountryScorecardOverride, Rating
 from target import calc_agency_targets, get_country_progress, calc_country_targets, get_agency_progress, country_agency_indicator_ratings, country_agency_progress
 from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs, dp_indicators
 from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm, CountryScorecardForm
@@ -190,7 +190,6 @@ def agency_export(request):
     data = get_agencies_scorecard_data()
     for agency, datum in data.items():
         try:
-            ratings, _ = DPScorecardRatings.objects.get_or_create(agency=agency)
             datum["file"] = agency.agency
             datum["agency"] = agency.agency 
             datum["profile"] = agency.description
