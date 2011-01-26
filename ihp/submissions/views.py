@@ -8,7 +8,7 @@ from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404
 
 from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, CountryScorecardOverride, Rating
-from target import calc_agency_targets, get_country_progress, calc_country_targets, get_agency_progress, country_agency_indicator_ratings, country_agency_progress
+from target import calc_agency_ratings, get_country_progress, calc_country_ratings, get_agency_progress, country_agency_indicator_ratings, country_agency_progress
 from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs, dp_indicators
 from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm, CountryScorecardForm
 from utils import none_num
@@ -22,7 +22,7 @@ def get_agency_scorecard_data(agency):
     submissions = agency.submission_set.filter(type="DP")
     if submissions.count() == 0: return None
 
-    agency_data = calc_agency_targets(agency)
+    agency_data = calc_agency_ratings(agency)
 
     # Include aggegated comments
     for indicator, d in agency_data.items():
@@ -32,7 +32,6 @@ def get_agency_scorecard_data(agency):
             comments.append("%s %s] %s" % (question_number, country, comment))
         d["comments"] = "\n".join([comment for comment in comments if comment])
         d["key"] = "%s_%s" % (agency, indicator)
-    # TODO Still need to add the erb data - i.e. consolidated comments 
 
     # Include a list of countries in which progress isn't/is being made
     agency_data["np"], agency_data["p"] = get_country_progress(agency)
@@ -41,7 +40,7 @@ def get_agency_scorecard_data(agency):
 
 def get_agencies_scorecard_data():
     return dict([(agency, get_agency_scorecard_data(agency))
-        for agency in Agency.objects.filter(type="Agency")
+        for agency in Agency.objects.all()
         if agency.submission_set.filter(type="DP").count() > 0
     ])
 
@@ -56,7 +55,7 @@ def get_country_scorecard_data(country):
     if submission.govquestion_set.all().count() == 0: 
         raise Exception("Possible incomplete submission")
     
-    country_data = calc_country_targets(country)
+    country_data = calc_country_ratings(country)
     
     for indicator, d in country_data.items():
         old_comments = d["comments"]
@@ -653,7 +652,7 @@ def agency_table_by_indicator(request, indicator, template_name="submissions/age
     countries = Country.objects.all().order_by("country")
     if indicator in dp_gov_map:
         gov_indicator = dp_gov_map[indicator]
-        country_calcs = [(c, calc_country_targets(c)[gov_indicator]) for c in countries]
+        country_calcs = [(c, calc_country_ratings(c)[gov_indicator]) for c in countries]
     
     agencies = []
     for agency in Agency.objects.all():
@@ -693,8 +692,8 @@ def gbs_table(request, agency_id, template_name="submissions/gbs_table.html", ex
     agency = get_object_or_404(Agency, agency=gbsagency.agency.replace("GBS", ""))
 
     extra_context["agency"] = agency
-    extra_context["agency_data"] = calc_agency_targets(agency)
-    extra_context["gbs_agency_data"] = calc_agency_targets(gbsagency)
+    extra_context["agency_data"] = calc_agency_ratings(agency)
+    extra_context["gbs_agency_data"] = calc_agency_ratings(gbsagency)
 
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
@@ -703,12 +702,12 @@ def country_table(request, template_name="submissions/country_table.html", extra
     abs_values = {}
     for country in Country.objects.all().order_by("country"):
         country_abs_values = {}
-        country_targets = calc_country_targets(country)
+        country_ratings = calc_country_ratings(country)
         indicators = calc_country_indicators(country, positive_funcs)
         for indicator in indicators:
             tpl = indicators[indicator][0]
             base_val, base_year, latest_val, latest_year = tpl
-            target = country_targets[indicator]["target"]
+            rating = country_ratings[indicator]["target"]
 
             if type(base_val) == str: base_val = base_val.upper()
             if type(latest_val) == str: latest_val = latest_val.upper()
@@ -729,14 +728,14 @@ def country_table(request, template_name="submissions/country_table.html", extra
                     tbl_float_format(latest_val1), 
                     None,
                     base_year,
-                    target
+                    rating
                 ) 
                 country_abs_values["2Ga2"] = (
                     tbl_float_format(base_val2), 
                     tbl_float_format(latest_val2), 
                     None,
                     base_year,
-                    target,
+                    rating,
                 ) 
             else:
                 decimal_places = {
@@ -748,7 +747,7 @@ def country_table(request, template_name="submissions/country_table.html", extra
                     tbl_float_format(latest_val, places), 
                     tbl_float_format(perc_change(base_val, latest_val), places),
                     base_year,
-                    target
+                    rating
                 ) 
         abs_values[country.country] = country_abs_values
     extra_context["abs_values"] = sorted(abs_values.items())

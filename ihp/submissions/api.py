@@ -1,8 +1,9 @@
+import re
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson
 from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country, CountryScorecardOverride, GovQuestion, DPQuestion
-from target import calc_agency_targets, calc_country_targets
+from target import calc_agency_ratings, calc_country_ratings
 import indicators
 
 def calc_agency_comments(indicator, agency_data):
@@ -20,7 +21,7 @@ def dp_summary(request, agency_id):
     erbs = range(1, 9)
 
     if request.method == "GET":
-        agency_data = calc_agency_targets(agency)
+        agency_data = calc_agency_ratings(agency)
 
         comments = {}
         for indicator in indicators.dp_indicators:
@@ -44,11 +45,11 @@ def dp_ratings(request, agency_id):
     try:
         agency = get_object_or_404(Agency, id=agency_id)
         ratings, _ = DPScorecardRatings.objects.get_or_create(agency=agency)
-        results = calc_agency_targets(agency)
+        results = calc_agency_ratings(agency)
         data = {}
 
         if request.method == "GET":
-            agency_data = calc_agency_targets(agency)
+            agency_data = calc_agency_ratings(agency)
 
             for indicator in indicators.dp_indicators:
                 data[indicator] = calc_agency_comments(indicator, agency_data)
@@ -67,7 +68,7 @@ def dp_ratings(request, agency_id):
                 indicator.setattr(ratings, "er%s" % core_indicator, request.POST["er%s" % core_indicator])
             ratings.save()
 
-            results = calc_agency_targets(agency)
+            results = calc_agency_ratings(agency)
 
             for indicator in indicators.dp_indicators:
                 core_indicator = strip_indicator(indicator)
@@ -81,84 +82,37 @@ def dp_ratings(request, agency_id):
     
 def gov_ratings(request, country_id):
 
+    re_indconv = re.compile("(\d+)(\w*)")
+    indconv = lambda "%sG%s" % re_indconv.search(indicator).groups()
     try:
         country = get_object_or_404(Country, id=country_id)
         ratings, _ = GovScorecardRatings.objects.get_or_create(country=country)
         get_comment = lambda indicator : results[indicator]["commentary"]
         data = {}
+        indicators = ["1", "2a", "2b", "3", "4", "5a", "5b", "6", "7", "8"]
 
         if request.method == "GET":
-            results = calc_country_targets(country)
+            results = calc_country_ratings(country)
             country_data = results
 
-            data["rating1"] = ratings.r1
-            data["rating2a"] = ratings.r2a
-            data["rating2b"] = ratings.r2b
-            data["rating3"] = ratings.r3
-            data["rating4"] = ratings.r4
-            data["rating5a"] = ratings.r5a
-            data["rating5b"] = ratings.r5b
-            data["rating6"] = ratings.r6
-            data["rating7"] = ratings.r7
-            data["rating8"] = ratings.r8
-
-            data["progress1"] = ratings.er1
-            data["progress2a"] = ratings.er2a
-            data["progress2b"] = ratings.er2b
-            data["progress3"] = ratings.er3
-            data["progress4"] = ratings.er4
-            data["progress5a"] = ratings.er5a
-            data["progress5b"] = ratings.er5b
-            data["progress6"] = ratings.er6
-            data["progress7"] = ratings.er7
-            data["progress8"] = ratings.er8
-
-            data["gen1"] = get_comment("1G")
-            data["gen2a"] = get_comment("2Ga")
-            data["gen2b"] = get_comment("2Gb")
-            data["gen3"] = get_comment("3G")
-            data["gen4"] = get_comment("4G")
-            data["gen5a"] = get_comment("5Ga")
-            data["gen5b"] = get_comment("5Gb")
-            data["gen6"] = get_comment("6G")
-            data["gen7"] = get_comment("7G")
-            data["gen8"] = get_comment("8G")
+            
+            for indicator in indicators:
+                data["rating%s" % indicator] = getattr(ratings, "r%s" % indicator)
+                data["progress%s" % indicator] = getattr(ratings, "er%s" % indicator)
+                data["gen%s" % indicator] = get_comment(indconv(indicator))
 
             return HttpResponse(simplejson.dumps(data))
         elif request.method == "POST":
-            ratings.r1 = request.POST["r1"]
-            ratings.er1 = request.POST["er1"]
-            ratings.r2a = request.POST["r2a"]
-            ratings.er2a = request.POST["er2a"]
-            ratings.r2b = request.POST["r2b"]
-            ratings.er2b = request.POST["er2b"]
-            ratings.r3 = request.POST["r3"]
-            ratings.er3 = request.POST["er3"]
-            ratings.r4 = request.POST["r4"]
-            ratings.er4 = request.POST["er4"]
-            ratings.r5a = request.POST["r5a"]
-            ratings.er5a = request.POST["er5a"]
-            ratings.r5b = request.POST["r5b"]
-            ratings.er5b = request.POST["er5b"]
-            ratings.r6 = request.POST["r6"]
-            ratings.er6 = request.POST["er6"]
-            ratings.r7 = request.POST["r7"]
-            ratings.er7 = request.POST["er7"]
-            ratings.r8 = request.POST["r8"]
-            ratings.er8 = request.POST["er8"]
-            ratings.save()
 
-            results = calc_country_targets(country)
-            data["gen1"] = get_comment("1G")
-            data["gen2a"] = get_comment("2Ga")
-            data["gen2b"] = get_comment("2Gb")
-            data["gen3"] = get_comment("3G")
-            data["gen4"] = get_comment("4G")
-            data["gen5a"] = get_comment("5Ga")
-            data["gen5b"] = get_comment("5Gb")
-            data["gen6"] = get_comment("6G")
-            data["gen7"] = get_comment("7G")
-            data["gen8"] = get_comment("8G")
+            for indicator in indicators:
+                setattr(ratings, "r%s" % indicator, request.POST["r%s" % indicator]) 
+                setattr(ratings, "er%s" % indicator, request.POST["er%s" % indicator]) 
+                ratings.save()
+
+            results = calc_country_ratings(country)
+
+            for indicator in indicators:
+                data["gen%s" % indicator] = get_comment(indconv(indicator))
 
             return HttpResponse(simplejson.dumps(data))
     except:
@@ -173,7 +127,7 @@ def country_scorecard(request, country_id):
         data = {}
 
         if request.method == "GET":
-            results = calc_country_targets(country)
+            results = calc_country_ratings(country)
             country_data = results
             data = ratings.__dict__.copy()
             for key in data.keys():

@@ -58,7 +58,7 @@ def evaluate_indicator(target, base_val, cur_val):
     except CannotCalculateException:
         return Rating.NONE
 
-def calc_agency_targets(agency):
+def calc_agency_ratings(agency):
     """
     Returns information for all indicators for the given agency in a dict with the
     following form
@@ -296,7 +296,7 @@ def get_country_commentary_text(country):
         pass
     return gov_commentary_text_en
 
-def calc_country_targets(country):
+def calc_country_ratings(country):
     """
     Returns information for all indicators for the given country in a dict with the
     following form
