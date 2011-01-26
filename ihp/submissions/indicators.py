@@ -11,15 +11,15 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
 
     funcs = funcs or indicator_funcs
     func, args = funcs[indicator]
-    # TODO - this is really ugly - probably need to refactor this code
+    
     qs2 = [q for q in qs if q.question_number in args]
     
     comments = [(question.question_number, question.submission.country, question.comments) for question in qs2]
 
     exclude_baseline = []
     exclude_latest = []
-    baseline_questions = 0
-    latest_questions = 0
+    baseline_questions = latest_questions = 0
+    baseline_excluded_count = latest_excluded_count = 0
     
     for q in qs2:
         if type(q) == DPQuestion:
@@ -35,19 +35,31 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
             exclude_latest.append(q.submission.id)
         if is_none(q.baseline_value): baseline_questions += 1
         if is_none(q.latest_value): latest_questions += 1
+        if baseline_excluded: baseline_excluded_count += 1
+        if latest_excluded: latest_excluded_count += 1
 
     qs2_baseline = [q for q in qs2 if not q.submission.id in exclude_baseline]
     qs2_latest = [q for q in qs2 if not q.submission.id in exclude_latest]
 
     if len(qs2_baseline) == 0:
-        base_val = None if baseline_questions > 0 else NA_STR
+        if baseline_excluded_count == len(qs2):
+            base_val = NA_STR
+        elif baseline_questions > 0:
+            base_val = None
+        else:
+            base_val = NA_STR
     else:
         base_val = func(qs2_baseline, agency_or_country, base_selector, *args)
         if base_val == NA_STR and baseline_questions > 0:
             base_val = None
 
     if len(qs2_latest) == 0:
-        cur_val = None if latest_questions > 0 else NA_STR
+        if latest_excluded_count == len(qs2):
+            cur_val = NA_STR
+        elif latest_questions > 0:
+            cur_val = None
+        else:
+            cur_val = NA_STR
     else:
         cur_val = func(qs2_latest, agency_or_country, cur_selector, *args)
         if cur_val == NA_STR and latest_questions > 0:
@@ -107,6 +119,8 @@ def calc_agency_country_indicator(qs, agency, country, indicator, funcs=None):
         funcs["1DP"] = (equals_or_zero("yes"), ("1",))
         funcs["6DP"] = (equals_or_zero("yes"), ("17",))
         funcs["7DP"] = (equals_or_zero("yes"), ("18",))
+        if agency.agency == "UK" and country.country == "Nigeria" and indicator == "6DP":
+            import pdb; pdb.set_trace()
         return calc_indicator(qs, agency, indicator, funcs)
     except:
         traceback.print_exc()
