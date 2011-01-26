@@ -335,6 +335,8 @@ class CountryScorecardOverride(models.Model):
 
     pf2 = CommentsField(verbose_name="PF2")
 
+    cd2 = CommentsField(verbose_name="CD2")
+
     def __unicode__(self):
         return unicode(self.country)
 

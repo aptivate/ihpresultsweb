@@ -287,7 +287,7 @@ def get_countries_export_data():
             datum["TB2"] = "%s COUNTRY SCORECARD" % country.country.upper()
 
             datum["CD1"] = datum["ER1a"]
-            datum["CD2"] = datum["questions"]["1"]["comments"]
+            datum["CD2"] = ratings.cd2 or datum["questions"]["1"]["comments"]
             datum["HSP1"] = ratings.hsp1 or datum["Q2G"]["target"]
             datum["HSP2"] = ratings.hsp2 or datum["Q3G"]["target"]
             datum["HSM1"] = ratings.hsm1 or datum["Q12G"]["target"]
