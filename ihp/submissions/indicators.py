@@ -119,8 +119,6 @@ def calc_agency_country_indicator(qs, agency, country, indicator, funcs=None):
         funcs["1DP"] = (equals_or_zero("yes"), ("1",))
         funcs["6DP"] = (equals_or_zero("yes"), ("17",))
         funcs["7DP"] = (equals_or_zero("yes"), ("18",))
-        if agency.agency == "UK" and country.country == "Nigeria" and indicator == "6DP":
-            import pdb; pdb.set_trace()
         return calc_indicator(qs, agency, indicator, funcs)
     except:
         traceback.print_exc()
