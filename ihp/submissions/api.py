@@ -53,8 +53,8 @@ def dp_ratings(request, agency_id):
             for indicator in indicators.dp_indicators:
                 data[indicator] = calc_agency_comments(indicator, agency_data)
                 core_indicator = strip_indicator(indicator)
-                data["rating%s" % core_indicator] == getattr(ratings, "r" % core_indicator)
-                data["progress%s" % core_indicator] == getattr(ratings, "er" % core_indicator)
+                data["rating%s" % core_indicator] = getattr(ratings, "r%s" % core_indicator)
+                data["progress%s" % core_indicator] = getattr(ratings, "er%s" % core_indicator)
                 data["gen%s" % core_indicator] = get_comment(indicator)
 
             return HttpResponse(simplejson.dumps(data))
