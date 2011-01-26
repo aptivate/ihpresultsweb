@@ -6,6 +6,15 @@ from consts import NA_STR
 from django.db.models.query import QuerySet
 
 def calc_indicator(qs, agency_or_country, indicator, funcs=None):
+    """
+    Core function that calculates indicators. 
+
+    qs - The set of questions to calculate the indicator from
+    agency_or_country - The entity for which the indicator is being calculated for
+    indicator - the indicator the is being calculated
+    funcs - used to override the indicator functions
+    """
+
     if type(qs) == QuerySet: qs = list(qs)
     is_none = lambda x : x == None or (unicode(x)).strip() == ""
 
