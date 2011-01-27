@@ -129,7 +129,7 @@ def parse_gov(sheet):
     if not agency.startswith("Government"):
         agency = "Government of " + agency
 
-    agency = Agency.objects.get(agency=agency)
+    agency = Agency.objects.all_types().get(agency=agency)
     country = Country.objects.get(country=country)
 
     GovQuestion.objects.filter(
