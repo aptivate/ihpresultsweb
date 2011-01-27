@@ -83,7 +83,7 @@ def dp_ratings(request, agency_id):
 def gov_ratings(request, country_id):
 
     re_indconv = re.compile("(\d+)(\w*)")
-    indconv = lambda "%sG%s" % re_indconv.search(indicator).groups()
+    indconv = lambda indicator : "%sG%s" % re_indconv.search(indicator).groups()
     try:
         country = get_object_or_404(Country, id=country_id)
         ratings, _ = GovScorecardRatings.objects.get_or_create(country=country)
