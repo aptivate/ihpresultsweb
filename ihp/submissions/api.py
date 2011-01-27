@@ -144,6 +144,7 @@ def country_scorecard(request, country_id):
             data["pfm2"] = data["pfm2"] or country_questions.filter(question_number="9")[0].comments
             data["pr2"] = data["pr2"] or country_questions.filter(question_number="10")[0].comments
             data["pf2"] = data["pf2"] or country_questions.filter(question_number="16")[0].comments
+            data["cd2"] = data["cd2"] or country_questions.filter(question_number="1")[0].comments
             if not data["ta2"]:
                 data["ta2"] = ""
                 for q in DPQuestion.objects.filter(submission__country=country, question_number="4"):
