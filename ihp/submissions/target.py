@@ -402,7 +402,10 @@ def country_agency_indicator_ratings(country, agency):
         # logic out of here
         result = None
         if indicator in ["1DP", "6DP", "7DP"] and cur_val != NA_STR:
-            if cur_val > 0: result = Rating.TICK
+            if cur_val > 0: 
+                result = Rating.TICK
+            elif base_val in [None, NA_STR]:
+                result = Rating.CROSS
         elif indicator == "8DP":
             try:
                 fix = Country8DPFix.objects.get(agency=agency, country=country)
@@ -420,7 +423,7 @@ def country_agency_indicator_ratings(country, agency):
 def country_agency_progress(country, agency):
     """
     Returns True is an agency is making progress in a particular country
-    Progress is defined as # ticks / # ratings
+    Progress is defined as (# ticks + # arrows) / # ratings >= 0.5
     """
     is_tick = lambda x : x == Rating.TICK or x == Rating.ARROW
     ratings = country_agency_indicator_ratings(country, agency)
