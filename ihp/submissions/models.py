@@ -90,8 +90,9 @@ class Submission(models.Model):
         return "%s %s" % (self.country, self.agency)
 
 class DPQuestionManager(models.Manager):
-    def get_query_set(self):
-        return super(DPQuestionManager, self).get_query_set().filter(submission__agency__type="Agency")
+    pass
+    #def get_query_set(self):
+    #    return super(DPQuestionManager, self).get_query_set().filter(submission__agency__type="Agency")
     
 class DPQuestion(models.Model):
     submission = models.ForeignKey(Submission, null=False)
