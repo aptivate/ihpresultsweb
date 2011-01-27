@@ -32,7 +32,7 @@ def evaluate_indicator(target, base_val, cur_val):
     arrow_func = criteria_funcs[target.arrow_criterion_type]
 
     if cur_val not in [None, NA_STR]:
-        if target.indicator in ["4DP", "5DPa", "5DPb"]:
+        if target.indicator in ["5DPa", "5DPb"]:
             if cur_val <= 20:
                 return Rating.TICK
         elif target.indicator in ["2DPa"]:
@@ -87,7 +87,7 @@ def calc_agency_ratings(agency):
         "2DPb" :"In %(cur_year)s %(cur_val).0f%% of capacity development was provided through coordinated programmes - %(diff_direction)s from %(base_val).0f%%.",
         "2DPc" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided through programme based approaches - %(diff_direction)s from %(base_val).0f%%.",
         "3DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided through multi-year commitments - %(diff_direction)s from %(base_val).0f%%.",
-        "4DP" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid disbursements were released according to agreed schedules - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%% in %(base_year)s.",
+        "4DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid disbursements were released according to agreed schedules - %(diff_direction)s from %(base_val).0f%% in %(base_year)s.",
         "5DPa" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid used country procurement systems - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%.",
         "5DPb" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid used national public financial management systems - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%.",
         "5DPc" : "In %(cur_year)s the stock of parallel project implementation units (PIUs) in the surveyed countries was %(cur_val)s - %(diff_direction)s from %(base_val)s.",

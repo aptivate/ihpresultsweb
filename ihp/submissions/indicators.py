@@ -186,7 +186,7 @@ indicator_funcs = {
     "2DPb" : (calc_numdenom, ("5", "4")),
     "2DPc" : (calc_numdenom, ("7", "6")),
     "3DP"  : (calc_numdenom, ("9", "8")),
-    "4DP"  : (calc_one_minus_numdenom, ("11", "10")),
+    "4DP"  : (calc_numdenom, ("11", "10")),
     "5DPa" : (calc_one_minus_numdenom, ("13", "12")),
     "5DPb" : (calc_one_minus_numdenom, ("15", "14")),
     "5DPc" : (sum_values, ("16",)),
