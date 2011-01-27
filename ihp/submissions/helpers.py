@@ -73,7 +73,7 @@ def parse_dp(sheet):
         completed_by = sheet.cell(0, 8).value
         job = sheet.cell(1, 8).value
 
-    agency = Agency.objects.get(agency=agency)
+    agency = Agency.objects.all_types().get(agency=agency)
     country = Country.objects.get(country=country)
 
     DPQuestion.objects.filter(
