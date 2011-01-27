@@ -112,8 +112,10 @@ def calc_overall_agency_indicators(funcs=None):
     i.e. there will be two values per indicator, baseline value and latest value
     currently only calculating for 2DPa, 2DPb, 2DPc, 3DP, 5DPa, 5DPb, 5DPc
 
+    2008 base years are excluded
+
     """
-    indicators = ["2DPa", "2DPb", "2DPc", "3DP", "5DPa", "5DPb", "5DPc"]
+    indicators = ["2DPa", "2DPb", "2DPc", "3DP", "4DP", "5DPa", "5DPb", "5DPc"]
     qs = DPQuestion.objects.filter(submission__agency__type="Agency").exclude(baseline_year="2008").select_related()
 
     results = [calc_indicator(qs, None, indicator, funcs) for indicator in indicators]
