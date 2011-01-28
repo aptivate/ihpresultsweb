@@ -404,6 +404,8 @@ def country_agency_indicator_ratings(country, agency):
         if indicator in ["1DP", "6DP", "7DP"] and cur_val != NA_STR:
             if cur_val > 0: 
                 result = Rating.TICK
+            elif base_val == None and cur_val == None:
+                result = Rating.QUESTION
             elif base_val in [None, NA_STR]:
                 result = Rating.CROSS
         elif indicator == "8DP":
