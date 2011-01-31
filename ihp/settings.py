@@ -58,6 +58,7 @@ ROOT_URLCONF = 'ihp.urls'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_HOME, "templates"),
+    os.path.join(PROJECT_HOME, "publicweb/templates"),
 )
 
 INSTALLED_APPS = (
