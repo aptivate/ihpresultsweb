@@ -3,8 +3,10 @@ Tests for the public IHP website Django parts.
 """
 
 from django.test import TestCase
+from django.core.urlresolvers import reverse
 from submissions.models import Agency, Country, AgencyCountries
 from submissions.target import *
+from ihp.publicweb.views import agency_scorecard_page
 
 class PublicWebsiteTest(TestCase):
     fixtures = ['indicator_tests']
@@ -23,6 +25,6 @@ class PublicWebsiteTest(TestCase):
         
         self.assertTrue(country_agency_progress(mozambique, unicef))
         
-        
-
-
+    def test_country_scorecard_view(self):
+        self.client.get(reverse(agency_scorecard_page,
+                                args={'agency_name': 'UNICEF'}))

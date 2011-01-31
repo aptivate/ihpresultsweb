@@ -6,6 +6,7 @@ from django.conf import settings
 from django.views.generic.simple import direct_to_template
 from django.contrib import admin
 from submissions.models import Agency, Country
+
 admin.autodiscover()
 
 
@@ -188,6 +189,9 @@ urlpatterns = patterns('',
     (r'^scorecard/agency/questionnaires/$', 'submissions.views.dp_questionnaire', {}, 'agency_questionnaire'),
     (r'^scorecard/agency/questionnaires/cols/$', 'submissions.views.dp_questionnaire', {"template_name" : "submissions/dp_questionnaire_cols.html"}, 'agency_questionnaire_cols'),
     (r'^scorecard/country/questionnaires/$', 'submissions.views.gov_questionnaire', {}, 'gov_questionnaire'),
+    
+    # Public website views
+    (r'', include('ihp.publicweb.urls')),
 
     (r'^admin/', include(admin.site.urls)),
 
