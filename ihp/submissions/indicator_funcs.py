@@ -25,7 +25,7 @@ def _sum_values(qs, selector):
 def func_8dpfix(qs, agency, selector, q):
     qs_countries = [q.submission.country for q in qs]
     countries = Country8DPFix.objects.filter(agency=agency, country__in=qs_countries)
-    denom = float(len(countries))
+    denom = float(len(agency.countries))
 
     if selector == base_selector:
         num = len([country for country in countries if country.baseline_progress])

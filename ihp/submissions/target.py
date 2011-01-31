@@ -413,6 +413,8 @@ def country_agency_indicator_ratings(country, agency):
                 fix = Country8DPFix.objects.get(agency=agency, country=country)
                 if fix.latest_progress:
                     result = Rating.TICK
+                else:
+                    result = Rating.CROSS
             except Country8DPFix.DoesNotExist:
                 result = Rating.CROSS
 
