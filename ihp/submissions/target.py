@@ -45,7 +45,7 @@ def evaluate_indicator(target, base_val, cur_val):
             if base_val not in [None, NA_STR]:
                 if cur_val - base_val >= 0.5:
                     return Rating.TICK
-        elif target.indicator in ["4Ga"]:
+        elif target.indicator in ["4G"]:
             if cur_val <= 20:
                 return Rating.TICK
 
