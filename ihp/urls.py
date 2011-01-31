@@ -191,7 +191,7 @@ urlpatterns = patterns('',
     (r'^scorecard/country/questionnaires/$', 'submissions.views.gov_questionnaire', {}, 'gov_questionnaire'),
     
     # Public website views
-    (r'', include('ihp.publicweb.urls')),
+    (r'^public/', include('ihp.publicweb.urls')),
 
     (r'^admin/', include(admin.site.urls)),
 
