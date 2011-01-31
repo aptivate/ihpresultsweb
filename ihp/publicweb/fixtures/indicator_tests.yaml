@@ -1,0 +1,19 @@
+- fields: {agency: 27, completed_by: Emanuele Capobianco, country: 9, date_submitted: !!timestamp '2010-12-02
+      16:00:12.791217', docversion: '0.22', job_title: Chief Health & Nutrition, type: DP}
+  model: submissions.submission
+  pk: 256
+
+- fields: {baseline_value: 'Yes', baseline_year: '2008', comments: '', latest_value: 'Yes',
+    latest_year: '2009', question_number: '1', submission: 256}
+  model: submissions.dpquestion
+  pk: 5571
+
+- fields: {baseline_value: '', baseline_year: '2007', comments: 'Q2: 2007 - $11,854,689.                  Support
+      to policy development, mother and child health, nutrition and HIV/AIDS. Aid
+      for the government sector includes all UNICEF budget for health. The reported
+      on national health sector budget excludes UNICEF technical assistance for health(staff
+      salaries+consultants)', latest_value: '15694294.0', latest_year: '2009', question_number: '2',
+    submission: 256}
+  model: submissions.dpquestion
+  pk: 5572
+  
