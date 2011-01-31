@@ -1,0 +1,13 @@
+backup_template: This is how the application's built-in backup process 
+works. It creates a new directory copying backup_template (which just 
+contains a README file), adds the application code and the sqlite database, 
+and turns it into a tarball. This may become obsolete at some point, but for 
+now I'm leaving it here. The backup script itself is now scripts/backup.sh.
+
+ihp: the Django application, inherited from Adi.
+
+passenger_wsgi.py: Adi needs this for his own deployment process, it might 
+go away if the hosting arrangements change.
+
+public: static media files that are neither Wordpress nor Django, e.g. the 
+site's favicon.
