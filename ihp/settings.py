@@ -69,6 +69,7 @@ INSTALLED_APPS = (
     "debug_toolbar",
    
     'submissions',
+    'publicweb',
 )
 
 # Poll Email Account Settings
