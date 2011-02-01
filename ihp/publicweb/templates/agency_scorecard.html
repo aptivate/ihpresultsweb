@@ -2,5 +2,40 @@
 {% block title %}{{agency.agency}}{% endblock %}
 {% block heading %}Agency Scorecard for {{agency.agency}}{% endblock %}
 {% block content %}
-<p>hello {{agency.agency}}</p>
+<table class="scorecard">
+	<tr class="headings">
+		<th colspan="3">Countries where the agency is demonstrating progress</th>
+	</tr>
+	<tr class="countries">
+		<td colspan="3">
+			{% for country in progress %}
+				{{country.country}}
+			{% endfor %}
+		</td>
+	</tr>
+	
+	<tr class="headings">
+		<th colspan="3">Countries where the agency is not reporting progress</th>
+	</tr>
+	<tr class="countries">
+		<td colspan="3">
+			{% for country in no_progress %}
+				{{country.country}}
+			{% endfor %}
+		</td>
+	</tr>
+	
+	<tr class="headings">
+		<th>Expected Results</th>
+		<th>Rating</th>
+		<th>Overall Progress</th>
+	</tr>
+	{% for indicator in indicators %}
+	<tr class="indicator">
+		<td class="expected_result">{{indicator.expected_results}}</td>
+		<td class="rating">{{indicator.rating}}</td>
+		<td class="overall_progress">{{indicator.overall_progress}}</td>
+	</tr>
+	{% endfor %}
+</table>
 {% endblock %}
