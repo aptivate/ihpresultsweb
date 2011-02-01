@@ -8,5 +8,5 @@ from ihp.publicweb.views import agency_scorecard_page
 urlpatterns = patterns('ihp.publicweb.views',
         url(r'^scorecard/agency/(?P<agency_name>[-\w]+)/$',
             agency_scorecard_page,
-            name='theme_groups'),
+            name='public-agency-scorecard'),
     )

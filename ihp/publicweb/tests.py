@@ -10,21 +10,23 @@ from ihp.publicweb.views import agency_scorecard_page
 
 class PublicWebsiteTest(TestCase):
     fixtures = ['indicator_tests']
+    unicef = Agency.objects.get(agency="UNICEF")
     
     def test_getting_agency_countries(self):
-        unicef = Agency.objects.get(agency="UNICEF")
-        self.assertNotEqual(unicef, None)
-        self.assertEqual(unicef.id, 27)
+        self.assertNotEqual(self.unicef, None)
+        self.assertEqual(self.unicef.id, 27)
         
         mozambique = Country.objects.get(country="Mozambique")
         self.assertNotEqual(mozambique, None)
         self.assertEqual(mozambique.id, 9)
         
-        agency_countries = AgencyCountries.objects.get_agency_countries(unicef)
+        agency_countries = AgencyCountries.objects.get_agency_countries(self.unicef)
         self.assertTrue(mozambique in agency_countries)
         
-        self.assertTrue(country_agency_progress(mozambique, unicef))
+        self.assertTrue(country_agency_progress(mozambique, self.unicef))
         
     def test_country_scorecard_view(self):
-        self.client.get(reverse(agency_scorecard_page,
-                                args={'agency_name': 'UNICEF'}))
+        response = self.client.get(reverse(agency_scorecard_page,
+            kwargs={'agency_name': self.unicef.agency}))
+        self.assertEqual(response.context['agency_name'], self.unicef.agency)
+        
