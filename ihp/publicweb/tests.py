@@ -16,7 +16,7 @@ import submissions.consts
 import ihp.publicweb.views
 
 class PublicWebsiteTest(TestCase):
-    fixtures = ['indicator_tests']
+    fixtures = ['submission_test_data.json', 'indicator_tests.yaml']
     unicef = Agency.objects.get(agency="UNICEF")
     mozambique = Country.objects.get(country="Mozambique")
 
