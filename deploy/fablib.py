@@ -137,7 +137,7 @@ def update_db():
     # if we are using South we need to do the migrations aswell
     use_migrations = False
     for app in env.django_apps:
-        if files.exists(os.path.join(env.django_root, app)):
+        if files.exists(os.path.join(env.django_root, app, 'migrations')):
             use_migrations = True
     cmd = env.python_bin + ' manage.py syncdb'
     if use_migrations:

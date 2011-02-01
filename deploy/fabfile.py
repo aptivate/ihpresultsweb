@@ -21,6 +21,10 @@ env.test_cmd = ' manage.py test -v0 ' + ' '.join(env.django_apps)
 # to be used by later commands
 #
 
+def _local_setup():
+    fablib._setup_path()
+    env.django_root = os.path.join(env.vcs_root, 'ihp')
+
 def staging_test():
     """ use staging environment on remote host to run tests"""
     utils.abort('need to refactor fabfile for this to work')
@@ -29,31 +33,22 @@ def staging_test():
     env.project_subdir = env.project + '_test'
     env.environment = 'staging_test'
     env.hosts = ['fen-vz-osiaccounting']
-    fablib._setup_path()
-    # override env variables here
-
+    _local_setup()
 
 def dev():
     """ use staging environment on remote host to demo to client"""
     env.environment = 'dev_server'
     env.hosts = ['lin-reactionscorecards3-dev.aptivate.org:48001']
-    fablib._setup_path()
-    # override env variables here
-
+    _local_setup()
 
 def staging():
     """ use staging environment on remote host to demo to client"""
     env.environment = 'staging'
     env.hosts = ['lin-reactionscorecards3-stage.aptivate.org:48001']
-    fablib._setup_path()
-    # override env variables here
-
+    _local_setup()
 
 def production():
     """ use production environment on remote host"""
     env.environment = 'production'
     env.hosts = ['lin-osiacct.aptivate.org:48001']
-    fablib._setup_path()
-    # override env variables here
-
-
+    _local_setup()
