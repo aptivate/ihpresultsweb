@@ -11,3 +11,7 @@ go away if the hosting arrangements change.
 
 public: static media files that are neither Wordpress nor Django, e.g. the 
 site's favicon.
+
+ihp/settings_prod.py: can this be deleted?
+
+ihp/scripts/check.sh: can this be deleted or moved to the scripts/ directory?
