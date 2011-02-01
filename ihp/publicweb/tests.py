@@ -66,3 +66,9 @@ class PublicWebsiteTest(TestCase):
             
             self.assertEqual(i.rating, rating['target'])
             self.assertEqual(i.overall_progress, rating['commentary'])
+        
+        (progress, no_progress) = submissions.target.get_country_progress(self.unicef)
+        self.assertEqual(progress.values(),
+            response.context['progress_countries'])
+        self.assertEqual(no_progress.values(),
+            response.context['no_progress_countries'])

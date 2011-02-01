@@ -12,7 +12,9 @@ class Indicator:
 def agency_scorecard_page(request, agency_name):
     agency = Agency.objects.get(agency=agency_name)
     ratings = submissions.target.calc_agency_ratings(agency)
-    indicators = []
+    
+    context = dict(agency=agency)
+    indicators = context['indicators'] = []
     
     for indicator_code, rating in ratings.iteritems():
         i = Indicator()
@@ -25,6 +27,10 @@ def agency_scorecard_page(request, agency_name):
         i.rating = rating['target']
         i.overall_progress = rating['commentary']
         indicators.append(i)
+        
+    p, np = submissions.target.get_country_progress(agency)
+    context['progress_countries'] = p.values()
+    context['no_progress_countries'] = np.values()
     
     return render_to_response('agency_scorecard.html',
-        RequestContext(request, dict(agency=agency, indicators=indicators)))
+        RequestContext(request, context))

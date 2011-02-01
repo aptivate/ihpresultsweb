@@ -8,7 +8,7 @@
 	</tr>
 	<tr class="countries">
 		<td colspan="3">
-			{% for country in progress %}
+			{% for country in progress_countries %}
 				{{country.country}}
 			{% endfor %}
 		</td>
@@ -19,7 +19,7 @@
 	</tr>
 	<tr class="countries">
 		<td colspan="3">
-			{% for country in no_progress %}
+			{% for country in no_progress_countries %}
 				{{country.country}}
 			{% endfor %}
 		</td>
