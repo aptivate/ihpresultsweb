@@ -1,3 +1,5 @@
+#-*- coding: utf-8 -*-
+
 """
 Tests for the public IHP website Django parts.
 """
@@ -37,7 +39,8 @@ class PublicWebsiteTest(TestCase):
         # self.assertEqual(rating_1['comments'][0][0], '1')
         # self.assertEqual(rating_1['comments'][0][1], mozambique)
         # self.assertEqual(rating_1['comments'][0][2], '')
-        # submissions.target.commentary_map['1DP'])
+        self.assertEqual(rating_1['commentary'],
+            (submissions.target.na_text % self.unicef.agency) + u"∆")
         self.assertEqual(rating_1['target'], submissions.target.Rating.TICK)
         self.assertEqual(rating_1['target_val'], 100.0)
         
