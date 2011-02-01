@@ -1,0 +1,41 @@
+{% extends "public_base.html" %}
+{% block title %}{{country.country}}{% endblock %}
+{% block heading %}Country Scorecard for {{country.country}}{% endblock %}
+{% block content %}
+<table class="scorecard">
+	<tr class="headings">
+		<th colspan="3">Agencies demonstrating progress in this country</th>
+	</tr>
+	<tr class="countries">
+		<td colspan="3">
+			{% for agency in progress_agencies %}
+				{{agency.agency}}
+			{% endfor %}
+		</td>
+	</tr>
+	
+	<tr class="headings">
+		<th colspan="3">Agencies not reporting progress in this country</th>
+	</tr>
+	<tr class="countries">
+		<td colspan="3">
+			{% for agency in no_progress_agencies %}
+				{{agency.agency}}
+			{% endfor %}
+		</td>
+	</tr>
+	
+	<tr class="headings">
+		<th>Expected Results</th>
+		<th>Rating</th>
+		<th>Overall Progress</th>
+	</tr>
+	{% for indicator in indicators %}
+	<tr class="indicator">
+		<td class="expected_result">{{indicator.expected_result}}</td>
+		<td class="rating">{{indicator.rating}}</td>
+		<td class="overall_progress">{{indicator.overall_progress}}</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endblock %}
