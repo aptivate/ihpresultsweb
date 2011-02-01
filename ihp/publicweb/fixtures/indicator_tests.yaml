@@ -16,4 +16,8 @@
     submission: 256}
   model: submissions.dpquestion
   pk: 5572
-  
+
+- fields: {baseline_value: '', baseline_year: '', comments: '', latest_value: '13643377.0',
+    latest_year: '', question_number: '3', submission: 256}
+  model: submissions.dpquestion
+  pk: 5573
