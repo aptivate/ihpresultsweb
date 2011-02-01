@@ -4,8 +4,11 @@ Tests for the public IHP website Django parts.
 
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+
 from submissions.models import Agency, Country, AgencyCountries
-from submissions.target import *
+import submissions.target
+import submissions.consts
+
 from ihp.publicweb.views import agency_scorecard_page
 
 class PublicWebsiteTest(TestCase):
@@ -23,10 +26,23 @@ class PublicWebsiteTest(TestCase):
         agency_countries = AgencyCountries.objects.get_agency_countries(self.unicef)
         self.assertTrue(mozambique in agency_countries)
         
-        self.assertTrue(country_agency_progress(mozambique, self.unicef))
+        self.assertTrue(submissions.target.country_agency_progress(mozambique, self.unicef))
+        
+        ratings = submissions.target.calc_agency_ratings(self.unicef)
+        
+        rating_1 = ratings['1DP']
+        self.assertEqual(rating_1['base_val'], submissions.consts.NA_STR)
+        self.assertEqual(rating_1['cur_val'], 100.0)
+        self.assertEqual(rating_1['comments'], [(u'1', mozambique, u'')])
+        # self.assertEqual(rating_1['comments'][0][0], '1')
+        # self.assertEqual(rating_1['comments'][0][1], mozambique)
+        # self.assertEqual(rating_1['comments'][0][2], '')
+        # submissions.target.commentary_map['1DP'])
+        self.assertEqual(rating_1['target'], submissions.target.Rating.TICK)
+        self.assertEqual(rating_1['target_val'], 100.0)
         
     def test_country_scorecard_view(self):
         response = self.client.get(reverse(agency_scorecard_page,
             kwargs={'agency_name': self.unicef.agency}))
-        self.assertEqual(response.context['agency_name'], self.unicef.agency)
+        self.assertEqual(response.context['agency'], self.unicef)
         
