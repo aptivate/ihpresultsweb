@@ -1,0 +1,18 @@
+table.scorecard
+{
+	width: 100%;
+	font-family: sans-serif;
+}
+
+tr.headings
+{
+	background: black;
+	color: white;
+	text-align: left;
+	text-transform: uppercase;
+}
+
+table.scorecard th, table.scorecard td
+{
+	padding: 0.1em 0.2em;
+}
