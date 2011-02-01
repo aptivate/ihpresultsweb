@@ -4,6 +4,8 @@
 Tests for the public IHP website Django parts.
 """
 
+from __future__ import absolute_import
+
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 
@@ -12,6 +14,7 @@ import submissions.target
 import submissions.consts
 
 from ihp.publicweb.views import agency_scorecard_page
+import ihp.publicweb.views
 
 class PublicWebsiteTest(TestCase):
     fixtures = ['indicator_tests']
@@ -49,3 +52,17 @@ class PublicWebsiteTest(TestCase):
             kwargs={'agency_name': self.unicef.agency}))
         self.assertEqual(response.context['agency'], self.unicef)
         
+        ratings = submissions.target.calc_agency_ratings(self.unicef)
+        indicators = response.context['indicators']
+        
+        for indicator_code, rating in ratings.iteritems():
+            i = indicators.pop(0)
+            
+            if indicator_code == "1DP":
+                self.assertEqual(i.expected_result,
+                    "Commitments are documented and mutually agreed")
+            else:
+                self.assertEqual(i.expected_result, indicator_code)
+            
+            self.assertEqual(i.rating, rating['target'])
+            self.assertEqual(i.overall_progress, rating['commentary'])
