@@ -1,6 +1,6 @@
 import os
 
-PROJECT_HOME = os.path.dirname(os.path.realpath(__name__))
+PROJECT_HOME = os.path.dirname(os.path.realpath(__file__))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
