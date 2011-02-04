@@ -7,6 +7,12 @@ body
 	font-size:82.5%;
 }
 
+/* Hide Wordpress's H1 when using our custom Scorecard template */
+div.scorecard-page h1
+{
+	display: none;
+}
+
 #content a, #content a:link, #content a:active 
 {
 	outline:none;
