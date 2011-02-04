@@ -123,9 +123,10 @@ function em_extract($content, $start_marker, $end_marker)
 {
 	$start_comment = "<!-- ".$start_marker." -->";
 	$end_comment = "<!-- ".$end_marker." -->";
-	$included_part = stristr($content, $start_comment);
-	$included_part = substr($included_part, strlen($start_comment));
-	$included_part = stristr($included_part, $end_comment, TRUE /* before */);
+	$start_index   = stripos($included_part, $start_comment);
+	$included_part = substr($content, $start_comment + strlen($start_comment));
+	$end_index     = stripos($included_part, $end_comment);
+	$included_part = substr($included_part, 0, $end_index);
 	return $included_part;
 }
 
