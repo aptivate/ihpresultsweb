@@ -2,6 +2,17 @@
 {% block title %}{{country.country}}{% endblock %}
 {% block heading %}Country Scorecard for {{country.country}}{% endblock %}
 {% block content %}
+
+<div id="header">
+	<h1><a href="http://network.human-scale.net/community/ihp/scorecards"><img
+		src="{% url ihp-media path='images' %}/ihp-results-partner-scorecard-logo.png"
+		alt="IHP+ Results Country Scorecard"></a></h1>
+	<h2><img src="{% url ihp-media path='images' %}/{{country.country|cut:" "}}.png"
+		alt="Country Scorecard for {{country.country}}" border="0">
+	<span>Country Scorecard for {{country.country}}</span></h2>
+	</div>
+</div>
+
 <table class="scorecard" cellspacing="0" cellpadding="0">
 	<tr class="headings">
 		<th class="progress" colspan="3">
@@ -12,7 +23,7 @@
 		<td class="progress" colspan="3">
 			<ul>
 			{% for agency in progress_agencies %}
-				<li><img src="{% url ihp-media path='images' %}/{{agency.agency}}.png"
+				<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
 					alt="{{agency.agency}}" class="logo" /></li>
 			{% endfor %}
 			</ul>
@@ -28,7 +39,7 @@
 		<td class="progress" colspan="3">
 			<ul>
 			{% for agency in no_progress_agencies %}
-				<li><img src="{% url ihp-media path='images' %}/{{agency.agency}}.png"
+				<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
 					alt="{{agency.agency}}" class="logo" /></li>
 			{% endfor %}
 			</ul>
