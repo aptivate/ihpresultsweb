@@ -2,40 +2,72 @@
 {% block title %}{{agency.agency}}{% endblock %}
 {% block heading %}Agency Scorecard for {{agency.agency}}{% endblock %}
 {% block content %}
-<table class="scorecard">
+<table class="scorecard" cellspacing="0" cellpadding="0">
 	<tr class="headings">
-		<th colspan="3">Countries where the agency is demonstrating progress</th>
+		<th class="progress" colspan="3">
+			<h2>Countries where the agency is demonstrating progress</h2>
+		</th>
 	</tr>
-	<tr class="countries">
-		<td colspan="3">
+	<tr class="countries reporting">
+		<td class="progress" colspan="3">
+			<ul>
 			{% for country in progress_countries %}
-				{{country.country}}
+				<li><img src="{% url ihp-media path='images' %}/{{country.country}}.png"
+					alt="{{country.country}}" class="flag" /></li>
 			{% endfor %}
+			</ul>
 		</td>
 	</tr>
 	
 	<tr class="headings">
-		<th colspan="3">Countries where the agency is not reporting progress</th>
+		<th class="progress" colspan="3">
+			<h2>Countries where the agency is not reporting progress</h2>
+		</th>
 	</tr>
 	<tr class="countries">
-		<td colspan="3">
+		<td class="progress" colspan="3">
+			<ul>
 			{% for country in no_progress_countries %}
-				{{country.country}}
+				<li><img src="{% url ihp-media path='images' %}/{{country.country}}.png"
+					alt="{{country.country}}" class="flag" /></li>
 			{% endfor %}
+			</ul>
 		</td>
 	</tr>
 	
 	<tr class="headings">
-		<th>Expected Results</th>
-		<th>Rating</th>
-		<th>Overall Progress</th>
+		<th class="expected_result"><h2>Expected Results</h2></th>
+		<th class="rating"><h2>Rating</h2></th>
+		<th class="overall_progress"><h2>Overall Progress</h2></th>
 	</tr>
-	{% for indicator in indicators %}
-	<tr class="indicator">
-		<td class="expected_result">{{indicator.expected_result}}</td>
-		<td class="rating">{{indicator.rating}}</td>
-		<td class="overall_progress">{{indicator.overall_progress}}</td>
-	</tr>
+	
+	{% for category in categories %}
+		{% for indicator in category.indicators %}
+		<tr class="indicator">
+			{% if forloop.first %}
+			<td class="expected_result" rowspan="{{category.indicators|length}}">
+				<table><tr>
+					<td class="icon">
+						<img src="{% url ihp-media path='images' %}/results-icon-{{category.code}}.png"
+							alt="icon" class="icon" />
+					</td>
+					<td class="text">
+						{{category.expected_result}}
+					</td>
+				</td></tr></table>
+			</td>
+			{% endif %}
+			
+			<td class="rating {{indicator.rating}}">
+				<img src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
+					alt="{{indicator.rating}}" class="rating" />
+			</td>
+			
+			<td class="overall_progress">
+				{{indicator.overall_progress}}
+			</td>
+		</tr>
+		{% endfor %}
 	{% endfor %}
 </table>
 {% endblock %}
