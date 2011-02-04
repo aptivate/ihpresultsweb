@@ -66,6 +66,11 @@ table.scorecard, #content table.scorecard
 	border:none;
 }
 
+#content table.scorecard tr td
+{
+	border: none;
+}
+
 tr.headings th
 {
 	padding: 0;
@@ -131,7 +136,7 @@ table.scorecard tr.countries ul li
 	float:left;
 }
 
-tr.countries img 
+tr.countries img, #content tr.countries img
 {
 	width:50px;
 	height:25px;
