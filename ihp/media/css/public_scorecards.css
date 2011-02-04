@@ -58,7 +58,7 @@ body
 	margin: 0.5em 0 0;
 }
 
-#content table.scorecard 
+#content table.scorecard, #content table.scorecard table 
 {
 	font-family:Arial, Helvetica, Verdana, sans-serif;
 	margin-bottom:20px;
@@ -69,6 +69,7 @@ body
 #content table.scorecard tr td
 {
 	border: none;
+	border-top: none;
 	padding: 0;
 }
 
