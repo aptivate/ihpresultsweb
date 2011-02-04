@@ -14,6 +14,7 @@ import submissions.target
 import submissions.consts
 
 import ihp.publicweb.views
+from ihp import publicweb
 
 class PublicWebsiteTest(TestCase):
     fixtures = ['submission_test_data.json', 'indicator_tests.yaml']
@@ -48,26 +49,42 @@ class PublicWebsiteTest(TestCase):
             (submissions.target.na_text % self.unicef.agency) + u"∆")
         self.assertEqual(rating_1['target'], submissions.target.Rating.TICK)
         self.assertEqual(rating_1['target_val'], 100.0)
+
+    def _test_ratings(self, expected_ratings, actual_categories, descriptions):
+        category = actual_categories.pop(0)
+
+        for indicator_code in sorted(expected_ratings.keys()):
+            if len(category.indicators) == 0:
+                # next category
+                category = actual_categories.pop(0)
+            
+            i = category.indicators.pop(0)
+            
+            category_code = indicator_code
+            if category_code[-1:].islower():
+                category_code = category_code[0:-1]
+            
+            if category_code in descriptions:
+                self.assertEqual(category.expected_result,
+                    publicweb.views.agency_indicator_descriptions[category_code])
+            else:
+                self.assertEqual(category.expected_result,
+                    category_code + " Lorem ipsum dolor sit amet, " +
+                    "consectetur adipiscing elit. Donec condimentum velit " +
+                    "id sapien iaculis rhoncus.")
+
+            rating = expected_ratings[indicator_code]                
+            self.assertEqual(i.rating, rating['target'])
+            self.assertEqual(i.overall_progress, rating['commentary'])
         
     def test_agency_scorecard_view(self):
         response = self.get(ihp.publicweb.views.agency_scorecard_page,
             agency_name=self.unicef.agency)
         self.assertEqual(response.context['agency'], self.unicef)
         
-        ratings = submissions.target.calc_agency_ratings(self.unicef)
-        indicators = response.context['indicators']
-        
-        for indicator_code, rating in ratings.iteritems():
-            i = indicators.pop(0)
-            
-            if indicator_code == "1DP":
-                self.assertEqual(i.expected_result,
-                    "Commitments are documented and mutually agreed")
-            else:
-                self.assertEqual(i.expected_result, indicator_code)
-            
-            self.assertEqual(i.rating, rating['target'])
-            self.assertEqual(i.overall_progress, rating['commentary'])
+        self._test_ratings(submissions.target.calc_agency_ratings(self.unicef),
+            response.context['categories'],
+            publicweb.views.agency_indicator_descriptions)
         
         (progress, no_progress) = submissions.target.get_country_progress(self.unicef)
         self.assertEqual(progress.values(),
@@ -80,21 +97,9 @@ class PublicWebsiteTest(TestCase):
             country_name=self.mozambique.country)
         self.assertEqual(response.context['country'], self.mozambique)
         
-        ratings = submissions.target.calc_country_ratings(self.mozambique)
-        indicators = response.context['indicators']
-        
-        for indicator_code, rating in ratings.iteritems():
-            i = indicators.pop(0)
-            
-            # if indicator_code == "1DP":
-            #     self.assertEqual(i.expected_result,
-            #         "Commitments are documented and mutually agreed")
-            # else:
-            self.assertEqual(i.expected_result, indicator_code)
-            
-            self.assertEqual(i.rating, rating['target'])
-            self.assertEqual(i.overall_progress, rating['commentary'])
-        
+        self._test_ratings(submissions.target.calc_country_ratings(self.mozambique),
+            response.context['categories'], {})
+
         (progress, no_progress) = submissions.target.get_agency_progress(self.mozambique)
         self.assertTrue(len(progress.values()) > 0)
         self.assertTrue(len(no_progress.values()) > 0)
