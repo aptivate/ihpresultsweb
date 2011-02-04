@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block head %}
+
+<style>
+
+table {
+    border: solid thin black
+}
+
+tr.head {
+    background-color:black;
+    color: white;
+}
+
+tr.even{
+    background-color: #C3C3C3;
+}
+tr.odd {
+    background-color: #989494;
+}
+
+td, th {
+    padding: 3px;
+}
+
+th {
+    text-align: center;
+}
+
+td {
+    border: solid thin black;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+}
+
+td:first-child {
+    text-align: left;
+}
+
+</style>
+{% endblock %}
+{% block body %}
+<table>
+    <tr class="head">
+        <th>Indicator</th>
+        {% for agency in agencies %}
+            <th>{{ agency.agency }}</th>
+        {% endfor %}
+    </tr>
+    {% for indicator, rating in ratings %}
+        <tr class="{% cycle 'odd' 'even' %}">
+            <td>{{ indicator }}</td>
+            {% for agency, r in rating.items %}
+                <td><img src="{{ MEDIA_URL }}/images/{{ r }}.png"></td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
