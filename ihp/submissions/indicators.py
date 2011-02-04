@@ -88,6 +88,8 @@ def calc_agency_indicator(qs, agency, indicator):
     Calculate the value of a particular indicator for the given agency
     Returns a tuple ((base_val, base_year, cur_val, cur_year), indicator comment)
     """
+    if agency.agency == "Norway" and indicator == "1DP":
+        import pdb; pdb.set_trace()
     return calc_indicator(qs, agency, indicator)
 
 def calc_agency_indicators(agency):
@@ -102,7 +104,7 @@ def calc_agency_indicators(agency):
         .
     }
     """
-    qs = DPQuestion.objects.filter(submission__agency=agency).select_related()
+    qs = DPQuestion.objects.filter(submission__agency=agency, submission__country__in=agency.countries).select_related()
     results = [calc_agency_indicator(qs, agency, indicator) for indicator in dp_indicators]
     return dict(zip(dp_indicators, results))
 
