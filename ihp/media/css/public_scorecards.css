@@ -58,11 +58,12 @@ a img
 	margin: 0.5em 0 0;
 }
 
-table.scorecard
+table.scorecard, #content table.scorecard 
 {
 	font-family:Arial, Helvetica, Verdana, sans-serif;
 	margin-bottom:20px;
 	clear:both;
+	border:none;
 }
 
 tr.headings th
@@ -85,7 +86,8 @@ th.progress, td.progress
 	padding:0;
 }
 
-table.scorecard tr.headings th h2
+table.scorecard tr.headings th h2,
+#content table.scorecard tr.headings th h2
 {
 	color: white;
 	text-align: left;
