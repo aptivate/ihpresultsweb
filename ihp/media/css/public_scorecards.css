@@ -29,6 +29,7 @@ a img
 {
 	display:block;
 	float:left;
+	clear:none;
 	position:relative;
 	padding:10px;
 	margin:0;
@@ -38,6 +39,7 @@ a img
 #scorecard_header h2 
 {
 	float:right;
+	clear:none;
 	padding:10px;
 	margin:0;
 	font-size:1em;
