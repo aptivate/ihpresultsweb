@@ -106,7 +106,10 @@ define("EM_EXAMPLE", TEMPLATEPATH."/em_cache/blog_".BLOG_ID."_EXAMPLE.html");
 function em_showContent($retrive_start, $retrive_stop, $url, $cache_filename,
 	$compress_file)
 {
-	$cache_filename = CACHE_DIR."/".$cache_filename;
+	if ($cache_filename)
+	{
+		$cache_filename = CACHE_DIR."/".$cache_filename;
+	}
 	
 	if (!file_exists($cache_filename) || (time()-filemtime($cache_filename) >= CACHE_TIME))
 	{
@@ -192,7 +195,7 @@ function em_getContent($retrive_start, $retrive_stop, $url, $cache_filename, $co
 			$data = em_error("Failed to open cache file for writing: " .
 				$cache_filename) . $data;
 		}
-		else
+		elseif ($cache_filename)
 		{
 			if ($compress_file == 1)
 			{
