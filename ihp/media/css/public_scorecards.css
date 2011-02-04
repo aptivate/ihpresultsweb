@@ -7,25 +7,25 @@ body
 	font-size:82.5%;
 }
 
-a, a:link, a:active 
+#content a, #content a:link, #content a:active 
 {
 	outline:none;
 	outline-style:none;
 }
 
-a img 
+#content a img 
 {
 	border:none;
 }
 
-#scorecard_header 
+#content #scorecard_header 
 {
 	display:block;
 	margin:10px 0;
 	overflow:auto;
 }
 
-#scorecard_header h1 
+#content #scorecard_header h1 
 {
 	display:block;
 	float:left;
@@ -36,7 +36,7 @@ a img
 	text-align: center;
 }
 
-#scorecard_header h2 
+#content #scorecard_header h2 
 {
 	float:right;
 	clear:none;
@@ -51,14 +51,14 @@ a img
 	text-align: center;
 }
 
-#scorecard_header h2 a,
-#scorecard_header h2 span 
+#content #scorecard_header h2 a,
+#content #scorecard_header h2 span 
 {
 	display:block;
 	margin: 0.5em 0 0;
 }
 
-table.scorecard, #content table.scorecard 
+#content table.scorecard 
 {
 	font-family:Arial, Helvetica, Verdana, sans-serif;
 	margin-bottom:20px;
@@ -72,27 +72,26 @@ table.scorecard, #content table.scorecard
 	padding: 0;
 }
 
-tr.headings th, #content table.scorecard tr.headings th 
+#content table.scorecard tr.headings th 
 {
 	padding: 0;
 }
 
-tr.headings th.expected_result
+#content table.scorecard tr.headings th.expected_result
 {
 	padding-right: 10px;
 }
 
-tr.headings th.overall_progress
+#content table.scorecard tr.headings th.overall_progress
 {
 	padding-left: 10px;
 }
 
-th.progress, td.progress 
+#content table.scorecard .progress 
 {
 	padding:0;
 }
 
-table.scorecard tr.headings th h2,
 #content table.scorecard tr.headings th h2
 {
 	color: white;
@@ -108,7 +107,7 @@ table.scorecard tr.headings th h2,
 	margin:6px 0;
 }
 
-table.scorecard tr.countries ul 
+#content table.scorecard tr.countries ul 
 {
 	list-style:none;
 	list-style-image:none;
@@ -123,13 +122,13 @@ table.scorecard tr.countries ul
 	overflow:auto;
 }
 
-table.scorecard tr.countries.reporting ul 
+#content table.scorecard tr.countries.reporting ul 
 {
 	background-color:#E1E8E5;
 	border:none;
 }
 
-table.scorecard tr.countries ul li 
+#content table.scorecard tr.countries ul li 
 {
 	padding:0;
 	margin:0;
@@ -137,7 +136,7 @@ table.scorecard tr.countries ul li
 	float:left;
 }
 
-tr.countries img, #content tr.countries img
+#content table.scorecard tr.countries img
 {
 	width:50px;
 	height:25px;
@@ -146,7 +145,7 @@ tr.countries img, #content tr.countries img
 
 /*tr.indicator*/
 
-tr.indicator td.expected_result 
+#content table.scorecard tr.indicator td.expected_result 
 {
 	/*border-left:1px solid #cfd5d5;*/
 	border-bottom: 0px none;
@@ -155,7 +154,7 @@ tr.indicator td.expected_result
 	background-position:0 bottom;
 }
 
-tr.indicator > td 
+#content table.scorecard tr.indicator > td 
 {
 	border-bottom:1px solid #cfd5d5;
 	padding:10px;
@@ -163,18 +162,18 @@ tr.indicator > td
 
 /*Expected Result column*/
 
-tr.headings th.expected_result
+#content table.scorecard tr.headings th.expected_result
 {
 	width:300px;
 	padding-left:0;
 }
 
-tr.indicator td.expected_result
+#content table.scorecard tr.indicator td.expected_result
 {
 	height:1%;
 }
 
-td.expected_result table
+#content table.scorecard td.expected_result table
 { 
 	background-color:#e1e8e5;
 	-moz-border-radius:8px;
@@ -183,25 +182,25 @@ td.expected_result table
 	height:100%;
 }
 
-td.expected_result table td
+#content table.scorecard td.expected_result table td
 { 
 	padding:10px;
 }
 
-td.expected_result td.icon
+#content table.scorecard td.expected_result td.icon
 {
 	padding: 0 auto;
 }
 
 /*rating column*/
 
-td.rating 
+#content table.scorecard td.rating 
 {
 	text-align:center;
 	width:50px;
 }
 
-td.rating img 
+#content table.scorecard td.rating img 
 {
 	/*
 	width:60px;
@@ -212,12 +211,12 @@ td.rating img
 
 /*overall prograss column*/
 
-tr.headings th.overall_progress
+#content table.scorecard tr.headings th.overall_progress
 {
 	padding-right:0;
 }
 
-tr.indicator td.overall_progress 
+#content table.scorecard tr.indicator td.overall_progress 
 {
 	padding:0px 20px 10px 10px;
 	border-right:1px solid #cfd5d5;
@@ -226,7 +225,7 @@ tr.indicator td.overall_progress
 	border-bottom-right-radius:10px;
 }
 
-tr.indicator_spacer td
+#content table.scorecard tr.indicator_spacer td
 {
 	height: 10px;
 }
