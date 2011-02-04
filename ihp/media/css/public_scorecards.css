@@ -68,7 +68,7 @@ body
 
 #content table.scorecard *
 {
-	vertical-align: inherit;
+	vertical-align: middle;
 }
 
 #content table.scorecard tr td
