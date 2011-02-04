@@ -180,14 +180,14 @@ function em_getContent($retrive_start, $retrive_stop, $url, $cache_filename, $co
 		}
 	}
 
-	$data = em_extract($markup, $retrive_start,$retrive_stop);
+	$data = em_extract($markup, $retrive_start, $retrive_stop);
 	$data_length = strlen($data);
 
 	if ($data_length < 1)
 	{
 		$data = em_error("No data returned from $url");
 	}
-	else
+	elseif ($cache_filename)
 	{
 		$fh = fopen($cache_filename, "w");
 		if ($fh == FALSE)
@@ -195,7 +195,7 @@ function em_getContent($retrive_start, $retrive_stop, $url, $cache_filename, $co
 			$data = em_error("Failed to open cache file for writing: " .
 				$cache_filename) . $data;
 		}
-		elseif ($cache_filename)
+		else
 		{
 			if ($compress_file == 1)
 			{
