@@ -773,6 +773,21 @@ def agency_country_ratings(request, template_name="submissions/agency_country_ra
     extra_context["data"] = data
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
+def agency_ratings(request, template_name="submissions/agency_ratings.html", extra_context=None):
+    extra_context = extra_context or {}
+    ratings = []
+    data = get_agencies_scorecard_data()
+    agencies = Agency.objects.all().order_by("agency")
+    for indicator in dp_indicators:
+        rating = {}
+        for agency in agencies:
+            rating[agency] = data[agency][indicator]["target"]
+        ratings.append((indicator, rating))
+    
+    extra_context["ratings"] = ratings
+    extra_context["agencies"] = agencies
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
 def country_scorecard_ratings_edit(request, template_name="submissions/country_scorecard_ratings_edit.html", extra_context=None):
     extra_context = extra_context or {}
 

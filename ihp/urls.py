@@ -179,10 +179,9 @@ urlpatterns = patterns('',
         }
     }, 'datatables_country_table'),
 
-    # Debug Views
     (r'^scorecard/tables/agency_country_ratings/$', 'submissions.views.agency_country_ratings', {}, 'agency_country_ratings'),
+    (r'^datatables/tables/agency_ratings/$', 'submissions.views.agency_ratings', {}, 'agency_ratings'),
 
-    
 
     # Old views
     (r'^scorecard/agency/questionnaires/$', 'submissions.views.dp_questionnaire', {}, 'agency_questionnaire'),
