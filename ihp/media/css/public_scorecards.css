@@ -69,9 +69,10 @@ table.scorecard, #content table.scorecard
 #content table.scorecard tr td
 {
 	border: none;
+	padding: 0;
 }
 
-tr.headings th
+tr.headings th, #content table.scorecard tr.headings th 
 {
 	padding: 0;
 }
