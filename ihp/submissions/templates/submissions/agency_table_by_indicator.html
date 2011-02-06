@@ -30,8 +30,8 @@
     <tr class="countryrow even">
         <td>Country Data</td>
         {% for country, calcs in country_calcs %}
-            <td>{{ calcs.base_val|upper }}</td>
-            <td>{{ calcs.cur_val|upper }}</td>
+            <td>{{ calcs.base_val|default_if_none:"-"|floatformat }}</td>
+            <td>{{ calcs.cur_val|default_if_none:"-"|floatformat }}</td>
             <td><img src="{{ MEDIA_URL }}/images/{{ calcs.target }}.png"></td>
         {% endfor %}
     </tr>

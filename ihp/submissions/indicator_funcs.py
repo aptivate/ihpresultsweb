@@ -1,5 +1,6 @@
-from models import AgencyCountries, Country8DPFix, CountryExclusion, NotApplicable
+from models import AgencyCountries, Country8DPFix, CountryExclusion, NotApplicable, Rating
 from consts import NA_STR
+
 
 base_selector = lambda q : q.baseline_value
 cur_selector = lambda q : q.latest_value
@@ -28,9 +29,9 @@ def func_8dpfix(qs, agency, selector, q):
     denom = float(len(agency.countries.filter(country__in=qs_countries)))
 
     if selector == base_selector:
-        num = len([country for country in countries if country.baseline_progress])
+        num = len([country for country in countries if country.baseline_progress == Rating.TICK])
     elif selector == cur_selector:
-        num = len([country for country in countries if country.latest_progress])
+        num = len([country for country in countries if country.latest_progress == Rating.TICK])
 
     if denom > 0:
         return num / denom * 100

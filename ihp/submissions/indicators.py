@@ -1,4 +1,4 @@
-from models import Submission, DPQuestion, AgencyCountries, GovQuestion, Country8DPFix, Country, NotApplicable, CountryExclusion, Agency
+from models import Submission, DPQuestion, AgencyCountries, GovQuestion, Country, NotApplicable, CountryExclusion, Agency
 from indicator_funcs import *
 import traceback
 from utils import memoize

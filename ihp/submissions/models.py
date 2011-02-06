@@ -347,8 +347,8 @@ class CountryScorecardOverride(models.Model):
 class Country8DPFix(models.Model):
     agency = models.ForeignKey(Agency, null=False)
     country = models.ForeignKey(Country, null=False)
-    baseline_progress = models.BooleanField(null=False)
-    latest_progress = models.BooleanField(null=False)
+    baseline_progress = RatingsField()
+    latest_progress = RatingsField()
 
     def __unicode__(self):
         return "%s - %s" % (self.agency, self.country)
