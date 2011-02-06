@@ -782,7 +782,7 @@ def agency_ratings(request, template_name="submissions/agency_ratings.html", ext
         rating = {}
         for agency in agencies:
             rating[agency] = data[agency][indicator]["target"]
-        ratings.append((indicator, rating))
+        ratings.append((indicator, rating, spm_map[indicator]))
     
     extra_context["ratings"] = ratings
     extra_context["agencies"] = agencies
