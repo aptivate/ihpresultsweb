@@ -157,6 +157,12 @@ urlpatterns = patterns('',
         }
     }, 'country_matrix'),
 
+    # Data Tables Views
+    (r'^datatables/$', direct_to_template, {"template" : "submissions/datatables.html", "extra_context" : {
+        "agencies" : Agency.objects.filter(type="Agency"),
+        "countries" : Country.objects.all(),
+    }}, "datatables"),
+
     (r'^datatables/tables/agency/by_country/(?P<country_id>\d+)/$', 'submissions.views.agency_table_by_country', {
         "template_name" : "submissions/datatables_base.html",
         "extra_context" : {
