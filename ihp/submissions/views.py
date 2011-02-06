@@ -93,9 +93,9 @@ def get_country_scorecard_data(country):
         for question in DPQuestion.objects.filter(submission__agency=agency, submission__country=country):
             qvals = aval[agency.agency][question.question_number] = {}
             qvals["baseline_year"] = question.baseline_year
-            qvals["baseline_value"] = question.baseline_value
+            qvals["baseline_value"] = question.base_val
             qvals["latest_year"] = question.latest_year
-            qvals["latest_value"] = question.latest_value
+            qvals["latest_value"] = question.cur_val
             qvals["comments"] = question.comments
 
     for question in GovQuestion.objects.filter(submission__country=country):
@@ -104,8 +104,8 @@ def get_country_scorecard_data(country):
         qvals["latest_year"] = question.latest_year
         qvals["comments"] = question.comments
 
-        qvals["baseline_value"] = none_num(question.baseline_value)
-        qvals["latest_value"] = none_num(question.latest_value)
+        qvals["baseline_value"] = none_num(question.base_val)
+        qvals["latest_value"] = none_num(question.cur_val)
 
     questions = country_data["questions"]
 

@@ -109,6 +109,26 @@ class DPQuestion(models.Model):
             self.submission.country, self.submission.agency, self.question_number
         )
 
+    @property
+    def base_val(self):
+        if self.question_number == "20":
+            try:
+                fix = Country8DPFix.objects.get(agency=self.submission.agency, country=self.submission.country)
+                return fix.baseline_progress
+            except Country8DPFix.DoesNotExist:
+                return ""
+        return self.baseline_value
+
+    @property
+    def cur_val(self):
+        if self.question_number == "20":
+            try:
+                fix = Country8DPFix.objects.get(agency=self.submission.agency, country=self.submission.country)
+                return fix.latest_progress
+            except Country8DPFix.DoesNotExist:
+                return ""
+        return self.latest_value
+
     class Meta:
        verbose_name_plural = "DP Questions" 
 
@@ -125,6 +145,14 @@ class GovQuestion(models.Model):
         return "<<GovQuestion Object>>%s %s - Question: %s" % (
             self.submission.country, self.submission.agency, self.question_number
         )
+
+    @property
+    def base_val(self):
+        return self.baseline_value
+
+    @property
+    def cur_val(self):
+        return self.latest_value
 
 class AgencyCountriesManager(models.Manager):
     

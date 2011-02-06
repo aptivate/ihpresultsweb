@@ -38,12 +38,12 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
         else:
             baseline_excluded, latest_excluded = False, False
 
-        if NotApplicable.objects.is_not_applicable(q.baseline_value) or baseline_excluded or is_none(q.baseline_value):
+        if NotApplicable.objects.is_not_applicable(q.base_val) or baseline_excluded or is_none(q.base_val):
             exclude_baseline.append(q.submission.id)
-        if NotApplicable.objects.is_not_applicable(q.latest_value) or latest_excluded or is_none(q.latest_value):
+        if NotApplicable.objects.is_not_applicable(q.cur_val) or latest_excluded or is_none(q.cur_val):
             exclude_latest.append(q.submission.id)
-        if is_none(q.baseline_value): baseline_questions += 1
-        if is_none(q.latest_value): latest_questions += 1
+        if is_none(q.base_val): baseline_questions += 1
+        if is_none(q.cur_val): latest_questions += 1
         if baseline_excluded: baseline_excluded_count += 1
         if latest_excluded: latest_excluded_count += 1
 

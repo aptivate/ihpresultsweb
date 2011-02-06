@@ -40,8 +40,8 @@
     <tr class="{% cycle "odd" "even" %}">
         <td>{{ agency.agency }}</td>
         {% for country, data in agency_values %}
-            <td>{{ data.baseline_value|default_if_none:"-" }}</td>
-            <td>{{ data.latest_value|default_if_none:"-" }}</td>
+            <td>{{ data.base_val|default_if_none:"-" }}</td>
+            <td>{{ data.cur_val|default_if_none:"-" }}</td>
             <td>{% if data.rating %}<img src="{{ MEDIA_URL }}/images/{{ data.rating }}.png">{% endif %}</td>
         {% endfor %}
     </tr>
