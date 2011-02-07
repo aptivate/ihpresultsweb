@@ -263,7 +263,7 @@ class TargetCountryBarGraph(CountryBarGraph):
 def additional_graphs(request, template_name="submissions/additionalgraphs.html", extra_context=None):
     extra_context = extra_context or {}
     country_data = get_countries_scorecard_data()
-    agency_data = get_agencies_scorecard_data()
+    agency_data = get_agencies_scorecard_data(Agency.objects.get_by_type("Agency"))
 
     countries = sorted(country_data.keys(), key=lambda x : x.country)
 

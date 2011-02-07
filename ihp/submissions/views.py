@@ -38,9 +38,10 @@ def get_agency_scorecard_data(agency):
 
     return agency_data
 
-def get_agencies_scorecard_data():
+def get_agencies_scorecard_data(agencies=None):
+    agencies = agencies or Agency.objects.all_types()
     return dict([(agency, get_agency_scorecard_data(agency))
-        for agency in Agency.objects.all_types()
+        for agency in agencies
         if agency.submission_set.filter(type="DP").count() > 0
     ])
 
