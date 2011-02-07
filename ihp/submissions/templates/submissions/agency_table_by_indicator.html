@@ -30,8 +30,8 @@
     <tr class="countryrow even">
         <td>Country Data</td>
         {% for country, calcs in country_calcs %}
-            <td>{{ calcs.base_val|default_if_none:"-"|floatformat }}</td>
-            <td>{{ calcs.cur_val|default_if_none:"-"|floatformat }}</td>
+            <td>{{ calcs.base_val|floatformat|default_if_none:"-" }}</td>
+            <td>{{ calcs.cur_val|floatformat|default_if_none:"-" }}</td>
             <td><img src="{{ MEDIA_URL }}/images/{{ calcs.target }}.png"></td>
         {% endfor %}
     </tr>
@@ -40,8 +40,8 @@
     <tr class="{% cycle "odd" "even" %}">
         <td>{{ agency.agency }}</td>
         {% for country, data in agency_values %}
-            <td>{{ data.base_val|default_if_none:"-" }}</td>
-            <td>{{ data.cur_val|default_if_none:"-" }}</td>
+            <td>{{ data.baseline_value|default_if_none:"-" }}</td>
+            <td>{{ data.latest_value|default_if_none:"-" }}</td>
             <td>{% if data.rating %}<img src="{{ MEDIA_URL }}/images/{{ data.rating }}.png">{% endif %}</td>
         {% endfor %}
     </tr>
