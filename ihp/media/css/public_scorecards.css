@@ -164,6 +164,7 @@ div.scorecard-page h1
 	background-image:url(../images/cell-bg-indicator.png);
 	background-repeat:no-repeat;
 	background-position:0 bottom;
+	height:1%;
 }
 
 #content table.scorecard tr.indicator > td 
@@ -180,11 +181,6 @@ div.scorecard-page h1
 	padding-left:0;
 }
 
-#content table.scorecard tr.indicator td.expected_result
-{
-	height:1%;
-}
-
 #content table.scorecard td.expected_result table
 { 
 	margin: 0;
@@ -194,6 +190,8 @@ div.scorecard-page h1
 	-webkit-border-radius:8px;
 	border-radius:8px;
 	height:100%;
+	min-height: 100%;
+	width: 100%;
 }
 
 #content table.scorecard td.expected_result table td
