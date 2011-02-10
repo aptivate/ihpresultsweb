@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 import submissions.target
+import submissions.views
 from submissions.models import Submission
 
 class Category:
@@ -68,6 +69,19 @@ agency_indicator_descriptions = {
     '8DP': "Civil Society actively engaged.",
     }
 
+country_indicator_descriptions = {
+    '1G': 'Commitments are documented and mutually agreed.',
+    '2G': ('Support is based on country plans & strategies, including ' +
+        'to strengthen Health Systems.'),
+    '3G': 'Funding commitments are long-term.',
+    '4G': 'Funds are disbursed predictably, as committed.',
+    '5G': ('Country systems for procurement & public financial management ' +
+        'are used & strengthened.'),
+    '6G': 'Resources are being managed for Development Results.',
+    '7G': 'Mutual accountability is being demonstrated.',
+    '8G': 'Civil Society actively engaged.',
+    }
+
 def agency_scorecard_page(request, agency_name):
     agency = submissions.models.Agency.objects.get(agency=agency_name)
     ratings = submissions.target.calc_agency_ratings(agency)
@@ -90,9 +104,11 @@ def country_scorecard_page(request, country_name):
     titles = {}
     
     context = dict(country=country,
-        categories=_group_and_sort_indicators(ratings, titles),
+        categories=_group_and_sort_indicators(ratings,
+            country_indicator_descriptions),
         progress_agencies=p.values(),
-        no_progress_agencies=np.values())
+        no_progress_agencies=np.values(),
+        raw_data=submissions.views.get_countries_export_data()[country])
     
     return render_to_response('country_scorecard.html',
         RequestContext(request, context))
