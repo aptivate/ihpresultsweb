@@ -178,7 +178,7 @@ function clean_pre($matches) {
  * @param int|bool $br Optional. If set, this will convert all remaining line-breaks after paragraphing. Default true.
  * @return string Text which has been converted into correct paragraph tags.
  */
-function wpautop($pee, $br = 0) {
+function wpautop($pee, $br = 1) {
 
 	if ( trim($pee) === '' )
 		return '';
