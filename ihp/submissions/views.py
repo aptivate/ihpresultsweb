@@ -667,12 +667,14 @@ def agency_table_by_indicator(request, indicator, template_name="submissions/age
                     "baseline_value" : tbl_float_format(base_val), 
                     "latest_value" : tbl_float_format(latest_val), 
                     "rating" : ratings[indicator],
+                    "cellclass" : "",
                 } 
             else:
                 country_abs_values = {
-                    "baseline_value" : "N/A",
-                    "latest_value" : "N/A",
-                    "rating" : "none",
+                    "baseline_value" : "",
+                    "latest_value" : "",
+                    "rating" : "",
+                    "cellclass" : "notactive",
                 } 
                 
             agency_values.append((country, country_abs_values))
