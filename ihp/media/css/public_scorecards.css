@@ -1,6 +1,6 @@
-body 
+#content div.scorecard 
 {
-	max-width:900px;
+	max-width:960px;
 	min-width:400px;
 	margin:0 auto;
 	font-family:Arial, Helvetica, Verdana, sans-serif;
@@ -64,47 +64,7 @@ div.scorecard-page h1
 	margin: 0.5em 0 0;
 }
 
-#content table.scorecard
-{
-	font-family:Arial, Helvetica, Verdana, sans-serif;
-	margin-bottom:20px;
-	clear:both;
-	border:none;
-}
-
-#content table.scorecard *
-{
-	vertical-align: middle;
-}
-
-#content table.scorecard tr td
-{
-	border: none;
-	border-top: none;
-	padding: 0;
-}
-
-#content table.scorecard tr.headings th 
-{
-	padding: 0;
-}
-
-#content table.scorecard tr.headings th.expected_result
-{
-	padding-right: 10px;
-}
-
-#content table.scorecard tr.headings th.overall_progress
-{
-	padding-left: 10px;
-}
-
-#content table.scorecard .progress 
-{
-	padding:0;
-}
-
-#content table.scorecard tr.headings th h2
+.infobox h2
 {
 	color: white;
 	text-align: left;
@@ -119,7 +79,7 @@ div.scorecard-page h1
 	margin:6px 0;
 }
 
-#content table.scorecard tr.countries ul 
+#scorecard .countries ul 
 {
 	list-style:none;
 	list-style-image:none;
@@ -134,13 +94,13 @@ div.scorecard-page h1
 	overflow:auto;
 }
 
-#content table.scorecard tr.countries.reporting ul 
+#scorecard ul.countries.reporting 
 {
 	background-color:#E1E8E5;
 	border:none;
 }
 
-#content table.scorecard tr.countries ul li 
+#scorecard ul.countries li 
 {
 	padding:0;
 	margin:0;
@@ -148,7 +108,7 @@ div.scorecard-page h1
 	float:left;
 }
 
-#content table.scorecard tr.countries img
+#scorecard ul.countries img
 {
 	width:50px;
 	height:25px;
@@ -157,17 +117,17 @@ div.scorecard-page h1
 
 /*tr.indicator*/
 
-#content table.scorecard tr.indicator td.expected_result 
+#scorecard dl 
 {
 	/*border-left:1px solid #cfd5d5;*/
-	border-bottom: 0px none;
-	background-image:url(../images/cell-bg-indicator.png);
-	background-repeat:no-repeat;
-	background-position:0 bottom;
+	border-left:1px solid #DFD5D5;
+	-moz-border-radius-bottomleft:10px;
 	height:1%;
+	position:relative;
 }
 
-#content table.scorecard tr.indicator > td 
+
+#scorecard dd 
 {
 	border-bottom:1px solid #cfd5d5;
 	padding:10px;
@@ -181,7 +141,7 @@ div.scorecard-page h1
 	padding-left:0;
 }
 
-#content table.scorecard td.expected_result table
+#scorecard dt
 { 
 	margin: 0;
 	border: none;
@@ -193,6 +153,11 @@ div.scorecard-page h1
 	min-height: 100%;
 	width: 100%;
 }
+
+td.expected_result span.text {
+display:block;
+background-color:#D1DDD9;
+display:compact;}
 
 #content table.scorecard td.expected_result table td
 { 
@@ -240,4 +205,52 @@ div.scorecard-page h1
 #content table.scorecard tr.indicator_spacer td
 {
 	height: 10px;
+}
+
+/*---Country scorecard styles---*/
+
+.country #content #scorecard_header h2 {
+	padding-left:20px;
+	text-align:left;
+	width:700px;
+	background-color:#E1E8E5;
+	font-weight:1.3em;
+	color:#000;
+	border:none;
+	margin-top:10px;
+}
+
+.country #scorecard_header h2 img {
+	float:left;
+	padding-right:10px;
+	width:50px;
+}
+
+div.col {
+	width:450px;
+	padding:15px;
+	float:left;
+	position:relative;
+}
+
+.infobox {
+	border:2px solid #f68b1f;
+	-moz-border-radius:15px;
+	padding:10px;
+	margin-bottom:10px;
+
+}
+
+.infobox h2 {
+	background-color:#0A3E3D;
+	padding:5px 10px;
+	-moz-border-radius:10px;
+	color:white;
+}
+
+.item, .inner {
+	background-color:#d1ddd9;
+	-moz-border-radius:8px;
+	padding:10px;
+	margin-bottom:10px;
 }

@@ -3,82 +3,51 @@
 {% block heading %}Agency Scorecard for {{agency.agency}}{% endblock %}
 {% block content %}
 
-<div id="scorecard_header">
-	<h1><a href="http://network.human-scale.net/community/ihp/scorecards"><img
-		src="{% url ihp-media path='images' %}/ihp-results-partner-scorecard-logo.png"
-		alt="IHP+ Results Partner Scorecard"></a></h1>
-	<h2><a href="#" title="Visit {{agency.agency}} website"><img
-		src="{% url ihp-media path='images' %}/{{agency.agency}}.png"
-		alt="Agency Scorecard for {{agency.agency}}" border="0"></a>
-	<span>Agency Scorecard for {{agency.agency}}</span></h2>
-</div>
+<div class="scorecard agency">
+	<div id="scorecard_header">
+		<h1><a href="http://network.human-scale.net/community/ihp/scorecards"><img
+			src="{% url ihp-media path='images' %}/ihp-results-partner-scorecard-logo.png"
+			alt="IHP+ Results Partner Scorecard"></a></h1>
+		<h2><a href="#" title="Visit {{agency.agency}} website"><img
+			src="{% url ihp-media path='images' %}/{{agency.agency}}.png"
+			alt="Agency Scorecard for {{agency.agency}}" border="0"></a>
+		<span>Agency Scorecard for {{agency.agency}}</span></h2>
+	</div><!-- #scorecard_header -->
 
-<table class="scorecard" cellspacing="0" cellpadding="0">
-	<tr class="headings">
-		<th class="progress" colspan="3">
-			<h2>Countries where the agency is demonstrating progress</h2>
-		</th>
-	</tr>
-	<tr class="countries reporting">
-		<td class="progress" colspan="3">
-			<ul>
-			{% for country in progress_countries %}
-				<li><img src="{% url ihp-media path='images' %}/{{country.country|cut:" "}}.png"
-					alt="{{country.country}}" class="flag" /></li>
+	<!-- start scorecard col-->
+	<div id="scorecard" class="col">	
+		<h3>Agencies demonstrating progress in this country</h3>
+		<ul class="countries progress">
+			{% for agency in progress_agencies %}
+				<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
+					alt="{{agency.agency}}" class="logo"></li>
 			{% endfor %}
-			</ul>
-		</td>
-	</tr>
-	
-	<tr class="headings">
-		<th class="progress" colspan="3">
-			<h2>Countries where the agency is not reporting progress</h2>
-		</th>
-	</tr>
-	<tr class="countries">
-		<td class="progress" colspan="3">
-			<ul>
-			{% for country in no_progress_countries %}
-				<li><img src="{% url ihp-media path='images' %}/{{country.country|cut:" "}}.png"
-					alt="{{country.country}}" class="flag" /></li>
+		</ul>
+		
+		<h3>Agencies not reporting progress in this country</h3>
+		<ul class="countries no_progress">
+			{% for agency in no_progress_agencies %}
+				<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
+					alt="{{agency.agency}}" class="logo"></li>
 			{% endfor %}
-			</ul>
-		</td>
-	</tr>
-	
-	<tr class="headings">
-		<th class="expected_result"><h2>Expected Results</h2></th>
-		<th class="rating"><h2>Rating</h2></th>
-		<th class="overall_progress"><h2>Overall Progress</h2></th>
-	</tr>
-	
-	{% for category in categories %}
-		{% for indicator in category.indicators %}
-		<tr class="indicator">
-			{% if forloop.first %}
-			<td class="expected_result" rowspan="{{category.indicators|length}}">
-				<table><tr>
-					<td class="icon">
-						<img src="{% url ihp-media path='images' %}/results-icon-{{category.code}}.png"
-							alt="icon" class="icon" />
-					</td>
-					<td class="text">
-						{{category.expected_result}}
-					</td>
-				</tr></table>
-			</td>
-			{% endif %}
-			
-			<td class="rating {{indicator.rating}}">
-				<img src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
-					alt="{{indicator.rating}}" class="rating" />
-			</td>
-			
-			<td class="overall_progress">
-				{{indicator.overall_progress}}
-			</td>
-		</tr>
+		</ul>
+
+		<h2>
+			<span>Expected Results</span>
+			<span>Rating</span>
+			<span>Overall Progress</span>
+		</h2>
+		
+		{% for category in categories %}
+			{% for indicator in category.indicators %}
+			<dl class="results-{{category.code}}">
+				<dt><span class="icon"><img
+					src="{% url ihp-media path='images' %}/results-icon-{{category.code}}.png"
+					alt="icon" class="icon"></span>{{category.expected_result}}</dt>
+				<dd><img src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
+					alt="{{indicator.rating}}" class="rating">{{indicator.overall_progress}}</dd>
+			</dl>
+			{% endfor %}
 		{% endfor %}
-	{% endfor %}
-</table>
-{% endblock %}
+	</div><!-- #scorecard col -->
+</div><!-- scorecard agency -->
