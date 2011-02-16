@@ -469,7 +469,7 @@ def get_agency_progress(country):
     p = []
     np_dict = {}
     p_dict = {}
-        
+    
     for agency in AgencyCountries.objects.get_country_agencies(country):
         if Submission.objects.filter(agency=agency, country=country).count() == 0:
             np.append(agency)

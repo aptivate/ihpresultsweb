@@ -2,7 +2,6 @@ import sys
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from django.core import management
-from submissions.helpers import load_agency_targets
 from submissions.pop import poll
 
 class Command(BaseCommand):
