@@ -6,6 +6,10 @@
             border-bottom: solid 3px black;
         }
 
+        .notactive {
+            background-color: #444;
+        }
+
     </style>
 {% endblock %}
 
@@ -30,8 +34,8 @@
     <tr class="countryrow even">
         <td>Country Data</td>
         {% for country, calcs in country_calcs %}
-            <td>{{ calcs.base_val|upper }}</td>
-            <td>{{ calcs.cur_val|upper }}</td>
+            <td>{{ calcs.base_val|floatformat|default_if_none:"-" }}</td>
+            <td>{{ calcs.cur_val|floatformat|default_if_none:"-" }}</td>
             <td><img src="{{ MEDIA_URL }}/images/{{ calcs.target }}.png"></td>
         {% endfor %}
     </tr>
@@ -40,9 +44,9 @@
     <tr class="{% cycle "odd" "even" %}">
         <td>{{ agency.agency }}</td>
         {% for country, data in agency_values %}
-            <td>{{ data.baseline_value|default_if_none:"-" }}</td>
-            <td>{{ data.latest_value|default_if_none:"-" }}</td>
-            <td>{% if data.rating %}<img src="{{ MEDIA_URL }}/images/{{ data.rating }}.png">{% endif %}</td>
+            <td class="{{ data.cellclass }}">{{ data.baseline_value|default_if_none:"-" }}</td>
+            <td class="{{ data.cellclass }}">{{ data.latest_value|default_if_none:"-" }}</td>
+            <td class="{{ data.cellclass }}">{% if data.rating %}<img src="{{ MEDIA_URL }}/images/{{ data.rating }}.png">{% endif %}</td>
         {% endfor %}
     </tr>
     {% endfor %}

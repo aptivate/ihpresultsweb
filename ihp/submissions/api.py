@@ -64,8 +64,8 @@ def dp_ratings(request, agency_id):
             for indicator in indicators.dp_indicators:
                 core_indicator = strip_indicator(indicator)
                 
-                indicator.setattr(ratings, "r%s" % core_indicator, request.POST["r%s" % core_indicator])
-                indicator.setattr(ratings, "er%s" % core_indicator, request.POST["er%s" % core_indicator])
+                setattr(ratings, "r%s" % core_indicator, request.POST["r%s" % core_indicator])
+                setattr(ratings, "er%s" % core_indicator, request.POST["er%s" % core_indicator])
             ratings.save()
 
             results = calc_agency_ratings(agency)

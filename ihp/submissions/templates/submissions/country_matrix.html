@@ -1,0 +1,93 @@
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/table.css"> 
+{% endblock %}
+
+{% block content %}
+<h1>IHP+ Country Government Data</h1>
+<table class="gov">
+    <tr class="head">
+        <th>SPM #</th>
+        <th>Standard Performance Measure</th>
+        {% for country, _ in abs_values %}
+        <th>{{ country }}</th>
+        {% endfor %}
+    </tr>
+    <tr class="odd">
+        <td>1G</td>
+        <td>{{ spm_map.1G }}</td>
+        {% for country, data in abs_values %}
+            <td><img src="{{ MEDIA_URL }}images/{{ data.1G.4 }}.png"></td>
+        {% endfor %}
+    </tr>
+    <tr class="even">
+        <td>2Ga1</td>
+        <td>{{ spm_map.2Ga1 }}</td>
+        {% for country, data in abs_values %}
+            <td><img src="{{ MEDIA_URL }}images/{{ data.2Ga1.4 }}.png"></td>
+        {% endfor %}
+    </tr>
+    <tr class="odd">
+        <td>2Ga2</td>
+        <td>{{ spm_map.2Ga2 }}</td>
+        {% for country, data in abs_values %}
+            <td><img src="{{ MEDIA_URL }}images/{{ data.2Ga2.4 }}.png"></td>
+        {% endfor %}
+    </tr>
+    <tr class="odd">
+        <td>2Gb</td>
+        <td>{{ spm_map.2Gb }}</td>
+        {% for country, data in abs_values %}
+            <td><img src="{{ MEDIA_URL }}images/{{ data.2Gb.4 }}.png"></td>
+        {% endfor %}
+    </tr>
+    <tr class="even">
+        <td>3G</td>
+        <td>{{ spm_map.3G }}</td>
+        {% for country, data in abs_values %}
+            <td><img src="{{ MEDIA_URL }}images/{{ data.3G.4 }}.png"></td>
+        {% endfor %}
+    </tr>
+    <tr class="odd">
+        <td>4G</td>
+        <td>{{ spm_map.4G }}</td>
+        {% for country, data in abs_values %}
+            <td><img src="{{ MEDIA_URL }}images/{{ data.4G.4 }}.png"></td>
+        {% endfor %}
+    </tr>
+    <tr class="even">
+        <td>5Ga</td>
+        <td>{{ spm_map.5Ga }}</td>
+        {% for country, data in abs_values %}
+            <td><img src="{{ MEDIA_URL }}images/{{ data.5Ga.4 }}.png"></td>
+        {% endfor %}
+    </tr>
+    <tr class="odd">
+        <td>5Gb</td>
+        <td>{{ spm_map.5Gb }}</td>
+        {% for country, data in abs_values %}
+            <td><img src="{{ MEDIA_URL }}images/{{ data.5Gb.4 }}.png"></td>
+        {% endfor %}
+    </tr>
+    <tr class="even">
+        <td>6G</td>
+        <td>{{ spm_map.6G }}</td>
+        {% for country, data in abs_values %}
+            <td><img src="{{ MEDIA_URL }}images/{{ data.6G.4 }}.png"></td>
+        {% endfor %}
+    </tr>
+    <tr class="odd">
+        <td>7G</td>
+        <td>{{ spm_map.7G }}</td>
+        {% for country, data in abs_values %}
+            <td><img src="{{ MEDIA_URL }}images/{{ data.7G.4 }}.png"></td>
+        {% endfor %}
+    </tr>
+    <tr class="even">
+        <td>8G</td>
+        <td>{{ spm_map.8G }}</td>
+        {% for country, data in abs_values %}
+            <td><img src="{{ MEDIA_URL }}images/{{ data.8G.4 }}.png"></td>
+        {% endfor %}
+    </tr>
+</table>
+{% endblock %}

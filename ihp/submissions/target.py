@@ -32,7 +32,7 @@ def evaluate_indicator(target, base_val, cur_val):
     arrow_func = criteria_funcs[target.arrow_criterion_type]
 
     if cur_val not in [None, NA_STR]:
-        if target.indicator in ["4DP", "5DPa", "5DPb"]:
+        if target.indicator in ["5DPa", "5DPb"]:
             if cur_val <= 20:
                 return Rating.TICK
         elif target.indicator in ["2DPa"]:
@@ -45,6 +45,9 @@ def evaluate_indicator(target, base_val, cur_val):
             if base_val not in [None, NA_STR]:
                 if cur_val - base_val >= 0.5:
                     return Rating.TICK
+        elif target.indicator in ["4G"]:
+            if cur_val <= 20:
+                return Rating.TICK
 
     try:
         if tick_func(base_val, cur_val, target.tick_criterion_value):
@@ -402,14 +405,18 @@ def country_agency_indicator_ratings(country, agency):
         # logic out of here
         result = None
         if indicator in ["1DP", "6DP", "7DP"] and cur_val != NA_STR:
-            if cur_val > 0: result = Rating.TICK
+            if cur_val > 0: 
+                result = Rating.TICK
+            elif base_val == None and cur_val == None:
+                result = Rating.QUESTION
+            elif base_val in [None, NA_STR]:
+                result = Rating.CROSS
         elif indicator == "8DP":
             try:
                 fix = Country8DPFix.objects.get(agency=agency, country=country)
-                if fix.latest_progress:
-                    result = Rating.TICK
+                result = fix.latest_progress
             except Country8DPFix.DoesNotExist:
-                result = Rating.CROSS
+                result = Rating.QUESTION
 
         if result == None:
             target = targets[indicator]
@@ -420,7 +427,7 @@ def country_agency_indicator_ratings(country, agency):
 def country_agency_progress(country, agency):
     """
     Returns True is an agency is making progress in a particular country
-    Progress is defined as # ticks / # ratings
+    Progress is defined as (# ticks + # arrows) / # ratings >= 0.5
     """
     is_tick = lambda x : x == Rating.TICK or x == Rating.ARROW
     ratings = country_agency_indicator_ratings(country, agency)
@@ -462,6 +469,7 @@ def get_agency_progress(country):
     p = []
     np_dict = {}
     p_dict = {}
+    
     for agency in AgencyCountries.objects.get_country_agencies(country):
         if Submission.objects.filter(agency=agency, country=country).count() == 0:
             np.append(agency)

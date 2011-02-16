@@ -151,7 +151,12 @@ urlpatterns = patterns('',
         }
     }, 'country_table'),
 
-
+    (r'^countries/tables/matrix$', 'submissions.views.country_table', {
+        "template_name" : "submissions/main_base.html",
+        "extra_context" : {
+            "content_file" : "submissions/country_matrix.html"
+        }
+    }, 'country_matrix'),
 
     # Data Tables Views
     (r'^datatables/$', direct_to_template, {"template" : "submissions/datatables.html", "extra_context" : {
@@ -173,17 +178,16 @@ urlpatterns = patterns('',
         }
     }, 'datatables_agency_table_by_agency'),
 
-    (r'^datatables/tables/country/$', 'submissions.views.country_table', {
+    (r'^datatables/tables/country/matrix$', 'submissions.views.country_table', {
         "template_name" : "submissions/datatables_base.html",
         "extra_context" : {
-            "content_file" : "submissions/country_table.html"
+            "content_file" : "submissions/country_matrix.html"
         }
-    }, 'datatables_country_table'),
+    }, 'datatables_country_matrix'),
 
-    # Debug Views
     (r'^scorecard/tables/agency_country_ratings/$', 'submissions.views.agency_country_ratings', {}, 'agency_country_ratings'),
+    (r'^datatables/tables/agency_ratings/$', 'submissions.views.agency_ratings', {}, 'agency_ratings'),
 
-    
 
     # Old views
     (r'^scorecard/agency/questionnaires/$', 'submissions.views.dp_questionnaire', {}, 'agency_questionnaire'),

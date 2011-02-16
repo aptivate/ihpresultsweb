@@ -36,7 +36,7 @@ target_values = {
     "2DPb" : 50,
     "2DPc" : 66,
     "3DP"  : 90,
-    "5DPa" : 66, 
+    "5DPa" : 80, 
     "5DPb" : 80, 
     "5DPc" : 0, 
 }
@@ -106,6 +106,7 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
         "2DPb" : "% of TC implemented through coordinated programmes (2DPb)",
         "2DPc" : "% of funding using Programme Based Approaches (2DPc) ",
         "3DP"  : "% of aid provided through multi-year commitments (3DP) ",
+        "4DP"  : "% of actual health spending planned for that year (4DP) ",
         "5DPa" : "% of funding for procurement using national procurement systems (5DPa)", 
         "5DPb" : "% of funding using national PFM systems (5DPb)", 
         "5DPc" : "Number of Parallel Project Implementation Units", 
@@ -134,7 +135,7 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
             "floating" : "true",
         }
 
-        if indicator != "5DPc":
+        if indicator not in ["4DP", "5DPc"]:
             graph.series.append({
                 "type" : "line",
                 "name" : "Target",
@@ -262,7 +263,7 @@ class TargetCountryBarGraph(CountryBarGraph):
 def additional_graphs(request, template_name="submissions/additionalgraphs.html", extra_context=None):
     extra_context = extra_context or {}
     country_data = get_countries_scorecard_data()
-    agency_data = get_agencies_scorecard_data()
+    agency_data = get_agencies_scorecard_data(Agency.objects.get_by_type("Agency"))
 
     countries = sorted(country_data.keys(), key=lambda x : x.country)
 
@@ -438,7 +439,7 @@ def government_graphs(request, template_name="submission/country_graphs_by_indic
         "% of national budget is allocated to health (IHP+ Results data)",
         [data_3G[country][0][0] for country in countries],
         [data_3G[country][0][2] for country in countries],
-        "Target", 24,
+        "Target", 15,
     )
 
     extra_context["graph_4G"] = CountryBarGraph(

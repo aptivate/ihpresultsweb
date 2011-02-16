@@ -1,4 +1,5 @@
 import inspect, types, __builtin__
+import numbers
 
 ############## preliminary: two utility functions #####################
 
@@ -68,24 +69,37 @@ class none_num(float):
     def _either_none(self, other):
         return self.ovalue == None or other == None
 
+    def _bad_type(self, other):
+        return not isinstance(other, numbers.Number)
+
     def __init__(self, value):
         self.ovalue = value
 
     def __add__(self, other):
         if self._either_none(other): return none_num(None)
+        if self._bad_type(other): return none_num(None)
         return none_num(super(none_num, self).__add__(other))
 
     def __div__(self, other):
         if self._either_none(other): return none_num(None)
+        if self._bad_type(other): return none_num(None)
         if other == 0: return none_num(None)
         return none_num(super(none_num, self).__div__(other))
 
+    def __rdiv__(self, other):
+        if self._either_none(other): return none_num(None)
+        if self._bad_type(other): return none_num(None)
+        if other == 0: return none_num(None)
+        return none_num(super(none_num, self).__rdiv__(other))
+
     def __mul__(self, other):
         if self._either_none(other): return none_num(None)
+        if self._bad_type(other): return none_num(None)
         return none_num(super(none_num, self).__mul__(other))
 
     def __sub__(self, other):
         if self._either_none(other): return none_num(None)
+        if self._bad_type(other): return none_num(None)
         # Adding zero tends to fix -0.0 problems 
         return none_num(super(none_num, self).__sub__(other) + 0)
 
@@ -108,6 +122,8 @@ class none_num(float):
             return False
         elif self._either_none(other):
             return NotImplemented
+        elif self._bad_type(other):
+            return NotImplemented
         else:
             return self.ovalue < other
 
@@ -115,6 +131,8 @@ class none_num(float):
         if self.ovalue == None and other == None:
             return False
         elif self._either_none(other):
+            return NotImplemented
+        elif self._bad_type(other):
             return NotImplemented
         else:
             return self.ovalue <= other
@@ -124,6 +142,8 @@ class none_num(float):
             return False
         elif self._either_none(other):
             return NotImplemented
+        elif self._bad_type(other):
+            return NotImplemented
         else:
             return self.ovalue > other
 
@@ -132,13 +152,7 @@ class none_num(float):
             return False
         elif self._either_none(other):
             return NotImplemented
-        else:
-            return self.ovalue >= other
-
-    def __ge__(self, other):
-        if self.ovalue == None and other == None:
-            return False
-        elif self._either_none(other):
+        elif self._bad_type(other):
             return NotImplemented
         else:
             return self.ovalue >= other

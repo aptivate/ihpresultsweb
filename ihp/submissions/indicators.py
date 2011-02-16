@@ -1,4 +1,4 @@
-from models import Submission, DPQuestion, AgencyCountries, GovQuestion, Country8DPFix, Country, NotApplicable, CountryExclusion, Agency
+from models import Submission, DPQuestion, AgencyCountries, GovQuestion, Country, NotApplicable, CountryExclusion, Agency
 from indicator_funcs import *
 import traceback
 from utils import memoize
@@ -38,12 +38,12 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
         else:
             baseline_excluded, latest_excluded = False, False
 
-        if NotApplicable.objects.is_not_applicable(q.baseline_value) or baseline_excluded or is_none(q.baseline_value):
+        if NotApplicable.objects.is_not_applicable(q.base_val) or baseline_excluded or is_none(q.base_val):
             exclude_baseline.append(q.submission.id)
-        if NotApplicable.objects.is_not_applicable(q.latest_value) or latest_excluded or is_none(q.latest_value):
+        if NotApplicable.objects.is_not_applicable(q.cur_val) or latest_excluded or is_none(q.cur_val):
             exclude_latest.append(q.submission.id)
-        if is_none(q.baseline_value): baseline_questions += 1
-        if is_none(q.latest_value): latest_questions += 1
+        if is_none(q.base_val): baseline_questions += 1
+        if is_none(q.cur_val): latest_questions += 1
         if baseline_excluded: baseline_excluded_count += 1
         if latest_excluded: latest_excluded_count += 1
 
@@ -102,7 +102,7 @@ def calc_agency_indicators(agency):
         .
     }
     """
-    qs = DPQuestion.objects.filter(submission__agency=agency).select_related()
+    qs = DPQuestion.objects.filter(submission__agency=agency, submission__country__in=agency.countries).select_related()
     results = [calc_agency_indicator(qs, agency, indicator) for indicator in dp_indicators]
     return dict(zip(dp_indicators, results))
 
@@ -112,8 +112,10 @@ def calc_overall_agency_indicators(funcs=None):
     i.e. there will be two values per indicator, baseline value and latest value
     currently only calculating for 2DPa, 2DPb, 2DPc, 3DP, 5DPa, 5DPb, 5DPc
 
+    2008 base years are excluded
+
     """
-    indicators = ["2DPa", "2DPb", "2DPc", "3DP", "5DPa", "5DPb", "5DPc"]
+    indicators = ["2DPa", "2DPb", "2DPc", "3DP", "4DP", "5DPa", "5DPb", "5DPc"]
     qs = DPQuestion.objects.filter(submission__agency__type="Agency").exclude(baseline_year="2008").select_related()
 
     results = [calc_indicator(qs, None, indicator, funcs) for indicator in indicators]
@@ -186,7 +188,7 @@ indicator_funcs = {
     "2DPb" : (calc_numdenom, ("5", "4")),
     "2DPc" : (calc_numdenom, ("7", "6")),
     "3DP"  : (calc_numdenom, ("9", "8")),
-    "4DP"  : (calc_one_minus_numdenom, ("11", "10")),
+    "4DP"  : (calc_numdenom, ("11", "10")),
     "5DPa" : (calc_one_minus_numdenom, ("13", "12")),
     "5DPb" : (calc_one_minus_numdenom, ("15", "14")),
     "5DPc" : (sum_values, ("16",)),

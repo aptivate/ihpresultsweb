@@ -38,9 +38,10 @@ def get_agency_scorecard_data(agency):
 
     return agency_data
 
-def get_agencies_scorecard_data():
+def get_agencies_scorecard_data(agencies=None):
+    agencies = agencies or Agency.objects.all_types()
     return dict([(agency, get_agency_scorecard_data(agency))
-        for agency in Agency.objects.all()
+        for agency in agencies
         if agency.submission_set.filter(type="DP").count() > 0
     ])
 
@@ -93,9 +94,9 @@ def get_country_scorecard_data(country):
         for question in DPQuestion.objects.filter(submission__agency=agency, submission__country=country):
             qvals = aval[agency.agency][question.question_number] = {}
             qvals["baseline_year"] = question.baseline_year
-            qvals["baseline_value"] = question.baseline_value
+            qvals["baseline_value"] = question.base_val
             qvals["latest_year"] = question.latest_year
-            qvals["latest_value"] = question.latest_value
+            qvals["latest_value"] = question.cur_val
             qvals["comments"] = question.comments
 
     for question in GovQuestion.objects.filter(submission__country=country):
@@ -104,8 +105,8 @@ def get_country_scorecard_data(country):
         qvals["latest_year"] = question.latest_year
         qvals["comments"] = question.comments
 
-        qvals["baseline_value"] = none_num(question.baseline_value)
-        qvals["latest_value"] = none_num(question.latest_value)
+        qvals["baseline_value"] = none_num(question.base_val)
+        qvals["latest_value"] = none_num(question.cur_val)
 
     questions = country_data["questions"]
 
@@ -231,9 +232,11 @@ def agency_export(request):
 def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html", extra_context=None):
 
     extra_context = extra_context or {}
-    extra_context["questions"] = DPQuestion.objects.filter(
-        submission__agency__updateagency__update=True
-    ).order_by("submission__agency", "submission__country", "question_number")
+    extra_context["questions"] = DPQuestion.objects.all().order_by(
+        "submission__agency", 
+        "submission__country", 
+        "question_number"
+    )
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def formatter(decimals):
@@ -410,8 +413,8 @@ def get_countries_export_data():
             datum["Header"] = country.country
 
             for i in range(1, 14):
-                datum["P%d" % i] = datum["p"].get(i, "pwhite")
-                datum["NP%d" % i] = datum["np"].get(i, "npwhite")
+                datum["P%d" % i] = datum["p"].get(i - 1, "pwhite")
+                datum["NP%d" % i] = datum["np"].get(i - 1, "npwhite")
 
             working_draft, _ = CountryWorkingDraft.objects.get_or_create(country=country)
             datum["workingdraft"] = "workingdraft" if working_draft.is_draft else ""
@@ -421,7 +424,6 @@ def get_countries_export_data():
     return data
 
 def country_export(request, language):
-
     headers = [
         # Front of scorecard
         "file", "TB2", "CD1", "CD2", "HSP1", "HSP2",
@@ -487,9 +489,7 @@ def country_export(request, language):
 def gov_questionnaire(request, template_name="submissions/gov_questionnaire.html", extra_context=None):
 
     extra_context = extra_context or {}
-    extra_context["questions"] = GovQuestion.objects.filter(
-        submission__agency__updateagency__update=True
-    )
+    extra_context["questions"] = GovQuestion.objects.all()
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def dp_summary_edit(request, template_name="submissions/dp_summary_edit.html", extra_context=None):
@@ -667,12 +667,14 @@ def agency_table_by_indicator(request, indicator, template_name="submissions/age
                     "baseline_value" : tbl_float_format(base_val), 
                     "latest_value" : tbl_float_format(latest_val), 
                     "rating" : ratings[indicator],
+                    "cellclass" : "",
                 } 
             else:
                 country_abs_values = {
-                    "baseline_value" : "N/A",
-                    "latest_value" : "N/A",
-                    "rating" : "none",
+                    "baseline_value" : "",
+                    "latest_value" : "",
+                    "rating" : "",
+                    "cellclass" : "notactive",
                 } 
                 
             agency_values.append((country, country_abs_values))
@@ -772,6 +774,21 @@ def agency_country_ratings(request, template_name="submissions/agency_country_ra
             })
     
     extra_context["data"] = data
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def agency_ratings(request, template_name="submissions/agency_ratings.html", extra_context=None):
+    extra_context = extra_context or {}
+    ratings = []
+    data = get_agencies_scorecard_data()
+    agencies = Agency.objects.all().order_by("agency")
+    for indicator in dp_indicators:
+        rating = {}
+        for agency in agencies:
+            rating[agency] = data[agency][indicator]["target"]
+        ratings.append((indicator, rating, spm_map[indicator]))
+    
+    extra_context["ratings"] = ratings
+    extra_context["agencies"] = agencies
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def country_scorecard_ratings_edit(request, template_name="submissions/country_scorecard_ratings_edit.html", extra_context=None):
