@@ -43,9 +43,9 @@
 		
 		{% for category in categories %}
 			<dl class="results-{{category.code}}">
-				<dt><span class="icon"><img
+				<dt><img
 					src="{% url ihp-media path='images' %}/results-icon-{{category.code}}.png"
-					alt="icon" class="icon"></span>{{category.expected_result}}</dt>
+					alt="icon" class="icon">{{category.expected_result}}</dt>
 				{% for indicator in category.indicators %}
 				<dd><img src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
 					alt="{{indicator.rating}}" class="rating">{{indicator.overall_progress}}</dd>
@@ -57,10 +57,16 @@
 	<!--start infoboxes column-->
 	<div id="infobox" class="col">
 		<div class="infobox country-ownership">
-			<h2>Country Ownership and Accountability</h2>
+			<h2>
+				<img src="" alt="Country Ownership and Accountability">
+				Country Ownership and Accountability
+			</h2>
 			
 			<div class="item">
-				<h3>Commitments Documented</h3>
+				<h3>
+					<img src="" alt="Commitments Documented">
+					Commitments Documented
+				</h3>
 	
 				<ul>
 					<li>
@@ -74,7 +80,10 @@
 			</div><!-- item -->
 			
 			<div class="item">
-				<h3>Health Sector Plan and AIDS Strategies</h3>
+				<h3>
+					<img src="" alt="Health Sector Plan and AIDS Strategies">
+					Health Sector Plan and AIDS Strategies
+				</h3>
 				<ul>
 					<li>
 						<img src="{% url ihp-media path='images' %}/{{raw_data.HSP1}}.png"
@@ -90,7 +99,10 @@
 			</div><!-- item -->
 			
 			<div class="item">
-				<h3>Health Sector Aid Effectiveness Monitoring</h3>
+				<h3>
+					<img src="" alt="Health Sector Aid Effectiveness Monitoring">
+					Health Sector Aid Effectiveness Monitoring
+				</h3>
 				
 				<ul>
 					<li>
@@ -120,7 +132,10 @@
 		</div><!-- infobox country-ownership -->
 		
 		<div class="infobox health-financing">
-			<h2>Health Financing</h2>
+			<h2>
+				<img src="" alt="Health Financing">
+				Health Financing
+			</h2>
 	
 			<div class="item">
 				<h3>Total Health Financing</h3>
@@ -136,7 +151,10 @@
 		</div><!-- infobox health-financing -->
 
 		<div class="infobox country-systems">
-			<h2>Country Systems</h2>
+			<h2>
+				<img src="" alt="Country Systems">
+				Country Systems
+			</h2>
 			
 			<div class="item">
 				<h3>Public Financial Management</h3>
@@ -170,12 +188,18 @@
 		</div><!-- infobox country-systems -->
 
 		<div class="infobox health-systems">
-			<h2>Health Systems Strengthening</h2>
+			<h2>
+				<img src="" alt="Health Systems Strengthening">
+				Health Systems Strengthening
+			</h2>
 			<img width="400" height="300" alt="barchart" src="">
 		</div><!-- infobox health-systems -->
 		
 		<div class="infobox managing-for-development">
-			<h2>Managing for Development Results</h2>
+			<h2>
+				<img src="" alt="Managing for Development Results">
+				Managing for Development Results
+			</h2>
 			
 			<div class="item">
 				<img src="{% url ihp-media path='images' %}/{{raw_data.RF1}}.png"
