@@ -16,19 +16,23 @@
 
 	<!-- start scorecard col-->
 	<div id="scorecard" class="col">	
-		<h3>Agencies demonstrating progress in this country</h3>
-		<ul class="countries progress">
-			{% for agency in progress_agencies %}
-				<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
-					alt="{{agency.agency}}" class="logo"></li>
+		<h3>Countries where the agency is demonstrating progress</h3>
+		<ul class="logos progress">
+			{% for country in progress_countries %}
+				<li><img src="{% url ihp-media path='images' %}/{{country.country|cut:" "}}.png"
+					alt="{{country.country}}" class="flag" />
+					<span class="name">{{country.country}}</span>
+					</li>
 			{% endfor %}
 		</ul>
 		
-		<h3>Agencies not reporting progress in this country</h3>
-		<ul class="countries no_progress">
+		<h3>Countries where the agency is reporting limited progress</h3>
+		<ul class="logos no_progress">
 			{% for agency in no_progress_agencies %}
 				<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
-					alt="{{agency.agency}}" class="logo"></li>
+					alt="{{agency.agency}}" class="logo">
+					<span class="name">{{country.country}}</span>
+					</li>
 			{% endfor %}
 		</ul>
 
@@ -39,15 +43,17 @@
 		</h2>
 		
 		{% for category in categories %}
-			{% for indicator in category.indicators %}
 			<dl class="results-{{category.code}}">
 				<dt><span class="icon"><img
 					src="{% url ihp-media path='images' %}/results-icon-{{category.code}}.png"
 					alt="icon" class="icon"></span>{{category.expected_result}}</dt>
+				{% for indicator in category.indicators %}
 				<dd><img src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
 					alt="{{indicator.rating}}" class="rating">{{indicator.overall_progress}}</dd>
+				{% endfor %}
 			</dl>
-			{% endfor %}
 		{% endfor %}
 	</div><!-- #scorecard col -->
 </div><!-- scorecard agency -->
+
+{% endblock %}
