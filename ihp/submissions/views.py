@@ -40,7 +40,7 @@ def get_agency_scorecard_data(agency):
 
 def get_agencies_scorecard_data():
     return dict([(agency, get_agency_scorecard_data(agency))
-        for agency in Agency.objects.all()
+        for agency in Agency.objects.all_types()
         if agency.submission_set.filter(type="DP").count() > 0
     ])
 
@@ -410,8 +410,8 @@ def get_countries_export_data():
             datum["Header"] = country.country
 
             for i in range(1, 14):
-                datum["P%d" % i] = datum["p"].get(i, "pwhite")
-                datum["NP%d" % i] = datum["np"].get(i, "npwhite")
+                datum["P%d" % i] = datum["p"].get(i - 1, "pwhite")
+                datum["NP%d" % i] = datum["np"].get(i - 1, "npwhite")
 
             working_draft, _ = CountryWorkingDraft.objects.get_or_create(country=country)
             datum["workingdraft"] = "workingdraft" if working_draft.is_draft else ""
@@ -421,7 +421,6 @@ def get_countries_export_data():
     return data
 
 def country_export(request, language):
-
     headers = [
         # Front of scorecard
         "file", "TB2", "CD1", "CD2", "HSP1", "HSP2",

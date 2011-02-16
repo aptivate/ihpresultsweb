@@ -106,6 +106,7 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
         "2DPb" : "% of TC implemented through coordinated programmes (2DPb)",
         "2DPc" : "% of funding using Programme Based Approaches (2DPc) ",
         "3DP"  : "% of aid provided through multi-year commitments (3DP) ",
+        "4DP"  : "% of actual health spending planned for that year (4DP) ",
         "5DPa" : "% of funding for procurement using national procurement systems (5DPa)", 
         "5DPb" : "% of funding using national PFM systems (5DPb)", 
         "5DPc" : "Number of Parallel Project Implementation Units", 
@@ -134,7 +135,7 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
             "floating" : "true",
         }
 
-        if indicator != "5DPc":
+        if indicator not in ["4DP", "5DPc"]:
             graph.series.append({
                 "type" : "line",
                 "name" : "Target",
