@@ -12,7 +12,6 @@ class AgencyAdmin(admin.ModelAdmin):
 
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(Country)
-admin.site.register(UpdateAgency)
 
 class SubmissionAdmin(admin.ModelAdmin):
     list_filter = ("agency", "country")
@@ -22,7 +21,7 @@ admin.site.register(Submission, SubmissionAdmin)
 
 class DPQuestionAdmin(admin.ModelAdmin):
     list_filter = ("question_number", "submission")
-    list_display = ("question_number", "country", "agency", "baseline_value", "latest_value")
+    list_display = ("question_number", "country", "agency", "base_val", "cur_val")
     search_fields = ("submission__country__country", "submission__agency__agency")
 
     def country(self, question):

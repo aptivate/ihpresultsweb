@@ -36,7 +36,7 @@ target_values = {
     "2DPb" : 50,
     "2DPc" : 66,
     "3DP"  : 90,
-    "5DPa" : 66, 
+    "5DPa" : 80, 
     "5DPb" : 80, 
     "5DPc" : 0, 
 }
@@ -263,7 +263,7 @@ class TargetCountryBarGraph(CountryBarGraph):
 def additional_graphs(request, template_name="submissions/additionalgraphs.html", extra_context=None):
     extra_context = extra_context or {}
     country_data = get_countries_scorecard_data()
-    agency_data = get_agencies_scorecard_data()
+    agency_data = get_agencies_scorecard_data(Agency.objects.get_by_type("Agency"))
 
     countries = sorted(country_data.keys(), key=lambda x : x.country)
 
@@ -439,7 +439,7 @@ def government_graphs(request, template_name="submission/country_graphs_by_indic
         "% of national budget is allocated to health (IHP+ Results data)",
         [data_3G[country][0][0] for country in countries],
         [data_3G[country][0][2] for country in countries],
-        "Target", 24,
+        "Target", 15,
     )
 
     extra_context["graph_4G"] = CountryBarGraph(

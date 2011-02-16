@@ -66,17 +66,6 @@ class CountryWorkingDraft(models.Model):
         return unicode(self.country)
 
 
-class UpdateAgency(models.Model):
-    agency = models.OneToOneField(Agency, null=False)
-    update = models.BooleanField(null=False)
-
-    def __unicode__(self):
-        return unicode(self.agency)
-
-    class Meta:
-       verbose_name_plural = "Update Agencies" 
-
-
 class Submission(models.Model):
     country = models.ForeignKey(Country, null=False)
     agency = models.ForeignKey(Agency, null=True)
@@ -109,6 +98,26 @@ class DPQuestion(models.Model):
             self.submission.country, self.submission.agency, self.question_number
         )
 
+    @property
+    def base_val(self):
+        if self.question_number == "20":
+            try:
+                fix = Country8DPFix.objects.get(agency=self.submission.agency, country=self.submission.country)
+                return fix.baseline_progress
+            except Country8DPFix.DoesNotExist:
+                return ""
+        return self.baseline_value
+
+    @property
+    def cur_val(self):
+        if self.question_number == "20":
+            try:
+                fix = Country8DPFix.objects.get(agency=self.submission.agency, country=self.submission.country)
+                return fix.latest_progress
+            except Country8DPFix.DoesNotExist:
+                return ""
+        return self.latest_value
+
     class Meta:
        verbose_name_plural = "DP Questions" 
 
@@ -125,6 +134,14 @@ class GovQuestion(models.Model):
         return "<<GovQuestion Object>>%s %s - Question: %s" % (
             self.submission.country, self.submission.agency, self.question_number
         )
+
+    @property
+    def base_val(self):
+        return self.baseline_value
+
+    @property
+    def cur_val(self):
+        return self.latest_value
 
 class AgencyCountriesManager(models.Manager):
     
@@ -347,8 +364,8 @@ class CountryScorecardOverride(models.Model):
 class Country8DPFix(models.Model):
     agency = models.ForeignKey(Agency, null=False)
     country = models.ForeignKey(Country, null=False)
-    baseline_progress = models.BooleanField(null=False)
-    latest_progress = models.BooleanField(null=False)
+    baseline_progress = RatingsField()
+    latest_progress = RatingsField()
 
     def __unicode__(self):
         return "%s - %s" % (self.agency, self.country)

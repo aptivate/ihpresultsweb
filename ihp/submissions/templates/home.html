@@ -89,7 +89,15 @@
                     </div>
                 </div> <!-- end row 1 -->
                 <br/>
-                <div class="yui-b"> 
+                <div class="yui-g columnfix"> 
+                    <div class="yui-u first blockrow">
+                        <h2>Aggregated Agency Tables</h2>
+                        <p>
+                            <ul>
+                                <li><a href="{% url agency_ratings %}">Aggregated Ratings</a></li>
+                            </ul>
+                        </p>
+                    </div>
                     <div class="yui-u blockrow">
                         <h2>Additional Graphs</h2>
                         <p>
@@ -101,12 +109,14 @@
                         </p>
                     </div>
                 </div> <!-- end row 2 -->
+                <br/>
                 <div class="yui-b"> 
                     <div class="yui-u blockrow">
                         <h2>Country Data</h2>
                         <p>
                             <ul>
                                 <li><a href="{% url country_table %}">Country Table</a></li>
+                                <li><a href="{% url country_matrix %}">Country Table with Figures</a></li>
                                 <li><a href="{% url government_graphs %}">Government Graphs</a></li>
                             </ul>
                         </p>
