@@ -8,6 +8,7 @@ from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, C
 from target_criteria import criteria_funcs, MissingValueException, CannotCalculateException
 import math
 from itertools import chain
+from logging import debug
 
 def get_agency_targets(agency, indicators):
     targets = {}
@@ -101,9 +102,6 @@ def calc_agency_ratings(agency):
         .
     }
     """
-
-    default_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
-    na_text = "This Standard Performance Measure was deemed not applicable to %s." % agency.agency
 
     def ratings_val(tmpl):
         def _func(indicator):
@@ -403,7 +401,10 @@ def country_agency_indicator_ratings(country, agency):
     country_indicators = calc_agency_country_indicators(agency, country)
 
     for indicator in country_indicators:
-        (base_val, base_year, cur_val, cur_year), comments = country_indicators[indicator]
+        v = country_indicators[indicator]
+        debug("extracting %s from %s" % (indicator, str(country_indicators)))
+        values, comments = v
+        (base_val, base_year, cur_val, cur_year) = values
         # TODO this is a hack - it might be better to extract this
         # logic out of here
         result = None
