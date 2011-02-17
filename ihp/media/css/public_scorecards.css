@@ -412,7 +412,7 @@ div.col {
 	margin-bottom:10px;
 }
 
-.infobox h2 {
+#content .infobox h2 {
 	background-color:#0A3E3D;
 	padding:2px 10px 2px 80px;
 	-moz-border-radius:10px;
@@ -428,7 +428,7 @@ div.col {
 	left:10px;
 }
 
-.item h3 {
+#content .item h3 {
 	background-color:#85A49B;
 	color:#fff;
 	text-transform:uppercase;
