@@ -14,26 +14,30 @@
 	</div><!-- #scorecard_header -->
 
 	<!-- start scorecard col-->
-	<div id="scorecard" class="col">	
-		<h3>Agencies demonstrating progress in this country</h3>
-		<ul class="logos progress">
-			{% for agency in progress_agencies %}
-				<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
-					alt="{{agency.agency}}" class="logo">
-					<span class="name">{{agency.agency}}</span>
-					</li>
-			{% endfor %}
-		</ul>
+	<div id="scorecard" class="col">
+		<div class="item">	
+			<h3>Agencies demonstrating progress in this country</h3>
+			<ul class="logos progress">
+				{% for agency in progress_agencies %}
+					<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
+						alt="{{agency.agency}}" class="logo">
+						<span class="name">{{agency.agency}}</span>
+						</li>
+				{% endfor %}
+			</ul>
+		</div><!-- item -->
 		
-		<h3>Agencies reporting limited progress in this country</h3>
-		<ul class="logos no_progress">
-			{% for agency in no_progress_agencies %}
-				<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
-					alt="{{agency.agency}}" class="logo">
-					<span class="name">{{agency.agency}}</span>
-					</li>
-			{% endfor %}
-		</ul>
+		<div class="item">	
+			<h3>Agencies reporting limited progress in this country</h3>
+			<ul class="logos no_progress">
+				{% for agency in no_progress_agencies %}
+					<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
+						alt="{{agency.agency}}" class="logo">
+						<span class="name">{{agency.agency}}</span>
+						</li>
+				{% endfor %}
+			</ul>
+		</div><!-- item -->
 
 		<h2>
 			<span>Expected Results</span>
@@ -43,9 +47,9 @@
 		
 		{% for category in categories %}
 			<dl class="results-{{category.code}}">
-				<dt><img
+				<dt><p><img
 					src="{% url ihp-media path='images' %}/results-icon-{{category.code}}.png"
-					alt="icon" class="icon">{{category.expected_result}}</dt>
+					alt="icon" class="icon">{{category.expected_result}}</p></dt>
 				{% for indicator in category.indicators %}
 				<dd><img src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
 					alt="{{indicator.rating}}" class="rating">{{indicator.overall_progress}}</dd>
@@ -139,8 +143,10 @@
 	
 			<div class="item">
 				<h3>Total Health Financing</h3>
-				<img src="" width="400" height="300" alt="barchart">
-				<img src="" width="400" height="300" alt="pie">
+				<img src="{% url ihp-media path='images' %}/{{country.country|cut:" "}}barnew_medium.png"
+					width="459" height="290" alt="barchart">
+				<img src="{% url ihp-media path='images' %}/{{country.country|cut:" "}}-pie_small.png"
+					width="400" height="300" alt="pie">
 			</div><!-- item -->
 			
 			<div class="item">
