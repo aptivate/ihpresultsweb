@@ -10,6 +10,9 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+DATABASE_ENGINE = 'sqlite3' 
+DATABASE_NAME = 'ihp.db'
+
 TIME_ZONE = 'Africa/Johannesburg'
 LANGUAGE_CODE = 'en-us'
 INTERNAL_IPS = ("127.0.0.1",)
@@ -82,5 +85,3 @@ DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.signals.SignalDebugPanel',
     'debug_toolbar.panels.logger.LoggingPanel',
 )
-
-from local_settings import *
