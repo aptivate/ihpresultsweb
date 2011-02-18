@@ -14,6 +14,7 @@ class AptivateExternalCSS
 		em_showContent("starthead", "endhead",
 			"http://localhost/django/public/scorecard/agency/UNICEF/",
 			"", FALSE);
+		wp_enqueue_script("jquery");
 	}
 }
 
