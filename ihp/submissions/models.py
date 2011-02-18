@@ -387,7 +387,7 @@ class NotApplicableManager(models.Manager):
         if val == None:
             return False
 
-        val = val.strip().lower()
+        val = str(val).strip().lower()
         variations = [na.variation for na in self._get_variations()]
         if val in variations:
             return True
