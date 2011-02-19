@@ -22,6 +22,10 @@ def _group_and_sort_indicators(ratings, titles):
         i = Indicator()
         i.code = indicator_code
         
+        first_letter = indicator_code[0]
+        if first_letter == 'Q':
+            continue
+        
         last_letter = indicator_code[-1]
         if last_letter.islower():
             category_code = indicator_code[0:-1]
