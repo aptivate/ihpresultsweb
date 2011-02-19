@@ -49,7 +49,7 @@
 		{% for category in categories %}
 			<dl class="results-{{category.code}}">
 				<dt><p><img
-					src="{% url ihp-media path='images' %}/results-icon-{{category.code}}.png"
+					src="{% url ihp-media path='images' %}/results-icon-{{category.code|cut:"DP"}}.png"
 					alt="icon" class="icon">{{category.expected_result}}</p></dt>
 				{% for indicator in category.indicators %}
 				<dd><img src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
