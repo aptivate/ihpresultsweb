@@ -1,0 +1,8 @@
+/*Custom Styles for Dojo
+Author: Root Interactive
+Author URI: http://www.rootinteractive.com/
+*/
+
+#wrapper {
+background-image:none;
+}
