@@ -102,7 +102,7 @@ function createBorderRect(element, vml_parent) {
 	if (element.currentStyle.backgroundImage != "none")
 	{
 		keepBackground = true;
-		element.style['background-color'] = 'transparent';
+		element.style.backgroundColor = 'transparent';
 	}
 	else
 	{
