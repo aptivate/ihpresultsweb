@@ -1,7 +1,22 @@
 {% extends "public_base.html" %}
 {% block title %}{{country.country}}{% endblock %}
 {% block head %}
+	<!--
+	<script type='text/javascript'>
+		var images_path = '{% url ihp-media path='images' %}';
+	</script>
+	-->
 	<script type='text/javascript' src='{% url ihp-media path='js/country-scorecard-effects.js' %}'></script>
+	<style>
+		#scorecard_header h2, table.scorecard tr.countries ul, #scorecard,
+		#scorecard h2, #scorecard h3, #scorecard ul, #scorecard .category,
+		#scorecard td.expected_result, .infobox, .infobox .item,
+		.infobox .item h3, .inner, .infobox h2,	.health-financing .chart-key,
+		.health-financing .key
+		{
+			behavior:url({% url ihp-media path='js/ie-css3.htc' %});
+		}
+	</style>	
 {% endblock %}
 {% block heading %}Country Scorecard for {{country.country}}{% endblock %}
 {% block content %}
@@ -42,23 +57,7 @@
 			</ul>
 		</div><!-- item -->
 
-		<h2>
-			<span class="expected">Expected Results</span><span
-				class="rating">Rating</span><span
-				class="comment">Overall Progress</span>
-		</h2>
-		
-		{% for category in categories %}
-			<dl class="results-{{category.code}}">
-				<dt><p><img
-					src="{% url ihp-media path='images' %}/results-icon-{{category.code|cut:"G"}}.png"
-					alt="icon" class="icon">{{category.expected_result}}</p></dt>
-				{% for indicator in category.indicators %}
-				<dd><img src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
-					alt="{{indicator.rating}}" class="rating">{{indicator.overall_progress}}</dd>
-				{% endfor %}
-			</dl>
-		{% endfor %}
+		{% include 'rated_statements.inc.html' %}		
 	</div><!-- #scorecard col -->
 	
 	<!--start infoboxes column-->
@@ -206,7 +205,7 @@
 				</a>
 			</h2>
 			
-			<div class="item" style="margin-top: 20px;"><!-- clear the large logo -->
+			<div class="item" style="margin-top: 15px;"><!-- overlap the large logo -->
 				<h3>Public Financial Management</h3>
 			
 				<p>
@@ -289,7 +288,7 @@
 				</ul>
 			</div><!-- item -->
 		
-			<div class="item">
+			<div class="item" style="margin-bottom: 0;">
 				<img src="{% url ihp-media path='images' %}/{{raw_data.JAR1}}.png"
 					alt="{{raw_data.JAR1}}" class="rating">
 				<h3>Joint Health Sector</h3> 

@@ -104,21 +104,6 @@ div.scorecard-page h1
 	padding:0;
 }
 
-#content .infobox h2
-{
-	color: white;
-	text-align: left;
-	text-transform: uppercase;
-	background-color: #0a3e3d;
-	padding: 6px 15px;
-	-moz-border-radius:10px;
-	-webkit-border-radius:10px;
-	border-radius:10px;
-	font-size:0.9em;
-	letter-spacing:1px;
-	margin:6px 0;
-}
-
 #content table.scorecard tr.countries ul 
 {
 	list-style:none;
@@ -179,21 +164,6 @@ div.scorecard-page h1
 {
 	width:300px;
 	padding-left:0;
-}
-
-
-
-#content table.scorecard td.expected_result table
-{ 
-	margin: 0;
-	border: none;
-	background-color:#e1e8e5;
-	-moz-border-radius:8px;
-	-webkit-border-radius:8px;
-	border-radius:8px;
-	height:100%;
-	min-height: 100%;
-	width: 100%;
 }
 
 td.expected_result span.text {
@@ -287,7 +257,7 @@ div.col {
 	margin-top:15px;
 }
 
-#scorecard h3, #scorecard h2 {
+#scorecard h2, #scorecard h3 {
 	margin: 20px 0 0;
 	position:relative;
 	font-size:0.9em;
@@ -357,51 +327,55 @@ div.col {
 	font-size:0.8em;	
 }
 
-#scorecard dl {
+#scorecard .category {
 	border:1px solid #b3c6c0;
 	padding:0;
 	-moz-border-radius:10px;
 	-webkit-border-radius:10px;
 	border-radius:10px;
-	position:relative;
-	margin-bottom:10px;
+	margin:15px 0 0;
 }
 
-#scorecard dl dt {
+#scorecard td.expected_result {
 	background-color:#D1DDD9;
-	width:170px;
 	padding:0;
 	-moz-border-radius:8px;
 	-webkit-border-radius:8px;
 	border-radius:8px;
-	float:left;
-	margin-right:10px;
-	position:absolute;
-	top:10px;
-	left:10px;
-	height:85%;
+	width: 150px;
+	padding: 10px;
+}
+
+#scorecard td.expected_result p {
+	position: relative;
+}
+
+#scorecard td.rating {
+	width: 40px;
+	text-align: center;
 }
 
 #scorecard dl dt p {
 	padding:10px;
 }
 
-#scorecard dl dt img {
+#scorecard td img.icon {
 	position:absolute;
-	top:-20px;
-	left:20px;
+	top:-45px;
+	left:10px;
 }
 
-#scorecard dd {
-	margin:10px 10px 10px 190px;
-	min-height:100px;
-	padding-left:50px;
-	position:relative;
-	border-bottom:2px dotted #D1DDD9;
+#scorecard td {
+	vertical-align: top;
 }
 
-#scorecard > dl dd:last-child {
-	border:none;
+#scorecard td.progress {
+	padding-bottom: 10px;
+	border-bottom: 2px dotted #D1DDD9;
+}
+
+#scorecard tr.last td {
+	border-bottom: none;
 }
 
 #scorecard dd img {
@@ -419,7 +393,6 @@ div.col {
 	border-radius:15px;
 	padding:10px;
 	margin-bottom:20px;
-
 }
 
 .infobox .item, .inner {
@@ -432,13 +405,18 @@ div.col {
 }
 
 #content .infobox h2 {
-	background-color:#0A3E3D;
+	margin:0;
 	padding:2px 10px 2px 80px;
 	-moz-border-radius:10px;
 	-webkit-border-radius:10px;
 	border-radius:10px;
+	background-color: #0a3e3d;
 	color:white;
 	position:relative;
+	text-align: left;
+	text-transform: uppercase;
+	font-size:0.9em;
+	letter-spacing:1px;
 }
 
 .infobox h2 img {
@@ -585,3 +563,17 @@ div.col {
 	margin-left: 50px;
 	padding-left: 20px;
 }
+
+/*Background and z-index hacks for ie-css3.htc*/
+#scorecard_header h2, table.scorecard tr.countries ul, #scorecard,
+#scorecard ul.logos, #scorecard .category, .infobox, .inner,
+.health-financing .chart-key, .health-financing .key
+{
+	background-color: white;
+}
+#scorecard, .infobox { z-index: -40; }
+.infobox.country-ownership h2,
+.infobox.country-ownership .item h3 { z-index: 10; }
+#scorecard .category, .infobox .item { z-index: -30; }
+.health-financing .chart-key { z-index: -20; }
+.health-financing .key { z-index: -10; }
