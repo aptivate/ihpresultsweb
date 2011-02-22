@@ -9,12 +9,18 @@ Author URI: http://aptivate.org
 
 class AptivateExternalCSS
 {
-	function wp_head()
+	function head()
 	{
 		em_showContent("starthead", "endhead",
-			"http://localhost/django/public/scorecard/agency/UNICEF/",
+			"http://localhost:".$_SERVER["SERVER_PORT"].
+			"/django/public/scorecard/agency/UNICEF/",
 			"", FALSE);
+	}
+	function enqueue_scripts()
+	{
+		wp_enqueue_script("jquery");
 	}
 }
 
-add_action('wp_head', array('AptivateExternalCSS', 'wp_head'));
+add_action('wp_head', array('AptivateExternalCSS', 'head'));
+add_action('wp_enqueue_scripts', array('AptivateExternalCSS', 'enqueue_scripts'));

@@ -1,4 +1,4 @@
-#content div.scorecard 
+div.scorecard 
 {
 	max-width:960px;
 	min-width:400px;
@@ -64,22 +64,47 @@ div.scorecard-page h1
 	margin: 0.5em 0 0;
 }
 
-.infobox h2
+#content table.scorecard
 {
-	color: white;
-	text-align: left;
-	text-transform: uppercase;
-	background-color: #0a3e3d;
-	padding: 6px 15px;
-	-moz-border-radius:10px;
-	-webkit-border-radius:10px;
-	border-radius:10px;
-	font-size:0.9em;
-	letter-spacing:1px;
-	margin:6px 0;
+	font-family:Arial, Helvetica, Verdana, sans-serif;
+	margin-bottom:20px;
+	clear:both;
+	border:none;
 }
 
-#scorecard .countries ul 
+#content table.scorecard *
+{
+	vertical-align: middle;
+}
+
+#content table.scorecard tr td
+{
+	border: none;
+	border-top: none;
+	padding: 0;
+}
+
+#content table.scorecard tr.headings th 
+{
+	padding: 0;
+}
+
+#content table.scorecard tr.headings th.expected_result
+{
+	padding-right: 10px;
+}
+
+#content table.scorecard tr.headings th.overall_progress
+{
+	padding-left: 10px;
+}
+
+#content table.scorecard .progress 
+{
+	padding:0;
+}
+
+#content table.scorecard tr.countries ul 
 {
 	list-style:none;
 	list-style-image:none;
@@ -94,13 +119,13 @@ div.scorecard-page h1
 	overflow:auto;
 }
 
-#scorecard ul.countries.reporting 
+#content table.scorecard tr.countries.reporting ul 
 {
 	background-color:#E1E8E5;
 	border:none;
 }
 
-#scorecard ul.countries li 
+#content table.scorecard tr.countries ul li 
 {
 	padding:0;
 	margin:0;
@@ -108,7 +133,7 @@ div.scorecard-page h1
 	float:left;
 }
 
-#scorecard ul.countries img
+#content table.scorecard tr.countries img
 {
 	width:50px;
 	height:25px;
@@ -117,7 +142,7 @@ div.scorecard-page h1
 
 /*tr.indicator*/
 
-#scorecard dl 
+#content table.scorecard tr.indicator td.expected_result 
 {
 	/*border-left:1px solid #cfd5d5;*/
 	border-left:1px solid #DFD5D5;
@@ -127,7 +152,7 @@ div.scorecard-page h1
 }
 
 
-#scorecard dd 
+#content table.scorecard tr.indicator > td 
 {
 	border-bottom:1px solid #cfd5d5;
 	padding:10px;
@@ -141,23 +166,11 @@ div.scorecard-page h1
 	padding-left:0;
 }
 
-#scorecard dt
-{ 
-	margin: 0;
-	border: none;
-	background-color:#e1e8e5;
-	-moz-border-radius:8px;
-	-webkit-border-radius:8px;
-	border-radius:8px;
-	height:100%;
-	min-height: 100%;
-	width: 100%;
-}
-
 td.expected_result span.text {
-display:block;
-background-color:#D1DDD9;
-display:compact;}
+	display:block;
+	background-color:#D1DDD9;
+	display:compact;
+}
 
 #content table.scorecard td.expected_result table td
 { 
@@ -233,24 +246,334 @@ div.col {
 	position:relative;
 }
 
+/*Scorecard column styles*/
+
+#scorecard  {
+	border:1px solid #b3c6c0;
+	width:448px;
+	-moz-border-radius:15px;
+	-webkit-border-radius:15px;
+	border-radius:15px;
+	margin-top:15px;
+}
+
+#scorecard h2, #scorecard h3 {
+	margin: 20px 0 0;
+	position:relative;
+	font-size:0.9em;
+	clear:both;
+	margin-top:0px;
+	background-color:#0A3E3D;
+	padding:2px 11px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+	color:white;
+	text-transform:uppercase;
+}
+
+#scorecard h2 span {
+	display: inline-block;
+}
+
+#scorecard h2 .expected {
+ 	width: 170px;
+}
+ 
+#scorecard h2 .rating {
+ 	width: 60px;
+ 	text-align: center;
+}
+ 
+#scorecard h2 .comment {
+ 	width: 196px;
+ 	text-align: right;
+}
+
+#scorecard ul {
+	border:1px solid #D1DDD9;
+	padding:10px;
+	margin:0;
+	list-style:none;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+	clear:both;
+	position:relative;
+	width:428px;
+	margin-bottom:10px;
+	display:block;
+	float:left;
+}
+
+#scorecard ul li {
+	display:block;
+	margin:5px;
+	padding:0;
+	float:left;
+	width:60px;
+	height:50px;
+	text-align:center;
+}
+
+#scorecard ul li img {
+	width:60px;
+	background-color:black;
+	height:40px;
+	display:block;
+}
+
+#scorecard li span.name {
+	font-size:0.8em;	
+}
+
+#scorecard .category {
+	border:1px solid #b3c6c0;
+	padding:0;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+	margin:15px 0 0;
+}
+
+#scorecard td.expected_result {
+	background-color:#D1DDD9;
+	padding:0;
+	-moz-border-radius:8px;
+	-webkit-border-radius:8px;
+	border-radius:8px;
+	width: 150px;
+	padding: 10px;
+}
+
+#scorecard td.expected_result p {
+	position: relative;
+}
+
+#scorecard td.rating {
+	width: 40px;
+	text-align: center;
+}
+
+#scorecard dl dt p {
+	padding:10px;
+}
+
+#scorecard td img.icon {
+	position:absolute;
+	top:-45px;
+	left:10px;
+}
+
+#scorecard td {
+	vertical-align: top;
+}
+
+#scorecard td.progress {
+	padding-bottom: 10px;
+	border-bottom: 2px dotted #D1DDD9;
+}
+
+#scorecard tr.last td {
+	border-bottom: none;
+}
+
+#scorecard dd img {
+	position:absolute;
+	left:0px;
+}
+
+
+/*Infobox column styles*/
+
 .infobox {
 	border:2px solid #f68b1f;
 	-moz-border-radius:15px;
+	-webkit-border-radius:15px;
+	border-radius:15px;
 	padding:10px;
-	margin-bottom:10px;
-
+	margin-bottom:20px;
 }
 
-.infobox h2 {
-	background-color:#0A3E3D;
-	padding:5px 10px;
-	-moz-border-radius:10px;
-	color:white;
-}
-
-.item, .inner {
+.infobox .item, .inner {
 	background-color:#d1ddd9;
-	-moz-border-radius:8px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
 	padding:10px;
 	margin-bottom:10px;
 }
+
+#content .infobox h2 {
+	margin:0;
+	padding:2px 10px 2px 80px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+	background-color: #0a3e3d;
+	color:white;
+	position:relative;
+	text-align: left;
+	text-transform: uppercase;
+	font-size:0.9em;
+	letter-spacing:1px;
+}
+
+.infobox h2 img {
+	position:absolute;
+	top:-20px;
+	left:10px;
+	width: 60px;
+	height: 60px;
+	z-index: 1; /* float over h3 */
+}
+
+.infobox h2 a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.infobox .item h3 {
+	background-color:#85A49B;
+	color:#fff;
+	text-transform:uppercase;
+	padding:4px 10px 4px 70px;
+	margin:0;
+	-moz-border-radius:8px;
+	-webkit-border-radius:8px;
+	border-radius:8px;
+	position:relative;
+	font-size:0.9em;
+}
+
+.item h3 img {
+	position:absolute;
+	left:20px;
+	top:-8px;
+}
+
+/*Country-ownership*/
+
+.infobox.country-ownership .item {
+	background-image:url(../images/infobox-item-jigsaw-bg.png);
+	background-position:top;
+	background-repeat:no-repeat;
+	margin-bottom:0;
+	padding-top:30px;
+}
+
+/* country-ownership needs extra space above h3 for the jigsaw tongues */
+.infobox.country-ownership .item h3 {
+	margin: 30px 0 0;
+}
+
+.infobox.country-ownership > .item:first-child {
+	background-image:none;
+	padding-top:5px;
+}
+
+.country-ownership ul {
+	margin-left:20px;
+	margin-top:20px;
+	padding-left:0;
+}
+
+.country-ownership li {
+	border-bottom-color:#0A3E3D;
+	border-bottom-style:dashed;
+	border-bottom-width:1px;
+	list-style-position:outside;
+	margin-bottom:10px;
+	min-height:28px;
+	padding-left:0;
+	padding-bottom:4px;
+}
+
+.country-ownership li img {
+	float:right;
+	position:relative;
+	top:-4px;
+}
+
+.country-ownership .item p {
+	padding:0 20px;
+}
+
+/*Health Financing*/
+
+.health-financing .item {
+	background-color:#fff;
+	margin-bottom: 0; /* 10px looks bad without backgrounds on items */
+	text-align: center; /* centre the blocks */
+}
+
+/* but don't center their contents */
+.health-financing .item > * {
+	text-align: left;
+}
+
+.health-financing .item img {
+	display: block;
+	margin: 1em auto;
+}
+
+.health-financing .chart-key {
+	display: inline-block;
+	margin: 0 auto;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #b3c6c0;
+	padding: 0.5em;
+}
+
+.health-financing .key-item {
+	margin: 0.2em;
+}
+
+.health-financing .key {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	border: 1px solid #black;
+	vertical-align: -0.2em;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+/*Country Systems*/
+.country-systems .item img.rating {
+	float: left;
+	margin-right: 10px;
+}
+
+/*Health Systems*/
+
+.health-systems .item {
+	background-color:#fff;
+}
+
+/*Managing for Development*/
+.infobox.managing-for-development img {
+	float: left;
+}
+
+#content .infobox.managing-for-development h3 {
+	margin-left: 50px;
+	padding-left: 20px;
+}
+
+/*Background and z-index hacks for ie-css3.htc*/
+#scorecard_header h2, table.scorecard tr.countries ul, #scorecard,
+#scorecard ul.logos, #scorecard .category, .infobox, .inner,
+.health-financing .chart-key, .health-financing .key
+{
+	background-color: white;
+}
+#scorecard, .infobox { z-index: -40; }
+.infobox.country-ownership h2,
+.infobox.country-ownership .item h3 { z-index: 10; }
+#scorecard .category, .infobox .item { z-index: -30; }
+.health-financing .chart-key { z-index: -20; }
+.health-financing .key { z-index: -10; }

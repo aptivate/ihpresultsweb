@@ -4,6 +4,10 @@ import urllib2
 import json
 from submissions.models import Submission, DPQuestion, AgencyCountries, AgencyTargets, Agency, Country, GovQuestion, CountryTargets, MDGData
 
+"""
+Functions used for parsing xls submissions - this code will be deprecated by March 2011 as there will no longer be a need to submit instruments via email.
+"""
+
 def parse_mdg_file(filename):
     year = lambda x : int(x) if x else x
     empty = lambda x : x if x else None

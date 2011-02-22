@@ -1,5 +1,23 @@
 {% extends "public_base.html" %}
 {% block title %}{{country.country}}{% endblock %}
+{% block head %}
+	<!--
+	<script type='text/javascript'>
+		var images_path = '{% url ihp-media path='images' %}';
+	</script>
+	-->
+	<script type='text/javascript' src='{% url ihp-media path='js/country-scorecard-effects.js' %}'></script>
+	<style>
+		#scorecard_header h2, table.scorecard tr.countries ul, #scorecard,
+		#scorecard h2, #scorecard h3, #scorecard ul, #scorecard .category,
+		#scorecard td.expected_result, .infobox, .infobox .item,
+		.infobox .item h3, .inner, .infobox h2,	.health-financing .chart-key,
+		.health-financing .key
+		{
+			behavior:url({% url ihp-media path='js/ie-css3.htc' %});
+		}
+	</style>	
+{% endblock %}
 {% block heading %}Country Scorecard for {{country.country}}{% endblock %}
 {% block content %}
 
@@ -14,53 +32,51 @@
 	</div><!-- #scorecard_header -->
 
 	<!-- start scorecard col-->
-	<div id="scorecard" class="col">	
-		<h3>Agencies demonstrating progress in this country</h3>
-		<ul class="logos progress">
-			{% for agency in progress_agencies %}
-				<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
-					alt="{{agency.agency}}" class="logo">
-					<span class="name">{{agency.agency}}</span>
-					</li>
-			{% endfor %}
-		</ul>
-		
-		<h3>Agencies reporting limited progress in this country</h3>
-		<ul class="logos no_progress">
-			{% for agency in no_progress_agencies %}
-				<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
-					alt="{{agency.agency}}" class="logo">
-					<span class="name">{{agency.agency}}</span>
-					</li>
-			{% endfor %}
-		</ul>
-
-		<h2>
-			<span>Expected Results</span>
-			<span>Rating</span>
-			<span>Overall Progress</span>
-		</h2>
-		
-		{% for category in categories %}
-			<dl class="results-{{category.code}}">
-				<dt><span class="icon"><img
-					src="{% url ihp-media path='images' %}/results-icon-{{category.code}}.png"
-					alt="icon" class="icon"></span>{{category.expected_result}}</dt>
-				{% for indicator in category.indicators %}
-				<dd><img src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
-					alt="{{indicator.rating}}" class="rating">{{indicator.overall_progress}}</dd>
+	<div id="scorecard" class="col">
+		<div class="item">	
+			<h3>Agencies demonstrating progress in this country</h3>
+			<ul class="logos progress">
+				{% for agency in progress_agencies %}
+					<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
+						alt="{{agency.agency}}" class="logo">
+						<span class="name">{{agency.agency}}</span>
+						</li>
 				{% endfor %}
-			</dl>
-		{% endfor %}
+			</ul>
+		</div><!-- item -->
+		
+		<div class="item">	
+			<h3>Agencies reporting limited progress in this country</h3>
+			<ul class="logos no_progress">
+				{% for agency in no_progress_agencies %}
+					<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
+						alt="{{agency.agency}}" class="logo">
+						<span class="name">{{agency.agency}}</span>
+						</li>
+				{% endfor %}
+			</ul>
+		</div><!-- item -->
+
+		{% include 'rated_statements.inc.html' %}		
 	</div><!-- #scorecard col -->
 	
 	<!--start infoboxes column-->
 	<div id="infobox" class="col">
 		<div class="infobox country-ownership">
-			<h2>Country Ownership and Accountability</h2>
+			<h2>
+				<a href="#" title="Click to expand">
+					<img src="{% url ihp-media path='images' %}/flag-60.png"
+						alt="Country Ownership and Accountability">
+					Country Ownership and Accountability
+				</a>
+			</h2>
 			
-			<div class="item">
-				<h3>Commitments Documented</h3>
+			<div class="item" style="margin-top: -6px;"><!-- join tongue to h2 -->
+				<h3>
+					<img src="{% url ihp-media path='images' %}/results-icon-1.png"
+						alt="Commitments Documented">
+					Commitments Documented
+				</h3>
 	
 				<ul>
 					<li>
@@ -74,7 +90,12 @@
 			</div><!-- item -->
 			
 			<div class="item">
-				<h3>Health Sector Plan and AIDS Strategies</h3>
+				<h3>
+					<img src="{% url ihp-media path='images' %}/results-icon-5.png"
+						alt="Health Sector Plan and AIDS Strategies">
+					Health Sector Plan and AIDS Strategies
+				</h3>
+				
 				<ul>
 					<li>
 						<img src="{% url ihp-media path='images' %}/{{raw_data.HSP1}}.png"
@@ -90,7 +111,11 @@
 			</div><!-- item -->
 			
 			<div class="item">
-				<h3>Health Sector Aid Effectiveness Monitoring</h3>
+				<h3>
+					<img src="{% url ihp-media path='images' %}/results-icon-6.png"
+						alt="Health Sector Aid Effectiveness Monitoring">
+					Health Sector Aid Effectiveness Monitoring
+				</h3>
 				
 				<ul>
 					<li>
@@ -120,12 +145,48 @@
 		</div><!-- infobox country-ownership -->
 		
 		<div class="infobox health-financing">
-			<h2>Health Financing</h2>
+			<h2>
+				<a href="#" title="Click to expand">
+					<img src="{% url ihp-media path='images' %}/dollars-60.png"
+						alt="Health Financing">
+					Health Financing
+				</a>
+			</h2>
 	
-			<div class="item">
+			<div class="item" style="margin-top: 0;"><!-- overlap the large logo -->
 				<h3>Total Health Financing</h3>
-				<img src="" width="400" height="300" alt="barchart">
-				<img src="" width="400" height="300" alt="pie">
+				
+				<img src="{% url ihp-media path='images' %}/{{country.country}}barnew.png"
+					width="400" height="253" alt="barchart">
+					
+				<div class="chart-key">
+					<div class="key-item">
+						<span class="key" style="background-color: #b0c513"></span>
+						Domestic Financing
+					</div> 
+					<div class="key-item">
+						<span class="key" style="background-color: #3cb5b8"></span>
+						External Financing
+					</div> 
+				</div> 
+
+				<img src="{% url ihp-media path='images' %}/{{country.country}}-pie.png"
+					width="200" height="200" alt="pie">
+					
+				<div class="chart-key">
+					<div class="key-item">
+						<span class="key" style="background-color: #668d82"></span>
+						National Budget (2008/9)
+					</div> 
+					<div class="key-item">
+						<span class="key" style="background-color: #c4d82e"></span>
+						Allocated to Health
+					</div> 
+					<div class="key-item">
+						<span class="key" style="background-color: #0e3d3d"></span>
+						Increase required to meet Abuja target (15%)
+					</div>
+				</div> 
 			</div><!-- item -->
 			
 			<div class="item">
@@ -136,9 +197,15 @@
 		</div><!-- infobox health-financing -->
 
 		<div class="infobox country-systems">
-			<h2>Country Systems</h2>
+			<h2>
+				<a href="#" title="Click to expand">
+					<img src="{% url ihp-media path='images' %}/cogs-60.png"
+						alt="Country Systems">
+					Country Systems
+				</a>
+			</h2>
 			
-			<div class="item">
+			<div class="item" style="margin-top: 15px;"><!-- overlap the large logo -->
 				<h3>Public Financial Management</h3>
 			
 				<p>
@@ -158,7 +225,7 @@
 				</p>
 			</div><!-- item -->
 			
-			<div class="item">
+			<div class="item" style="margin-bottom: 0;">
 				<h3>Technical Assistance</h3>
 			
 				<p>
@@ -170,14 +237,30 @@
 		</div><!-- infobox country-systems -->
 
 		<div class="infobox health-systems">
-			<h2>Health Systems Strengthening</h2>
-			<img width="400" height="300" alt="barchart" src="">
+			<h2>
+				<a href="#" title="Click to expand">
+					<img src="{% url ihp-media path='images' %}/doctor-60.png"
+						alt="Health Systems Strengthening">
+					Health Systems Strengthening
+				</a>
+			</h2>
+			
+			<div class="item" style="margin-top: 20px;"><!-- clear the large logo -->
+				<img width="400" height="300" alt="barchart"
+					src="{% url ihp-media path='images' %}/{{country.country}}hss.png">
+			</div><!-- item -->			
 		</div><!-- infobox health-systems -->
 		
 		<div class="infobox managing-for-development">
-			<h2>Managing for Development Results</h2>
+			<h2>
+				<a href="#" title="Click to expand">
+					<img src="{% url ihp-media path='images' %}/moebius-60.png"
+						alt="Managing for Development Results">
+					Managing for Development Results
+				</a>
+			</h2>
 			
-			<div class="item">
+			<div class="item" style="margin-top: 15px;"><!-- nearly clear the large logo -->
 				<img src="{% url ihp-media path='images' %}/{{raw_data.RF1}}.png"
 					alt="{{raw_data.RF1}}" class="rating">
 				<h3>National Results Framework Agreed</h3>
@@ -205,15 +288,12 @@
 				</ul>
 			</div><!-- item -->
 		
-			<div class="item">
+			<div class="item" style="margin-bottom: 0;">
 				<img src="{% url ihp-media path='images' %}/{{raw_data.JAR1}}.png"
 					alt="{{raw_data.JAR1}}" class="rating">
 				<h3>Joint Health Sector</h3> 
 				<ul>
-					<li>{{raw_data.JAR2}}</li>
-					<li>{{raw_data.JAR3}}</li>
 					<li>{{raw_data.JAR4}}</li>
-					<li>{{raw_data.JAR5}}</li>
 				</ul>
 			</div><!-- item -->
 		</div><!-- infobox managing-for-development -->
