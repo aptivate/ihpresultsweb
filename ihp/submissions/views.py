@@ -232,9 +232,11 @@ def agency_export(request):
 def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html", extra_context=None):
 
     extra_context = extra_context or {}
-    extra_context["questions"] = DPQuestion.objects.filter(
-        submission__agency__updateagency__update=True
-    ).order_by("submission__agency", "submission__country", "question_number")
+    extra_context["questions"] = DPQuestion.objects.all().order_by(
+        "submission__agency", 
+        "submission__country", 
+        "question_number"
+    )
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def formatter(decimals):
@@ -487,9 +489,7 @@ def country_export(request, language):
 def gov_questionnaire(request, template_name="submissions/gov_questionnaire.html", extra_context=None):
 
     extra_context = extra_context or {}
-    extra_context["questions"] = GovQuestion.objects.filter(
-        submission__agency__updateagency__update=True
-    )
+    extra_context["questions"] = GovQuestion.objects.all()
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def dp_summary_edit(request, template_name="submissions/dp_summary_edit.html", extra_context=None):
@@ -667,12 +667,14 @@ def agency_table_by_indicator(request, indicator, template_name="submissions/age
                     "baseline_value" : tbl_float_format(base_val), 
                     "latest_value" : tbl_float_format(latest_val), 
                     "rating" : ratings[indicator],
+                    "cellclass" : "",
                 } 
             else:
                 country_abs_values = {
-                    "baseline_value" : "N/A",
-                    "latest_value" : "N/A",
-                    "rating" : "none",
+                    "baseline_value" : "",
+                    "latest_value" : "",
+                    "rating" : "",
+                    "cellclass" : "notactive",
                 } 
                 
             agency_values.append((country, country_abs_values))

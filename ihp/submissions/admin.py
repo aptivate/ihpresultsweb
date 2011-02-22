@@ -12,7 +12,6 @@ class AgencyAdmin(admin.ModelAdmin):
 
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(Country)
-admin.site.register(UpdateAgency)
 
 class SubmissionAdmin(admin.ModelAdmin):
     list_filter = ("agency", "country")

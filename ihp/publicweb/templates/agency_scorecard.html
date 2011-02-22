@@ -1,0 +1,59 @@
+{% extends "public_base.html" %}
+{% block title %}{{agency.agency}}{% endblock %}
+{% block heading %}Agency Scorecard for {{agency.agency}}{% endblock %}
+{% block content %}
+
+<div class="scorecard agency">
+	<div id="scorecard_header">
+		<h1><a href="http://network.human-scale.net/community/ihp/scorecards"><img
+			src="{% url ihp-media path='images' %}/ihp-results-partner-scorecard-logo.png"
+			alt="IHP+ Results Partner Scorecard"></a></h1>
+		<h2><a href="#" title="Visit {{agency.agency}} website"><img
+			src="{% url ihp-media path='images' %}/{{agency.agency}}.png"
+			alt="Agency Scorecard for {{agency.agency}}" border="0"></a>
+		<span>Agency Scorecard for {{agency.agency}}</span></h2>
+	</div><!-- #scorecard_header -->
+
+	<!-- start scorecard col-->
+	<div id="scorecard" class="col">	
+		<h3>Countries where the agency is demonstrating progress</h3>
+		<ul class="logos progress">
+			{% for country in progress_countries %}
+				<li><img src="{% url ihp-media path='images' %}/{{country.country|cut:" "}}.png"
+					alt="{{country.country}}" class="flag" />
+					<span class="name">{{country.country}}</span>
+					</li>
+			{% endfor %}
+		</ul>
+		
+		<h3>Countries where the agency is reporting limited progress</h3>
+		<ul class="logos no_progress">
+			{% for agency in no_progress_agencies %}
+				<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
+					alt="{{agency.agency}}" class="logo">
+					<span class="name">{{country.country}}</span>
+					</li>
+			{% endfor %}
+		</ul>
+
+		<h2>
+			<span>Expected Results</span>
+			<span>Rating</span>
+			<span>Overall Progress</span>
+		</h2>
+		
+		{% for category in categories %}
+			<dl class="results-{{category.code}}">
+				<dt><span class="icon"><img
+					src="{% url ihp-media path='images' %}/results-icon-{{category.code}}.png"
+					alt="icon" class="icon"></span>{{category.expected_result}}</dt>
+				{% for indicator in category.indicators %}
+				<dd><img src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
+					alt="{{indicator.rating}}" class="rating">{{indicator.overall_progress}}</dd>
+				{% endfor %}
+			</dl>
+		{% endfor %}
+	</div><!-- #scorecard col -->
+</div><!-- scorecard agency -->
+
+{% endblock %}

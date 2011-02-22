@@ -1,0 +1,23 @@
+/*
+
+ALO-EasyMail CSS Styles
+
+Tip : copy this file to your theme directory and edit it there. Useful to prevent the loss of styles when you upgrade the plugin
+
+*/
+
+
+/*
+ * Main styles
+ */
+ 
+#alo_easymail_widget_form { /* the form */
+    color:#000;
+}
+.alo_easymail_widget_error { /* error msg */
+    color:#f00;
+}
+.alo_easymail_widget_ok { /* success msg */
+    color:#6c3;
+}
+

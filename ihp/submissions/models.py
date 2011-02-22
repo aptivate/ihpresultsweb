@@ -66,17 +66,6 @@ class CountryWorkingDraft(models.Model):
         return unicode(self.country)
 
 
-class UpdateAgency(models.Model):
-    agency = models.OneToOneField(Agency, null=False)
-    update = models.BooleanField(null=False)
-
-    def __unicode__(self):
-        return unicode(self.agency)
-
-    class Meta:
-       verbose_name_plural = "Update Agencies" 
-
-
 class Submission(models.Model):
     country = models.ForeignKey(Country, null=False)
     agency = models.ForeignKey(Agency, null=True)

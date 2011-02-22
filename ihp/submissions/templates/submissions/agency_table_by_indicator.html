@@ -6,6 +6,10 @@
             border-bottom: solid 3px black;
         }
 
+        .notactive {
+            background-color: #444;
+        }
+
     </style>
 {% endblock %}
 
@@ -40,9 +44,9 @@
     <tr class="{% cycle "odd" "even" %}">
         <td>{{ agency.agency }}</td>
         {% for country, data in agency_values %}
-            <td>{{ data.baseline_value|default_if_none:"-" }}</td>
-            <td>{{ data.latest_value|default_if_none:"-" }}</td>
-            <td>{% if data.rating %}<img src="{{ MEDIA_URL }}/images/{{ data.rating }}.png">{% endif %}</td>
+            <td class="{{ data.cellclass }}">{{ data.baseline_value|default_if_none:"-" }}</td>
+            <td class="{{ data.cellclass }}">{{ data.latest_value|default_if_none:"-" }}</td>
+            <td class="{{ data.cellclass }}">{% if data.rating %}<img src="{{ MEDIA_URL }}/images/{{ data.rating }}.png">{% endif %}</td>
         {% endfor %}
     </tr>
     {% endfor %}

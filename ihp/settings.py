@@ -10,9 +10,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'sqlite3' 
-DATABASE_NAME = 'ihp.db'
-
 TIME_ZONE = 'Africa/Johannesburg'
 LANGUAGE_CODE = 'en-us'
 INTERNAL_IPS = ("127.0.0.1",)
@@ -58,6 +55,7 @@ ROOT_URLCONF = 'ihp.urls'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_HOME, "templates"),
+    os.path.join(PROJECT_HOME, "publicweb/templates"),
 )
 
 INSTALLED_APPS = (
@@ -69,14 +67,8 @@ INSTALLED_APPS = (
     "debug_toolbar",
    
     'submissions',
+    'publicweb',
 )
-
-# Poll Email Account Settings
-#POLL_USERNAME = "ihp@burgercom.co.za"
-#POLL_PASSWORD = "paddycake"
-POLL_USERNAME = "ihpresults2010survey@human-scale.net"
-POLL_PASSWORD = "changeme"
-POLL_HOST = "pop.gmail.com"
 
 # Debug Toolbar
 DEBUG_TOOLBAR_PANELS = (
@@ -90,3 +82,5 @@ DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.signals.SignalDebugPanel',
     'debug_toolbar.panels.logger.LoggingPanel',
 )
+
+from local_settings import *
