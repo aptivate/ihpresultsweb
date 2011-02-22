@@ -62,19 +62,19 @@ def evaluate_indicator(target, base_val, cur_val):
     except CannotCalculateException:
         return Rating.NONE
 
-commentary_map = {
-    "1DP" : "An IHP+ Country Compact or equivalent has been signed in %(cur_val).0f%% of IHP+ countries where they exist.",
-    "2DPa" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid was reported on national health sector budgets - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%.",
-    "2DPb" :"In %(cur_year)s %(cur_val).0f%% of capacity development was provided through coordinated programmes - %(diff_direction)s from %(base_val).0f%%.",
-    "2DPc" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided through programme based approaches - %(diff_direction)s from %(base_val).0f%%.",
-    "3DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided through multi-year commitments - %(diff_direction)s from %(base_val).0f%%.",
-    "4DP" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid disbursements were released according to agreed schedules - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%% in %(base_year)s.",
-    "5DPa" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid used country procurement systems - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%.",
-    "5DPb" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid used national public financial management systems - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%.",
-    "5DPc" : "In %(cur_year)s the stock of parallel project implementation units (PIUs) in the surveyed countries was %(cur_val)s - %(diff_direction)s from %(base_val)s.",
-    "6DP" : "In %(cur_year)s national performance assessment frameworks were used to assess progress in %(cur_val).0f%% of IHP+ countries - %(diff_direction)s from %(base_val).0f%%",
-    "7DP" : "In %(cur_year)s %(agency_name)s participated in health sector annual mutual assessments of progress in %(cur_val).0f%% IHP+ countries - %(diff_direction)s from %(base_val).0f%%.",
-    "8DP" : "In %(cur_year)s, evidence exists in %(cur_val).0f%% of IHP+ countries of support to civil society engagement in health sector policy processes.",
+commentary_map = { 
+    "1DP" : "An IHP+ Country Compact or equivalent has been signed by the agency in %(cur_val).0f%% of IHP+ countries where they exist.", 
+    "2DPa" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid was reported by the agency on national health sector budgets – %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%.", 
+    "2DPb" : "In %(cur_year)s %(cur_val).0f%% of capacity development by the agency was provided through coordinated programmes – %(diff_direction)s from %(base_val).0f%%.", 
+    "2DPc" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided by the agency through programme based approaches – %(diff_direction)s from %(base_val).0f%%.", 
+    "3DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided by the agency through multi-year commitments – %(diff_direction)s from %(base_val).0f%%.", 
+    "4DP" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid disbursements provided by the agency were released according to agreed schedules – %(one_minus_diff_direction)s from %(one_minus_base_val).0f%% in %(base_year)s.", 
+    "5DPa" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid provided by the agency used country procurement systems – %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%.", 
+    "5DPb" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid provided by the agency used national public financial management systems – %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%.", 
+    "5DPc" : "In %(cur_year)s the stock of parallel project implementation units (PIUs) used by the agency in the surveyed countries was %(cur_val)s – %(diff_direction)s from %(base_val)s.", 
+    "6DP" : "In %(cur_year)s national performance assessment frameworks were routinely used by the agency to assess progress in %(cur_val).0f%% of IHP+ countries where they exist – %(diff_direction)s from %(base_val).0f%%", 
+    "7DP" : "In %(cur_year)s the agency participated in health sector mutual assessments of progress in %(cur_val).0f%% IHP+ countries where they exist – %(diff_direction)s from %(base_val).0f%%.", 
+    "8DP" : "In %(cur_year)s, evidence exists in %(cur_val).0f%% of IHP+ countries that the agency supported civil society engagement in health sector policy processes.",
 }
 
 default_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
