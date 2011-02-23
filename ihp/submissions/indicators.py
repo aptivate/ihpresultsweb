@@ -46,6 +46,7 @@ def calc_indicator(qs, agency_or_country, indicator, funcs=None):
         if is_none(q.cur_val): latest_questions += 1
         if baseline_excluded: baseline_excluded_count += 1
         if latest_excluded: latest_excluded_count += 1
+        # TODO - need to do something about the 8DPFix - is_none does not cater for it
 
     qs2_baseline = [q for q in qs2 if not q.submission.id in exclude_baseline]
     qs2_latest = [q for q in qs2 if not q.submission.id in exclude_latest]
