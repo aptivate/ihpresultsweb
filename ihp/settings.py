@@ -85,3 +85,7 @@ DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.signals.SignalDebugPanel',
     'debug_toolbar.panels.logger.LoggingPanel',
 )
+
+POLL_USERNAME = "ihpresults2010survey@human-scale.net"
+POLL_PASSWORD = "changeme"
+POLL_HOST = "pop.gmail.com"

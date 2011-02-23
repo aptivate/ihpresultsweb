@@ -142,7 +142,8 @@
                         <h2>Additional Views</h2>
                         <p>
                             <ol>
-                                <li><a href="{% url agency_export %}">Agency Export</a></li>
+                                <li><a href="{% url agency_export_lang "en" %}">Agency Export (English)</a></li>
+                                <li><a href="{% url agency_export_lang "fr" %}">Agency Export (French)</a></li>
                                 <li>Country Export
                                     <ul style="padding-left: 10px">
                                         <li><a href="{% url country_export "English" %}">English Speaking Countries</a></li>

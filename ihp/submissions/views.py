@@ -6,6 +6,7 @@ import unicodecsv as csv
 from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404
+from django.utils.translation import check_for_language
 
 from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, CountryScorecardOverride, Rating
 from target import calc_agency_ratings, get_country_progress, calc_country_ratings, get_agency_progress, country_agency_indicator_ratings, country_agency_progress
@@ -174,6 +175,14 @@ def get_countries_scorecard_data():
         if country.submission_set.filter(type="Gov").count() > 0
     ])
 
+def agency_export_lang(request, language):
+    if language and check_for_language(language):
+        if hasattr(request, 'session'):
+            request.session['django_language'] = language
+        else:
+            response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
+    return agency_export(request)
+    
 def agency_export(request):
 
     headers = [

@@ -9,6 +9,7 @@ from target_criteria import criteria_funcs, MissingValueException, CannotCalcula
 import math
 from itertools import chain
 from logging import debug
+from django.utils.translation import ugettext_lazy as _
 
 def get_agency_targets(agency, indicators):
     targets = {}
