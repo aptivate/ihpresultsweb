@@ -5,7 +5,7 @@
 </h2>
 
 {% for category in categories %}
-	<div class="category"><!-- curvy corners doesn't work on tables -->
+	<div class="category">
 		<table cellspacing="10" cellpadding="0">
 			{% for indicator in category.indicators %}
 				<tr class="indicator {%if forloop.last%}last{%endif%}">
