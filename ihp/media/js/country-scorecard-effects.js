@@ -74,5 +74,17 @@ jQuery(document).ready(function()
 		wrap(jQuery('#scorecard h2').add('#scorecard h3'), 'scorecard-h2');
 		wrap(jQuery('#scorecard .logos'), 'scorecard-item');
 		*/
-	} 
+	}
+	
+	// Attach callouts to their content using Simpletip
+	jQuery('.callout-from').each(function(i, callout_from)
+	{
+		// load content from the DIV with the same ID plus "_content"
+		jQuery(callout_from).simpletip({
+			content: jQuery('#' + callout_from.id + "_content").html(),
+			baseClass: 'callout-to',
+			position: 'bottom',
+			offset: [0, 10],
+		});
+	});
 });
