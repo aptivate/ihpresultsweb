@@ -547,13 +547,7 @@ def country_export(request, language):
     writer.writerow(headers)
 
     for country in data:
-        country_language = "English"
-        languages = list(country.countrylanguage_set.all())
-        if len(languages) > 0:
-            country_language = languages[0].language
-
-        if country_language == language:
-            writer.writerow([data[country].get(header, "") for header in headers])
+        writer.writerow([data[country].get(header, "") for header in headers])
     return response
 
 def gov_questionnaire(request, template_name="submissions/gov_questionnaire.html", extra_context=None):

@@ -374,10 +374,6 @@ class Country8DPFix(models.Model):
         verbose_name_plural = "Country 8DP Fixes" 
         unique_together = ["agency", "country"]
 
-class CountryLanguage(models.Model):
-    country = models.ForeignKey(Country, null=False)
-    language = models.CharField(max_length=20, null=False)
-
 class NotApplicableManager(models.Manager):
     @memoize
     def _get_variations(self):

@@ -107,17 +107,6 @@ class MDGDataAdmin(admin.ModelAdmin):
     form = MDGDataAdminForm
 admin.site.register(MDGData, MDGDataAdmin)
 
-class CountryLanguageAdminForm(forms.ModelForm):
-    class Meta:
-        model = CountryLanguage
-    language = forms.ChoiceField(choices=[(x, x) for x in ["English", "French"]])
-
-class CountryLanguageAdmin(admin.ModelAdmin):
-    list_filter = ("language", )
-    list_display = ("country", "language")
-    form = CountryLanguageAdminForm
-admin.site.register(CountryLanguage, CountryLanguageAdmin)
-
 admin.site.register(NotApplicable)
 
 class CountryExclusionAdmin(admin.ModelAdmin):

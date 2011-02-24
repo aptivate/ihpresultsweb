@@ -4,12 +4,13 @@ from django.template import Context, Template
 from django.utils.functional import memoize
 from indicators import NA_STR
 from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
-from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, CountryLanguage, DPScorecardRatings, Rating
+from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, DPScorecardRatings, Rating
 from target_criteria import criteria_funcs, MissingValueException, CannotCalculateException
 import math
 from itertools import chain
 from logging import debug
 from django.utils.translation import ugettext_lazy as _
+import translations
 
 def get_agency_targets(agency, indicators):
     targets = {}
@@ -199,110 +200,7 @@ def calc_agency_ratings(agency):
 
     return results
 
-gov_commentary_text_en = {
-    "1G": {
-        Rating.TICK : "An [space] was signed in [space] called [space].",
-        Rating.ARROW : "There is evidence of a Compact or equivalent agreement under development. The aim is to have this in place by [space].",
-        Rating.CROSS : "There are no current plans to develop a Compact or equivalent agreement.",
-    },
-    "2Ga" : {
-        Rating.TICK : "A National Health Sector Plan/Strategy is in place with current targets & budgets that have been jointly assessed.",
-        Rating.ARROW : "National Health Sector Plans/Strategy in place with current targets & budgets with evidence of plans for joint assessment.",
-        Rating.CROSS : "National Health Sector Plans/Strategy in place with no plans for joint assessment. Target = National Health Sector Plans/Strategy in place with current targets & budgets that have been jointly assessed.",
-
-    },
-    "2Gb" : {
-        Rating.TICK : "There is currently a costed and evidence based HRH plan in place that is integrated with the national health plan.",
-        Rating.ARROW : """At the end of %(cur_year)s a costed and evidence based HRH plan was under development. 
-
-At the end of %(cur_year)s a costed and evidence based HRH plan was in place but not yet integrated with the national health plan. """,
-        Rating.CROSS : "At the end of %(cur_year)s there was no costed and evidence based HRH plan in place, or plans to develop one. ",
-    },
-    "3G" : {
-        "all" : "In %(cur_year)s %(country_name)s allocated %(cur_val).1f%% of its approved annual national budget to health.",
-    },
-    "4G" : {
-        "all" : "In %(cur_year)s, %(one_minus_cur_val).0f%% of health sector funding was disbursed against the approved annual budget.",
-    },
-    "5Ga" : {
-        "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).1f on the PFM/CPIA scale of performance."
-    },
-    "5Gb" : {
-        "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).0f on the four point scale used to assess performance in the the procurement sector."
-    },
-    "6G" : {
-        Rating.TICK : "In %(cur_year)s there was a transparent and monitorable performance assessment framework in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes.",
-        Rating.ARROW : "At the end of %(cur_year)s there was evidence that a transparent and monitorable performance assessment framework was under development to assess progress against (a) the national development  strategies relevant to health and (b) health sector programmes.",
-        Rating.CROSS : "At the end of %(cur_year)s there was no transparent and monitorable performance assessment framework in place and no plans to develop one were clear or being implemented.",
-    },
-    "7G" : {
-        Rating.TICK : "Mutual assessments are being made of progress implementing commitments in the health sector, including on aid effectiveness.",
-        Rating.ARROW : "Mutual assessments are being made of progress implementing commitments in the health sector, but not on aid effectiveness.",
-        Rating.CROSS : "Mutual assessments are not being made of progress implementing commitments in the health sector.",
-    },
-    "8G" : {
-        "all" : "In %(cur_year)s %(cur_val).0f%% of seats in the Health Sector Coordination Mechanism (or equivalent body) were allocated to Civil Society representatives."
-    },
-}
-
-gov_commentary_text_fr = {
-    "1G": {
-        Rating.TICK : u"Un [space] a été signé en [space] qui se nomme [space].",
-        Rating.ARROW : u"Certaines données indiquent qu’un accord ou une entente équivalente est en cours d’élaboration. L’objectif poursuivi est la mise en place de cet accord ou de cette entente avant le [space].",
-        Rating.CROSS : u"Il n’y a actuellement aucun plan visant à élaborer un accord ou une entente équivalente.",
-    },
-    "2Ga" : {
-        Rating.TICK : u"Un plan et une stratégie nationaux sectoriels de santé ont été mis en place à l’aide des objectifs et des budgets actuels qui ont été évalués conjointement.",
-        Rating.ARROW : u"Mise en place de plans et d'une stratégie nationaux sectoriels de santé à l’aide des objectifs et des budgets actuels qui ont été évalués conjointement.",
-        Rating.CROSS : u"Mise en place de plans et d’une stratégie nationaux sectoriels de santé sans plan d’évaluation conjointe.",
-
-    },
-    "2Gb" : {
-        Rating.TICK : u"Un plan relatif aux HRH chiffré et fondé sur des preuves qui est intégré au plan de santé national a été mis en place.",
-        Rating.ARROW : u"""
-À la fin de %(cur_year)s, un plan relatif aux HRH chiffré et fondé sur des preuves était en cours d’élaboration. 
-
-À la fin de %(cur_year)s, un plan relatif aux HRH chiffré et fondé sur des preuves avait été mis en place, mais n’était pas encore intégré au plan de santé national. 
-""",
-        Rating.CROSS : u"À la fin de %(cur_year)s, aucun plan chiffré et fondé sur des preuves relatif aux HRH n’avait été mis en place ni aucun plan visant à en élaborer un.",
-    },
-    "3G" : {
-        "all" : u"En %(cur_year)s, %(country_name)s a alloué %(cur_val).1f%% de son budget annuel ayant été approuvé pour le secteur de la santé.",
-    },
-    "4G" : {
-        "all" : u"En %(cur_year)s, %(one_minus_cur_val).0f%% du financement alloué au secteur de la santé a été décaissé en fonction du budget annuel ayant été autorisé.",
-    },
-    "5Ga" : {
-        "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val) sur l'échelle de performance GFP/EPIN."
-    },
-    "5Gb" : {
-        "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val).0f sur l’échelle d’évaluation à quatre points utilisée pour évaluer la performance du secteur de l’approvisionnement. "
-    },
-    "6G" : {
-        Rating.TICK : u"En %(cur_year)s, un cadre d’évaluation de la performance transparent et contrôlable a été mis en place pour évaluer les progrès accomplis par rapport aux a) stratégies de développement national relatives à la santé et aux b) programmes sectoriels de santé.",
-        Rating.ARROW : u"À la fin de %(cur_year)s, certaines données indiquaient qu’un cadre d’évaluation de la performance transparent et contrôlable était en cours d’élaboration pour évaluer les progrès accomplis par rapport aux a) stratégies de développement national relatives à la santé et aux b) programmes sectoriels de santé.",
-        Rating.CROSS : u"À la fin de %(cur_year)s, aucun cadre d'évaluation de la performance transparent et contrôlable n’avait été mis en place et aucun plan visant à en développer un n’était clair ou sur le point d’être mis en œuvre.",
-    },
-    "7G" : {
-        Rating.TICK : u"Des évaluations conjointes sont faites des progrès accomplis en ce qui concerne la mise en œuvre d’engagements dans le secteur de la santé, notamment en matière d’efficacité de l’aide.",
-        Rating.ARROW : u"Des évaluations conjointes sont faites des progrès accomplis en ce qui concerne la mise en œuvre d’engagements dans le secteur de la santé, mais pas en matière d’efficacité de l’aide.",
-        Rating.CROSS : u"Des évaluations conjointes sont faites des progrès accomplis en ce qui concerne la mise en œuvre d’engagements dans le secteur de la santé.",
-    },
-    "8G" : {
-        "all" : u"En %(cur_year)s, %(cur_val).0f%% des voix dans les mécanismes nationaux de coordination du secteur de la santé (ou un organe équivalent) ont été allouées aux représentants de la société civile."
-    },
-}
-
-def get_country_commentary_text(country):
-    try:
-        cl = CountryLanguage.objects.get(country=country)
-        if cl.language == "French":
-            return gov_commentary_text_fr
-    except CountryLanguage.DoesNotExist:
-        pass
-    return gov_commentary_text_en
-
-def calc_country_ratings(country):
+def calc_country_ratings(country, language="en"):
     """
     Returns information for all indicators for the given country in a dict with the
     following form
@@ -325,16 +223,17 @@ def calc_country_ratings(country):
     }
     """
 
-    
-    gov_commentary_text = get_country_commentary_text(country)
+    translation = translations.get_translation(language)
+    gov_commentary_text = translation.gov_commentary_text
 
-    rating_question_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
-    rating_none_text = "This Standard Performance Measure was deemed not applicable to %s." % country.country
+    rating_question_text = translation.rating_question_text
+    rating_none_text = translation.rating_none_text % country.country
 
     targets = get_country_targets(country, g_indicators)
     indicators = calc_country_indicators(country)
     results = {}
     ratings, _ = GovScorecardRatings.objects.get_or_create(country=country)
+
     def ratings_val(tmpl):
         def _func(indicator):
             h = indicator.replace("G", "").replace("Q", "")
