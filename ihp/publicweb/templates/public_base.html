@@ -3,20 +3,154 @@
 <head>
 	<title>{% block title %}public_base{% endblock %} - IHP+Results Website</title>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<script type='text/javascript' src='{% url ihp-media path='js/jquery-1.4.4.min.js' %}'></script> 
+	<script type='text/javascript' src='{% url ihp-media path='js/jquery-1.5.js' %}'></script> 
 	<script type='text/javascript' src='{% url ihp-media path='js/json2.js' %}'></script> 
 
 	<!-- starthead -->
+		<script type='text/javascript' src='{% url ihp-media path='js/jquery.simpletip-1.3.1.js' %}'></script>
 		<link rel="stylesheet" href="{% url ihp-media path='css/public_scorecards.css' %}">
 		{% block head %}{% endblock %}
 	<!-- endhead -->
 </head>
 <body>
 	<div id="content">
-		<!-- <h1>{% block heading %}Public Base{% endblock %}</h1> -->
+		<h1>{% block heading %}Public Base{% endblock %}</h1>
+		
 		<!-- startcontent -->
 		{% block content %}{% endblock %}
 		<!-- endcontent -->
 	</div>
+	
+	<div style="display: none">
+		<div id="progress_heading_content">
+			Countries where agency has ratings of tick or arrow for the
+			majority of standard performance measures.
+		</div> 
+
+		<div id="noprogress_heading_content">
+			Countries where agency has ratings of tick or arrow for the
+			minority of standard performance measures.
+		</div> 
+
+		<div id="expected_heading_content">These expected results summarise the
+			commitments set out in the <a href="#">IHP Global Compact</a>.</div>
+		
+		<div id="rating_heading_content">Ratings are based on
+			<a href="/agreed-criteria">agreed criteria</a>.
+			<table cellspacing="10" style="vertical-align: middle;">
+				<tr>
+					<td><img src="{% url ihp-media path='images/tick.png' %}"></td>
+					<td>Target achieved</td>
+				</tr>
+				<tr>
+					<td><img src="{% url ihp-media path='images/arrow.png' %}"></td>
+					<td>Making progress</td>
+				</tr>
+				<tr>
+					<td><img src="{% url ihp-media path='images/cross.png' %}"></td>
+					<td>No progress</td>
+				</tr>
+			</table>
+			Ratings shown are aggregates. For more information on aggregation and
+			methodology <a href="methodology">click here</a>. For disaggregated
+			ratings <a href="#">click here</a>.</div>
+		
+		<div id="comment_heading_content">Possible explanations text.</div>
+		
+		<div id="spm_1_content">
+			<p>Measured using the following SPMs:</p>
+			<table cellspacing="10" style="vertical-align: middle;">
+				<tr>
+					<th>SPM</td>
+					<th>Target</td>
+				</tr>
+				<tr>
+					<td>1</td>
+					<td>Blah</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>Lorem ipsum</td>
+				</tr>
+			</table>
+			<p><a href="/agreed-criteria">Criteria for rating</a></p>
+		</div>
+
+		<div id="spm_2_content">Measured using the following SPMs:
+			<table cellspacing="10" style="vertical-align: middle;">
+				<tr>
+					<th>SPM</td>
+					<th>Target</td>
+				</tr>
+				<tr>
+					<td>1</td>
+					<td>Whee</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>Dolorem sit amet</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div id="rating_1_content">
+			<h3>Standard Performance Measure</h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			Sed eros nunc, luctus sed congue eget, pulvinar at tortor.
+			Donec id vulputate erat. Praesent euismod consequat dolor,
+			sit amet interdum arcu mollis in.</p>
+			<h3>Target</h3>
+			<p>Nulla eros nulla, pharetra vitae scelerisque ac,
+			ornare sit amet purus.</p>
+			<h3>Criteria for Rating</h3>
+			<p><a href="#">See separate page</a></p>
+			<table cellspacing="10" style="vertical-align: middle;">
+				<tr>
+					<td><img src="{% url ihp-media path='images/tick.png' %}"></td>
+					<td>Target achieved</td>
+				</tr>
+				<tr>
+					<td><img src="{% url ihp-media path='images/arrow.png' %}"></td>
+					<td>Making progress</td>
+				</tr>
+				<tr>
+					<td><img src="{% url ihp-media path='images/cross.png' %}"></td>
+					<td>No progress</td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="rating_2a_content">
+			<h3>Standard Performance Measure</h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+			Sed eros nunc, luctus sed congue eget, pulvinar at tortor.
+			Donec id vulputate erat. Praesent euismod consequat dolor,
+			sit amet interdum arcu mollis in.</p>
+			<h3>Target</h3>
+			<p>Nulla eros nulla, pharetra vitae scelerisque ac,
+			ornare sit amet purus.</p>
+			<h3>Criteria for Rating</h3>
+			<p><a href="#">See separate page</a></p>
+			<table cellspacing="10" style="vertical-align: middle;">
+				<tr>
+					<td><img src="{% url ihp-media path='images/tick.png' %}"></td>
+					<td>Target achieved</td>
+				</tr>
+				<tr>
+					<td><img src="{% url ihp-media path='images/arrow.png' %}"></td>
+					<td>Making progress</td>
+				</tr>
+				<tr>
+					<td><img src="{% url ihp-media path='images/cross.png' %}"></td>
+					<td>No progress</td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="datalink_1_content">
+			<a href="#">Link to data table for indicator 1 for all agencies in all
+			countries</a>.
+		</div> 
+	</div>		
 </body>
 </html>
