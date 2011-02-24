@@ -24,6 +24,7 @@ class ExecPhp_Runtime
 
 		add_filter('the_content', array(&$this, 'filter_user_content'), 1);
 		add_filter('the_title', array(&$this, 'filter_user_content'), 1);
+		add_filter('single_post_title', array(&$this, 'filter_user_content'), 1);
 		add_filter('the_content_rss', array(&$this, 'filter_user_content'), 1);
 		add_filter('the_excerpt', array(&$this, 'filter_user_content'), 1);
 		add_filter('the_excerpt_rss', array(&$this, 'filter_user_content'), 1);
