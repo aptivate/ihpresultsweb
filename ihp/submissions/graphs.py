@@ -36,6 +36,7 @@ target_values = {
     "2DPb" : 50,
     "2DPc" : 66,
     "3DP"  : 90,
+    "4DP"  : 90,
     "5DPa" : 80, 
     "5DPb" : 80, 
     "5DPc" : 0, 
@@ -135,7 +136,7 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
             "floating" : "true",
         }
 
-        if indicator not in ["4DP", "5DPc"]:
+        if indicator not in ["5DPc"]:
             graph.series.append({
                 "type" : "line",
                 "name" : "Target",
