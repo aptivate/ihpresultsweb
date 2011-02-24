@@ -12,8 +12,7 @@ class AptivateExternalCSS
 	function head()
 	{
 		em_showContent("starthead", "endhead",
-			"http://localhost:".$_SERVER["SERVER_PORT"].
-			"/django/public/scorecard/agency/UNICEF/",
+			"http://localhost/django/public".$_SERVER["REQUEST_URI"]."/",
 			"", FALSE);
 	}
 	function enqueue_scripts()
