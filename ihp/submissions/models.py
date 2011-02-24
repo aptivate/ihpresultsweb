@@ -291,8 +291,9 @@ class DPScorecardRatings(models.Model):
        verbose_name_plural = "DP Scorecard Ratings" 
 
 class GovScorecardRatings(models.Model):
-    country = models.OneToOneField(Country, null=False)
+    country = models.ForeignKey(Country, null=False)
     language = models.ForeignKey(Language, null=False)
+
     r1 = RatingsField()
     er1 = CommentsField()
 

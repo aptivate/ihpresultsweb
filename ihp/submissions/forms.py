@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.functional import curry
 
-from submissions.models import Agency, Country, CountryScorecardOverride
+from submissions.models import Agency, Country, CountryScorecardOverride, Language
 from submissions.utils import classmaker
 from target import Rating
 
@@ -29,6 +29,11 @@ class CountryForm(forms.Form):
     country = forms.ChoiceField(choices=[("", "")] + [
         (c.id, c.country) 
         for c in Country.objects.all()
+    ])
+
+    language = forms.ChoiceField(choices=[
+        (l.id, l.language) 
+        for l in Language.objects.all()
     ])
 
     class Media:

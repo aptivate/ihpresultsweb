@@ -4,7 +4,7 @@ from django.template import Context, Template
 from django.utils.functional import memoize
 from indicators import NA_STR
 from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
-from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, DPScorecardRatings, Rating
+from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, DPScorecardRatings, Rating, Language
 from target_criteria import criteria_funcs, MissingValueException, CannotCalculateException
 import math
 from itertools import chain
@@ -200,7 +200,7 @@ def calc_agency_ratings(agency):
 
     return results
 
-def calc_country_ratings(country, language="en"):
+def calc_country_ratings(country, language=None):
     """
     Returns information for all indicators for the given country in a dict with the
     following form
@@ -222,6 +222,7 @@ def calc_country_ratings(country, language="en"):
         .
     }
     """
+    language = language or Language.objects.get(language="English")
 
     translation = translations.get_translation(language)
     gov_commentary_text = translation.gov_commentary_text
@@ -232,7 +233,7 @@ def calc_country_ratings(country, language="en"):
     targets = get_country_targets(country, g_indicators)
     indicators = calc_country_indicators(country)
     results = {}
-    ratings, _ = GovScorecardRatings.objects.get_or_create(country=country)
+    ratings, _ = GovScorecardRatings.objects.get_or_create(country=country, language=language)
 
     def ratings_val(tmpl):
         def _func(indicator):

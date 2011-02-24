@@ -1,10 +1,9 @@
 country_select = function(e) {
-    option = $("#id_country option:selected");
+    country_id = $("#id_country option:selected");
+    language_id = $("#id_language option:selected");
     $("textarea").text("");
-    //$("select").val("");
 
-    $.getJSON("/api/gov_ratings/" + option.val(), function(data) {
-        // TODO still need to do ratings
+    $.getJSON("/api/gov_ratings/" + country_id.val() + "/" + language_id.val(), function(data) {
         $("#id_r1").val(data["rating1"]);
         $("#id_r2a").val(data["rating2a"]);
         $("#id_r2b").val(data["rating2b"]);
@@ -44,11 +43,14 @@ $(document).ready(function(){
     $.loading({onAjax:true, text: 'Loading...'});
     $("#id_country").change(country_select);
     $("#id_country").keyup(country_select);
+    $("#id_language").change(country_select);
+    $("#id_language").keyup(country_select);
 
     $("#id_submit").click(function(e) {
-        option = $("#id_country option:selected");
+        country_id = $("#id_country option:selected");
+        language_id = $("#id_language option:selected");
 
-        $.post("/api/gov_ratings/" + option.val() + "/", 
+        $.post("/api/gov_ratings/" + country_id.val() + "/" + language_id.val() + "/", 
             { 
                 r1: $("#id_r1").val(),
                 er1: $("#id_er1").val(),

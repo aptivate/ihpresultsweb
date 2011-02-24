@@ -2,7 +2,7 @@ import re
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson
-from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country, CountryScorecardOverride, GovQuestion, DPQuestion
+from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country, CountryScorecardOverride, GovQuestion, DPQuestion, Language
 from target import calc_agency_ratings, calc_country_ratings
 import indicators
 
@@ -80,13 +80,14 @@ def dp_ratings(request, agency_id):
         import traceback
         traceback.print_exc()
     
-def gov_ratings(request, country_id):
+def gov_ratings(request, country_id, language_id):
 
     re_indconv = re.compile("(\d+)(\w*)")
     indconv = lambda indicator : "%sG%s" % re_indconv.search(indicator).groups()
     try:
         country = get_object_or_404(Country, id=country_id)
-        ratings, _ = GovScorecardRatings.objects.get_or_create(country=country)
+        language = get_object_or_404(Language, id=language_id)
+        ratings, _ = GovScorecardRatings.objects.get_or_create(country=country, language=language)
         get_comment = lambda indicator : results[indicator]["commentary"]
         data = {}
         indicators = ["1", "2a", "2b", "3", "4", "5a", "5b", "6", "7", "8"]
