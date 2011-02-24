@@ -145,6 +145,13 @@ urlpatterns = patterns('',
         }
     }, 'gbs_table'),
 
+    (r'^agencies/alternative_baselines/$', 'submissions.views.agency_alternative_baselines', {
+        "template_name" : "submissions/main_base.html",
+        "extra_context" : {
+            "content_file" : "submissions/agency_alternative_baselines.html"
+        }
+    }, 'agency_alternative_baselines'),
+
     (r'^countries/tables/$', 'submissions.views.country_table', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {

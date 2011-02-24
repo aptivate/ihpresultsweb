@@ -212,6 +212,37 @@ indicator_funcs = {
     "Q21G" : (equals_yes_or_no("yes"), ("21",)),
 }
 
+# This data is duplicated above but the order is important above
+# whereas it isn't here
+indicator_questions = {
+    "1DP"  : ("1",),
+    "2DPa" : ("2", "3"),
+    "2DPb" : ("4", "5"),
+    "2DPc" : ("6", "7"),
+    "3DP"  : ("9", "8"),
+    "4DP"  : ("10", "11"),
+    "5DPa" : ("12", "13"),
+    "5DPb" : ("14", "15"),
+    "5DPc" : ("16",),
+    "6DP"  : ("17",),
+    "7DP"  : ("18",),
+    "8DP"  : ("20",),
+    "1G"   : ("1",),
+    "2Ga"  : ("2", "3"),
+    "2Gb"  : ("4",),
+    "3G"   : ("6", "5"),
+    "4G"   : ("8", "7"),
+    "5Ga"  : ("9",),
+    "5Gb"  : ("10",),
+    "6G"   : ("11",),
+    "7G"   : ("12",),
+    "8G"   : ("13", "14"),
+    "Q2G" : ("2",),
+    "Q3G" : ("3",),
+    "Q12G" : ("12",),
+    "Q21G" : ("21",),
+}
+
 # Functions that calculate values in a positive sense - i.e. how much on budget, not how much off budget
 positive_funcs = dict(indicator_funcs)
 positive_funcs["2DPa"] = (calc_numdenom, ("3", "2"))

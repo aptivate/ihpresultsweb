@@ -10,7 +10,7 @@ from django.utils.translation import check_for_language
 
 from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, CountryScorecardOverride, Rating
 from target import calc_agency_ratings, get_country_progress, calc_country_ratings, get_agency_progress, country_agency_indicator_ratings, country_agency_progress
-from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs, dp_indicators
+from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs, dp_indicators, indicator_questions
 from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm, CountryScorecardForm
 from utils import none_num
 
@@ -237,6 +237,26 @@ def agency_export(request):
     for agency in data:
         writer.writerow([data[agency].get(header, "") for header in headers])
     return response
+
+def agency_alternative_baselines(request, template_name="submissions/agency_alternative_baselines.html", extra_context=None):
+    extra_context = extra_context or {}
+
+    agencies = Agency.objects.all()
+    questions = DPQuestion.objects.filter(submission__agency__in=agencies)
+    is_2005 = lambda q: q.baseline_year == "2005"
+    is_2007 = lambda q: q.baseline_year == "2007"
+    is_other = lambda q: not (is_2005(q) or is_2007(q))
+
+    counts = {}
+    for indicator in ["2DPa", "2DPb", "2DPc", "5DPa", "5DPb"]:
+        question_numbers = indicator_questions[indicator]
+        questions_subset = questions.filter(question_number__in=question_numbers)
+        counts["%s_2005" % indicator] = len(filter(is_2005, questions_subset))
+        counts["%s_2007" % indicator] = len(filter(is_2007, questions_subset))
+        counts["%s_other" % indicator] = len(filter(is_other, questions_subset))
+        
+    extra_context["counts"] = counts
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html", extra_context=None):
 
