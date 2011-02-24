@@ -39,7 +39,7 @@
 						</li>
 				{% endfor %}
 			</ul>
-		</div><!-- item -->
+		</div>
 		
 		<div class="item">	
 			<h3 class="callout-from" id="noprogress_heading">Agencies reporting
@@ -56,7 +56,7 @@
 						</li>
 				{% endfor %}
 			</ul>
-		</div><!-- item -->
+		</div>
 
 		{% include 'rated_statements.inc.html' %}		
 	</div><!-- #scorecard col -->
@@ -88,7 +88,7 @@
 				</ul>
 	
 				<p>{{raw_data.CD2}}</p>
-			</div><!-- item -->
+			</div>
 			
 			<div class="item">
 				<h3>
@@ -109,7 +109,7 @@
 						Jointly Assessed
 					</li>
 				</ul>
-			</div><!-- item -->
+			</div>
 			
 			<div class="item">
 				<h3>
@@ -142,8 +142,7 @@
 						sector policy and accountability processes
 					</li>
 				</ul>
-			</div><!-- item -->
-		</div><!-- infobox country-ownership -->
+			</div></div><!-- infobox country-ownership -->
 		
 		<div class="infobox health-financing">
 			<h2>
@@ -188,14 +187,13 @@
 						Increase required to meet Abuja target (15%)
 					</div>
 				</div> 
-			</div><!-- item -->
+			</div>
 			
 			<div class="item">
 				<h3>External financing using pooled mechanisms</h3>
 				<p>{{raw_data.PF1}}</p>
 				<p>{{raw_data.PF2}}</p>
-			</div><!-- item -->
-		</div><!-- infobox health-financing -->
+			</div></div><!-- infobox health-financing -->
 
 		<div class="infobox country-systems">
 			<h2>
@@ -214,7 +212,7 @@
 						alt="{{raw_data.PFM1}}" class="rating">
 					Reflects good practice (or reform in progress)
 				</p>
-			</div><!-- item -->
+			</div>
 			
 			<div class="item">
 				<h3>Procurement</h3>
@@ -224,7 +222,7 @@
 						alt="{{raw_data.PR1}}" class="rating">
 					Reflects good practice (or reform in progress)
 				</p>
-			</div><!-- item -->
+			</div>
 			
 			<div class="item" style="margin-bottom: 0;">
 				<h3>Technical Assistance</h3>
@@ -234,8 +232,7 @@
 						alt="{{raw_data.TA1}}" class="rating">
 					Donor capacity development provided through coordinated programmes
 				</p>
-			</div><!-- item -->
-		</div><!-- infobox country-systems -->
+			</div></div><!-- infobox country-systems -->
 
 		<div class="infobox health-systems">
 			<h2>
@@ -249,8 +246,7 @@
 			<div class="item" style="margin-top: 20px;"><!-- clear the large logo -->
 				<img width="400" height="300" alt="barchart"
 					src="{% url ihp-media path='images' %}/{{country.country}}hss.png">
-			</div><!-- item -->			
-		</div><!-- infobox health-systems -->
+			</div></div><!-- infobox health-systems -->
 		
 		<div class="infobox managing-for-development">
 			<h2>
@@ -269,7 +265,7 @@
 					<li>{{raw_data.RF2}}</li>
 					<li>{{raw_data.RF3}}</li>
 				</ul>
-			</div><!-- item -->
+			</div>
 		
 			<div class="item">
 				<img src="{% url ihp-media path='images' %}/{{raw_data.HMIS1}}.png"
@@ -278,7 +274,7 @@
 				<ul>
 					<li>{{raw_data.HMIS2}}</li>
 				</ul>
-			</div><!-- item -->
+			</div>
 			
 			<div class="item">
 				<img src="{% url ihp-media path='images' %}/{{raw_data.DBR1}}.png"
@@ -287,7 +283,7 @@
 				<ul>
 					<li>{{raw_data.DBR2}}</li>
 				</ul>
-			</div><!-- item -->
+			</div>
 		
 			<div class="item" style="margin-bottom: 0;">
 				<img src="{% url ihp-media path='images' %}/{{raw_data.JAR1}}.png"
@@ -296,8 +292,7 @@
 				<ul>
 					<li>{{raw_data.JAR4}}</li>
 				</ul>
-			</div><!-- item -->
-		</div><!-- infobox managing-for-development -->
+			</div></div><!-- infobox managing-for-development -->
 	</div><!-- #infobox col -->
 </div><!-- scorecard country -->
 
