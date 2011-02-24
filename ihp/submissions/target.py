@@ -241,7 +241,7 @@ At the end of %(cur_year)s a costed and evidence based HRH plan was in place but
         Rating.CROSS : "Mutual assessments are not being made of progress implementing commitments in the health sector.",
     },
     "8G" : {
-        "all" : "In %(cur_year)s %(cur_val).0f% of seats in the Health Sector Coordination Mechanism (or equivalent body) were allocated to Civil Society representatives."
+        "all" : "In %(cur_year)s %(cur_val).0f%% of seats in the Health Sector Coordination Mechanism (or equivalent body) were allocated to Civil Society representatives."
     },
 }
 
