@@ -187,7 +187,7 @@ td.expected_result span.text {
 #content table.scorecard td.rating 
 {
 	text-align:center;
-	width:50px;
+	width:60px;
 }
 
 #content table.scorecard td.rating img 
@@ -259,7 +259,7 @@ div.col {
 
 #scorecard h2, #scorecard h3 {
 	margin: 20px 0 0;
-	position:relative;
+	/* position:relative; breaks tooltip positioning */
 	font-size:0.9em;
 	clear:both;
 	margin-top:0px;
@@ -281,13 +281,13 @@ div.col {
 }
  
 #scorecard h2 .rating {
- 	width: 60px;
+ 	width: 73px;
  	text-align: center;
 }
  
 #scorecard h2 .comment {
- 	width: 196px;
- 	text-align: right;
+	display: inline;
+ 	float: right;
 }
 
 #scorecard ul {
@@ -452,6 +452,12 @@ div.col {
 	top:-8px;
 }
 
+#infobox img.rating
+{
+	width: 40px;
+	height: 27px;
+}
+
 /*Country-ownership*/
 
 .infobox.country-ownership .item {
@@ -512,7 +518,7 @@ div.col {
 	text-align: left;
 }
 
-.health-financing .item img {
+#infobox .health-financing .item img {
 	display: block;
 	margin: 1em auto;
 }
@@ -564,7 +570,7 @@ div.col {
 	padding-left: 20px;
 }
 
-/*Background and z-index hacks for ie-css3.htc*/
+/* Background and z-index hacks for ie-css3.htc */
 #scorecard_header h2, table.scorecard tr.countries ul, #scorecard,
 #scorecard ul.logos, #scorecard .category, .infobox, .inner,
 .health-financing .chart-key, .health-financing .key
@@ -577,3 +583,68 @@ div.col {
 #scorecard .category, .infobox .item { z-index: -30; }
 .health-financing .chart-key { z-index: -20; }
 .health-financing .key { z-index: -10; }
+
+/* Override Wordpress themes */
+#scorecard img, #infobox img
+{
+	background: transparent;
+	border: none;
+	margin: 0;
+	max-width: auto;
+	padding: 0;
+}
+#scorecard h3, #infobox h3
+{
+	border-bottom: none;
+}
+#infobox ul
+{
+	float: none;
+}
+#infobox ul li
+{
+	list-style-type: disc;
+}
+#scorecard table {
+	margin: 0;
+}
+#scorecard td {
+	border-bottom: none;
+}
+
+/* Simple Tooltips CSS styles */
+
+#scorecard h2
+{
+	position: relative;
+}
+
+.callout-to
+{
+   position: absolute;
+   top: 0;
+   left: 0;
+   z-index: 3;
+   display: none;
+   border: 4px solid #333;
+   padding: 4px;
+   background: #555;
+   color: #eee;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	border-radius:4px;
+	max-width: 100%;
+	text-align: left;
+	text-transform: none;
+}
+
+/* Dark blue doesn't look very good on dark grey */
+.callout-to a
+{
+	color: #ccc;
+}
+
+#scorecard .callout-to td
+{
+	vertical-align: inherit;
+}
