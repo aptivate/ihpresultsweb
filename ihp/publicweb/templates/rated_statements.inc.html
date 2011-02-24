@@ -1,7 +1,7 @@
 <h2>
-	<span class="expected">Expected Results</span><span
-		class="rating">Rating</span><span
-		class="comment">Overall Progress</span>
+	<span id="expected_heading" class="expected callout-from">Expected Results</span><span
+		id="rating_heading" class="rating callout-from">Rating</span><span
+		id="comment_heading" class="comment callout-from">Overall Progress</span>
 </h2>
 
 {% for category in categories %}
@@ -10,17 +10,21 @@
 			{% for indicator in category.indicators %}
 				<tr class="indicator {%if forloop.last%}last{%endif%}">
 					{% if forloop.first %}
-						<td class="expected_result" rowspan="{{category.indicators|length}}">
+						<td class="expected_result callout-from"
+							id="spm_{{category.code|cut:'G'|cut:'DP'}}"
+							rowspan="{{category.indicators|length}}">
 							<p><img
 								src="{% url ihp-media path='images' %}/results-icon-{{category.code|cut:'G'|cut:'DP'}}.png"
 								alt="icon" class="icon">{{category.expected_result}}</p>
 						</td>
 					{% endif %}
 					
-					<td class="rating"><img src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
+					<td class="rating callout-from" id="rating_{{indicator.code|cut:'G'|cut:'DP'}}"><img
+						src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
 						alt="{{indicator.rating}}" class="rating"></td>
 					
-					<td class="progress">{{indicator.overall_progress}}</td>
+					<td class="progress callout-from" id="datalink_{{indicator.code|cut:'G'|cut:'DP'}}"
+						>{{indicator.overall_progress}}</td>
 				</tr>
 			{% endfor %}
 		</table>
