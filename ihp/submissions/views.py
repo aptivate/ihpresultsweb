@@ -239,6 +239,9 @@ def agency_export(request):
     return response
 
 def agency_alternative_baselines(request, template_name="submissions/agency_alternative_baselines.html", extra_context=None):
+    """
+    View that shows a histogram of the baseline years for a number of indicators
+    """
     extra_context = extra_context or {}
 
     agencies = Agency.objects.all()
@@ -256,6 +259,30 @@ def agency_alternative_baselines(request, template_name="submissions/agency_alte
         counts["%s_other" % indicator] = len(filter(is_other, questions_subset))
         
     extra_context["counts"] = counts
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def agency_response_breakdown(request, template_name="submissions/agency_response_breakdown.html", extra_context=None):
+    """
+    Return a histogram of responses for each agency indicator 
+    """
+
+    extra_context = extra_context or {}
+    is_na = lambda r : r == Rating.NONE
+    is_question = lambda r : r == Rating.QUESTION
+    is_response = lambda r : not (is_na(r) or is_question(r))
+
+    agencies = Agency.objects.all()
+    counts = defaultdict(int, {})
+    for agency in agencies:
+        for country in agency.countries:
+            results = country_agency_indicator_ratings(country, agency)
+            for indicator in dp_indicators:
+                counts["%s_na" % indicator] += 1 if is_na(results[indicator]) else 0 
+                counts["%s_question" % indicator] += 1 if is_question(results[indicator]) else 0 
+                counts["%s_response" % indicator] += 1 if is_response(results[indicator]) else 0 
+                counts["%s_total" % indicator] += 1 
+    extra_context["counts"] = counts    
+    extra_context["indicators"] = dp_indicators
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html", extra_context=None):

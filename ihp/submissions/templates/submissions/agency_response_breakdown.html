@@ -1,0 +1,106 @@
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/table.css"> 
+    <style>
+        td:first-child {
+            text-align: left;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<h1>{{ institution_name }}</h1>
+<table class="dpind">
+    <tr class="head">
+        <th></th>
+        <th>N/A</th>
+        <th>?</th>
+        <th>Response</th>
+        <th>Total</th>
+    </tr>
+    <tr class="odd">
+        <td>1DP</td>
+        <td>{{ counts.1DP_na }}</td>
+        <td>{{ counts.1DP_question }}</td>
+        <td>{{ counts.1DP_response }}</td>
+        <td>{{ counts.1DP_total }}</td>
+    </tr>
+    <tr class="even">
+        <td>2DPa</td>
+        <td>{{ counts.2DPa_na }}</td>
+        <td>{{ counts.2DPa_question }}</td>
+        <td>{{ counts.2DPa_response }}</td>
+        <td>{{ counts.2DPa_total }}</td>
+    </tr>
+    <tr class="odd">
+        <td>2DPb</td>
+        <td>{{ counts.2DPb_na }}</td>
+        <td>{{ counts.2DPb_question }}</td>
+        <td>{{ counts.2DPb_response }}</td>
+        <td>{{ counts.2DPb_total }}</td>
+    </tr>
+    <tr class="even">
+        <td>2DPc</td>
+        <td>{{ counts.2DPc_na }}</td>
+        <td>{{ counts.2DPc_question }}</td>
+        <td>{{ counts.2DPc_response }}</td>
+        <td>{{ counts.2DPc_total }}</td>
+    </tr>
+    <tr class="odd">
+        <td>3DP</td>
+        <td>{{ counts.3DP_na }}</td>
+        <td>{{ counts.3DP_question }}</td>
+        <td>{{ counts.3DP_response }}</td>
+        <td>{{ counts.3DP_total }}</td>
+    </tr>
+    <tr class="even">
+        <td>4DP</td>
+        <td>{{ counts.4DP_na }}</td>
+        <td>{{ counts.4DP_question }}</td>
+        <td>{{ counts.4DP_response }}</td>
+        <td>{{ counts.4DP_total }}</td>
+    </tr>
+    <tr class="odd">
+        <td>5DPa</td>
+        <td>{{ counts.5DPa_na }}</td>
+        <td>{{ counts.5DPa_question }}</td>
+        <td>{{ counts.5DPa_response }}</td>
+        <td>{{ counts.5DPa_total }}</td>
+    </tr>
+    <tr class="even">
+        <td>5DPb</td>
+        <td>{{ counts.5DPb_na }}</td>
+        <td>{{ counts.5DPb_question }}</td>
+        <td>{{ counts.5DPb_response }}</td>
+        <td>{{ counts.5DPb_total }}</td>
+    </tr>
+    <tr class="odd">
+        <td>5DPc</td>
+        <td>{{ counts.5DPc_na }}</td>
+        <td>{{ counts.5DPc_question }}</td>
+        <td>{{ counts.5DPc_response }}</td>
+        <td>{{ counts.5DPc_total }}</td>
+    </tr>
+    <tr class="even">
+        <td>6DP</td>
+        <td>{{ counts.6DP_na }}</td>
+        <td>{{ counts.6DP_question }}</td>
+        <td>{{ counts.6DP_response }}</td>
+        <td>{{ counts.6DP_total }}</td>
+    </tr>
+    <tr class="odd">
+        <td>7DP</td>
+        <td>{{ counts.7DP_na }}</td>
+        <td>{{ counts.7DP_question }}</td>
+        <td>{{ counts.7DP_response }}</td>
+        <td>{{ counts.7DP_total }}</td>
+    </tr>
+    <tr class="even">
+        <td>8DP</td>
+        <td>{{ counts.8DP_na }}</td>
+        <td>{{ counts.8DP_question }}</td>
+        <td>{{ counts.8DP_response }}</td>
+        <td>{{ counts.8DP_total }}</td>
+    </tr>
+</table>
+{% endblock %}
