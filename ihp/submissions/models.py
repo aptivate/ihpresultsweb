@@ -222,6 +222,12 @@ class MDGData(models.Model):
     class Meta:
         verbose_name_plural = "MDG Data" 
 
+class Language(models.Model):
+    language = models.CharField(max_length=30, null=False)
+
+    def __unicode__(self):
+        return self.language
+
 class DPScorecardSummary(models.Model):
     agency = models.OneToOneField(Agency, null=False)
     erb1 = models.TextField()
@@ -286,6 +292,7 @@ class DPScorecardRatings(models.Model):
 
 class GovScorecardRatings(models.Model):
     country = models.OneToOneField(Country, null=False)
+    language = models.ForeignKey(Language, null=False)
     r1 = RatingsField()
     er1 = CommentsField()
 
@@ -319,7 +326,8 @@ class GovScorecardRatings(models.Model):
         return unicode(self.country)
 
     class Meta:
-       verbose_name_plural = "Gov Scorecard Ratings" 
+        verbose_name_plural = "Gov Scorecard Ratings" 
+        unique_together = ["country", "language"]
 
 class CountryScorecardOverride(models.Model):
     country = models.OneToOneField(Country, null=False)

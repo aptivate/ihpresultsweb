@@ -114,3 +114,4 @@ class CountryExclusionAdmin(admin.ModelAdmin):
     list_display = ("question_number", "country", "baseline_applicable", "latest_applicable")
 
 admin.site.register(CountryExclusion, CountryExclusionAdmin)
+admin.site.register(Language)
