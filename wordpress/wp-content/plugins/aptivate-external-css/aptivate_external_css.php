@@ -12,7 +12,7 @@ class AptivateExternalCSS
 	function head()
 	{
 		em_showContent("starthead", "endhead",
-			"http://localhost:8133/django/public".$_SERVER["REQUEST_URI"]."/",
+			"http://localhost/django/public".$_SERVER["REQUEST_URI"]."/",
 			"", FALSE);
 	}
 	function enqueue_scripts()
