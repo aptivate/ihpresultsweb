@@ -546,13 +546,6 @@ def country_export(request, language):
     writer = csv.writer(response)
     writer.writerow(headers)
 
-    def enc(x):
-        if x == None:
-            return None
-        if type(x) not in [str, unicode]:
-            x = unicode(x)
-        return x.encode("utf8")
-
     for country in data:
         country_language = "English"
         languages = list(country.countrylanguage_set.all())
@@ -560,7 +553,7 @@ def country_export(request, language):
             country_language = languages[0].language
 
         if country_language == language:
-            writer.writerow([enc(data[country].get(header, "")) for header in headers])
+            writer.writerow([data[country].get(header, "") for header in headers])
     return response
 
 def gov_questionnaire(request, template_name="submissions/gov_questionnaire.html", extra_context=None):
