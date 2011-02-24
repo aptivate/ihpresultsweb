@@ -10,7 +10,7 @@ from django.utils.translation import check_for_language
 
 from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, CountryScorecardOverride, Rating
 from target import calc_agency_ratings, get_country_progress, calc_country_ratings, get_agency_progress, country_agency_indicator_ratings, country_agency_progress
-from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs, dp_indicators, indicator_questions
+from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs, dp_indicators, g_indicators, indicator_questions
 from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm, CountryScorecardForm
 from utils import none_num
 
@@ -282,7 +282,28 @@ def agency_response_breakdown(request, template_name="submissions/agency_respons
                 counts["%s_response" % indicator] += 1 if is_response(results[indicator]) else 0 
                 counts["%s_total" % indicator] += 1 
     extra_context["counts"] = counts    
-    extra_context["indicators"] = dp_indicators
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def country_response_breakdown(request, template_name="submissions/country_response_breakdown.html", extra_context=None):
+    """
+    Return a histogram of responses for each country indicator 
+    """
+
+    extra_context = extra_context or {}
+    is_na = lambda r : r["target"] == Rating.NONE
+    is_question = lambda r : r["target"] == Rating.QUESTION
+    is_response = lambda r : not (is_na(r) or is_question(r))
+
+    countries = Country.objects.all()
+    counts = defaultdict(int, {})
+    for country in countries:
+        results = calc_country_ratings(country)
+        for indicator in g_indicators:
+            counts["%s_na" % indicator] += 1 if is_na(results[indicator]) else 0 
+            counts["%s_question" % indicator] += 1 if is_question(results[indicator]) else 0 
+            counts["%s_response" % indicator] += 1 if is_response(results[indicator]) else 0 
+            counts["%s_total" % indicator] += 1 
+    extra_context["counts"] = counts    
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html", extra_context=None):

@@ -1,0 +1,91 @@
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/table.css"> 
+    <style>
+        td:first-child {
+            text-align: left;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<table class="dpind">
+    <tr class="head">
+        <th></th>
+        <th>N/A</th>
+        <th>?</th>
+        <th>Response</th>
+        <th>Total</th>
+    </tr>
+    <tr class="odd">
+        <td>1G</td>
+        <td>{{ counts.1G_na }}</td>
+        <td>{{ counts.1G_question }}</td>
+        <td>{{ counts.1G_response }}</td>
+        <td>{{ counts.1G_total }}</td>
+    </tr>
+    <tr class="even">
+        <td>2Ga</td>
+        <td>{{ counts.2Ga_na }}</td>
+        <td>{{ counts.2Ga_question }}</td>
+        <td>{{ counts.2Ga_response }}</td>
+        <td>{{ counts.2Ga_total }}</td>
+    </tr>
+    <tr class="odd">
+        <td>2Gb</td>
+        <td>{{ counts.2Gb_na }}</td>
+        <td>{{ counts.2Gb_question }}</td>
+        <td>{{ counts.2Gb_response }}</td>
+        <td>{{ counts.2Gb_total }}</td>
+    </tr>
+    <tr class="even">
+        <td>3G</td>
+        <td>{{ counts.3G_na }}</td>
+        <td>{{ counts.3G_question }}</td>
+        <td>{{ counts.3G_response }}</td>
+        <td>{{ counts.3G_total }}</td>
+    </tr>
+    <tr class="odd">
+        <td>4G</td>
+        <td>{{ counts.4G_na }}</td>
+        <td>{{ counts.4G_question }}</td>
+        <td>{{ counts.4G_response }}</td>
+        <td>{{ counts.4G_total }}</td>
+    </tr>
+    <tr class="even">
+        <td>5Ga</td>
+        <td>{{ counts.5Ga_na }}</td>
+        <td>{{ counts.5Ga_question }}</td>
+        <td>{{ counts.5Ga_response }}</td>
+        <td>{{ counts.5Ga_total }}</td>
+    </tr>
+    <tr class="odd">
+        <td>5Gb</td>
+        <td>{{ counts.5Gb_na }}</td>
+        <td>{{ counts.5Gb_question }}</td>
+        <td>{{ counts.5Gb_response }}</td>
+        <td>{{ counts.5Gb_total }}</td>
+    </tr>
+    <tr class="even">
+        <td>6G</td>
+        <td>{{ counts.6G_na }}</td>
+        <td>{{ counts.6G_question }}</td>
+        <td>{{ counts.6G_response }}</td>
+        <td>{{ counts.6G_total }}</td>
+    </tr>
+    <tr class="odd">
+        <td>7G</td>
+        <td>{{ counts.7G_na }}</td>
+        <td>{{ counts.7G_question }}</td>
+        <td>{{ counts.7G_response }}</td>
+        <td>{{ counts.7G_total }}</td>
+    </tr>
+    <tr class="even">
+        <td>8G</td>
+        <td>{{ counts.8G_na }}</td>
+        <td>{{ counts.8G_question }}</td>
+        <td>{{ counts.8G_response }}</td>
+        <td>{{ counts.8G_total }}</td>
+    </tr>
+</table>
+{% endblock %}
