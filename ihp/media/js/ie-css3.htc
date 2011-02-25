@@ -110,16 +110,15 @@ function createBorderRect(element, vml_parent) {
 	}
 	
 	element.style.borderColor = 'transparent';
+	
+	// alert("vml_parent = " + vml_parent.outerHTML);
 
 	var rect = document.createElement('v:roundrect');
 	rect.position_offset = {
 		'y': (0.5 * element.strokeWeight) - vml_parent.pos_ieCSS3.y,
 		'x': (0.5 * element.strokeWeight) - vml_parent.pos_ieCSS3.x
 	};
-	/*
-	alert("position offset = " + rect.position_offset.x + "," +
-		rect.position_offset.y + " esw=" + element.strokeWeight);
-	*/
+
 	rect.size_offset = {
 		'width': 0 - element.strokeWeight,
 		'height': 0 - element.strokeWeight
@@ -137,6 +136,11 @@ function createBorderRect(element, vml_parent) {
 	w = (element.offsetWidth + rect.size_offset.width);
 	h = (element.offsetHeight + rect.size_offset.height);
 
+	/*
+	alert("top = " + element.pos_ieCSS3.y + " + " +
+		rect.position_offset.y + " = " + t);
+	*/
+	
 	try
 	{
 		rect.style.top    = (t < 0 ? 0 : t) + 'px';
@@ -157,28 +161,35 @@ function createBorderRect(element, vml_parent) {
 	if (border_opacity && (element.opacity < 1)) {
 		rect.style.filter = 'progid:DXImageTransform.Microsoft.Alpha(Opacity='+ parseFloat(element.opacity * 100) +')';
 	}
-
-	var fill = document.createElement('v:fill');
-	fill.color = element.fillColor;
-	if (!keepBackground)
+	
+	if (element.fillColor == "transparent")
 	{
-		fill.src = element.fillSrc;
+		rect.filled = "False";
+	}
+	else
+	{
+		var fill = document.createElement('v:fill');
+		fill.color = element.fillColor;
+		if (!keepBackground)
+		{
+			fill.src = element.fillSrc;
+		}
+		
+		fill.className = 'vml_border_radius_fill';
+		fill.type = 'tile';
+		fill.opacity = element.opacity;
+	
+		// Hack: IE6 doesn't support transparent borders, use padding to offset original element
+		isIE6 = /msie|MSIE 6/.test(navigator.userAgent);
+		if (isIE6 && (element.strokeWeight > 0)) {
+			element.style.borderStyle = 'none';
+			element.style.paddingTop = parseInt(element.currentStyle.paddingTop || 0) + element.strokeWeight;
+			element.style.paddingBottom = parseInt(element.currentStyle.paddingBottom || 0) + element.strokeWeight;
+		}
+	
+		rect.appendChild(fill);
 	}
 	
-	fill.className = 'vml_border_radius_fill';
-	fill.type = 'tile';
-	fill.opacity = element.opacity;
-
-	// Hack: IE6 doesn't support transparent borders, use padding to offset original element
-	isIE6 = /msie|MSIE 6/.test(navigator.userAgent);
-	if (isIE6 && (element.strokeWeight > 0)) {
-		element.style.borderStyle = 'none';
-		element.style.paddingTop = parseInt(element.currentStyle.paddingTop || 0) + element.strokeWeight;
-		element.style.paddingBottom = parseInt(element.currentStyle.paddingBottom || 0) + element.strokeWeight;
-	}
-
-	rect.appendChild(fill);
-
 	var rectParent = element.parentNode;
 	while (rectParent && (rectParent.tagName == "TD" ||
 		rectParent.tagName == "TR" || rectParent.tagName == "TBODY" ||
@@ -194,6 +205,7 @@ function createBorderRect(element, vml_parent) {
 	element.vml.push(rect);
 	rect.htmlElement = element;
 	rect.container = rectParent;
+	rect.relativeTo = vml_parent;
 
 	return(true);
 }
@@ -366,6 +378,8 @@ function ondocumentready(classID) {
 	}
 }
 
+var num_alerts = 0;
+
 function updatePositionAndSize() {
 
 	if (typeof(window.ieCSS3.vmlified_elements) != 'object') { return(false); }
@@ -378,8 +392,29 @@ function updatePositionAndSize() {
 		for (var z in el.vml) {
 			var rect = el.vml[z];
 			
-			//var parent_pos = findPos(rect.parentNode);
+			var parent_pos = findPos(rect.relativeTo); 	
 			var new_pos = findPos(el);
+
+			rect.position_offset = {
+				'y': (0.5 * el.strokeWeight) - parent_pos.y,
+				'x': (0.5 * el.strokeWeight) - parent_pos.x
+			};
+			
+			if (rect.relativeTo.strokeWeight)
+			{
+				rect.position_offset.y -= rect.relativeTo.strokeWeight;
+				rect.position_offset.x -= rect.relativeTo.strokeWeight;
+			}
+
+			if (num_alerts++ < 2)
+			{
+				/*
+				alert("new top = " + new_pos.y + " + " +
+					rect.position_offset.y + " = " + 
+					(new_pos.y + rect.position_offset.y));
+				*/
+			}
+			
 			new_pos.x = (new_pos.x + rect.position_offset.x) + 'px';
 			new_pos.y = (new_pos.y + rect.position_offset.y) + 'px';
 			if (rect.style.left != new_pos.x) { rect.style.left = new_pos.x; }
@@ -405,7 +440,10 @@ function updatePositionAndSize() {
 				rect.arcsize = rect.htmlElement.arcSize + 'px';
 				rect.container.appendChild(rect);
 				// and that deletes the fillColor in IE8, so set it back
-				fill.color = oldFillColor;
+				if (fill)
+				{
+					fill.color = oldFillColor;
+				}
 			}
 						
 			/*
@@ -413,9 +451,21 @@ function updatePositionAndSize() {
 			if (el.vml[z].offsetHeight != new_size.height) {
 			*/
 			
+			if (new_size.width < 0)  new_size.width  = 0;
+			if (new_size.height < 0) new_size.height = 0;
+			
 			if (old_size.width != new_size.width)
 			{
-				rect.style.width = new_size.width +'px';
+				try
+				{
+					rect.style.width = new_size.width +'px';
+				}
+				catch (e)
+				{
+					alert("Error setting size of " + rect + " (" +
+						rect.styleClass + " to " + new_size.width + "px: " +
+						e);
+				}
 			}
 			
 			if (old_size.height != new_size.height)
