@@ -259,7 +259,6 @@ div.col {
 	-webkit-border-radius:15px;
 	border-radius:15px;
 	margin-top:15px;
-	z-index:1;
 }
 
 #scorecard h2, #scorecard h3 {
@@ -682,7 +681,7 @@ div.col {
 	background-color: white;
 }
 #scorecard, .infobox { 
-  z-index: -40; 
+  z-index: 1; /* should be -40 for rounded corners, but breaks tooltips */
   clear:both;
   position:relative;
   margin:0;
