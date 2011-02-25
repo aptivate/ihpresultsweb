@@ -2,30 +2,10 @@ jQuery(document).ready(function()
 {
 	jQuery('.infobox .item').hide();
 	
-	var openInfobox;
-	
 	jQuery('.infobox h2 a').click(function()
 	{
 		var toShow = jQuery(this).closest('.infobox').children('.item');
-		
-		if (!(toShow.data('shown')))
-		{
-			jQuery(toShow).slideToggle();
-			
-			if (openInfobox)
-			{
-				openInfobox.slideToggle();
-			}
-		}
-
-		toShow.data('shown', true);
-		
-		if (openInfobox)
-		{
-			openInfobox.data('shown', false);
-		}
-		
-		openInfobox = toShow;
+		jQuery(toShow).slideToggle();
 		return false;
 	});
 			
