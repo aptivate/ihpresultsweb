@@ -11,9 +11,13 @@ class AptivateExternalCSS
 {
 	function head()
 	{
-		em_showContent("starthead", "endhead",
-			"http://localhost/django/public".$_SERVER["REQUEST_URI"]."/",
-			"", FALSE);
+		if (preg_match("#^/scorecard/(partner|country)/([-\w ]+)$#",
+			$_SERVER["REQUEST_URI"]))
+		{
+			em_showContent("starthead", "endhead",
+				"http://localhost/django/public".$_SERVER["REQUEST_URI"]."/",
+				"", FALSE);
+		}
 	}
 	function enqueue_scripts()
 	{
