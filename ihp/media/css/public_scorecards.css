@@ -643,7 +643,7 @@ div.col {
 
 .country-systems .item img.rating {
 	float: left;
-	margin-right: 10px;
+	margin: 0 1em 1em 0;
 }
 
 /*Health Systems*/
