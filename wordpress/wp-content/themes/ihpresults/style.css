@@ -56,6 +56,7 @@ form { margin: 0; }
 }
 
 
+
 #access {
 	margin-top:10px;
 	text-align:left;
@@ -79,6 +80,7 @@ form { margin: 0; }
 	padding:0;
 	width:590px;
 }
+
 
 
 
@@ -189,6 +191,7 @@ div.menu li {
 	background: #668D82;
 	color: #fff;
 }
+
 
 
 #access ul li:hover > ul {
@@ -417,6 +420,7 @@ a.post-title {
 }
 
 
+
 .archive #content .post h2 {
 	clear:none;
 }
@@ -517,6 +521,7 @@ blockquote p {
 }
 
 
+
 .home #intro{
 	float:left;
 	display:block;
@@ -567,6 +572,7 @@ blockquote p {
 .page-template-page-no-sidebar-php #content, .page-template-page-no-sidebar-php #content .entry {
 width:100%;
 }
+
 
 
 .content ul {
@@ -785,10 +791,14 @@ width:100%;
 
 #footer-left {
 	float:left;
+    width:70%;
+    position:relative;
 }
 
 #footer-right {
 	float:right;
+    width:30%;
+    position:relative;
 }
 
 #footer p {
@@ -829,15 +839,21 @@ text-decoration:underline;
 }
 
 
+
 #footer .copyright {
 	float:left;
 	width:60%;
 	color:#999;
 }
 
+#footer .menu-footer-menu-container {clear:both;}
+
 #footer ul.menu li a {
 	font-size:0.9em;
 	border-right:1px solid #eee;
+    float:left;
+    margin:0 0.5em 0 0;
+    padding-right:0.5em;
 }
 
  {
@@ -914,6 +930,7 @@ a.button {
 a.button:hover {
 color:#333;
 }
+
 
 
 

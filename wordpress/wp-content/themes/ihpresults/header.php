@@ -105,15 +105,17 @@
 <div id="access">
 	<div id="access-inner">
   <?php /*  Allow screen readers / text browsers to skip the navigation menu and get right to the good stuff */ ?>
-	<div class="skip-link screen-reader-text"><a href="#content" title="<?php esc_attr_e( 'Skip to content', 'twentyten' ); ?>">
+	<div class="skip-link screen-reader-text"><a href="#content" title="<?php esc_attr_e( 'Skip to content', 'ihpresults' ); ?>">
                  <?php _e( 'Skip to content', 'twentyten' ); ?></a></div>
 	<?php /* Our navigation menu.  If one isn't filled out, wp_nav_menu falls back to wp_page_menu.  The menu assiged to the primary position is 
                  the one used.  If none is assigned, the menu with the lowest ID is used.  */ ?>
 	<?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'primary' ) ); ?>
+	<?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'secondary' ) ); ?>
 	</div><!-- #access-inner -->
 
 </div><!-- #access -->
 </div> <!-- end header -->
+
 
 
 <div id="wrapper">
