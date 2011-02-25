@@ -1,0 +1,51 @@
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/table.css"> 
+    <style>
+        td:first-child {
+            text-align: left;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<h1>{{ institution_name }}</h1>
+<table class="dpind">
+    <tr class="head">
+        <th></th>
+        <th>2005</th>
+        <th>2007</th>
+        <th>Other</th>
+    </tr>
+    <tr class="odd">
+        <td>On-budget</td>
+        <td>{{ counts.2DPa_2005 }}</td>
+        <td>{{ counts.2DPa_2007 }}</td>
+        <td>{{ counts.2DPa_other }}</td>
+    </tr>
+    <tr class="even">
+        <td>Capacity Development</td>
+        <td>{{ counts.2DPb_2005 }}</td>
+        <td>{{ counts.2DPb_2007 }}</td>
+        <td>{{ counts.2DPb_other }}</td>
+    </tr>
+    <tr class="odd">
+        <td>PBA</td>
+        <td>{{ counts.2DPc_2005 }}</td>
+        <td>{{ counts.2DPc_2007 }}</td>
+        <td>{{ counts.2DPc_other }}</td>
+    </tr>
+    <tr class="even">
+        <td>Procurement</td>
+        <td>{{ counts.5DPa_2005 }}</td>
+        <td>{{ counts.5DPa_2007 }}</td>
+        <td>{{ counts.5DPa_other }}</td>
+    </tr>
+    <tr class="odd">
+        <td>PFM</td>
+        <td>{{ counts.5DPb_2005 }}</td>
+        <td>{{ counts.5DPb_2007 }}</td>
+        <td>{{ counts.5DPb_other }}</td>
+    </tr>
+</table>
+{% endblock %}

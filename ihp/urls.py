@@ -62,7 +62,8 @@ urlpatterns = patterns('',
     }}, "home"),
 
     # New csv views
-    (r'^scorecard/export/agencies/$', 'submissions.views.agency_export', {}, 'agency_export'),
+    (r'^scorecard/export/agencies/(?P<language>.+)/$', 'submissions.views.agency_export_lang', {}, 'agency_export_lang'),
+    #(r'^scorecard/export/agencies/$', 'submissions.views.agency_export', {}, 'agency_export_english'),
     (r'^scorecard/export/countries/(?P<language>.+)/$', 'submissions.views.country_export', {}, 'country_export'),
 
     # Edit views
@@ -144,6 +145,20 @@ urlpatterns = patterns('',
         }
     }, 'gbs_table'),
 
+    (r'^agencies/tables/alternative_baselines/$', 'submissions.views.agency_alternative_baselines', {
+        "template_name" : "submissions/main_base.html",
+        "extra_context" : {
+            "content_file" : "submissions/agency_alternative_baselines.html"
+        }
+    }, 'agency_alternative_baselines'),
+
+    (r'^agencies/tables/response_breakdown/$', 'submissions.views.agency_response_breakdown', {
+        "template_name" : "submissions/main_base.html",
+        "extra_context" : {
+            "content_file" : "submissions/agency_response_breakdown.html"
+        }
+    }, 'agency_response_breakdown'),
+
     (r'^countries/tables/$', 'submissions.views.country_table', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
@@ -157,6 +172,13 @@ urlpatterns = patterns('',
             "content_file" : "submissions/country_matrix.html"
         }
     }, 'country_matrix'),
+
+    (r'^countries/tables/response_breakdown/$', 'submissions.views.country_response_breakdown', {
+        "template_name" : "submissions/main_base.html",
+        "extra_context" : {
+            "content_file" : "submissions/country_response_breakdown.html"
+        }
+    }, 'country_response_breakdown'),
 
     # Data Tables Views
     (r'^datatables/$', direct_to_template, {"template" : "submissions/datatables.html", "extra_context" : {

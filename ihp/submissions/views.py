@@ -6,10 +6,11 @@ import unicodecsv as csv
 from django.http import HttpResponse
 from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404
+from django.utils.translation import check_for_language
 
 from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, CountryScorecardOverride, Rating
 from target import calc_agency_ratings, get_country_progress, calc_country_ratings, get_agency_progress, country_agency_indicator_ratings, country_agency_progress
-from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs, dp_indicators
+from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs, dp_indicators, g_indicators, indicator_questions
 from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm, CountryScorecardForm
 from utils import none_num
 
@@ -174,6 +175,14 @@ def get_countries_scorecard_data():
         if country.submission_set.filter(type="Gov").count() > 0
     ])
 
+def agency_export_lang(request, language):
+    if language and check_for_language(language):
+        if hasattr(request, 'session'):
+            request.session['django_language'] = language
+        else:
+            response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
+    return agency_export(request)
+    
 def agency_export(request):
 
     headers = [
@@ -228,6 +237,74 @@ def agency_export(request):
     for agency in data:
         writer.writerow([data[agency].get(header, "") for header in headers])
     return response
+
+def agency_alternative_baselines(request, template_name="submissions/agency_alternative_baselines.html", extra_context=None):
+    """
+    View that shows a histogram of the baseline years for a number of indicators
+    """
+    extra_context = extra_context or {}
+
+    agencies = Agency.objects.all()
+    questions = DPQuestion.objects.filter(submission__agency__in=agencies)
+    is_2005 = lambda q: q.baseline_year == "2005"
+    is_2007 = lambda q: q.baseline_year == "2007"
+    is_other = lambda q: not (is_2005(q) or is_2007(q))
+
+    counts = {}
+    for indicator in ["2DPa", "2DPb", "2DPc", "5DPa", "5DPb"]:
+        question_numbers = indicator_questions[indicator]
+        questions_subset = questions.filter(question_number__in=question_numbers)
+        counts["%s_2005" % indicator] = len(filter(is_2005, questions_subset))
+        counts["%s_2007" % indicator] = len(filter(is_2007, questions_subset))
+        counts["%s_other" % indicator] = len(filter(is_other, questions_subset))
+        
+    extra_context["counts"] = counts
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def agency_response_breakdown(request, template_name="submissions/agency_response_breakdown.html", extra_context=None):
+    """
+    Return a histogram of responses for each agency indicator 
+    """
+
+    extra_context = extra_context or {}
+    is_na = lambda r : r == Rating.NONE
+    is_question = lambda r : r == Rating.QUESTION
+    is_response = lambda r : not (is_na(r) or is_question(r))
+
+    agencies = Agency.objects.all()
+    counts = defaultdict(int, {})
+    for agency in agencies:
+        for country in agency.countries:
+            results = country_agency_indicator_ratings(country, agency)
+            for indicator in dp_indicators:
+                counts["%s_na" % indicator] += 1 if is_na(results[indicator]) else 0 
+                counts["%s_question" % indicator] += 1 if is_question(results[indicator]) else 0 
+                counts["%s_response" % indicator] += 1 if is_response(results[indicator]) else 0 
+                counts["%s_total" % indicator] += 1 
+    extra_context["counts"] = counts    
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
+
+def country_response_breakdown(request, template_name="submissions/country_response_breakdown.html", extra_context=None):
+    """
+    Return a histogram of responses for each country indicator 
+    """
+
+    extra_context = extra_context or {}
+    is_na = lambda r : r["target"] == Rating.NONE
+    is_question = lambda r : r["target"] == Rating.QUESTION
+    is_response = lambda r : not (is_na(r) or is_question(r))
+
+    countries = Country.objects.all()
+    counts = defaultdict(int, {})
+    for country in countries:
+        results = calc_country_ratings(country)
+        for indicator in g_indicators:
+            counts["%s_na" % indicator] += 1 if is_na(results[indicator]) else 0 
+            counts["%s_question" % indicator] += 1 if is_question(results[indicator]) else 0 
+            counts["%s_response" % indicator] += 1 if is_response(results[indicator]) else 0 
+            counts["%s_total" % indicator] += 1 
+    extra_context["counts"] = counts    
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html", extra_context=None):
 

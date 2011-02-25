@@ -95,6 +95,8 @@
                         <p>
                             <ul>
                                 <li><a href="{% url agency_ratings %}">Aggregated Ratings</a></li>
+                                <li><a href="{% url agency_alternative_baselines %}">Alternative Baselines</a></li>
+                                <li><a href="{% url agency_response_breakdown %}">Response Breakdown</a></li>
                             </ul>
                         </p>
                     </div>
@@ -118,6 +120,7 @@
                                 <li><a href="{% url country_table %}">Country Table</a></li>
                                 <li><a href="{% url country_matrix %}">Country Table without Figures</a></li>
                                 <li><a href="{% url government_graphs %}">Government Graphs</a></li>
+                                <li><a href="{% url country_response_breakdown %}">Response Breakdown</a></li>
                             </ul>
                         </p>
                     </div>
@@ -142,7 +145,8 @@
                         <h2>Additional Views</h2>
                         <p>
                             <ol>
-                                <li><a href="{% url agency_export %}">Agency Export</a></li>
+                                <li><a href="{% url agency_export_lang "en" %}">Agency Export (English)</a></li>
+                                <li><a href="{% url agency_export_lang "fr" %}">Agency Export (French)</a></li>
                                 <li>Country Export
                                     <ul style="padding-left: 10px">
                                         <li><a href="{% url country_export "English" %}">English Speaking Countries</a></li>
