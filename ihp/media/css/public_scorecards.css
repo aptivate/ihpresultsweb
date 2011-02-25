@@ -533,7 +533,7 @@ div.col {
 	margin-bottom: 0; /* 10px looks bad without backgrounds on items */
 	text-align: center; /* centre the blocks */
 	clear:both;
-	background-color:#fff;
+	background-color:transparent;
 }
 
 /* but don't center their contents */
@@ -676,23 +676,27 @@ div.col {
 }
 
 /* Background and z-index hacks for ie-css3.htc */
+/*
 #scorecard_header h2, table.scorecard tr.countries ul, #scorecard,
 #scorecard ul.logos, #scorecard .category, .infobox, .inner,
 .health-financing .chart-key, .health-financing .key
 {
 	background-color: white;
 }
+*/
 #scorecard, .infobox { 
-  z-index: 1; /* should be -40 for rounded corners, but breaks tooltips */
+  /* z-index: 1; /* should be -40 for rounded corners, but breaks tooltips */
   clear:both;
   position:relative;
   margin:0;
 }
+/*
 .infobox.country-ownership h2,
 .infobox.country-ownership .item h3 { z-index: 10; }
 #scorecard .category, .infobox .item { z-index: -30; }
 .health-financing .chart-key { z-index: -20; }
 .health-financing .key { z-index: -10; }
+*/
 
 /* Override Wordpress themes */
 .scorecard img
