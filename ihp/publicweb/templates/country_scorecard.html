@@ -11,11 +11,11 @@
 				progress in this country</h3>
 			<ul class="logos progress">
 				{% for agency in progress_agencies %}
-					<li class="callout-from" id="datalink_{{agency.agency}}_{{country.country}}">
+					<li class="callout-from" id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}">
 						<img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
 						alt="{{agency.agency}}" class="logo">
 						<span class="name">{{agency.agency}}</span>
-						<div id="datalink_{{agency.agency}}_{{country.country}}_content"
+						<div id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}_content"
 							style="display: none;">For {{agency.agency}} data
 							in {{country.country}} <a href="#">click here</a>.</div>
 						</li>
@@ -28,11 +28,11 @@
 				limited progress in this country</h3>
 			<ul class="logos no_progress">
 				{% for agency in no_progress_agencies %}
-					<li class="callout-from" id="datalink_{{agency.agency}}_{{country.country}}">
+					<li class="callout-from" id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}">
 						<img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
 						alt="{{agency.agency}}" class="logo">
 						<span class="name">{{agency.agency}}</span>
-						<div id="datalink_{{agency.agency}}_{{country.country}}_content"
+						<div id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}_content"
 							style="display: none;">For {{agency.agency}} data
 							in {{country.country}} <a href="#">click here</a>.</div>
 						</li>

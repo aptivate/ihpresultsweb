@@ -10,10 +10,15 @@
 			<h3>Countries where the agency is demonstrating progress</h3>
 			<ul class="logos progress">
 				{% for country in progress_countries %}
-					<li><img src="{% url ihp-media path='images' %}/{{country.country|cut:" "}}.png"
-						alt="{{country.country}}" class="flag" />
+					<li class="callout-from" id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}">
+						<img src="{% url ihp-media path='images' %}/{{country.country|cut:" "}}.png"
+							alt="{{country.country}}" class="logo" />
 						<span class="name">{{country.country}}</span>
+						<div id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}_content"
+							style="display: none;">For {{agency.agency}} data
+							in {{country.country}} <a href="#">click here</a>.</div>
 						</li>
+					</li>
 				{% endfor %}
 			</ul>
 		</div><!-- item -->
@@ -21,11 +26,16 @@
 		<div class="item">	
 			<h3>Countries where the agency is reporting limited progress</h3>
 			<ul class="logos no_progress">
-				{% for agency in no_progress_agencies %}
-					<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
-						alt="{{agency.agency}}" class="logo">
+				{% for country in no_progress_countries %}
+					<li class="callout-from" id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}">
+						<img src="{% url ihp-media path='images' %}/{{country.country|cut:" "}}.png"
+							alt="{{country.country}}" class="logo">
 						<span class="name">{{country.country}}</span>
+						<div id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}_content"
+							style="display: none;">For {{agency.agency}} data
+							in {{country.country}} <a href="#">click here</a>.</div>
 						</li>
+					</li>
 				{% endfor %}
 			</ul>
 		</div><!-- item -->
