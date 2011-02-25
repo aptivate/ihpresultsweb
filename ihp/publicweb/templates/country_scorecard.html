@@ -13,12 +13,12 @@
 				{% for agency in progress_agencies %}
 					<li class="callout-from" id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}">
 						<img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
-						alt="{{agency.agency}}" class="logo">
+							alt="{{agency.agency}}" class="logo">
 						<span class="name">{{agency.agency}}</span>
 						<div id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}_content"
 							style="display: none;">For {{agency.agency}} data
 							in {{country.country}} <a href="#">click here</a>.</div>
-						</li>
+					</li>
 				{% endfor %}
 			</ul>
 		</div>
@@ -30,12 +30,12 @@
 				{% for agency in no_progress_agencies %}
 					<li class="callout-from" id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}">
 						<img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
-						alt="{{agency.agency}}" class="logo">
+							alt="{{agency.agency}}" class="logo">
 						<span class="name">{{agency.agency}}</span>
 						<div id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}_content"
 							style="display: none;">For {{agency.agency}} data
 							in {{country.country}} <a href="#">click here</a>.</div>
-						</li>
+					</li>
 				{% endfor %}
 			</ul>
 		</div>
