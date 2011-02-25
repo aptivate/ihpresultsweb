@@ -127,7 +127,7 @@ add_filter( 'the_content', 'prepend_attachment' );
 add_filter( 'the_excerpt',     'wptexturize'      );
 add_filter( 'the_excerpt',     'convert_smilies'  );
 add_filter( 'the_excerpt',     'convert_chars'    );
-add_filter( 'the_excerpt',     'wpautop'          );
+// add_filter( 'the_excerpt',     'wpautop'          );
 add_filter( 'the_excerpt',     'shortcode_unautop');
 add_filter( 'get_the_excerpt', 'wp_trim_excerpt'  );
 
