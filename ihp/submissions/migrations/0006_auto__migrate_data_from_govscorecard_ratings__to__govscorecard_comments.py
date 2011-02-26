@@ -3,27 +3,35 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
-from submissions.models import Language
+from submissions.models import GovScorecardRatings, GovScorecardComments, Language, Country
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
-        # Adding model 'Language'
-        db.create_table('submissions_language', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('language', self.gf('django.db.models.fields.CharField')(max_length=30)),
-        ))
-        db.send_create_signal('submissions', ['Language'])
-        Language.objects.get_or_create(language="English")
-        Language.objects.get_or_create(language="French")
-
-
+        import pdb; pdb.set_trace()
+        for ratings in orm.GovScorecardRatings.objects.all():
+            for language in orm.Language.objects.all():
+                # I think I need to do this in order to ensure that all objects
+                # are created with the correct migration version
+                c = orm.Country.objects.get(country=ratings.country.country)
+                l = orm.Language.objects.get(language=language.language)
+                comments, _ = orm.GovScorecardComments.objects.get_or_create(country=c, language=l)
+                comments.er1 = ratings.er1
+                comments.er2a = ratings.er2a
+                comments.er2b = ratings.er2b
+                comments.er3 = ratings.er3
+                comments.er4 = ratings.er4
+                comments.er5a = ratings.er5a
+                comments.er5b = ratings.er5b
+                comments.er6 = ratings.er6
+                comments.er7 = ratings.er7
+                comments.er8 = ratings.er8
+                comments.save()
+            
     def backwards(self, orm):
         
-        # Deleting model 'Language'
-        db.delete_table('submissions_language')
-
+        # User chose to not deal with backwards NULL issues for 'GovScorecardRatings.language'
+        raise RuntimeError("Cannot reverse this migration. 'GovScorecardRatings.language' and its values cannot be restored.")
 
     models = {
         'submissions.agency': {
@@ -180,9 +188,9 @@ class Migration(SchemaMigration):
             'question_number': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
             'submission': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Submission']"})
         },
-        'submissions.govscorecardratings': {
-            'Meta': {'object_name': 'GovScorecardRatings'},
-            'country': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['submissions.Country']", 'unique': 'True'}),
+        'submissions.govscorecardcomments': {
+            'Meta': {'unique_together': "(['country', 'language'],)", 'object_name': 'GovScorecardComments'},
+            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Country']"}),
             'er1': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'er2a': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'er2b': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
@@ -194,6 +202,23 @@ class Migration(SchemaMigration):
             'er7': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'er8': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'language': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Language']"})
+        },
+        'submissions.govscorecardratings': {
+            'Meta': {'unique_together': "(['country', 'language'],)", 'object_name': 'GovScorecardRatings'},
+            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Country']"}),
+            'er1': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'er2a': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'er2b': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'er3': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'er4': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'er5a': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'er5b': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'er6': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'er7': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'er8': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'language': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Language']"}),
             'r1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'r2a': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'r2b': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
@@ -240,3 +265,5 @@ class Migration(SchemaMigration):
     }
 
     complete_apps = ['submissions']
+
+

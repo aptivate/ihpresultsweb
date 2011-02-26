@@ -8,7 +8,7 @@ from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404
 from django.utils.translation import check_for_language
 
-from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, CountryScorecardOverride, Rating
+from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, CountryScorecardOverride, Rating, Language
 from target import calc_agency_ratings, get_country_progress, calc_country_ratings, get_agency_progress, country_agency_indicator_ratings, country_agency_progress
 from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs, dp_indicators, g_indicators, indicator_questions
 from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm, CountryScorecardForm
@@ -46,7 +46,7 @@ def get_agencies_scorecard_data(agencies=None):
         if agency.submission_set.filter(type="DP").count() > 0
     ])
 
-def get_country_scorecard_data(country):
+def get_country_scorecard_data(country, language):
 
     submissions = country.submission_set.filter(type="Gov")
     assert submissions.count() == 1
@@ -57,7 +57,7 @@ def get_country_scorecard_data(country):
     if submission.govquestion_set.all().count() == 0: 
         raise Exception("Possible incomplete submission")
     
-    country_data = calc_country_ratings(country)
+    country_data = calc_country_ratings(country, language)
     
     for indicator, d in country_data.items():
         old_comments = d["comments"]
@@ -169,8 +169,8 @@ def get_country_scorecard_data(country):
 
     return country_data
 
-def get_countries_scorecard_data():
-    return dict([(country, get_country_scorecard_data(country))
+def get_countries_scorecard_data(language):
+    return dict([(country, get_country_scorecard_data(country, language))
         for country in Country.objects.all()
         if country.submission_set.filter(type="Gov").count() > 0
     ])
@@ -334,8 +334,10 @@ fformat_front = formatter(1)
 fformat_none = formatter(0)
 fformat_two = formatter(2)
 
-def get_countries_export_data():
-    data = get_countries_scorecard_data()
+def get_countries_export_data(language=None):
+    # TODO this line is here for backwards compatibility
+    language = language or Language.objects.get(language="English")
+    data = get_countries_scorecard_data(language)
     for country, datum in data.items():
         ratings, _ = CountryScorecardOverride.objects.get_or_create(country=country)
         try:
@@ -501,6 +503,7 @@ def get_countries_export_data():
     return data
 
 def country_export(request, language):
+    language = get_object_or_404(Language, language=language)
     headers = [
         # Front of scorecard
         "file", "TB2", "CD1", "CD2", "HSP1", "HSP2",
@@ -539,7 +542,7 @@ def country_export(request, language):
         "workingdraft",
     ]
 
-    data = get_countries_export_data()
+    data = get_countries_export_data(language)
 
     response = HttpResponse(mimetype="text/csv")
     response["Content-Disposition"] = "attachment; filename=country_export.csv"

@@ -2,7 +2,7 @@ import re
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson
-from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country, CountryScorecardOverride, GovQuestion, DPQuestion, Language
+from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, GovScorecardComments, Country, CountryScorecardOverride, GovQuestion, DPQuestion, Language
 from target import calc_agency_ratings, calc_country_ratings
 import indicators
 
@@ -80,14 +80,22 @@ def dp_ratings(request, agency_id):
         import traceback
         traceback.print_exc()
     
-def gov_ratings(request, country_id, language_id):
+def gov_ratings(request, country_id):
 
     re_indconv = re.compile("(\d+)(\w*)")
     indconv = lambda indicator : "%sG%s" % re_indconv.search(indicator).groups()
     try:
         country = get_object_or_404(Country, id=country_id)
-        language = get_object_or_404(Language, id=language_id)
-        ratings, _ = GovScorecardRatings.objects.get_or_create(country=country, language=language)
+        ratings, _ = GovScorecardRatings.objects.get_or_create(country=country)
+        comments_en, _ = GovScorecardComments.objects.get_or_create(
+            country=country, 
+            language=Language.objects.filter(language="English")
+        )
+        comments_fr, _ = GovScorecardComments.objects.get_or_create(
+            country=country, 
+            language=Language.objects.filter(language="French")
+        )
+
         get_comment = lambda indicator : results[indicator]["commentary"]
         data = {}
         indicators = ["1", "2a", "2b", "3", "4", "5a", "5b", "6", "7", "8"]
@@ -99,16 +107,21 @@ def gov_ratings(request, country_id, language_id):
             
             for indicator in indicators:
                 data["rating%s" % indicator] = getattr(ratings, "r%s" % indicator)
-                data["progress%s" % indicator] = getattr(ratings, "er%s" % indicator)
+                data["progress%s_en" % indicator] = getattr(comments_en, "er%s" % indicator)
+                data["progress%s_fr" % indicator] = getattr(comments_fr, "er%s" % indicator)
                 data["gen%s" % indicator] = get_comment(indconv(indicator))
 
             return HttpResponse(simplejson.dumps(data))
         elif request.method == "POST":
+            print request.POST
 
             for indicator in indicators:
                 setattr(ratings, "r%s" % indicator, request.POST["r%s" % indicator]) 
-                setattr(ratings, "er%s" % indicator, request.POST["er%s" % indicator]) 
+                setattr(comments_en, "er%s" % indicator, request.POST["er%s_en" % indicator]) 
+                setattr(comments_fr, "er%s" % indicator, request.POST["er%s_fr" % indicator]) 
                 ratings.save()
+                comments_en.save()
+                comments_fr.save()
 
             results = calc_country_ratings(country)
 

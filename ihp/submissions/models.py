@@ -292,35 +292,17 @@ class DPScorecardRatings(models.Model):
 
 class GovScorecardRatings(models.Model):
     country = models.ForeignKey(Country, null=False)
-    language = models.ForeignKey(Language, null=False)
 
     r1 = RatingsField()
-    er1 = CommentsField()
-
     r2a = RatingsField()
-    er2a = CommentsField()
     r2b = RatingsField()
-    er2b = CommentsField()
-
     r3 = RatingsField()
-    er3 = CommentsField()
-
     r4 = RatingsField()
-    er4 = CommentsField()
-
     r5a = RatingsField()
-    er5a = CommentsField()
     r5b = RatingsField()
-    er5b = CommentsField()
-
     r6 = RatingsField()
-    er6 = CommentsField()
-
     r7 = RatingsField()
-    er7 = CommentsField()
-
     r8 = RatingsField()
-    er8 = CommentsField()
 
 
     def __unicode__(self):
@@ -328,6 +310,27 @@ class GovScorecardRatings(models.Model):
 
     class Meta:
         verbose_name_plural = "Gov Scorecard Ratings" 
+
+class GovScorecardComments(models.Model):
+    country = models.ForeignKey(Country, null=False)
+    language = models.ForeignKey(Language, null=False)
+
+    er1 = CommentsField()
+    er2a = CommentsField()
+    er2b = CommentsField()
+    er3 = CommentsField()
+    er4 = CommentsField()
+    er5a = CommentsField()
+    er5b = CommentsField()
+    er6 = CommentsField()
+    er7 = CommentsField()
+    er8 = CommentsField()
+
+    def __unicode__(self):
+        return unicode(self.country)
+
+    class Meta:
+        verbose_name_plural = "Gov Scorecard Comments" 
         unique_together = ["country", "language"]
 
 class CountryScorecardOverride(models.Model):

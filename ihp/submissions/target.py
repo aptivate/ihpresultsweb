@@ -4,7 +4,7 @@ from django.template import Context, Template
 from django.utils.functional import memoize
 from indicators import NA_STR
 from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
-from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, DPScorecardRatings, Rating, Language
+from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, GovScorecardComments, DPScorecardRatings, Rating, Language
 from target_criteria import criteria_funcs, MissingValueException, CannotCalculateException
 import math
 from itertools import chain
@@ -233,17 +233,18 @@ def calc_country_ratings(country, language=None):
     targets = get_country_targets(country, g_indicators)
     indicators = calc_country_indicators(country)
     results = {}
-    ratings, _ = GovScorecardRatings.objects.get_or_create(country=country, language=language)
+    ratings, _ = GovScorecardRatings.objects.get_or_create(country=country)
+    comment_override, _ = GovScorecardComments.objects.get_or_create(country=country, language=language)
 
-    def ratings_val(tmpl):
+    def ratings_val(obj, tmpl):
         def _func(indicator):
             h = indicator.replace("G", "").replace("Q", "")
-            d = ratings.__dict__
+            d = obj.__dict__
             return d.get(tmpl % h, None)
         return _func
 
-    ratings_comments = ratings_val("er%s")
-    ratings_target = ratings_val("r%s")
+    ratings_comments = ratings_val(comment_override, "er%s")
+    ratings_target = ratings_val(ratings, "r%s")
 
     for indicator in indicators:
         (base_val, base_year, cur_val, cur_year), comments = indicators[indicator]

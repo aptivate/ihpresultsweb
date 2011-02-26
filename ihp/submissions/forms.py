@@ -31,11 +31,6 @@ class CountryForm(forms.Form):
         for c in Country.objects.all()
     ])
 
-    language = forms.ChoiceField(choices=[
-        (l.id, l.language) 
-        for l in Language.objects.all()
-    ])
-
     class Media:
         js = ("js/jquery-1.4.4.min.js ", "js/jquery.loading.1.6.4.min.js", )
         css = {
@@ -115,32 +110,43 @@ class DPRatingsForm(AgencyForm):
 class GovRatingsForm(CountryForm):
 
     r1 = RatingsField(label="1G Rating", required=False)
-    er1 = TextField(label="1G Progress Text")
+    er1_en = TextField(label="1G Progress Text (English)")
+    er1_fr = TextField(label="1G Progress Text (French)")
 
     r2a = RatingsField(label="2Ga Rating", required=False)
-    er2a = TextField(label="2Ga Progress Text")
+    er2a_en = TextField(label="2Ga Progress Text (English)")
+    er2a_fr = TextField(label="2Ga Progress Text (French)")
     r2b = RatingsField(label="2Gb Rating", required=False)
-    er2b = TextField(label="2Gb Progress Text")
+    er2b_en = TextField(label="2Gb Progress Text (English)")
+    er2b_fr = TextField(label="2Gb Progress Text (French)")
 
     r3 = RatingsField(label="3G Rating", required=False)
-    er3 = TextField(label="3G Progress Text")
+    er3_en = TextField(label="3G Progress Text (English)")
+    er3_fr = TextField(label="3G Progress Text (French)")
 
     r4 = RatingsField(label="4G Rating", required=False)
-    er4 = TextField(label="4G Progress Text")
+    er4_en = TextField(label="4G Progress Text (English)")
+    er4_fr = TextField(label="4G Progress Text (French)")
 
     r5a = RatingsField(label="5Ga Rating", required=False)
-    er5a = TextField(label="5Ga Progress Text")
+    er5a_en = TextField(label="5Ga Progress Text (English)")
+    er5a_fr = TextField(label="5Ga Progress Text (French)")
     r5b = RatingsField(label="5Gb Rating", required=False)
-    er5b = TextField(label="5Gb Progress Text")
+    er5b_en = TextField(label="5Gb Progress Text (English)")
+    er5b_fr = TextField(label="5Gb Progress Text (French)")
 
     r6 = RatingsField(label="6G Rating", required=False)
-    er6 = TextField(label="6G Progress Text")
+    er6_en = TextField(label="6G Progress Text (English)")
+    er6_fr = TextField(label="6G Progress Text (French)")
 
     r7 = RatingsField(label="7G Rating", required=False)
-    er7 = TextField(label="7G Progress Text")
+    er7_en = TextField(label="7G Progress Text (English)")
+    er7_fr = TextField(label="7G Progress Text (French)")
 
     r8 = RatingsField(label="8G Rating", required=False)
-    er8 = TextField(label="8G Progress Text")
+    er8_en = TextField(label="8G Progress Text (English)")
+    er8_fr = TextField(label="8G Progress Text (French)")
+
 
     class Media:
         js = ("js/govratingsform.js", )

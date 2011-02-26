@@ -75,7 +75,7 @@ urlpatterns = patterns('',
     # Api views
     (r'^api/dp_summary/(?P<agency_id>\d+)/$', 'submissions.api.dp_summary', {}, 'api_dp_summary'),
     (r'^api/dp_ratings/(?P<agency_id>\d+)/$', 'submissions.api.dp_ratings', {}, 'api_dp_ratings'),
-    (r'^api/gov_ratings/(?P<country_id>\d+)/(?P<language_id>\d+)/$', 'submissions.api.gov_ratings', {}, 'api_gov_ratings'),
+    (r'^api/gov_ratings/(?P<country_id>\d+)/$', 'submissions.api.gov_ratings', {}, 'api_gov_ratings'),
     (r'^api/country_scorecard/(?P<country_id>\d+)/$', 'submissions.api.country_scorecard', {}, 'api_country_scorecard'),
 
     # Graph Views

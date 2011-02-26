@@ -3,26 +3,85 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
-from submissions.models import Language
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding model 'Language'
-        db.create_table('submissions_language', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('language', self.gf('django.db.models.fields.CharField')(max_length=30)),
-        ))
-        db.send_create_signal('submissions', ['Language'])
-        Language.objects.get_or_create(language="English")
-        Language.objects.get_or_create(language="French")
+        # Removing unique constraint on 'GovScorecardRatings', fields ['country', 'language']
+        db.delete_unique('submissions_govscorecardratings', ['country_id', 'language_id'])
+
+        # Deleting field 'GovScorecardRatings.er5b'
+        db.delete_column('submissions_govscorecardratings', 'er5b')
+
+        # Deleting field 'GovScorecardRatings.er5a'
+        db.delete_column('submissions_govscorecardratings', 'er5a')
+
+        # Deleting field 'GovScorecardRatings.er4'
+        db.delete_column('submissions_govscorecardratings', 'er4')
+
+        # Deleting field 'GovScorecardRatings.er6'
+        db.delete_column('submissions_govscorecardratings', 'er6')
+
+        # Deleting field 'GovScorecardRatings.er7'
+        db.delete_column('submissions_govscorecardratings', 'er7')
+
+        # Deleting field 'GovScorecardRatings.er1'
+        db.delete_column('submissions_govscorecardratings', 'er1')
+
+        # Deleting field 'GovScorecardRatings.er3'
+        db.delete_column('submissions_govscorecardratings', 'er3')
+
+        # Deleting field 'GovScorecardRatings.er8'
+        db.delete_column('submissions_govscorecardratings', 'er8')
+
+        # Deleting field 'GovScorecardRatings.er2b'
+        db.delete_column('submissions_govscorecardratings', 'er2b')
+
+        # Deleting field 'GovScorecardRatings.er2a'
+        db.delete_column('submissions_govscorecardratings', 'er2a')
+
+        # Deleting field 'GovScorecardRatings.language'
+        db.delete_column('submissions_govscorecardratings', 'language_id')
 
 
     def backwards(self, orm):
         
-        # Deleting model 'Language'
-        db.delete_table('submissions_language')
+        # Adding field 'GovScorecardRatings.er5b'
+        db.add_column('submissions_govscorecardratings', 'er5b', self.gf('django.db.models.fields.TextField')(null=True, blank=True), keep_default=False)
+
+        # Adding field 'GovScorecardRatings.er5a'
+        db.add_column('submissions_govscorecardratings', 'er5a', self.gf('django.db.models.fields.TextField')(null=True, blank=True), keep_default=False)
+
+        # Adding field 'GovScorecardRatings.er4'
+        db.add_column('submissions_govscorecardratings', 'er4', self.gf('django.db.models.fields.TextField')(null=True, blank=True), keep_default=False)
+
+        # Adding field 'GovScorecardRatings.er6'
+        db.add_column('submissions_govscorecardratings', 'er6', self.gf('django.db.models.fields.TextField')(null=True, blank=True), keep_default=False)
+
+        # Adding field 'GovScorecardRatings.er7'
+        db.add_column('submissions_govscorecardratings', 'er7', self.gf('django.db.models.fields.TextField')(null=True, blank=True), keep_default=False)
+
+        # Adding field 'GovScorecardRatings.er1'
+        db.add_column('submissions_govscorecardratings', 'er1', self.gf('django.db.models.fields.TextField')(null=True, blank=True), keep_default=False)
+
+        # Adding field 'GovScorecardRatings.er3'
+        db.add_column('submissions_govscorecardratings', 'er3', self.gf('django.db.models.fields.TextField')(null=True, blank=True), keep_default=False)
+
+        # Adding field 'GovScorecardRatings.er8'
+        db.add_column('submissions_govscorecardratings', 'er8', self.gf('django.db.models.fields.TextField')(null=True, blank=True), keep_default=False)
+
+        # Adding field 'GovScorecardRatings.er2b'
+        db.add_column('submissions_govscorecardratings', 'er2b', self.gf('django.db.models.fields.TextField')(null=True, blank=True), keep_default=False)
+
+        # Adding field 'GovScorecardRatings.er2a'
+        db.add_column('submissions_govscorecardratings', 'er2a', self.gf('django.db.models.fields.TextField')(null=True, blank=True), keep_default=False)
+
+        # User chose to not deal with backwards NULL issues for 'GovScorecardRatings.language'
+        raise RuntimeError("Cannot reverse this migration. 'GovScorecardRatings.language' and its values cannot be restored.")
+
+        # Adding unique constraint on 'GovScorecardRatings', fields ['country', 'language']
+        db.create_unique('submissions_govscorecardratings', ['country_id', 'language_id'])
 
 
     models = {
@@ -180,9 +239,9 @@ class Migration(SchemaMigration):
             'question_number': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
             'submission': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Submission']"})
         },
-        'submissions.govscorecardratings': {
-            'Meta': {'object_name': 'GovScorecardRatings'},
-            'country': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['submissions.Country']", 'unique': 'True'}),
+        'submissions.govscorecardcomments': {
+            'Meta': {'unique_together': "(['country', 'language'],)", 'object_name': 'GovScorecardComments'},
+            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Country']"}),
             'er1': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'er2a': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'er2b': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
@@ -193,6 +252,12 @@ class Migration(SchemaMigration):
             'er6': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'er7': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'er8': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'language': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Language']"})
+        },
+        'submissions.govscorecardratings': {
+            'Meta': {'object_name': 'GovScorecardRatings'},
+            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Country']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'r1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'r2a': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),

@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from models import Rating
 
 gov_commentary_text = {

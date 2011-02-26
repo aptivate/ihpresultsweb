@@ -1,9 +1,8 @@
 country_select = function(e) {
     country_id = $("#id_country option:selected");
-    language_id = $("#id_language option:selected");
     $("textarea").text("");
 
-    $.getJSON("/api/gov_ratings/" + country_id.val() + "/" + language_id.val(), function(data) {
+    $.getJSON("/api/gov_ratings/" + country_id.val(), function(data) {
         $("#id_r1").val(data["rating1"]);
         $("#id_r2a").val(data["rating2a"]);
         $("#id_r2b").val(data["rating2b"]);
@@ -15,16 +14,27 @@ country_select = function(e) {
         $("#id_r7").val(data["rating7"]);
         $("#id_r8").val(data["rating8"]);
 
-        $("#id_er1").text(data["progress1"]);
-        $("#id_er2a").text(data["progress2a"]);
-        $("#id_er2b").text(data["progress2b"]);
-        $("#id_er3").text(data["progress3"]);
-        $("#id_er4").text(data["progress4"]);
-        $("#id_er5a").text(data["progress5a"]);
-        $("#id_er5b").text(data["progress5b"]);
-        $("#id_er6").text(data["progress6"]);
-        $("#id_er7").text(data["progress7"]);
-        $("#id_er8").text(data["progress8"]);
+        $("#id_er1_en").text(data["progress1_en"]);
+        $("#id_er2a_en").text(data["progress2a_en"]);
+        $("#id_er2b_en").text(data["progress2b_en"]);
+        $("#id_er3_en").text(data["progress3_en"]);
+        $("#id_er4_en").text(data["progress4_en"]);
+        $("#id_er5a_en").text(data["progress5a_en"]);
+        $("#id_er5b_en").text(data["progress5b_en"]);
+        $("#id_er6_en").text(data["progress6_en"]);
+        $("#id_er7_en").text(data["progress7_en"]);
+        $("#id_er8_en").text(data["progress8_en"]);
+
+        $("#id_er1_fr").text(data["progress1_fr"]);
+        $("#id_er2a_fr").text(data["progress2a_fr"]);
+        $("#id_er2b_fr").text(data["progress2b_fr"]);
+        $("#id_er3_fr").text(data["progress3_fr"]);
+        $("#id_er4_fr").text(data["progress4_fr"]);
+        $("#id_er5a_fr").text(data["progress5a_fr"]);
+        $("#id_er5b_fr").text(data["progress5b_fr"]);
+        $("#id_er6_fr").text(data["progress6_fr"]);
+        $("#id_er7_fr").text(data["progress7_fr"]);
+        $("#id_er8_fr").text(data["progress8_fr"]);
 
         $("#id_gr1").text(data["gen1"]);
         $("#id_gr2a").text(data["gen2a"]);
@@ -43,35 +53,42 @@ $(document).ready(function(){
     $.loading({onAjax:true, text: 'Loading...'});
     $("#id_country").change(country_select);
     $("#id_country").keyup(country_select);
-    $("#id_language").change(country_select);
-    $("#id_language").keyup(country_select);
 
     $("#id_submit").click(function(e) {
         country_id = $("#id_country option:selected");
-        language_id = $("#id_language option:selected");
 
-        $.post("/api/gov_ratings/" + country_id.val() + "/" + language_id.val() + "/", 
+        $.post("/api/gov_ratings/" + country_id.val() + "/", 
             { 
                 r1: $("#id_r1").val(),
-                er1: $("#id_er1").val(),
+                er1_en: $("#id_er1_en").val(),
+                er1_fr: $("#id_er1_fr").val(),
                 r2a: $("#id_r2a").val(),
-                er2a: $("#id_er2a").val(),
+                er2a_en: $("#id_er2a_en").val(),
+                er2a_fr: $("#id_er2a_fr").val(),
                 r2b: $("#id_r2b").val(),
-                er2b: $("#id_er2b").val(),
+                er2b_en: $("#id_er2b_en").val(),
+                er2b_fr: $("#id_er2b_fr").val(),
                 r3: $("#id_r3").val(),
-                er3: $("#id_er3").val(),
+                er3_en: $("#id_er3_en").val(),
+                er3_fr: $("#id_er3_fr").val(),
                 r4: $("#id_r4").val(),
-                er4: $("#id_er4").val(),
+                er4_en: $("#id_er4_en").val(),
+                er4_fr: $("#id_er4_fr").val(),
                 r5a: $("#id_r5a").val(),
-                er5a: $("#id_er5a").val(),
+                er5a_en: $("#id_er5a_en").val(),
+                er5a_fr: $("#id_er5a_fr").val(),
                 r5b: $("#id_r5b").val(),
-                er5b: $("#id_er5b").val(),
+                er5b_en: $("#id_er5b_en").val(),
+                er5b_fr: $("#id_er5b_fr").val(),
                 r6: $("#id_r6").val(),
-                er6: $("#id_er6").val(),
+                er6_en: $("#id_er6_en").val(),
+                er6_fr: $("#id_er6_fr").val(),
                 r7: $("#id_r7").val(),
-                er7: $("#id_er7").val(),
+                er7_en: $("#id_er7_en").val(),
+                er7_fr: $("#id_er7_fr").val(),
                 r8: $("#id_r8").val(),
-                er8: $("#id_er8").val(),
+                er8_en: $("#id_er8_en").val(),
+                er8_fr: $("#id_er8_fr").val(),
             },
             function(data) {
                 $("#id_gr1").text(data["gen1"]);
