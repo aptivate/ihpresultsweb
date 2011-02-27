@@ -195,7 +195,6 @@ def calc_agency_ratings(agency):
                 result["commentary"] = na_text % agency.agency
             elif result["commentary"] == "":
                 result["commentary"] = default_text
-            result["commentary"] += u"∆"
 
         results[indicator] = result
 
@@ -286,7 +285,6 @@ def calc_country_ratings(country, language=None):
                     commentary = gov_commentary_text[indicator]["all"]
                 else:
                     commentary = gov_commentary_text[indicator][target_value]
-                commentary += u"∆"
                 
                 try:
                     result["commentary"] = commentary % result
