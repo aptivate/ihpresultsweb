@@ -13,6 +13,7 @@ from target import calc_agency_ratings, get_country_progress, calc_country_ratin
 from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs, dp_indicators, g_indicators, indicator_questions
 from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm, CountryScorecardForm
 from utils import none_num
+import translations
 
 def get_agency_scorecard_data(agency):
     """
@@ -337,6 +338,7 @@ fformat_two = formatter(2)
 def get_countries_export_data(language=None):
     # TODO this line is here for backwards compatibility
     language = language or Language.objects.get(language="English")
+    translation = translations.get_translation(language)
     data = get_countries_scorecard_data(language)
     for country, datum in data.items():
         ratings, _ = CountryScorecardOverride.objects.get_or_create(country=country)
@@ -364,7 +366,7 @@ def get_countries_export_data(language=None):
             datum["ER10b"] = datum["8G"]["commentary"]
 
             datum["file"] = country.country
-            datum["TB2"] = "%s COUNTRY SCORECARD" % country.country.upper()
+            datum["TB2"] = translation.gov_tb2 % country.country.upper()
 
             datum["CD1"] = datum["ER1a"]
             datum["CD2"] = ratings.cd2 or datum["questions"]["1"]["comments"]
@@ -388,8 +390,8 @@ def get_countries_export_data(language=None):
 
             datum["PC1"] = fformat_front(datum["indicators"]["3G"]["latest_value"])
             datum["PC2"] = fformat_front(datum["indicators"]["3G"]["hs_budget_gap"])
-            datum["PC3"] = "%s %% allocated to health" % datum["PC1"]
-            datum["PC4"] = "%s %% increase needed to meet the Abuja target (15%%)" % datum["PC2"]
+            datum["PC3"] = translation.gov_pc3 % datum["PC1"]
+            datum["PC4"] = translation.gov_pc4 % datum["PC2"]
 
             datum["PF1"] = fformat_none(datum["questions"]["16"]["latest_value"])
             datum["PF2"] = ratings.pf2 or datum["questions"]["16"]["comments"]
