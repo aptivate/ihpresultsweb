@@ -3,34 +3,25 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
-from submissions.models import GovScorecardRatings, GovScorecardComments, Language, Country
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        for ratings in orm.GovScorecardRatings.objects.all():
-            for language in orm.Language.objects.all():
-                # I think I need to do this in order to ensure that all objects
-                # are created with the correct migration version
-                c = orm.Country.objects.get(country=ratings.country.country)
-                l = orm.Language.objects.get(language=language.language)
-                comments, _ = orm.GovScorecardComments.objects.get_or_create(country=c, language=l)
-                comments.er1 = ratings.er1
-                comments.er2a = ratings.er2a
-                comments.er2b = ratings.er2b
-                comments.er3 = ratings.er3
-                comments.er4 = ratings.er4
-                comments.er5a = ratings.er5a
-                comments.er5b = ratings.er5b
-                comments.er6 = ratings.er6
-                comments.er7 = ratings.er7
-                comments.er8 = ratings.er8
-                comments.save()
+        for override in orm.CountryScorecardOverride.objects.all():
+            c = orm.Country.objects.get(country=override.country.country)
+            ratings, _ = orm.GovScorecardRatings.objects.get_or_create(country=c)
+            ratings.hmis1 = override.hmis1
+            ratings.jar1 = override.jar1
+            ratings.hsp1 = override.hsp1
+            ratings.hsp2 = override.hsp2
+            ratings.hsm1 = override.hsm1
+            ratings.hsm4 = override.hsm4
+            ratings.save()
             
     def backwards(self, orm):
         
         # User chose to not deal with backwards NULL issues for 'GovScorecardRatings.language'
-        raise RuntimeError("Cannot reverse this migration. 'GovScorecardRatings.language' and its values cannot be restored.")
+        raise RuntimeError("Cannot reverse this migration." )
 
     models = {
         'submissions.agency': {
@@ -86,23 +77,27 @@ class Migration(SchemaMigration):
         },
         'submissions.countryscorecardoverride': {
             'Meta': {'object_name': 'CountryScorecardOverride'},
-            'cd2': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'country': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['submissions.Country']", 'unique': 'True'}),
-            'dbr1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
-            'dbr2': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Country']"}),
             'hmis1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
-            'hmis2': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'hsm1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'hsm4': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'hsp1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'hsp2': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'jar1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
+            'jar1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'})
+        },
+        'submissions.countryscorecardoverridecomments': {
+            'Meta': {'unique_together': "(['country', 'language'],)", 'object_name': 'CountryScorecardOverrideComments'},
+            'cd2': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Country']"}),
+            'dbr2': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'hmis2': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'jar4': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'language': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Language']"}),
             'pf2': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'pfm2': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'pr2': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'rf1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'rf2': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'rf3': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'ta2': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'})
@@ -204,20 +199,15 @@ class Migration(SchemaMigration):
             'language': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Language']"})
         },
         'submissions.govscorecardratings': {
-            'Meta': {'unique_together': "(['country', 'language'],)", 'object_name': 'GovScorecardRatings'},
+            'Meta': {'object_name': 'GovScorecardRatings'},
             'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Country']"}),
-            'er1': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'er2a': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'er2b': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'er3': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'er4': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'er5a': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'er5b': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'er6': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'er7': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'er8': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'hmis1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
+            'hsm1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
+            'hsm4': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
+            'hsp1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
+            'hsp3': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'language': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['submissions.Language']"}),
+            'jar1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'r1': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'r2a': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
             'r2b': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True', 'blank': 'True'}),
@@ -264,5 +254,6 @@ class Migration(SchemaMigration):
     }
 
     complete_apps = ['submissions']
+
 
 

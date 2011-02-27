@@ -174,3 +174,22 @@ def memoize(fctn):
     if memo.__doc__:
         memo.__doc__ = "\n".join([memo.__doc__,"This function is memoized."])
     return memo
+
+def formatter(decimals):
+    def f(x):
+        try:
+            x = float(x)
+            x = round(x, decimals)
+            if decimals == 0: 
+                return int(x)
+            return x
+        except ValueError, e:
+            return x
+        except TypeError, e:
+            return x
+    return f
+
+fformat_front = formatter(1)
+fformat_none = formatter(0)
+fformat_two = formatter(2)
+

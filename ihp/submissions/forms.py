@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.functional import curry
 
-from submissions.models import Agency, Country, CountryScorecardOverride, Language
+from submissions.models import Agency, Country, Language
 from submissions.utils import classmaker
 from target import Rating
 
@@ -147,16 +147,59 @@ class GovRatingsForm(CountryForm):
     er8_en = TextField(label="8G Progress Text (English)")
     er8_fr = TextField(label="8G Progress Text (French)")
 
+    hmis1 = RatingsField(label="HMIS1 Rating", required=False)
+    jar1 = RatingsField(label="JAR1 Rating", required=False)
+    hsp1 = RatingsField(label="HSP1 Rating", required=False)
+    hsp2 = RatingsField(label="HSP2 Rating", required=False)
+    hsm1 = RatingsField(label="HSM1 Rating", required=False)
+    hsm4 = RatingsField(label="HSM4 Rating", required=False)
 
     class Media:
         js = ("js/govratingsform.js", )
 
-class _CountryScorecardForm(forms.ModelForm):
-    class Meta:
-        model = CountryScorecardOverride
+class CountryScorecardForm(CountryForm):
+    rf1 = RatingsField(label="RF1")
+    dbr1 = RatingsField(label="DBR1")
+    hmis1 = RatingsField(label="HMIS1")
+    jar1 = RatingsField(label="JAR1")
+    hsp1 = RatingsField(label="HSP1")
+    hsp2 = RatingsField(label="HSP2")
+    hsm1 = RatingsField(label="HSM1")
+    hsm4 = RatingsField(label="HSM4")
 
-class CountryScorecardForm(_CountryScorecardForm, CountryForm):
-    __metaclass__ = classmaker()
+    rf1 = RatingsField(label="RF1", required=False)
+    rf2_English = TextField(label="RF2 (English)")
+    rf2_French = TextField(label="RF2 (French)")
+    rf3_English = TextField(label="RF3 (English)")
+    rf3_French = TextField(label="RF3 (French)")
+
+    dbr1 = RatingsField(label="DBR1", required=False)
+    dbr2_English = TextField(label="DBR2 (English)")
+    dbr2_French = TextField(label="DBR2 (French)")
+
+    hmis1 = RatingsField(label="HMIS1", required=False)
+    hmis2_English = TextField(label="HMIS2 (English)")
+    hmis2_French = TextField(label="HMIS2 (French)")
+
+    jar1 = RatingsField(label="JAR1", required=False)
+    jar4_English = TextField(label="JAR4 (English)")
+    jar4_French = TextField(label="JAR4 (French)")
+
+    hsp1 = RatingsField(label="HSP1", required=False)
+    hsp2 = RatingsField(label="HSP2", required=False)
+    hsm1 = RatingsField(label="HSM1", required=False)
+    hsm4 = RatingsField(label="HSM4", required=False)
+
+    pfm2_English = TextField(label="PFM2 (English)")
+    pfm2_French = TextField(label="PFM2 (French)")
+    pr2_English = TextField(label="PR2 (English)")
+    pr2_French = TextField(label="PR2 (French)")
+    ta2_English = TextField(label="TA2 (English)")
+    ta2_French = TextField(label="TA2 (French)")
+    pf2_English = TextField(label="PF2 (English)")
+    pf2_French = TextField(label="PF2 (French)")
+    cd2_English = TextField(label="CD2 (English)")
+    cd2_French = TextField(label="CD2 (French)")
 
     class Media:
         js = ("js/countryscorecardform.js", )

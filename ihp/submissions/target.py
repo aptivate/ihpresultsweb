@@ -5,6 +5,7 @@ from django.utils.functional import memoize
 from indicators import NA_STR
 from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
 from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, GovScorecardComments, DPScorecardRatings, Rating, Language
+import models
 from target_criteria import criteria_funcs, MissingValueException, CannotCalculateException
 import math
 from itertools import chain
@@ -222,7 +223,7 @@ def calc_country_ratings(country, language=None):
         .
     }
     """
-    language = language or Language.objects.get(language="English")
+    language = language or models.Language.objects.get(language="English")
 
     translation = translations.get_translation(language)
     gov_commentary_text = translation.gov_commentary_text
@@ -233,8 +234,8 @@ def calc_country_ratings(country, language=None):
     targets = get_country_targets(country, g_indicators)
     indicators = calc_country_indicators(country)
     results = {}
-    ratings, _ = GovScorecardRatings.objects.get_or_create(country=country)
-    comment_override, _ = GovScorecardComments.objects.get_or_create(country=country, language=language)
+    ratings, _ = models.GovScorecardRatings.objects.get_or_create(country=country)
+    comment_override, _ = models.GovScorecardComments.objects.get_or_create(country=country, language=language)
 
     def ratings_val(obj, tmpl):
         def _func(indicator):
@@ -294,6 +295,35 @@ def calc_country_ratings(country, language=None):
 
         results[indicator] = result
     return results
+
+def calc_country_scorecard_values(country, language):
+    """
+    Calculate values needed by country scorecard
+    """
+    data = calc_country_ratings(country, language)
+    country_questions = models.GovQuestion.objects.filter(submission__country=country)
+
+    lang = language.language
+    comments, _ = models.CountryScorecardOverrideComments.objects.get_or_create(
+        country=country, language=language
+    )
+
+    data["rf2_%s" % lang] = comments.rf2 or country_questions.filter(question_number="22")[0].latest_value
+    data["rf3_%s" % lang] = comments.rf3 or country_questions.filter(question_number="23")[0].latest_value
+    data["dbr2_%s" % lang] = comments.dbr2 or country_questions.filter(question_number="11")[0].comments
+    data["hmis2_%s" % lang] = comments.hmis2 or country_questions.filter(question_number="21")[0].comments
+    jar4_question = country_questions.filter(question_number="24")[0]
+    data["jar4_%s" % lang] = comments.jar4 or "Latest Value: %s\nComment: %s" % (jar4_question.latest_value, jar4_question.comments)
+    data["pfm2_%s" % lang] = comments.pfm2 or country_questions.filter(question_number="9")[0].comments
+    data["pr2_%s" % lang] = comments.pr2 or country_questions.filter(question_number="10")[0].comments
+    data["pf2_%s" % lang] = comments.pf2 or country_questions.filter(question_number="16")[0].comments
+    data["cd2_%s" % lang] = comments.cd2 or country_questions.filter(question_number="1")[0].comments
+
+    tmp_ta2 = ""
+    for q in models.DPQuestion.objects.filter(submission__country=country, question_number="4"):
+        tmp_ta2 += q.submission.agency.agency + ": " + q.comments + "\n\n"
+    data["ta2_%s" % lang] = comments.ta2 or tmp_ta2
+    return data
 
 def country_agency_indicator_ratings(country, agency):
     """

@@ -1,10 +1,8 @@
 country_select = function(e) {
     option = $("#id_country option:selected");
     $("textarea").text("");
-    //$("select").val("");
 
     $.getJSON("/api/country_scorecard/" + option.val(), function(data) {
-        // TODO still need to do ratings
         for (key in data) {
             $("#id_" + key).val(data[key])
         }
@@ -23,7 +21,7 @@ $(document).ready(function(){
         data = {}
         for (i = 0; i < fields.length; i++) {
             field = fields[i]
-            name = field.id.split("_")[1]
+            name = field.name
             data[name] = field.value
         }
 

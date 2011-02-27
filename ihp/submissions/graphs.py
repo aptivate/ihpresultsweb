@@ -2,8 +2,9 @@ from django.views.generic.simple import direct_to_template
 from functools import partial
 from submissions.models import Agency, Country
 from indicators import calc_agency_country_indicators, NA_STR, calc_overall_agency_indicators, positive_funcs, calc_country_indicators
-from views import get_countries_scorecard_data, get_agencies_scorecard_data
+from views import get_agencies_scorecard_data
 from highcharts import Chart
+import country_scorecard
 
 def safe_diff(a, b):
     if a in [None, NA_STR] or b in [None, NA_STR]:
@@ -263,8 +264,9 @@ class TargetCountryBarGraph(CountryBarGraph):
     
 def additional_graphs(request, template_name="submissions/additionalgraphs.html", extra_context=None):
     extra_context = extra_context or {}
-    country_data = get_countries_scorecard_data()
     agency_data = get_agencies_scorecard_data(Agency.objects.get_by_type("Agency"))
+
+    country_data = dict([(country, country_scorecard.get_country_export_data(country)) for country in Country.objects.all()])
 
     countries = sorted(country_data.keys(), key=lambda x : x.country)
 

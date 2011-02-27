@@ -8,12 +8,13 @@ from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404
 from django.utils.translation import check_for_language
 
-from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, CountryScorecardOverride, Rating, Language
+from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, Rating, Language
 from target import calc_agency_ratings, get_country_progress, calc_country_ratings, get_agency_progress, country_agency_indicator_ratings, country_agency_progress
 from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs, dp_indicators, g_indicators, indicator_questions
 from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm, CountryScorecardForm
-from utils import none_num
+from utils import none_num, fformat_none, fformat_front, fformat_two
 import translations
+import country_scorecard
 
 def get_agency_scorecard_data(agency):
     """
@@ -45,135 +46,6 @@ def get_agencies_scorecard_data(agencies=None):
     return dict([(agency, get_agency_scorecard_data(agency))
         for agency in agencies
         if agency.submission_set.filter(type="DP").count() > 0
-    ])
-
-def get_country_scorecard_data(country, language):
-
-    submissions = country.submission_set.filter(type="Gov")
-    assert submissions.count() == 1
-
-    submission = submissions.all()[0] 
-
-    # Do not process if there are no questions
-    if submission.govquestion_set.all().count() == 0: 
-        raise Exception("Possible incomplete submission")
-    
-    country_data = calc_country_ratings(country, language)
-    
-    for indicator, d in country_data.items():
-        old_comments = d["comments"]
-        comments = []
-        for question_number, country, comment in old_comments:
-            comments.append("%s ] %s" % (question_number, comment))
-        d["comments"] = "\n".join([comment for comment in comments if comment])
-        d["key"] = "%s_%s" % (country, indicator)
-    country_data["np"], country_data["p"] = get_agency_progress(country)
-    country_data["questions"] = {}
-
-    # Add indicators
-    indicators = calc_country_indicators(country)
-    country_data["indicators"] = {}
-    for indicator in indicators:
-        ind = country_data["indicators"][indicator] = {}
-        data = indicators[indicator][0]
-        ind["baseline_value"] = none_num(data[0])
-        ind["baseline_year"] = data[1]
-        ind["latest_value"] = none_num(data[2])
-        ind["latest_year"] = data[3]
-
-    #TODO hack
-    if country_data["indicators"]["3G"]["latest_value"] != NA_STR:
-        country_data["indicators"]["3G"]["hs_budget_gap"] = 15 - country_data["indicators"]["3G"]["latest_value"]
-    else:
-        country_data["indicators"]["3G"]["hs_budget_gap"] = None
-    country_data["indicators"]["other"] = {}
-
-    # Add agency submissions
-    agencies = AgencyCountries.objects.get_country_agencies(country)
-    aval = country_data["agencies"] = {}
-    for agency in agencies:
-        aval[agency.agency] = {}
-        for question in DPQuestion.objects.filter(submission__agency=agency, submission__country=country):
-            qvals = aval[agency.agency][question.question_number] = {}
-            qvals["baseline_year"] = question.baseline_year
-            qvals["baseline_value"] = question.base_val
-            qvals["latest_year"] = question.latest_year
-            qvals["latest_value"] = question.cur_val
-            qvals["comments"] = question.comments
-
-    for question in GovQuestion.objects.filter(submission__country=country):
-        qvals = country_data["questions"][question.question_number] = {}
-        qvals["baseline_year"] = question.baseline_year
-        qvals["latest_year"] = question.latest_year
-        qvals["comments"] = question.comments
-
-        qvals["baseline_value"] = none_num(question.base_val)
-        qvals["latest_value"] = none_num(question.cur_val)
-
-    questions = country_data["questions"]
-
-    def calc_change(val1, val2):
-        try:
-            if val1 == None or val2 == None:
-                return None, None
-            val1 = float(val1)
-            val2 = float(val2)
-            val = val1 / val2 - 1
-            if val < 0:
-                dir = "down"
-            elif val > 0:
-                dir = "up"
-            else:
-                dir = "no change"
-            return fabs(val) * 100, dir
-        except ValueError:
-            return None, None
-
-    other_indicators = country_data["indicators"]["other"]
-    baseline_denom = questions["18"]["baseline_value"] / 10000.0
-    latest_denom = questions["18"]["latest_value"] / 10000.0
-
-    # Outpatient Visits
-    other_indicators["outpatient_visits_baseline"] = questions["19"]["baseline_value"] / baseline_denom
-    other_indicators["outpatient_visits_latest"] = questions["19"]["latest_value"] / latest_denom
-    other_indicators["outpatient_visits_change"], other_indicators["outpatient_visits_change_dir"] = calc_change(other_indicators["outpatient_visits_latest"], other_indicators["outpatient_visits_baseline"])
-
-    # Skilled Personnel
-    other_indicators["skilled_personnel_baseline"] = questions["17"]["baseline_value"] / baseline_denom
-    other_indicators["skilled_personnel_latest"] = questions["17"]["latest_value"] / latest_denom
-    other_indicators["skilled_personnel_change"], other_indicators["skilled_personnel_change_dir"] = calc_change(other_indicators["skilled_personnel_latest"], other_indicators["skilled_personnel_baseline"])
-
-    # Health Workforce
-    other_indicators["health_workforce_perc_of_budget_baseline"] = questions["20"]["baseline_value"] / questions["7"]["baseline_value"]
-    other_indicators["health_workforce_perc_of_budget_latest"] = questions["20"]["latest_value"] / questions["7"]["latest_value"]
-    other_indicators["health_workforce_spent_change"], other_indicators["health_workforce_spent_change_dir"] = calc_change(questions["20"]["latest_value"], questions["20"]["baseline_value"])
-
-    other_indicators["pfm_diff"] = questions["9"]["latest_value"] - questions["9"]["baseline_value"]
-    
-    def sum_agency_values(question_number, field):
-        sum = 0
-        for agency in aval:
-            if question_number in aval[agency]:
-                try:
-                    sum += float(aval[agency][question_number][field])
-                except ValueError:
-                    pass
-        return sum
-
-    coordinated_programmes = sum_agency_values("5", "latest_value") - sum_agency_values("4", "latest_value")
-    if coordinated_programmes > 0.51:
-        other_indicators["coordinated_programmes"] = Rating.TICK
-    elif coordinated_programmes >= 0.11:
-        other_indicators["coordinated_programmes"] = Rating.ARROW
-    else:
-        other_indicators["coordinated_programmes"] = Rating.CROSS
-
-    return country_data
-
-def get_countries_scorecard_data(language):
-    return dict([(country, get_country_scorecard_data(country, language))
-        for country in Country.objects.all()
-        if country.submission_set.filter(type="Gov").count() > 0
     ])
 
 def agency_export_lang(request, language):
@@ -317,193 +189,6 @@ def dp_questionnaire(request, template_name="submissions/dp_questionnaire.html",
     )
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
-def formatter(decimals):
-    def f(x):
-        try:
-            x = float(x)
-            x = round(x, decimals)
-            if decimals == 0: 
-                return int(x)
-            return x
-        except ValueError, e:
-            return x
-        except TypeError, e:
-            return x
-    return f
-
-fformat_front = formatter(1)
-fformat_none = formatter(0)
-fformat_two = formatter(2)
-
-def get_countries_export_data(language=None):
-    # TODO this line is here for backwards compatibility
-    language = language or Language.objects.get(language="English")
-    translation = translations.get_translation(language)
-    data = get_countries_scorecard_data(language)
-    for country, datum in data.items():
-        ratings, _ = CountryScorecardOverride.objects.get_or_create(country=country)
-        try:
-            datum["ER1a"] = datum["1G"]["target"]
-            datum["ER1b"] = datum["1G"]["commentary"]
-            datum["ER2a"] = datum["2Ga"]["target"]
-            datum["ER2b"] = datum["2Ga"]["commentary"]
-            datum["ER3a"] = datum["2Gb"]["target"]
-            datum["ER3b"] = datum["2Gb"]["commentary"]
-            datum["ER4a"] = datum["3G"]["target"]
-            datum["ER4b"] = datum["3G"]["commentary"]
-            datum["ER4c"] = country.country
-            datum["ER5a"] = datum["4G"]["target"]
-            datum["ER5b"] = datum["4G"]["commentary"]
-            datum["ER6a"] = datum["5Ga"]["target"]
-            datum["ER6b"] = datum["5Ga"]["commentary"]
-            datum["ER7a"] = datum["5Gb"]["target"]
-            datum["ER7b"] = datum["5Gb"]["commentary"]
-            datum["ER8a"] = datum["6G"]["target"]
-            datum["ER8b"] = datum["6G"]["commentary"]
-            datum["ER9a"] = datum["7G"]["target"]
-            datum["ER9b"] = datum["7G"]["commentary"]
-            datum["ER10a"] = datum["8G"]["target"]
-            datum["ER10b"] = datum["8G"]["commentary"]
-
-            datum["file"] = country.country
-            datum["TB2"] = translation.gov_tb2 % country.country.upper()
-
-            datum["CD1"] = datum["ER1a"]
-            datum["CD2"] = ratings.cd2 or datum["questions"]["1"]["comments"]
-            datum["HSP1"] = ratings.hsp1 or datum["Q2G"]["target"]
-            datum["HSP2"] = ratings.hsp2 or datum["Q3G"]["target"]
-            datum["HSM1"] = ratings.hsm1 or datum["Q12G"]["target"]
-            datum["HSM2"] = fformat_none(datum["questions"]["15"]["latest_value"])
-            datum["HSM3"] = datum["ER10a"]
-            datum["HSM4"] = ratings.hsm4
-
-            datum["BC1"] = datum["questions"]["5"]["baseline_year"]
-            datum["BC2"] = fformat_front(datum["questions"]["6"]["baseline_value"])
-            datum["BC3"] = datum["questions"]["5"]["latest_year"]
-            datum["BC4"] = fformat_front(datum["questions"]["6"]["latest_value"])
-            datum["BC5"] = "?????"
-            datum["BC6"] = "?????"
-            datum["BC7"] = "?????"
-            datum["BC8"] = "?????"
-            datum["BC9"] = "?????"
-            datum["BC10"] = "?????"
-
-            datum["PC1"] = fformat_front(datum["indicators"]["3G"]["latest_value"])
-            datum["PC2"] = fformat_front(datum["indicators"]["3G"]["hs_budget_gap"])
-            datum["PC3"] = translation.gov_pc3 % datum["PC1"]
-            datum["PC4"] = translation.gov_pc4 % datum["PC2"]
-
-            datum["PF1"] = fformat_none(datum["questions"]["16"]["latest_value"])
-            datum["PF2"] = ratings.pf2 or datum["questions"]["16"]["comments"]
-
-            datum["PFM1"] = datum["ER6a"]
-            datum["PFM2"] = ratings.pfm2 or datum["questions"]["9"]["comments"]
-
-            datum["PR1"] = datum["ER7a"]
-            datum["PR2"] = ratings.pr2 or datum["questions"]["10"]["comments"]
-
-            datum["TA1"] = datum["indicators"]["other"]["coordinated_programmes"]
-            datum["TA2"] = ""
-            for agency in datum["agencies"]:
-                aqs = datum["agencies"][agency]
-                if "4" in aqs:
-                    datum["TA2"] += "%s %s" % (agency, aqs["4"]["comments"].replace("%", "%%"))
-                    datum["TA2"] += "\n"
-            datum["TA2"] = ratings.ta2 or datum["TA2"]
-
-            datum["PHC1"] = fformat_front(datum["indicators"]["other"]["outpatient_visits_baseline"])
-            datum["PHC2"] = datum["questions"]["19"]["baseline_year"]
-            datum["PHC3"] = fformat_front(datum["indicators"]["other"]["outpatient_visits_latest"])
-            datum["PHC4"] = datum["questions"]["19"]["latest_year"]
-            datum["PHC5"] = fformat_front(datum["indicators"]["other"]["outpatient_visits_change"])
-            datum["PHC6"] = datum["indicators"]["other"]["outpatient_visits_change_dir"]
-            datum["PHC7"] = ""
-
-            datum["HRH1"] = fformat_front(datum["indicators"]["other"]["skilled_personnel_baseline"])
-            datum["HRH2"] = datum["questions"]["17"]["baseline_year"]
-            datum["HRH3"] = fformat_front(datum["indicators"]["other"]["skilled_personnel_latest"])
-            datum["HRH4"] = datum["questions"]["17"]["latest_year"]
-            datum["HRH5"] = fformat_front(datum["indicators"]["other"]["skilled_personnel_change"])
-            datum["HRH6"] = datum["indicators"]["other"]["skilled_personnel_change_dir"]
-            datum["HRH7"] = ""
-
-            datum["HS1"] = fformat_front(datum["questions"]["20"]["baseline_value"])
-            datum["HS2"] = datum["questions"]["20"]["baseline_year"]
-            datum["HS3"] = fformat_front(datum["questions"]["20"]["latest_value"])
-            datum["HS4"] = datum["questions"]["20"]["latest_year"]
-            datum["HS5"] = fformat_front(datum["indicators"]["other"]["health_workforce_spent_change"])
-            datum["HS6"] = datum["indicators"]["other"]["health_workforce_spent_change_dir"]
-            datum["HS7"] = ""
-
-            datum["RF1"] = datum["ER8a"]
-            datum["RF2"] = fformat_none(ratings.rf2 or datum["questions"]["22"]["latest_value"])
-            datum["RF3"] = fformat_none(ratings.rf3 or datum["questions"]["23"]["latest_value"])
-
-            datum["HMIS1"] = ratings.hmis1 or datum["Q21G"]["target"]
-            datum["HMIS2"] = ratings.hmis2 or datum["questions"]["21"]["comments"]
-
-            datum["JAR1"] = ratings.jar1 or datum["Q12G"]["target"]
-            #datum["JAR2"] = ""
-            #datum["JAR3"] = fformat_front(datum["questions"]["24"]["latest_value"])
-            #datum["JAR4"] = datum["questions"]["24"]["comments"]
-            #datum["JAR5"] = datum["questions"]["24"]["comments"]
-            datum["JAR2"] = "Field no longer used"
-            datum["JAR3"] = "Field no longer used"
-            datum["JAR4"] = ratings.jar4 or datum["questions"]["24"]["comments"]
-            datum["JAR5"] = "Field no longer used"
-
-            datum["DBR1"] = datum["ER8a"]
-            datum["DBR2"] = ratings.dbr2 or datum["questions"]["11"]["comments"]
-
-            group1 = ["MDG1", "MDG2", "MDG3", "MDG4"]
-            group2 = ["MDG5a", "MDG5b", "MDG6a", "MDG6b", "MDG6c", "MDG7a", "MDG7b"]
-            group1_index = "abcde"
-            group2_index = "12345"
-            needs_percent = ["MDG1", "MDG2", "MDG6a", "MDG6b", "MDG7a", "MDG7b"]
-            add_perc = lambda ind : "%" if ind in needs_percent else ""
-            for mdg in group1 + group2:
-                index = group1_index if mdg in group1 else group2_index
-
-            
-                mdgdata = MDGData.objects.get(mdg_target=mdg, country=country)
-                if not mdgdata.latest_value:
-                    datum[mdg + index[0]] = ""
-                    datum[mdg + index[1]] = ""
-                    datum[mdg + index[2]] = "questionmdg"
-                    datum[mdg + index[3]] = ""
-                    datum[mdg + index[4]] = ""
-                elif not mdgdata.baseline_value:
-                    datum[mdg + index[0]] = str(fformat_front(mdgdata.latest_value)) + add_perc(mdg)
-                    datum[mdg + index[1]] = mdgdata.latest_year
-                    datum[mdg + index[2]] = "questionmdg"
-                    datum[mdg + index[3]] = ""
-                    datum[mdg + index[4]] = ""
-                else:
-                    fmt = fformat_two if mdg == "MDG3" else fformat_front
-            
-                    datum[mdg + index[0]] = str(fmt(mdgdata.latest_value)) + add_perc(mdg)
-                    datum[mdg + index[1]] = mdgdata.latest_year
-                    datum[mdg + index[2]] = mdgdata.arrow
-                    datum[mdg + index[3]] = str(fmt(mdgdata.change)) + add_perc(mdg)
-                    datum[mdg + index[4]] = mdgdata.baseline_year
-
-            datum["F1"] = country.country
-            datum["CN1"] = datum["TB2"]
-            datum["GN1"] = country.country
-
-            datum["Header"] = country.country
-
-            for i in range(1, 14):
-                datum["P%d" % i] = datum["p"].get(i - 1, "pwhite")
-                datum["NP%d" % i] = datum["np"].get(i - 1, "npwhite")
-
-            working_draft, _ = CountryWorkingDraft.objects.get_or_create(country=country)
-            datum["workingdraft"] = "workingdraft" if working_draft.is_draft else ""
-
-        except Exception, e:
-            traceback.print_exc()
-    return data
-
 def country_export(request, language):
     language = get_object_or_404(Language, language=language)
     headers = [
@@ -544,15 +229,41 @@ def country_export(request, language):
         "workingdraft",
     ]
 
-    data = get_countries_export_data(language)
+    special_formatting = {
+       "HSM2" : fformat_none, 
+       "BC2" : fformat_front, 
+       "BC4" : fformat_front, 
+       "PC1" : fformat_front, 
+       "PC2" : fformat_front, 
+       "PF1" : fformat_front, 
+       "PHC1" : fformat_front, 
+       "PHC3" : fformat_front, 
+       "PHC5" : fformat_front, 
+       "HRH1" : fformat_front, 
+       "HRH3" : fformat_front, 
+       "HRH5" : fformat_front, 
+       "HS1" : fformat_front, 
+       "HS3" : fformat_front, 
+       "HS5" : fformat_front, 
+       "RF2" : fformat_front, 
+       "RF3" : fformat_front, 
+    }
+    def special_format(header, val):
+        if header in special_formatting:
+            return special_formatting[header](val)
+        else:
+            return val
 
     response = HttpResponse(mimetype="text/csv")
     response["Content-Disposition"] = "attachment; filename=country_export.csv"
     writer = csv.writer(response)
     writer.writerow(headers)
 
-    for country in data:
-        writer.writerow([data[country].get(header, "") for header in headers])
+    for country in Country.objects.all():
+        data = country_scorecard.get_country_export_data(country, language)
+        writer.writerow([
+            special_format(header, data.get(header, "")) for header in headers
+        ])
     return response
 
 def gov_questionnaire(request, template_name="submissions/gov_questionnaire.html", extra_context=None):

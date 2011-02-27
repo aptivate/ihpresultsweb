@@ -303,7 +303,12 @@ class GovScorecardRatings(models.Model):
     r6 = RatingsField()
     r7 = RatingsField()
     r8 = RatingsField()
-
+    hmis1  = RatingsField(verbose_name="HMIS1 (Q21G)")
+    jar1 = RatingsField(verbose_name="JAR1 (Q12G)")
+    hsp1 = RatingsField(verbose_name="HSP1 (Q2G)")
+    hsp2 = RatingsField(verbose_name="HSP2 (Q3G)")
+    hsm1 = RatingsField(verbose_name="HSM1 (Q12G)")
+    hsm4 = RatingsField(verbose_name="HSM4")
 
     def __unicode__(self):
         return unicode(self.country)
@@ -333,45 +338,27 @@ class GovScorecardComments(models.Model):
         verbose_name_plural = "Gov Scorecard Comments" 
         unique_together = ["country", "language"]
 
-class CountryScorecardOverride(models.Model):
-    country = models.OneToOneField(Country, null=False)
+class CountryScorecardOverrideComments(models.Model):
+    country = models.ForeignKey(Country, null=False)
+    language = models.ForeignKey(Language, null=False)
 
-    rf1 = RatingsField(verbose_name="RF1")
     rf2 = CommentsField(verbose_name="RF2")
     rf3 = CommentsField(verbose_name="RF3")
-
-    dbr1 = RatingsField(verbose_name="DBR1")
     dbr2 = CommentsField(verbose_name="DBR2")
-
-    hmis1 = RatingsField(verbose_name="HMIS1")
     hmis2 = CommentsField(verbose_name="HMIS2")
-
-    jar1 = RatingsField(verbose_name="JAR1")
     jar4 = CommentsField(verbose_name="JAR4")
-
-    hsp1 = RatingsField(verbose_name="HSP1")
-
-    hsp2 = RatingsField(verbose_name="HSP2")
-
-    hsm1 = RatingsField(verbose_name="HSM1")
-
-    hsm4 = RatingsField(verbose_name="HSM4")
-
     pfm2 = CommentsField(verbose_name="PFM2")
-
     pr2 = CommentsField(verbose_name="PR2")
-
     ta2 = CommentsField(verbose_name="TA2")
-
     pf2 = CommentsField(verbose_name="PF2")
-
     cd2 = CommentsField(verbose_name="CD2")
 
     def __unicode__(self):
-        return unicode(self.country)
+        return "%s (%s)" % (self.country, self.language)
 
     class Meta:
-       verbose_name_plural = "Country Scorecard Override" 
+        verbose_name_plural = "Country Scorecard Override Comments"
+        unique_together = ["country", "language"]
 
 class Country8DPFix(models.Model):
     agency = models.ForeignKey(Agency, null=False)
