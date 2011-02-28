@@ -295,18 +295,17 @@ div.col {
  	float: right;
 }
 
-#scorecard ul {
+#content #scorecard ul {
 	border:1px solid #D1DDD9;
 	padding:10px;
-	margin:0;
+	margin:0 0 10px;
 	list-style:none;
 	-moz-border-radius:10px;
 	-webkit-border-radius:10px;
 	border-radius:10px;
 	clear:both;
 	position:relative;
-	width:428px;
-	margin-bottom:10px;
+	width:426px;
 	display:block;
 	float:left;
 }
@@ -734,7 +733,11 @@ div.col {
 	font-family: inherit;
 	font-weight: inherit;
 	line-height: inherit;
-} 
+}
+/* Hide wordpress frigging empty paragraphs where we don't want them */
+.infobox > p {
+	display: none;
+}  
 
 /* Simple Tooltips CSS styles */
 
@@ -779,3 +782,24 @@ div.col {
 {
 	vertical-align: inherit;
 }
+
+/* Data tables */
+
+table.data {
+	border-collapse: collapse;
+}
+
+table.data th, table.data td {
+	padding: 0.2em 0.5em;
+	text-align: left;
+} 
+
+table.data th {
+	border-bottom: 1px solid #ddd;
+}
+
+table.data td {
+	border: 1px solid #eee;
+	border-style: solid none;
+}
+
