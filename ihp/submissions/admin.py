@@ -11,6 +11,13 @@ class AgencyAdmin(admin.ModelAdmin):
     list_display = ("agency", "type")
 
 admin.site.register(Agency, AgencyAdmin)
+
+class AgencyProfileAdmin(admin.ModelAdmin):
+    list_filter = ("language", "agency")
+    list_display = ("agency", "language")
+
+admin.site.register(AgencyProfile, AgencyProfileAdmin)
+
 admin.site.register(Country)
 
 class SubmissionAdmin(admin.ModelAdmin):

@@ -6,11 +6,12 @@ import traceback
 def get_agency_scorecard_data(agency, language=None):
     try:
         language = language or models.Language.objects.get(language="English")
+        agency_profile, _ = models.AgencyProfile.objects.get_or_create(agency=agency, language=language)
         data = target.calc_agency_ratings(agency, language)
         data["np"], data["p"] = target.get_country_progress(agency)
         data["file"] = agency.agency
         data["agency"] = agency.agency 
-        data["profile"] = agency.description
+        data["profile"] = agency_profile.description
         for indicator in indicators.dp_indicators:
             h = indicator.replace("DP", "")
             data["er%s" % h] = data[indicator]["commentary"]

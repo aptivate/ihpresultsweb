@@ -10,6 +10,12 @@ class Rating(object):
     CROSS = "cross"
     NONE = "none"
 
+class Language(models.Model):
+    language = models.CharField(max_length=30, null=False)
+
+    def __unicode__(self):
+        return self.language
+
 class AgencyManager(models.Manager):
     def get_query_set(self):
         return super(AgencyManager, self).get_query_set().filter(type="Agency")
@@ -22,7 +28,6 @@ class AgencyManager(models.Manager):
 
 class Agency(models.Model):
     agency = models.CharField(max_length=50, null=False, unique=True)
-    description = models.TextField(blank=True)
     type = models.CharField(max_length=15, null=False)
     objects = AgencyManager()
 
@@ -36,6 +41,18 @@ class Agency(models.Model):
 
     class Meta:
        verbose_name_plural = "Agencies" 
+
+class AgencyProfile(models.Model):
+    agency = models.ForeignKey(Agency, null=False)
+    language = models.ForeignKey(Language, null=False)
+    description = models.TextField(blank=True)
+
+    def __unicode__(self):
+        return unicode(self.agency)
+
+    class Meta:
+       verbose_name_plural = "Agency Profiles" 
+       unique_together = ["agency", "language"]
 
 class AgencyWorkingDraft(models.Model):
     agency = models.OneToOneField(Agency, null=False)
@@ -221,12 +238,6 @@ class MDGData(models.Model):
 
     class Meta:
         verbose_name_plural = "MDG Data" 
-
-class Language(models.Model):
-    language = models.CharField(max_length=30, null=False)
-
-    def __unicode__(self):
-        return self.language
 
 class DPScorecardSummary(models.Model):
     agency = models.ForeignKey(Agency, null=False)

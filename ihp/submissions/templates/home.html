@@ -126,18 +126,29 @@
                     </div>
                 </div> <!-- end row 2 -->
                 <div class="yui-b"> 
-                    <div class="yui-u blockrow">
-                        <h2>Forms</h2>
-                        <p>
-                            <ol>
-                                <li><a href="{% url dp_summary_edit %}">DP Summary Form</a></li>
-                                <li><a href="{% url dp_ratings_edit %}">DP Ratings Form</a></li>
-                                <li><a href="{% url gov_ratings_edit %}">Gov Ratings Form</a></li>
-                                <li><a href="{% url country_scorecard_ratings_edit %}">Country Scorecard Form</a></li>
-                                <li><a href="{% url admin:submissions_mdgdata_changelist %}">MDG Data</a></li>
-                                <li><a href="{% url admin:submissions_country8dpfix_changelist %}">8DP Fix</a></li>
-                            </ol>
-                        </p>
+                    <div class="yui-gb columnfix"> 
+                        <div class="yui-u first">
+                            <h2>Agency Forms</h2>
+                            <p>
+                                <ol style="padding-left:5px">
+                                    <li><a href="{% url admin:submissions_agencyprofile_changelist %}">Agency Profile</a></li>
+                                    <li><a href="{% url dp_summary_edit %}">DP Summary Form</a></li>
+                                    <li><a href="{% url dp_ratings_edit %}">DP Ratings Form</a></li>
+                                    <li><a href="{% url admin:submissions_country8dpfix_changelist %}">8DP Fix</a></li>
+                                </ol>
+                            </p>
+                        </div>
+                        <div class="yui-u">
+                            <h2>Country Forms</h2>
+                            <p>
+                                <ol style="padding-left:5px">
+                                    <li><a href="{% url gov_ratings_edit %}">Gov Ratings Form</a></li>
+                                    <li><a href="{% url country_scorecard_ratings_edit %}">Country Scorecard Form</a></li>
+                                    <li><a href="{% url admin:submissions_mdgdata_changelist %}">MDG Data</a></li>
+                                </ol>
+                            </p>
+                        </div>
+                        <div class="yui-u"></div>
                     </div>
                 </div> <!-- end row 2 -->
                 <div class="yui-b"> 
