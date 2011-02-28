@@ -71,11 +71,16 @@ admin.site.register(AgencyWorkingDraft, AgencyWorkingDraftAdmin)
 class CountryWorkingDraftAdmin(admin.ModelAdmin):
     list_display = ("country", "is_draft")
 admin.site.register(CountryWorkingDraft, CountryWorkingDraftAdmin)
-admin.site.register(DPScorecardSummary)
+
+class DPScorecardSummaryAdmin(admin.ModelAdmin):
+    list_display = ("agency", "language")
+admin.site.register(DPScorecardSummary, DPScorecardSummaryAdmin)
 
 class DPScorecardRatingsAdmin(admin.ModelAdmin):
     list_display = ("agency", "r1" , "r2a", "r2b", "r2c", "r3", "r4", "r5a", "r5b", "r5c", "r6", "r7", "r8")
 admin.site.register(DPScorecardRatings, DPScorecardRatingsAdmin)
+
+admin.site.register(DPScorecardComments)
 
 class GovScorecardRatingsAdmin(admin.ModelAdmin):
     list_display = ("country", "r1" , "r2a", "r2b", "r3", "r4", "r5a", "r5b", "r6", "r7", "r8")

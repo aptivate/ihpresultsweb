@@ -15,48 +15,10 @@ from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm, CountryScorecard
 from utils import none_num, fformat_none, fformat_front, fformat_two
 import translations
 import country_scorecard
+import agency_scorecard
 
-def get_agency_scorecard_data(agency):
-    """
-    Return data relevant to this agency's submissions
-    Returns None if no submission has yet been submitted
-    """
-
-    submissions = agency.submission_set.filter(type="DP")
-    if submissions.count() == 0: return None
-
-    agency_data = calc_agency_ratings(agency)
-
-    # Include aggegated comments
-    for indicator, d in agency_data.items():
-        old_comments = d["comments"]
-        comments = []
-        for question_number, country, comment in old_comments:
-            comments.append("%s %s] %s" % (question_number, country, comment))
-        d["comments"] = "\n".join([comment for comment in comments if comment])
-        d["key"] = "%s_%s" % (agency, indicator)
-
-    # Include a list of countries in which progress isn't/is being made
-    agency_data["np"], agency_data["p"] = get_country_progress(agency)
-
-    return agency_data
-
-def get_agencies_scorecard_data(agencies=None):
-    agencies = agencies or Agency.objects.all_types()
-    return dict([(agency, get_agency_scorecard_data(agency))
-        for agency in agencies
-        if agency.submission_set.filter(type="DP").count() > 0
-    ])
-
-def agency_export_lang(request, language):
-    if language and check_for_language(language):
-        if hasattr(request, 'session'):
-            request.session['django_language'] = language
-        else:
-            response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
-    return agency_export(request)
-    
-def agency_export(request):
+def agency_export(request, language):
+    language = get_object_or_404(Language, language=language)
 
     headers = [
         "file", "agency", "profile", 
@@ -69,46 +31,16 @@ def agency_export(request):
         "workingdraft",
     ]
 
-    data = get_agencies_scorecard_data()
-    for agency, datum in data.items():
-        try:
-            datum["file"] = agency.agency
-            datum["agency"] = agency.agency 
-            datum["profile"] = agency.description
-            for indicator in dp_indicators:
-
-                h = indicator.replace("DP", "")
-                datum["er%s" % h] = datum[indicator]["commentary"]
-                datum["r%s" % h] = datum[indicator]["target"]
-
-            for i in range(1, 11):
-                datum["p%d" % i] = datum["p"].get(i - 1, "pgreen")
-                datum["np%d" % i] = datum["np"].get(i - 1, "npwhite")
-            try:
-                summary = DPScorecardSummary.objects.get(agency=agency)
-                datum["erb1"] = summary.erb1
-                datum["erb2"] = summary.erb2
-                datum["erb3"] = summary.erb3
-                datum["erb4"] = summary.erb4
-                datum["erb5"] = summary.erb5
-                datum["erb6"] = summary.erb6
-                datum["erb7"] = summary.erb7
-                datum["erb8"] = summary.erb8
-            except DPScorecardSummary.DoesNotExist:
-                pass
-
-            working_draft, _ = AgencyWorkingDraft.objects.get_or_create(agency=agency)
-            datum["workingdraft"] = "workingdraft" if working_draft.is_draft else ""
-
-        except Exception, e:
-            traceback.print_exc()
-
     response = HttpResponse(mimetype="text/csv")
     response["Content-Disposition"] = "attachment; filename=agency_export.csv"
     writer = csv.writer(response)
     writer.writerow(headers)
-    for agency in data:
-        writer.writerow([data[agency].get(header, "") for header in headers])
+
+    for agency in Agency.objects.all():
+        data = agency_scorecard.get_agency_scorecard_data(agency, language)
+        writer.writerow([
+            data.get(header, "") for header in headers
+        ])
     return response
 
 def agency_alternative_baselines(request, template_name="submissions/agency_alternative_baselines.html", extra_context=None):
@@ -559,7 +491,8 @@ def agency_country_ratings(request, template_name="submissions/agency_country_ra
 def agency_ratings(request, template_name="submissions/agency_ratings.html", extra_context=None):
     extra_context = extra_context or {}
     ratings = []
-    data = get_agencies_scorecard_data()
+    data = dict([(agency, agency_scorecard.get_agency_scorecard_data(agency)) for agency in Agency.objects.all()])
+
     agencies = Agency.objects.all().order_by("agency")
     for indicator in dp_indicators:
         rating = {}

@@ -2,6 +2,11 @@
 
 {% block head %}
 {{ form.media }}
+<style>
+.gentext {
+    text-align: left;
+}
+</style>
 {% endblock %}
 
 {% block body %}
@@ -18,10 +23,14 @@
             {{ form.r1 }}
             </li>
             <li>
-            {{ form.er1.label_tag }}
-            {{ form.er1 }}
+            {{ form.er1_English.label_tag }}
+            {{ form.er1_English }}
             </li>
             <li>
+            {{ form.er1_French.label_tag }}
+            {{ form.er1_French }}
+            </li>
+            <li class="gentext">
                 Generated Text:<br/>
                 <div id="id_gr1"></div>
             </li>
@@ -35,10 +44,14 @@
             {{ form.r2a }}
             </li>
             <li>
-            {{ form.er2a.label_tag }}
-            {{ form.er2a }}
+            {{ form.er2a_English.label_tag }}
+            {{ form.er2a_English }}
             </li>
             <li>
+            {{ form.er2a_French.label_tag }}
+            {{ form.er2a_French }}
+            </li>
+            <li class="gentext">
                 Generated Text:<br/>
                 <div id="id_gr2a"></div>
             </li>
@@ -52,10 +65,14 @@
             {{ form.r2b }}
             </li>
             <li>
-            {{ form.er2b.label_tag }}
-            {{ form.er2b }}
+            {{ form.er2b_English.label_tag }}
+            {{ form.er2b_English }}
             </li>
             <li>
+            {{ form.er2b_French.label_tag }}
+            {{ form.er2b_French }}
+            </li>
+            <li class="gentext">
                 Generated Text:<br/>
                 <div id="id_gr2b"></div>
             </li>
@@ -69,10 +86,14 @@
             {{ form.r2c }}
             </li>
             <li>
-            {{ form.er2c.label_tag }}
-            {{ form.er2c }}
+            {{ form.er2c_English.label_tag }}
+            {{ form.er2c_English }}
             </li>
             <li>
+            {{ form.er2c_French.label_tag }}
+            {{ form.er2c_French }}
+            </li>
+            <li class="gentext">
                 Generated Text:<br/>
                 <div id="id_gr2c"></div>
             </li>
@@ -86,10 +107,14 @@
             {{ form.r3 }}
             </li>
             <li>
-            {{ form.er3.label_tag }}
-            {{ form.er3 }}
+            {{ form.er3_English.label_tag }}
+            {{ form.er3_English }}
             </li>
             <li>
+            {{ form.er3_French.label_tag }}
+            {{ form.er3_French }}
+            </li>
+            <li class="gentext">
                 Generated Text:<br/>
                 <div id="id_gr3"></div>
             </li>
@@ -103,10 +128,14 @@
             {{ form.r4 }}
             </li>
             <li>
-            {{ form.er4.label_tag }}
-            {{ form.er4 }}
+            {{ form.er4_English.label_tag }}
+            {{ form.er4_English }}
             </li>
             <li>
+            {{ form.er4_French.label_tag }}
+            {{ form.er4_French }}
+            </li>
+            <li class="gentext">
                 Generated Text:<br/>
                 <div id="id_gr4"></div>
             </li>
@@ -120,10 +149,14 @@
             {{ form.r5a }}
             </li>
             <li>
-            {{ form.er5a.label_tag }}
-            {{ form.er5a }}
+            {{ form.er5a_English.label_tag }}
+            {{ form.er5a_English }}
             </li>
             <li>
+            {{ form.er5a_French.label_tag }}
+            {{ form.er5a_French }}
+            </li>
+            <li class="gentext">
                 Generated Text:<br/>
                 <div id="id_gr5a"></div>
             </li>
@@ -137,10 +170,14 @@
             {{ form.r5b }}
             </li>
             <li>
-            {{ form.er5b.label_tag }}
-            {{ form.er5b }}
+            {{ form.er5b_English.label_tag }}
+            {{ form.er5b_English }}
             </li>
             <li>
+            {{ form.er5b_French.label_tag }}
+            {{ form.er5b_French }}
+            </li>
+            <li class="gentext">
                 Generated Text:<br/>
                 <div id="id_gr5b"></div>
             </li>
@@ -154,10 +191,14 @@
             {{ form.r5c }}
             </li>
             <li>
-            {{ form.er5c.label_tag }}
-            {{ form.er5c }}
+            {{ form.er5c_English.label_tag }}
+            {{ form.er5c_English }}
             </li>
             <li>
+            {{ form.er5c_French.label_tag }}
+            {{ form.er5c_French }}
+            </li>
+            <li class="gentext">
                 Generated Text:<br/>
                 <div id="id_gr5c"></div>
             </li>
@@ -171,10 +212,14 @@
             {{ form.r6 }}
             </li>
             <li>
-            {{ form.er6.label_tag }}
-            {{ form.er6 }}
+            {{ form.er6_English.label_tag }}
+            {{ form.er6_English }}
             </li>
             <li>
+            {{ form.er6_French.label_tag }}
+            {{ form.er6_French }}
+            </li>
+            <li class="gentext">
                 Generated Text:<br/>
                 <div id="id_gr6"></div>
             </li>
@@ -188,10 +233,14 @@
             {{ form.r7 }}
             </li>
             <li>
-            {{ form.er7.label_tag }}
-            {{ form.er7 }}
+            {{ form.er7_English.label_tag }}
+            {{ form.er7_English }}
             </li>
             <li>
+            {{ form.er7_French.label_tag }}
+            {{ form.er7_French }}
+            </li>
+            <li class="gentext">
                 Generated Text:<br/>
                 <div id="id_gr7"></div>
             </li>
@@ -205,10 +254,14 @@
             {{ form.r8 }}
             </li>
             <li>
-            {{ form.er8.label_tag }}
-            {{ form.er8 }}
+            {{ form.er8_English.label_tag }}
+            {{ form.er8_English }}
             </li>
             <li>
+            {{ form.er8_French.label_tag }}
+            {{ form.er8_French }}
+            </li>
+            <li class="gentext">
                 Generated Text:<br/>
                 <div id="id_gr8"></div>
             </li>

@@ -2,6 +2,22 @@
 
 {% block head %}
 {{ form.media }}
+<style>
+
+.comments {
+    text-align: left;
+}
+
+.text_box {
+    width: 400px;
+    float: left;
+}
+
+.french {
+    background-color: #6ea265;
+}
+
+</style>
 {% endblock %}
 
 {% block body %}
@@ -14,12 +30,16 @@
         <legend>1DP</legend>
         <ol>
             <li>
-            {{ form.text1.label_tag }}
-            {{ form.text1 }}
+                Comments<br/>
+                <div id="id_text1" class="comments"></div>
             </li>
             <li>
-            {{ form.summary1.label_tag }}
-            {{ form.summary1 }}
+            {{ form.erb1_English.label_tag }}
+            {{ form.erb1_English }}
+            </li>
+            <li>
+            {{ form.erb1_French.label_tag }}
+            {{ form.erb1_French }}
             </li>
         </ol>
     </fieldset>
@@ -27,20 +47,24 @@
         <legend>2DP</legend>
         <ol>
             <li>
-            {{ form.text2a.label_tag }}
-            {{ form.text2a }}
+                2DPa Comments<br/>
+                <div id="id_text2a" class="comments"></div>
             </li>
             <li>
-            {{ form.text2b.label_tag }}
-            {{ form.text2b }}
+                2DPb Comments<br/>
+                <div id="id_text2b" class="comments"></div>
             </li>
             <li>
-            {{ form.text2c.label_tag }}
-            {{ form.text2c }}
+                2DPc Comments<br/>
+                <div id="id_text2c" class="comments"></div>
             </li>
             <li>
-            {{ form.summary2.label_tag }}
-            {{ form.summary2 }}
+            {{ form.erb2_English.label_tag }}
+            {{ form.erb2_English }}
+            </li>
+            <li>
+            {{ form.erb2_French.label_tag }}
+            {{ form.erb2_French }}
             </li>
         </ol>
     </fieldset>
@@ -48,12 +72,16 @@
         <legend>3DP</legend>
         <ol>
             <li>
-            {{ form.text3.label_tag }}
-            {{ form.text3 }}
+                Comments<br/>
+                <div id="id_text3" class="comments"></div>
             </li>
             <li>
-            {{ form.summary3.label_tag }}
-            {{ form.summary3 }}
+            {{ form.erb3_English.label_tag }}
+            {{ form.erb3_English }}
+            </li>
+            <li>
+            {{ form.erb3_French.label_tag }}
+            {{ form.erb3_French }}
             </li>
         </ol>
     </fieldset>
@@ -61,12 +89,16 @@
         <legend>4DP</legend>
         <ol>
             <li>
-            {{ form.text4.label_tag }}
-            {{ form.text4 }}
+                Comments<br/>
+                <div id="id_text4" class="comments"></div>
             </li>
             <li>
-            {{ form.summary4.label_tag }}
-            {{ form.summary4 }}
+            {{ form.erb4_English.label_tag }}
+            {{ form.erb4_English }}
+            </li>
+            <li>
+            {{ form.erb4_French.label_tag }}
+            {{ form.erb4_French }}
             </li>
         </ol>
     </fieldset>
@@ -74,20 +106,24 @@
         <legend>5DP</legend>
         <ol>
             <li>
-            {{ form.text5a.label_tag }}
-            {{ form.text5a }}
+                5DPa Comments<br/>
+                <div id="id_text5a" class="comments"></div>
             </li>
             <li>
-            {{ form.text5b.label_tag }}
-            {{ form.text5b }}
+                5DPb Comments<br/>
+                <div id="id_text5b" class="comments"></div>
             </li>
             <li>
-            {{ form.text5c.label_tag }}
-            {{ form.text5c }}
+                5DPc Comments<br/>
+                <div id="id_text5c" class="comments"></div>
             </li>
             <li>
-            {{ form.summary5.label_tag }}
-            {{ form.summary5 }}
+            {{ form.erb5_English.label_tag }}
+            {{ form.erb5_English }}
+            </li>
+            <li>
+            {{ form.erb5_French.label_tag }}
+            {{ form.erb5_French }}
             </li>
         </ol>
     </fieldset>
@@ -95,12 +131,16 @@
         <legend>6DP</legend>
         <ol>
             <li>
-            {{ form.text6.label_tag }}
-            {{ form.text6 }}
+                Comments<br/>
+                <div id="id_text6" class="comments"></div>
             </li>
             <li>
-            {{ form.summary6.label_tag }}
-            {{ form.summary6 }}
+            {{ form.erb6_English.label_tag }}
+            {{ form.erb6_English }}
+            </li>
+            <li>
+            {{ form.erb6_French.label_tag }}
+            {{ form.erb6_French }}
             </li>
         </ol>
     </fieldset>
@@ -108,12 +148,16 @@
         <legend>7DP</legend>
         <ol>
             <li>
-            {{ form.text7.label_tag }}
-            {{ form.text7 }}
+                Comments<br/>
+                <div id="id_text7" class="comments"></div>
             </li>
             <li>
-            {{ form.summary7.label_tag }}
-            {{ form.summary7 }}
+            {{ form.erb7_English.label_tag }}
+            {{ form.erb7_English }}
+            </li>
+            <li>
+            {{ form.erb7_French.label_tag }}
+            {{ form.erb7_French }}
             </li>
         </ol>
     </fieldset>
@@ -121,12 +165,16 @@
         <legend>8DP</legend>
         <ol>
             <li>
-            {{ form.text8.label_tag }}
-            {{ form.text8 }}
+                Comments<br/>
+                <div id="id_text8" class="comments"></div>
             </li>
             <li>
-            {{ form.summary8.label_tag }}
-            {{ form.summary8 }}
+            {{ form.erb8_English.label_tag }}
+            {{ form.erb8_English }}
+            </li>
+            <li>
+            {{ form.erb8_French.label_tag }}
+            {{ form.erb8_French }}
             </li>
         </ol>
     </fieldset>

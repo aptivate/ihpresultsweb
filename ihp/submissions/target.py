@@ -83,7 +83,7 @@ commentary_map = {
 default_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
 na_text = "This Standard Performance Measure was deemed not applicable to %s."
 
-def calc_agency_ratings(agency):
+def calc_agency_ratings(agency, language=None):
     """
     Returns information for all indicators for the given agency in a dict with the
     following form
@@ -106,10 +106,12 @@ def calc_agency_ratings(agency):
     }
     """
 
-    def ratings_val(tmpl):
+    language = language or models.Language.objects.get(language="English")
+
+    def ratings_val(obj, tmpl):
         def _func(indicator):
             h = indicator.replace("DP", "")
-            d = ratings.__dict__
+            d = obj.__dict__
             return d.get(tmpl % h, None)
         return _func
 
@@ -119,13 +121,14 @@ def calc_agency_ratings(agency):
         else:
             return x
 
-    ratings_comments = ratings_val("er%s")
-    ratings_target = ratings_val("r%s")
 
     targets = get_agency_targets(agency, dp_indicators)
     indicators = calc_agency_indicators(agency)
-    ratings, _ = DPScorecardRatings.objects.get_or_create(agency=agency)
+    ratings, _ = models.DPScorecardRatings.objects.get_or_create(agency=agency)
+    comments_override, _ = models.DPScorecardComments.objects.get_or_create(agency=agency, language=language)
     results = {}
+    ratings_comments = ratings_val(comments_override, "er%s")
+    ratings_target = ratings_val(ratings, "r%s")
 
     for indicator in indicators:
         (base_val, base_year, cur_val, cur_year), comments = indicators[indicator]

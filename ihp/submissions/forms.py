@@ -39,33 +39,23 @@ class CountryForm(forms.Form):
 
 class DPSummaryForm(AgencyForm):
 
-    text1 = TextField(label="1DP Comments")
-    summary1 = TextField(label="1DP Summary")
+    erb1_English = TextField(label="1DP Summary (English)")
+    erb2_English = TextField(label="2DP Summary (English)")
+    erb3_English = TextField(label="3DP Summary (English)")
+    erb4_English = TextField(label="4DP Summary (English)")
+    erb5_English = TextField(label="5DP Summary (English)")
+    erb6_English = TextField(label="6DP Summary (English)")
+    erb7_English = TextField(label="7DP Summary (English)")
+    erb8_English = TextField(label="8DP Summary (English)")
 
-    text2a = TextField(label="2DPa Comments")
-    text2b = TextField(label="2DPb Comments")
-    text2c = TextField(label="2DPc Comments")
-    summary2 = TextField(label="2DP Summary")
-
-    text3 = TextField(label="3DP Comments")
-    summary3 = TextField(label="3DP Summary")
-
-    text4 = TextField(label="4DP Comments")
-    summary4 = TextField(label="4DP Summary")
-
-    text5a = TextField(label="5DPa Comments")
-    text5b = TextField(label="5DPb Comments")
-    text5c = TextField(label="5DPc Comments")
-    summary5 = TextField(label="5DP Summary")
-
-    text6 = TextField(label="6DP Comments")
-    summary6 = TextField(label="6DP Summary")
-
-    text7 = TextField(label="7DP Comments")
-    summary7 = TextField(label="7DP Summary")
-
-    text8 = TextField(label="8DP Comments")
-    summary8 = TextField(label="8DP Summary")
+    erb1_French = TextField(label="1DP Summary (French)")
+    erb2_French = TextField(label="2DP Summary (French)")
+    erb3_French = TextField(label="3DP Summary (French)")
+    erb4_French = TextField(label="4DP Summary (French)")
+    erb5_French = TextField(label="5DP Summary (French)")
+    erb6_French = TextField(label="6DP Summary (French)")
+    erb7_French = TextField(label="7DP Summary (French)")
+    erb8_French = TextField(label="8DP Summary (French)")
 
     class Media:
         js = ("js/dpsummaryform.js", )
@@ -73,36 +63,48 @@ class DPSummaryForm(AgencyForm):
 class DPRatingsForm(AgencyForm):
 
     r1 = RatingsField(label="1DP Rating", required=False)
-    er1 = TextField(label="1DP Progress Text")
+    er1_English = TextField(label="1DP Progress Text (English)")
+    er1_French = TextField(label="1DP Progress Text (French)")
 
     r2a = RatingsField(label="2DPa Rating", required=False)
-    er2a = TextField(label="2DPa Progress Text")
+    er2a_English = TextField(label="2DPa Progress Text (English)")
+    er2a_French = TextField(label="2DPa Progress Text (French)")
     r2b = RatingsField(label="2DPb Rating", required=False)
-    er2b = TextField(label="2DPb Progress Text")
+    er2b_English = TextField(label="2DPb Progress Text (English)")
+    er2b_French = TextField(label="2DPb Progress Text (French)")
     r2c = RatingsField(label="2DPc Rating", required=False)
-    er2c = TextField(label="2DPc Progress Text")
+    er2c_English = TextField(label="2DPc Progress Text (English)")
+    er2c_French = TextField(label="2DPc Progress Text (French)")
 
     r3 = RatingsField(label="3DP Rating", required=False)
-    er3 = TextField(label="3DP Progress Text")
+    er3_English = TextField(label="3DP Progress Text (English)")
+    er3_French = TextField(label="3DP Progress Text (French)")
 
     r4 = RatingsField(label="4DP Rating", required=False)
-    er4 = TextField(label="4DP Progress Text")
+    er4_English = TextField(label="4DP Progress Text (English)")
+    er4_French = TextField(label="4DP Progress Text (French)")
 
     r5a = RatingsField(label="5DPa Rating", required=False)
-    er5a = TextField(label="5DPa Progress Text")
+    er5a_English = TextField(label="5DPa Progress Text (English)")
+    er5a_French = TextField(label="5DPa Progress Text (French)")
     r5b = RatingsField(label="5DPb Rating", required=False)
-    er5b = TextField(label="5DPb Progress Text")
+    er5b_English = TextField(label="5DPb Progress Text (English)")
+    er5b_French = TextField(label="5DPb Progress Text (French)")
     r5c = RatingsField(label="5DPc Rating", required=False)
-    er5c = TextField(label="5DPc Progress Text")
+    er5c_English = TextField(label="5DPc Progress Text (English)")
+    er5c_French = TextField(label="5DPc Progress Text (French)")
 
     r6 = RatingsField(label="6DP Rating", required=False)
-    er6 = TextField(label="6DP Progress Text")
+    er6_English = TextField(label="6DP Progress Text (English)")
+    er6_French = TextField(label="6DP Progress Text (French)")
 
     r7 = RatingsField(label="7DP Rating", required=False)
-    er7 = TextField(label="7DP Progress Text")
+    er7_English = TextField(label="7DP Progress Text (English)")
+    er7_French = TextField(label="7DP Progress Text (French)")
 
     r8 = RatingsField(label="8DP Rating", required=False)
-    er8 = TextField(label="8DP Progress Text")
+    er8_English = TextField(label="8DP Progress Text (English)")
+    er8_French = TextField(label="8DP Progress Text (French)")
 
     class Media:
         js = ("js/dpratingsform.js", )

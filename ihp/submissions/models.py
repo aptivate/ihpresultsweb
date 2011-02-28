@@ -229,7 +229,8 @@ class Language(models.Model):
         return self.language
 
 class DPScorecardSummary(models.Model):
-    agency = models.OneToOneField(Agency, null=False)
+    agency = models.ForeignKey(Agency, null=False)
+    language = models.ForeignKey(Language, null=False)
     erb1 = models.TextField()
     erb2 = models.TextField()
     erb3 = models.TextField()
@@ -244,6 +245,7 @@ class DPScorecardSummary(models.Model):
 
     class Meta:
        verbose_name_plural = "DP Scorecard Summaries" 
+       unique_together = ["agency", "language"]
 
 ratings_choices = [(x, x) for x in [Rating.TICK, Rating.ARROW, Rating.CROSS, Rating.QUESTION, Rating.NONE]]
 RatingsField = curry(models.CharField, max_length=20, null=True, blank=True, choices=ratings_choices)
@@ -252,36 +254,17 @@ CommentsField = curry(models.TextField, null=True, blank=True)
 class DPScorecardRatings(models.Model):
     agency = models.OneToOneField(Agency, null=False)
     r1 = RatingsField()
-    er1 = CommentsField()
-
     r2a = RatingsField()
-    er2a = CommentsField()
     r2b = RatingsField()
-    er2b = CommentsField()
     r2c = RatingsField()
-    er2c = CommentsField()
-
     r3 = RatingsField()
-    er3 = CommentsField()
-
     r4 = RatingsField()
-    er4 = CommentsField()
-
     r5a = RatingsField()
-    er5a = CommentsField()
     r5b = RatingsField()
-    er5b = CommentsField()
     r5c = RatingsField()
-    er5c = CommentsField()
-
     r6 = RatingsField()
-    er6 = CommentsField()
-
     r7 = RatingsField()
-    er7 = CommentsField()
-
     r8 = RatingsField()
-    er8 = CommentsField()
 
 
     def __unicode__(self):
@@ -289,6 +272,30 @@ class DPScorecardRatings(models.Model):
 
     class Meta:
        verbose_name_plural = "DP Scorecard Ratings" 
+
+class DPScorecardComments(models.Model):
+    agency = models.ForeignKey(Agency, null=False)
+    language = models.ForeignKey(Language, null=False)
+
+    er1 = CommentsField()
+    er2a = CommentsField()
+    er2b = CommentsField()
+    er2c = CommentsField()
+    er3 = CommentsField()
+    er4 = CommentsField()
+    er5a = CommentsField()
+    er5b = CommentsField()
+    er5c = CommentsField()
+    er6 = CommentsField()
+    er7 = CommentsField()
+    er8 = CommentsField()
+
+    def __unicode__(self):
+        return "%s %s" % (self.agency, self.language)
+
+    class Meta:
+       verbose_name_plural = "DP Scorecard Comments" 
+       unique_together = ["agency", "language"]
 
 class GovScorecardRatings(models.Model):
     country = models.ForeignKey(Country, null=False)

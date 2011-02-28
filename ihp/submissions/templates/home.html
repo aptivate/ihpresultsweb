@@ -145,12 +145,16 @@
                         <h2>Additional Views</h2>
                         <p>
                             <ol>
-                                <li><a href="{% url agency_export_lang "en" %}">Agency Export (English)</a></li>
-                                <li><a href="{% url agency_export_lang "fr" %}">Agency Export (French)</a></li>
+                                <li>Agency Export
+                                    <ul style="padding-left: 10px">
+                                        <li><a href="{% url agency_export "English" %}">English</a></li>
+                                        <li><a href="{% url agency_export "French" %}">French</a></li>
+                                    </ul>
+                                </li>
                                 <li>Country Export
                                     <ul style="padding-left: 10px">
-                                        <li><a href="{% url country_export "English" %}">English Speaking Countries</a></li>
-                                        <li><a href="{% url country_export "French" %}">French Speaking Countries</a></li>
+                                        <li><a href="{% url country_export "English" %}">English</a></li>
+                                        <li><a href="{% url country_export "French" %}">French</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="{% url agency_questionnaire %}">Raw DP Questions</a></li>

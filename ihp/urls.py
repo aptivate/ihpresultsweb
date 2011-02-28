@@ -62,8 +62,7 @@ urlpatterns = patterns('',
     }}, "home"),
 
     # New csv views
-    (r'^scorecard/export/agencies/(?P<language>.+)/$', 'submissions.views.agency_export_lang', {}, 'agency_export_lang'),
-    #(r'^scorecard/export/agencies/$', 'submissions.views.agency_export', {}, 'agency_export_english'),
+    (r'^scorecard/export/agencies/(?P<language>.+)/$', 'submissions.views.agency_export', {}, 'agency_export'),
     (r'^scorecard/export/countries/(?P<language>.+)/$', 'submissions.views.country_export', {}, 'country_export'),
 
     # Edit views
