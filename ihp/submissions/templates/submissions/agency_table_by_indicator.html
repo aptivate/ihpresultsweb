@@ -44,8 +44,16 @@
     <tr class="{% cycle "odd" "even" %}">
         <td>{{ agency.agency }}</td>
         {% for country, data in agency_values %}
-            <td class="{{ data.cellclass }}">{{ data.baseline_value|default_if_none:"-" }}</td>
-            <td class="{{ data.cellclass }}">{{ data.latest_value|default_if_none:"-" }}</td>
+            <td class="{{ data.cellclass }}">{{ data.baseline_value|default_if_none:"-" }}<br/>
+            {% if data.base_year != "2007" and data.base_year != "" %}
+                <span class="year">({{ data.base_year }})</span>
+            {% endif %}
+            </td>
+            <td class="{{ data.cellclass }}">{{ data.latest_value|default_if_none:"-" }}<br/>
+            {% if data.cur_year != "2009" and data.cur_year != "" %}
+                <span class="year">({{ data.cur_year }})</span>
+            {% endif %}
+            </td>
             <td class="{{ data.cellclass }}">{% if data.rating %}<img src="{{ MEDIA_URL }}/images/{{ data.rating }}.png">{% endif %}</td>
         {% endfor %}
     </tr>

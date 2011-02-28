@@ -52,17 +52,21 @@ def agency_table_by_indicator(request, indicator, template_name="submissions/age
                 inds = indicators.calc_agency_country_indicators(agency, country, indicators.positive_funcs)
                 ratings = target.country_agency_indicator_ratings(country, agency)
 
-                base_val, base_year, latest_val, _ = inds[indicator][0]
+                base_val, base_year, latest_val, cur_year = inds[indicator][0]
                 country_abs_values = {
                     "baseline_value" : tbl_float_format(base_val), 
+                    "base_year" : base_year,
                     "latest_value" : tbl_float_format(latest_val), 
+                    "cur_year" : cur_year,
                     "rating" : ratings[indicator],
                     "cellclass" : "",
                 } 
             else:
                 country_abs_values = {
                     "baseline_value" : "",
+                    "base_year" : "",
                     "latest_value" : "",
+                    "cur_year" : "",
                     "rating" : "",
                     "cellclass" : "notactive",
                 } 
