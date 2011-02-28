@@ -1,5 +1,8 @@
 {% extends "public_base.html" %}
 {% block title %}{{agency.agency}}{% endblock %}
+{% block head %}
+	{% include 'rated_statement_js.inc.html' %}
+{% endblock %}
 {% block heading %}Agency Scorecard for {{agency.agency}}{% endblock %}
 {% block content %}
 {% include 'ajax-loading.html' %}
