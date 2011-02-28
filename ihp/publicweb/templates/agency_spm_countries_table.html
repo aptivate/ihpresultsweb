@@ -1,0 +1,43 @@
+{% extends "public_base.html" %}
+
+{% block content %}
+<h1>{{indicator_name}} for {{agency.agency}}</h1>
+
+<table class="data">
+	<tr class="head">
+		<th></th>
+		<th colspan="3">{{indicator_name}}</th>
+	</tr>
+	
+	<tr class="head">
+		<th>{{agency.agency}}</th>
+		<th>2007</th>
+		<th>2009</th>
+		<th>Rating ∆</th>
+	</tr>
+    
+    {% for country, value in values %}
+		<tr>
+			<th>{{country.country}}</th>
+			{% if value != None %}
+				<td>{{value.baseline_value}}</td>
+				<td>{{value.latest_value}}</td>
+				<td>{{value.rating}}</td>
+			{% else %}
+				<td colspan="3">No data</td>
+			{% endif %}
+		</tr>
+    {% endfor %}
+    
+    <tr class="head2">
+		<th>Total</th>
+		{% if total != None %}
+    		<td>{{total.baseline_value}}</td>
+    		<td>{{total.latest_value}}</td>
+    		<td>{{total.rating}}</td>
+    	{% else %}
+    		<td colspan="3">No data</td>
+    	{% endif %}
+    </tr>
+</table>
+{% endblock %}
