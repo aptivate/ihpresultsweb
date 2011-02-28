@@ -52,3 +52,19 @@ rating_none_text = "This Standard Performance Measure was deemed not applicable 
 gov_tb2 = "%s COUNTRY SCORECARD"
 gov_pc3 = "%0.1f %% allocated to health"
 gov_pc4 = "%0.1f %% increase needed to meet the Abuja target (15%%)"
+
+agency_commentary_text = {
+    "1DP" : "An IHP+ Country Compact or equivalent has been signed by the agency in %(cur_val).0f%% of IHP+ countries where they exist. Target = 100%%.",
+    "2DPa" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid was reported by the agency on national health sector budgets - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%. Target = 50%% reduction in aid not on budget (with > 85%% on budget).",
+    "2DPb" :"In %(cur_year)s %(cur_val).0f%% of capacity development was provided by the agency through coordinated programmes - %(diff_direction)s from %(base_val).0f%%. Target = 50%%.",
+    "2DPc" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided by the agency through programme based approaches - %(diff_direction)s from %(base_val).0f%%. Target = 66%%.",
+    "3DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided by the agency through multi-year commitments - %(diff_direction)s from %(base_val).0f%%. Target = 90%%.",
+    "4DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid disbursements provided by the agency were released according to agreed schedules - %(one_minus_diff_direction)s from %(base_val).0f%% in %(base_year)s. Target = 90%%.",
+    "5DPa" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid provided by the agency used country procurement systems - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%. Target = 33%% reduction in aid not using procurement systems.",
+    "5DPb" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid provided by the agency used national public financial management systems - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%. Target = 33%% reduction in aid not using PFM systems.",
+    "5DPc" : "In %(cur_year)s the stock of parallel project implementation units (PIUs) used by the agency in the surveyed countries was %(cur_val)s - %(diff_direction)s from %(base_val)s. Target = 66%% reduction in stock of PIUs.",
+    "6DP" : "In %(cur_year)s national performance assessment frameworks were routinely used by the agency to assess progress in %(cur_val).0f%% of IHP+ countries where they exist. Target = 100%%.",
+    "7DP" : "In %(cur_year)s the agency participated in health sector mutual assessments of progress in %(cur_val).0f%% of IHP+ countries where they exist. Target = 100%%.",
+    "8DP" : "In %(cur_year)s, evidence exists in %(cur_val).0f%% of IHP+ countries that the agency supported civil society engagement in health sector policy processes. Target = 100%%.",
+}
+

@@ -55,3 +55,18 @@ rating_none_text = "This Standard Performance Measure was deemed not applicable 
 gov_tb2 = "%s COUNTRY SCORECARD"
 gov_pc3 = "%0.1f %% allocated to health"
 gov_pc4 = "%0.1f %% increase needed to meet the Abuja target (15%%)"
+
+agency_commentary_text = {
+    "1DP" : "An IHP+ Country Compact or equivalent has been signed by the agency in %(cur_val).0f%% of IHP+ countries where they exist. Objectif-cible = 100%% ",
+    "2DPa" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid was reported by the agency on national health sector budgets - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%. Objectif-cible = Réduire l’écart de moitié – Réduire de moitié la part de l’aide dont le versement n’est pas effectué au cours de l’exercice budgétaire pour lequel il est prévu. ",
+    "2DPb" :"In %(cur_year)s %(cur_val).0f%% of capacity development was provided by the agency through coordinated programmes - %(diff_direction)s from %(base_val).0f%%. Objectif-cible = 50%%. ",
+    "2DPc" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided by the agency through programme based approaches - %(diff_direction)s from %(base_val).0f%%. Objectif-cible = 66%%. ",
+    "3DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided by the agency through multi-year commitments - %(diff_direction)s from %(base_val).0f%%. Objectif-cible = 90%%. ",
+    "4DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid disbursements provided by the agency were released according to agreed schedules - %(one_minus_diff_direction)s from %(base_val).0f%% in %(base_year)s. Objectif-cible = 90%%. ",
+    "5DPa" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid provided by the agency used country procurement systems - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%. Objectif-cible = Réduire d’un tiers la part des apports au secteur public qui ne fait pas appel aux systèmes de passation des marchés des pays partenaires. ",
+    "5DPb" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid provided by the agency used national public financial management systems - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%. Objectif-cible = Réduire d’un tiers la part des apports au secteur public qui ne fait pas  appel aux systèmes de gestion des finances publiques des pays partenaires. ",
+    "5DPc" : "In %(cur_year)s the stock of parallel project implementation units (PIUs) used by the agency in the surveyed countries was %(cur_val)s - %(diff_direction)s from %(base_val)s. Objectif-cible = Réduire des deux tiers le nombre d’unités parallèles de mise en oeuvre des projets.",
+    "6DP" : "In %(cur_year)s national performance assessment frameworks were routinely used by the agency to assess progress in %(cur_val).0f%% of IHP+ countries where they exist. Objectif-cible = 100%%.",
+    "7DP" : "In %(cur_year)s the agency participated in health sector mutual assessments of progress in %(cur_val).0f%% of IHP+ countries where they exist. Objectif-cible = 100%%.",
+    "8DP" : "In %(cur_year)s, evidence exists in %(cur_val).0f%% of IHP+ countries that the agency supported civil society engagement in health sector policy processes. Objectif-cible = 100%%.",
+}
