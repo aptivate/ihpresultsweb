@@ -23,10 +23,24 @@
 						src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
 						alt="{{indicator.rating}}" class="rating"></td>
 					
-					<td class="progress callout-from" id="datalink_{{indicator.code|cut:'G'|cut:'DP'}}"
-						>{{indicator.overall_progress}}</td>
+					<td class="progress" id="datalink_{{indicator.code|cut:'G'|cut:'DP'}}"
+						>{{indicator.overall_progress}}
+						<script type="text/javascript">
+		create_tooltip(jQuery('#datalink_{{indicator.code|cut:'G'|cut:'DP'}}'),
+			{
+				content: ajax_loading_html,
+				onBeforeShow: function()
+				{
+					this.load('{% url agency-spm-countries-table agency_name=agency.agency indicator_name=indicator.code %}');
+				}
+			});
+						</script>
+	
+						
+						</td>
 				</tr>
 			{% endfor %}
 		</table>
 	</div>
+	
 {% endfor %}
