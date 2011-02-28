@@ -12,7 +12,9 @@
 				progress in this country</h3>
 			<ul class="logos progress">
 				{% for agency in progress_agencies %}
-					{% include 'progress.html' %}
+					{% with agency.agency as logo %}
+						{% include 'progress.html' %}
+					{% endwith %}
 				{% endfor %}
 			</ul>
 		</div>
@@ -22,7 +24,9 @@
 				limited progress in this country</h3>
 			<ul class="logos no_progress">
 				{% for agency in no_progress_agencies %}
-					{% include 'progress.html' %}
+					{% with agency.agency as logo %}
+						{% include 'progress.html' %}
+					{% endwith %}
 				{% endfor %}
 			</ul>
 		</div>

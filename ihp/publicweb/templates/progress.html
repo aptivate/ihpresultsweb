@@ -1,7 +1,7 @@
 <li id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}">
-	<img src="{% url ihp-media path='images' %}/{{country.country|cut:" "}}.png"
-		alt="{{country.country}}" class="logo" />
-	<span class="name">{{country.country}}</span>
+	<img src="{% url ihp-media path='images' %}/{{logo|cut:" "}}.png"
+		alt="{{logo}}" class="logo" />
+	<span class="name">{{logo}}</span>
 	<script type="text/javascript">
 		create_tooltip(jQuery('#datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}'),
 			{

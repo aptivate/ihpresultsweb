@@ -145,6 +145,35 @@ def agency_spm_countries_table(request, agency_name, indicator_name):
         RequestContext(request, dict(agency=agency,
             indicator_name=indicator_name, values=values)))
 
+def country_spm_agencies_table(request, country_name, indicator_name):
+    indicator_name = indicator_name.replace('G', 'DP')
+    country = submissions.models.Country.objects.get(country=country_name)
+    agencies = submissions.models.Agency.objects.all().order_by("agency")
+    values = []
+    
+    for agency in agencies:
+        if country in agency.countries:
+            indicators = submissions.views.calc_agency_country_indicators(agency,
+                country, submissions.indicators.positive_funcs)
+            ratings = submissions.views.country_agency_indicator_ratings(country, agency)
+
+            base_val, base_year, latest_val, _ = indicators[indicator_name][0]
+            country_abs_values = {
+                "baseline_value" : submissions.views.tbl_float_format(base_val), 
+                "latest_value" : submissions.views.tbl_float_format(latest_val), 
+                "rating" : ratings[indicator_name],
+                "cellclass" : "",
+            } 
+        else:
+            country_abs_values = None
+            
+        values.append((agency, country_abs_values))
+    values = sorted(values, key=lambda x: x[0].agency)
+
+    return render_to_response('country_spm_agencies_table.html',
+        RequestContext(request, dict(country=country,
+            indicator_name=indicator_name, values=values)))
+
 def agency_country_spms_table(request, agency_name, country_name):
     agency = submissions.models.Agency.objects.get(agency=agency_name)
     country = submissions.models.Country.objects.get(country=country_name)

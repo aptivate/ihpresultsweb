@@ -31,7 +31,13 @@
 				content: ajax_loading_html,
 				onBeforeShow: function()
 				{
-					this.load('{% url agency-spm-countries-table agency_name=agency.agency indicator_name=indicator.code %}');
+					{% if agency %}
+					var url = '{% url agency-spm-countries-table agency_name=agency.agency indicator_name=indicator.code %}';
+					{% else %}
+					var url = '{% url country-spm-agencies-table country_name=country.country indicator_name=indicator.code %}';
+					{% endif %}
+					
+					this.load(url);
 				}
 			});
 						</script>
