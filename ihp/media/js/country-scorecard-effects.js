@@ -1,3 +1,14 @@
+function create_tooltip(target_object, options)
+{
+	default_options = {
+		baseClass: 'callout-to',
+		position: 'bottom',
+		offset: [0, 10],
+	};
+	options = jQuery.extend(default_options, options);
+	jQuery(target_object).simpletip(options);
+}
+
 jQuery(document).ready(function()
 {
 	jQuery('.infobox .item').hide();
@@ -60,11 +71,7 @@ jQuery(document).ready(function()
 	jQuery('.callout-from').each(function(i, callout_from)
 	{
 		// load content from the DIV with the same ID plus "_content"
-		jQuery(callout_from).simpletip({
-			content: jQuery('#' + callout_from.id + "_content").html(),
-			baseClass: 'callout-to',
-			position: 'bottom',
-			offset: [0, 10],
-		});
+		create_tooltip(jQuery(callout_from),
+			{content: jQuery('#' + callout_from.id + "_content").html()});
 	});
 });

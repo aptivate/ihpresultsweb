@@ -320,7 +320,7 @@ div.col {
 	text-align:center;
 }
 
-#scorecard ul li img {
+#scorecard ul li img.logo {
 	width:60px;
 	background-color:black;
 	height:40px;
@@ -460,7 +460,7 @@ div.col {
 	top:-8px;
 }
 
-#infobox img.rating
+#scorecard img.rating, #infobox img.rating
 {
 	width: 40px;
 	height: 27px;
@@ -803,3 +803,7 @@ table.data td {
 	border-style: solid none;
 }
 
+/* loading animation */
+#ajax_loading {
+	display: none;
+}

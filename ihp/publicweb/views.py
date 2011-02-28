@@ -144,3 +144,28 @@ def agency_spm_countries_table(request, agency_name, indicator_name):
     return render_to_response('agency_spm_countries_table.html',
         RequestContext(request, dict(agency=agency,
             indicator_name=indicator_name, values=values)))
+
+def agency_country_spms_table(request, agency_name, country_name):
+    agency = submissions.models.Agency.objects.get(agency=agency_name)
+    country = submissions.models.Country.objects.get(country=country_name)
+    values = []
+
+    indicators = submissions.views.calc_agency_country_indicators(agency,
+        country, submissions.indicators.positive_funcs)
+    ratings = submissions.views.country_agency_indicator_ratings(country, agency)
+
+    for indicator_name, raw_values in indicators.iteritems():
+        base_val, base_year, latest_val, _ = raw_values[0]
+        indicator_abs_values = {
+            "baseline_value" : submissions.views.tbl_float_format(base_val), 
+            "latest_value" : submissions.views.tbl_float_format(latest_val), 
+            "rating" : ratings[indicator_name],
+            "cellclass" : "",
+        } 
+        values.append((indicator_name, indicator_abs_values))
+
+    values = sorted(values, key=lambda x: x[0])
+
+    return render_to_response('agency_country_spms_table.html',
+        RequestContext(request, dict(agency=agency,
+            country=country, values=values)))

@@ -2,6 +2,7 @@
 {% block title %}{{agency.agency}}{% endblock %}
 {% block heading %}Agency Scorecard for {{agency.agency}}{% endblock %}
 {% block content %}
+{% include 'ajax-loading.html' %}
 
 <div class="scorecard agency">
 	<!-- start scorecard col-->
@@ -11,14 +12,7 @@
 				the agency is demonstrating progress</h3>
 			<ul class="logos progress">
 				{% for country in progress_countries %}
-					<li class="callout-from" id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}">
-						<img src="{% url ihp-media path='images' %}/{{country.country|cut:" "}}.png"
-							alt="{{country.country}}" class="logo" />
-						<span class="name">{{country.country}}</span>
-						<div id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}_content"
-							style="display: none;">For {{agency.agency}} data
-							in {{country.country}} <a href="#">click here</a>.</div>
-					</li>
+					{% include 'progress.html' %}
 				{% endfor %}
 			</ul>
 		</div><!-- item -->
@@ -28,14 +22,7 @@
 				the agency is reporting limited progress</h3>
 			<ul class="logos no_progress">
 				{% for country in no_progress_countries %}
-					<li class="callout-from" id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}">
-						<img src="{% url ihp-media path='images' %}/{{country.country|cut:" "}}.png"
-							alt="{{country.country}}" class="logo">
-						<span class="name">{{country.country}}</span>
-						<div id="datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}_content"
-							style="display: none;">For {{agency.agency}} data
-							in {{country.country}} <a href="#">click here</a>.</div>
-					</li>
+					{% include 'progress.html' %}
 				{% endfor %}
 			</ul>
 		</div><!-- item -->

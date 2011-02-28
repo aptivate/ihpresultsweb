@@ -15,4 +15,7 @@ urlpatterns = patterns('ihp.publicweb.views',
         url(r'^table/agency/(?P<agency_name>[-\w ]+)/indicator/(?P<indicator_name>[-\w]+)$',
             agency_spm_countries_table,
             name='agency-spm-countries-table'),
+        url(r'^table/agency/(?P<agency_name>[-\w ]+)/country/(?P<country_name>[-\w ]+)$',
+            agency_country_spms_table,
+            name='agency-country-spms-table'),
     )
