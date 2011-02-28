@@ -49,8 +49,8 @@ gov_commentary_text = {
     },
 }
 
-rating_question_text = "Une quantité insuffisante de données a été fournie pour permettre d’évaluer cette mesure de la performance standard."
-rating_none_text = "Cette mesure de la performance standard a été jugée non applicable au %s"
+rating_question_text = u"Une quantité insuffisante de données a été fournie pour permettre d’évaluer cette mesure de la performance standard."
+rating_none_text = u"Cette mesure de la performance standard a été jugée non applicable au %s"
 
 gov_tb2 = "%s COUNTRY SCORECARD"
 gov_pc3 = "%0.1f %% allocated to health"
