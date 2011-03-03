@@ -3,7 +3,9 @@ import numbers
 from django.template import Context, Template
 from django.utils.functional import memoize
 from indicators import NA_STR
-from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
+from indicators import (calc_agency_indicators, calc_country_indicators,
+    dp_indicators, g_indicators, calc_agency_country_indicators,
+    calc_country_agency_indicators)
 from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, CountryLanguage, DPScorecardRatings, Rating
 from target_criteria import criteria_funcs, MissingValueException, CannotCalculateException
 import math
@@ -443,6 +445,44 @@ def country_agency_progress(country, agency):
     if len(ratings) == 0: 
         return False
     return len(ticks) / float(len(ratings)) >= 0.5
+
+def agency_country_indicator_ratings(agency, country):
+    """
+    Evaluate ratings for an agency-country per indicator
+    TODO this was copied and pasted from country_agency_indicator_ratings,
+    check that it actually makes sense! 
+    """
+    indicators = {}
+    targets = get_country_targets(country, g_indicators)
+    agency_indicators = calc_country_agency_indicators(country, agency)
+
+    for indicator in agency_indicators:
+        v = agency_indicators[indicator]
+        debug("extracting %s from %s" % (indicator, str(agency_indicators)))
+        values, comments = v
+        (base_val, base_year, cur_val, cur_year) = values
+        # TODO this is a hack - it might be better to extract this
+        # logic out of here
+        result = None
+        if indicator in ["1G", "6G", "7G"] and cur_val != NA_STR:
+            if cur_val > 0: 
+                result = Rating.TICK
+            elif base_val == None and cur_val == None:
+                result = Rating.QUESTION
+            elif base_val in [None, NA_STR]:
+                result = Rating.CROSS
+        elif indicator == "8G":
+            try:
+                fix = Country8DPFix.objects.get(agency=agency, country=country)
+                result = fix.latest_progress
+            except Country8DPFix.DoesNotExist:
+                result = Rating.QUESTION
+
+        if result == None:
+            target = targets[indicator]
+            result = evaluate_indicator(target, base_val, cur_val)
+        indicators[indicator] = result
+    return indicators
 
 def get_country_progress(agency):
     """
