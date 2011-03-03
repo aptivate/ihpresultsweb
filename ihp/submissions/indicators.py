@@ -4,6 +4,7 @@ import traceback
 from utils import memoize
 from consts import NA_STR
 from django.db.models.query import QuerySet
+import logging
 
 def calc_indicator(qs, agency_or_country, indicator, funcs=None):
     """
@@ -153,11 +154,11 @@ def calc_country_indicator(qs, country, indicator, funcs=None):
 
 def calc_country_indicators(country, funcs=None):
     """
-    Calculates all the indicators for the given agency
+    Calculates all the indicators for the given country
     Returns a dict with the following form
     {
         "1G" : ((base_1g, base_1g_year, cur_1g, cur_1g_year), comment_1g),
-        "2DPa" : ((base_2ga, base_2ga_year, cur_2ga, cur_2ga_year), comment_2g),
+        "2Ga" : ((base_2ga, base_2ga_year, cur_2ga, cur_2ga_year), comment_2g),
         .
         .
         .
@@ -165,6 +166,22 @@ def calc_country_indicators(country, funcs=None):
     """
     qs = GovQuestion.objects.filter(submission__country=country).select_related()
     results = [calc_country_indicator(qs, country, indicator, funcs) for indicator in g_indicators]
+    return dict(zip(g_indicators, results))
+
+def calc_country_agency_indicator(qs, country, agency, indicator, funcs=None):
+    """
+    Same as calc_country_indicator above but only looks at a specific agency
+    """
+    funcs = funcs or dict(indicator_funcs)
+    return calc_indicator(qs, country, indicator, funcs)
+
+def calc_country_agency_indicators(country, agency, funcs=None):
+    """
+    Same as calc_agency_indicators above but only looks at a specific country
+    """
+    qs = list(GovQuestion.objects.filter(submission__agency=agency, submission__country=country).select_related())
+    logging.error("qs = %s" % qs)
+    results = [calc_country_agency_indicator(qs, country, agency, indicator, funcs) for indicator in g_indicators]
     return dict(zip(g_indicators, results))
 
 dp_indicators = [
