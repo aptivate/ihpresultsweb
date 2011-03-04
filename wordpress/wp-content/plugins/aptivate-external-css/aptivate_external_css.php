@@ -11,8 +11,8 @@ class AptivateExternalCSS
 {
 	function head()
 	{
-		if (preg_match("#^/scorecard/(partner|country)/([-\w %0-9]+)$#",
-			$_SERVER["REQUEST_URI"]))
+		if (preg_match('#^/scorecard/(partner|country)/([-\w %0-9]+)(/)?$#',
+			$_SERVER['REQUEST_URI']))
 		{
 			em_showContent("starthead", "endhead",
 				"http://localhost/django/public".$_SERVER["REQUEST_URI"]."/",
