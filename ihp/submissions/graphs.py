@@ -269,12 +269,16 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
 
     countries = sorted(country_data.keys(), key=lambda x : x.country)
 
+    # TODO
+    # Request from James to remove overly large values
+    remove_large = lambda x : 0 if x > 100 else x
+
     extra_context["graph_hw"] = CountryBarGraph(
         countries,
         "graph_hw",
         "% of health sector budget spent on health workforce",
-        [country_data[country]["indicators"]["other"]["health_workforce_perc_of_budget_baseline"] * 100 for country in countries],
-        [country_data[country]["indicators"]["other"]["health_workforce_perc_of_budget_latest"] * 100 for country in countries],
+        [remove_large(country_data[country]["indicators"]["other"]["health_workforce_perc_of_budget_baseline"] * 100) for country in countries],
+        [remove_large(country_data[country]["indicators"]["other"]["health_workforce_perc_of_budget_latest"] * 100) for country in countries],
     )
 
     extra_context["graph_outpatient_visits"] = CountryBarGraph(
@@ -435,6 +439,10 @@ def government_graphs(request, template_name="submission/country_graphs_by_indic
     data_3G = dict([(c, calc_country_indicators(c)["3G"]) for c in countries])
     data_4G = dict([(c, calc_country_indicators(c)["4G"]) for c in countries])
 
+    # TODO
+    # Request from James to zero negative values
+    neg_to_zero = lambda x : 0 if x < 0 else x
+
     extra_context["graph_3G"] = TargetCountryBarGraph(
         countries,
         "graph_3G",
@@ -448,8 +456,8 @@ def government_graphs(request, template_name="submission/country_graphs_by_indic
         countries,
         "graph_4G",
         "% of health sector funding disbursed against the approved annual budget",
-        [data_4G[country][0][0] for country in countries],
-        [data_4G[country][0][2] for country in countries],
+        [neg_to_zero(data_4G[country][0][0]) for country in countries],
+        [neg_to_zero(data_4G[country][0][2]) for country in countries],
     )
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
