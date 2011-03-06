@@ -32,6 +32,7 @@ def get_country_targets(country, indicators):
     return targets
 
 def evaluate_indicator(target, base_val, cur_val):
+    
     tick_func = criteria_funcs[target.tick_criterion_type]
     arrow_func = criteria_funcs[target.arrow_criterion_type]
 
@@ -66,14 +67,7 @@ def evaluate_indicator(target, base_val, cur_val):
         return Rating.NONE
 
 def evaluate_agency_country_indicator(agency, country, target, base_val, cur_val):
-    if target.indicator in ["1DP", "6DP", "7DP"] and cur_val != NA_STR:
-        if cur_val > 0: 
-            return Rating.TICK
-        elif base_val == None and cur_val == None:
-            return Rating.QUESTION
-        elif base_val in [None, NA_STR]:
-            return Rating.CROSS
-    elif target.indicator == "8DP":
+    if target.indicator == "8DP":
         try:
             fix = Country8DPFix.objects.get(agency=agency, country=country)
             return fix.latest_progress
