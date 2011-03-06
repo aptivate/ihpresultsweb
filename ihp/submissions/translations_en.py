@@ -68,3 +68,6 @@ agency_commentary_text = {
     "8DP" : "In %(cur_year)s, evidence exists in %(cur_val).0f%% of IHP+ countries that the agency supported civil society engagement in health sector policy processes. Target = 100%%.",
 }
 
+direction_decrease = "a decrease" 
+direction_increase = "an increase" 
+direction_nochange = "no change" 

@@ -156,17 +156,14 @@ def calc_agency_ratings(agency, language=None):
                 diff = round(round(base_val) - round(cur_val))
 
                 if diff > 0:
-                    result["diff_direction"] = "a decrease" 
-                    result["diff_direction2"] = "down" 
-                    result["one_minus_diff_direction"] = "an increase" 
+                    result["diff_direction"] = translation.direction_decrease
+                    result["one_minus_diff_direction"] = translation.direction_increase
                 elif diff == 0:
-                    result["diff_direction"] = "no change"
-                    result["diff_direction2"] = "no change"
-                    result["one_minus_diff_direction"] = "no change" 
+                    result["diff_direction"] = translation.direction_nochange
+                    result["one_minus_diff_direction"] = translation.direction_nochange
                 else:
-                   result["diff_direction"] = "an increase"
-                   result["diff_direction2"] = "up"
-                   result["one_minus_diff_direction"] = "a decrease" 
+                   result["diff_direction"] = translation.direction_increase
+                   result["one_minus_diff_direction"] = translation.direction_decrease
 
                 if result["base_val"] > 0:
                     result["perc_change"] = (result["cur_val"] - result["base_val"]) / float(result["base_val"]) * 100
