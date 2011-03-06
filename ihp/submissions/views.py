@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import check_for_language
 
 from models import Submission, AgencyCountries, Agency, DPQuestion, GovQuestion, Country, MDGData, DPScorecardSummary, AgencyWorkingDraft, CountryWorkingDraft, Rating, Language
-from target import calc_agency_ratings, get_country_progress, calc_country_ratings, get_agency_progress, country_agency_indicator_ratings, country_agency_progress
+from target import calc_agency_ratings, get_country_progress, calc_country_ratings, get_agency_progress, country_agency_indicator_ratings, country_agency_progress, agency_country_indicator_ratings
 from indicators import calc_country_indicators, calc_agency_country_indicators, NA_STR, calc_country_indicators, positive_funcs, dp_indicators, g_indicators, indicator_questions
 from forms import DPSummaryForm, DPRatingsForm, GovRatingsForm, CountryScorecardForm
 from utils import none_num, fformat_none, fformat_front, fformat_two
