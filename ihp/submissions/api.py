@@ -194,7 +194,7 @@ def country_scorecard_overrides(request, country_id):
             return HttpResponse(simplejson.dumps(data))
         elif request.method == "POST":
             ratings, _ = models.GovScorecardRatings.objects.get_or_create(country=country)
-            comments_loader = LazyCommentsLoader(CountryScorecardOverrideComments, country)
+            comments_loader = LazyCommentsLoader(CountryScorecardOverrideComments, country=country)
             for key in request.POST.keys():
                 if key in ratings.__dict__:
                     ratings.__dict__[key] = request.POST[key]
