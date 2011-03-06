@@ -8,7 +8,19 @@
 
 	<!-- starthead -->
 		<script type='text/javascript' src='{% url ihp-media path='js/jquery.simpletip-1.3.1.js' %}'></script>
+		<script type='text/javascript' src='{% url ihp-media path='js/country-scorecard-effects.js' %}'></script>
+
 		<link rel="stylesheet" href="{% url ihp-media path='css/public_scorecards.css' %}">
+		<style>
+			#scorecard_header h2, table.scorecard tr.countries ul, #scorecard,
+			#scorecard h2, #scorecard h3, #scorecard ul, #scorecard .category,
+			#scorecard td.expected_result, .infobox, .infobox .item,
+			.infobox .item h3, .inner, .infobox h2,	.health-financing .chart-key,
+			.health-financing .key
+			{
+				behavior:url({% url ihp-media path='js/ie-css3.htc' %});
+			}
+		</style>	
 		{% block head %}{% endblock %}
 	<!-- endhead -->
 </head>

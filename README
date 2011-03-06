@@ -12,8 +12,9 @@ go away if the hosting arrangements change.
 public: static media files that are neither Wordpress nor Django, e.g. the 
 site's favicon.
 
-ihp/settings_prod.py: This script can be deleted once hosting arrnagements change.
+ihp/settings_prod.py: This script can be deleted once hosting arrangements change.
 
+<<<<<<< HEAD
 ihp/scripts/check.sh: This script will be deleted by March 2011 as there will no longer be a need to collect submissions via email
 
 Database Migrations
@@ -27,3 +28,7 @@ Run the following
 ./manage.py migrate submissions
 
 You probably want to backup your database first just in case the migrations process breaks something
+=======
+ihp/scripts/check.sh: This script will be deleted by March 2011 as there will
+no longer be a need to collect submissions via email.
+>>>>>>> 5f1ff12ad8406b128e8985ffc7b8a607f65fb201

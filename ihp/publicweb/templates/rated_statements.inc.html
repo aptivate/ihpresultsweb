@@ -23,10 +23,11 @@
 						src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
 						alt="{{indicator.rating}}" class="rating"></td>
 					
-					<td class="progress callout-from" id="datalink_{{indicator.code|cut:'G'|cut:'DP'}}"
+					<td class="progress" id="datalink_{{indicator.code|cut:'G'|cut:'DP'}}"
 						>{{indicator.overall_progress}}</td>
 				</tr>
 			{% endfor %}
 		</table>
 	</div>
+	
 {% endfor %}

@@ -1,43 +1,35 @@
 {% extends "public_base.html" %}
 {% block title %}{{agency.agency}}{% endblock %}
 {% block head %}
-	<style>
-		#scorecard_header h2, table.scorecard tr.countries ul, #scorecard,
-		#scorecard h2, #scorecard h3, #scorecard ul, #scorecard .category,
-		#scorecard td.expected_result, .infobox, .infobox .item,
-		.infobox .item h3, .inner, .infobox h2,	.health-financing .chart-key,
-		.health-financing .key
-		{
-			behavior:url({% url ihp-media path='js/ie-css3.htc' %});
-		}
-	</style>	
+	{% include 'rated_statement_js.inc.html' %}
 {% endblock %}
 {% block heading %}Agency Scorecard for {{agency.agency}}{% endblock %}
 {% block content %}
+{% include 'ajax-loading.html' %}
 
 <div class="scorecard agency">
 	<!-- start scorecard col-->
 	<div id="scorecard" class="col">	
 		<div class="item">	
-			<h3>Countries where the agency is demonstrating progress</h3>
+			<h3 class="callout-from" id="progress_heading">Countries where
+				the agency is demonstrating progress</h3>
 			<ul class="logos progress">
 				{% for country in progress_countries %}
-					<li><img src="{% url ihp-media path='images' %}/{{country.country|cut:" "}}.png"
-						alt="{{country.country}}" class="flag" />
-						<span class="name">{{country.country}}</span>
-						</li>
+					{% with country.country as logo %}
+						{% include 'progress.html' %}
+					{% endwith %}
 				{% endfor %}
 			</ul>
 		</div><!-- item -->
 		
 		<div class="item">	
-			<h3>Countries where the agency is reporting limited progress</h3>
+			<h3 class="callout-from" id="noprogress_heading">Countries where
+				the agency is reporting limited progress</h3>
 			<ul class="logos no_progress">
-				{% for agency in no_progress_agencies %}
-					<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
-						alt="{{agency.agency}}" class="logo">
-						<span class="name">{{country.country}}</span>
-						</li>
+				{% for country in no_progress_countries %}
+					{% with country.country as logo %}
+						{% include 'progress.html' %}
+					{% endwith %}
 				{% endfor %}
 			</ul>
 		</div><!-- item -->

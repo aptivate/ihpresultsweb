@@ -151,6 +151,8 @@ div.scorecard-page h1
 	/*border-left:1px solid #cfd5d5;*/
 	border-left:1px solid #DFD5D5;
 	-moz-border-radius-bottomleft:10px;
+	-webkit-border-bottom-left-radius:10px;
+	border-bottomleft-radius:10px;
 	height:1%;
 	position:relative;
 }
@@ -262,11 +264,10 @@ div.col {
 }
 
 #scorecard h2, #scorecard h3 {
-	margin: 20px 0 0;
+	margin: 0 0 10px;
 	/* position:relative; breaks tooltip positioning */
 	font-size:0.9em;
 	clear:both;
-	margin-top:0px;
 	background-color:#0A3E3D;
 	padding:2px 11px;
 	-moz-border-radius:10px;
@@ -294,18 +295,17 @@ div.col {
  	float: right;
 }
 
-#scorecard ul {
+#content #scorecard ul {
 	border:1px solid #D1DDD9;
 	padding:10px;
-	margin:0;
+	margin:0 0 10px;
 	list-style:none;
 	-moz-border-radius:10px;
 	-webkit-border-radius:10px;
 	border-radius:10px;
 	clear:both;
 	position:relative;
-	width:428px;
-	margin-bottom:10px;
+	width:426px;
 	display:block;
 	float:left;
 }
@@ -320,7 +320,7 @@ div.col {
 	text-align:center;
 }
 
-#scorecard ul li img {
+#scorecard ul li img.logo {
 	width:60px;
 	background-color:black;
 	height:40px;
@@ -391,6 +391,8 @@ div.col {
 
 /*Infobox column styles*/
 
+#infobox {padding-top:0;}
+
 .infobox {
 	border:2px solid #f68b1f;
 	-moz-border-radius:15px;
@@ -449,6 +451,7 @@ div.col {
 	border-radius:8px;
 	position:relative;
 	font-size:0.9em;
+	clear:both;
 }
 
 .item h3 img {
@@ -457,10 +460,21 @@ div.col {
 	top:-8px;
 }
 
-#infobox img.rating
+#scorecard img.rating, #infobox img.rating
 {
 	width: 40px;
 	height: 27px;
+}
+
+#infobox p.spacer {
+  display:block;
+  position:relative;
+  height:26px;
+  margin:0;
+  clear:both;
+  background-image:url('../images/infobox-spacer.png');
+  background-repeat:no-repeat;
+  background-position:top center;
 }
 
 /*Country-ownership*/
@@ -476,6 +490,8 @@ div.col {
 /* country-ownership needs extra space above h3 for the jigsaw tongues */
 .infobox.country-ownership .item h3 {
 	margin: 30px 0 0;
+	color:#0A3E3D;
+	font-weight:bold;
 }
 
 .infobox.country-ownership > .item:first-child {
@@ -513,9 +529,10 @@ div.col {
 /*Health Financing*/
 
 .health-financing .item {
-	background-color:#fff;
 	margin-bottom: 0; /* 10px looks bad without backgrounds on items */
 	text-align: center; /* centre the blocks */
+	clear:both;
+	background-color:transparent;
 }
 
 /* but don't center their contents */
@@ -523,19 +540,67 @@ div.col {
 	text-align: left;
 }
 
+.health-financing .external-financing {background-color:#D1DDD9;}
+.health-financing .external-financing h3 {
+	background-color:inherit;
+	color:#0A3E3D;
+	font-size:1em;
+	font-weight:bold;
+	padding:0 10px;
+	text-align:center;
+}
+
+.health-financing .external-financing p.number  {
+	font-size:4em;
+	text-align:center;
+	margin:0;
+	font-weight:bold;
+}
+ 
+.health-financing .external-financing p.bubble {
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+	background-color:#87D1D1;
+	margin-bottom:0;
+	margin-top:25px;
+	padding:10px 20px;
+	position:relative;
+}
+
+.health-financing .external-financing span.pointer { 
+	position:absolute;
+	display:block;
+	background-image:url('../images/pointer-top-left.png');
+	width:66px;
+	height:32px;
+	top:-29px;
+	left:100px;
+}
+
 #infobox .health-financing .item img {
 	display: block;
 	margin: 1em auto;
+	clear:both;
+	float:right;
+}
+
+#infobox .health-financing .item img.pie { 
+  position:relative;
+  top:-40px;
+  margin-bottom:-40px;
 }
 
 .health-financing .chart-key {
-	display: inline-block;
-	margin: 0 auto;
+	margin: 20px 0 auto;
+	width:45%;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
 	border: 1px solid #b3c6c0;
 	padding: 0.5em;
+	float:left;
+	display: block;
 }
 
 .health-financing .key-item {
@@ -554,9 +619,30 @@ div.col {
 }
 
 /*Country Systems*/
+
+.country-systems .item-wrap {
+  background-color:#D1DDD9;
+  margin-top:30px;
+  position:relative;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  border-radius: 15px;
+  padding:10px;
+}
+
+.country-systems .item {border:1px solid #668D82;
+}
+
+.country-systems .item h3 {
+  background-color:#fff;
+  color:#0A3E3D;
+  padding:2px 10px;
+  margin-bottom:10px;
+}
+
 .country-systems .item img.rating {
 	float: left;
-	margin-right: 10px;
+	margin: 0 1em 1em 0;
 }
 
 /*Health Systems*/
@@ -566,28 +652,50 @@ div.col {
 }
 
 /*Managing for Development*/
-.infobox.managing-for-development img {
-	float: left;
-}
 
 #content .infobox.managing-for-development h3 {
-	margin-left: 50px;
-	padding-left: 20px;
+	margin-left: 10px;
+    float:left;
+    clear:none;
+    background-color:transparent;
+    color:#0A3E3D;
+    font-weight:bold;
+    padding-left:0;
+}
+
+.infobox.managing-for-development img {
+	float: left;
+	display:block;
+}
+
+.infobox.managing-for-development ul {
+  clear:both;
+  font-weight:normal;
+  padding-left:65px;
 }
 
 /* Background and z-index hacks for ie-css3.htc */
+/*
 #scorecard_header h2, table.scorecard tr.countries ul, #scorecard,
 #scorecard ul.logos, #scorecard .category, .infobox, .inner,
 .health-financing .chart-key, .health-financing .key
 {
 	background-color: white;
 }
-#scorecard, .infobox { z-index: -40; }
+*/
+#scorecard, .infobox { 
+  /* z-index: 1; /* should be -40 for rounded corners, but breaks tooltips */
+  clear:both;
+  position:relative;
+  margin:0;
+}
+/*
 .infobox.country-ownership h2,
 .infobox.country-ownership .item h3 { z-index: 10; }
 #scorecard .category, .infobox .item { z-index: -30; }
 .health-financing .chart-key { z-index: -20; }
 .health-financing .key { z-index: -10; }
+*/
 
 /* Override Wordpress themes */
 .scorecard img
@@ -625,7 +733,11 @@ div.col {
 	font-family: inherit;
 	font-weight: inherit;
 	line-height: inherit;
-} 
+}
+/* Hide wordpress frigging empty paragraphs where we don't want them */
+.infobox > p {
+	display: none;
+}  
 
 /* Simple Tooltips CSS styles */
 
@@ -634,26 +746,33 @@ div.col {
 	position: relative;
 }
 
+#content .content {
+	float:left;
+	width:100%;
+}
+
 .callout-to
 {
-   position: absolute;
-   top: 0;
-   left: 0;
-   z-index: 3;
-   display: none;
-   border: 4px solid #333;
-   padding: 4px;
-   background: #555;
-   color: #eee;
-	-moz-border-radius:4px;
-	-webkit-border-radius:4px;
-	border-radius:4px;
-	max-width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 3;
+	display: none;
+	border:2px solid #F68B1F;
+	padding: 10px;
+	background: #fff;
+	color: #333;
+	-moz-border-radius:15px;
+	-webkit-border-radius:15px;
+	border-radius:15px;
+	-moz-box-shadow:4px 4px 8px #818181;
+	-webkit-box-shadow:4px 4px 8px #818181;
+	box-shadow:4px 4px 8px #818181;
+	max-width:60%;
 	text-align: left;
 	text-transform: none;
 }
 
-/* Dark blue doesn't look very good on dark grey */
 .callout-to a
 {
 	color: #ccc;
@@ -662,4 +781,29 @@ div.col {
 #scorecard .callout-to td
 {
 	vertical-align: inherit;
+}
+
+/* Data tables */
+
+table.data {
+	border-collapse: collapse;
+}
+
+table.data th, table.data td {
+	padding: 0.2em 0.5em;
+	text-align: left;
+} 
+
+table.data th {
+	border-bottom: 1px solid #ddd;
+}
+
+table.data td {
+	border: 1px solid #eee;
+	border-style: solid none;
+}
+
+/* loading animation */
+#ajax_loading {
+	display: none;
 }

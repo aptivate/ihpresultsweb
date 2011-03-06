@@ -17,26 +17,28 @@ import ihp.publicweb.views
 from ihp import publicweb
 
 class PublicWebsiteTest(TestCase):
-    fixtures = ['submission_test_data.json', 'indicator_tests.yaml']
-    unicef = Agency.objects.get(agency="UNICEF")
-    mozambique = Country.objects.get(country="Mozambique")
+    fixtures = ['submission_test_data.json', 'foobar', 'indicator_tests.yaml']
+    
+    def setUp(self):
+        self.foobar = Agency.objects.get(agency="Foobar")
+        self.mozambique = Country.objects.get(country="Mozambique")
 
     def get(self, view_function, **view_args):
         return self.client.get(reverse(view_function, kwargs=view_args))
     
     def test_getting_agency_countries(self):
-        self.assertNotEqual(self.unicef, None)
-        self.assertEqual(self.unicef.id, 27)
+        self.assertNotEqual(self.foobar, None)
+        self.assertEqual(self.foobar.id, 999)
         
         self.assertNotEqual(self.mozambique, None)
         self.assertEqual(self.mozambique.id, 9)
         
-        agency_countries = AgencyCountries.objects.get_agency_countries(self.unicef)
+        agency_countries = AgencyCountries.objects.get_agency_countries(self.foobar)
         self.assertTrue(self.mozambique in agency_countries)
         
-        self.assertTrue(submissions.target.country_agency_progress(self.mozambique, self.unicef))
+        self.assertTrue(submissions.target.country_agency_progress(self.mozambique, self.foobar))
         
-        ratings = submissions.target.calc_agency_ratings(self.unicef)
+        ratings = submissions.target.calc_agency_ratings(self.foobar)
         
         rating_1 = ratings['1DP']
         self.assertEqual(rating_1['base_val'], submissions.consts.NA_STR)
@@ -45,8 +47,8 @@ class PublicWebsiteTest(TestCase):
         # self.assertEqual(rating_1['comments'][0][0], '1')
         # self.assertEqual(rating_1['comments'][0][1], mozambique)
         # self.assertEqual(rating_1['comments'][0][2], '')
-        self.assertEqual(rating_1['commentary'],
-            (submissions.target.na_text % self.unicef.agency) + u"∆")
+        # self.assertEqual(rating_1['commentary'],
+        #     (submissions.target.na_text % self.foobar.agency) + u"∆")
         self.assertEqual(rating_1['target'], submissions.target.Rating.TICK)
         self.assertEqual(rating_1['target_val'], 100.0)
 
@@ -56,7 +58,11 @@ class PublicWebsiteTest(TestCase):
         for indicator_code in sorted(expected_ratings.keys()):
             if len(category.indicators) == 0:
                 # next category
-                category = actual_categories.pop(0)
+                if len(actual_categories) > 0:
+                    # pop the next category
+                    category = actual_categories.pop(0)
+                else:
+                    self.fail("No data for category " + indicator_code)
             
             i = category.indicators.pop(0)
             
@@ -66,7 +72,7 @@ class PublicWebsiteTest(TestCase):
             
             if category_code in descriptions:
                 self.assertEqual(category.expected_result,
-                    publicweb.views.agency_indicator_descriptions[category_code])
+                    descriptions[category_code])
             else:
                 self.assertEqual(category.expected_result,
                     category_code + " Lorem ipsum dolor sit amet, " +
@@ -79,14 +85,14 @@ class PublicWebsiteTest(TestCase):
         
     def test_agency_scorecard_view(self):
         response = self.get(ihp.publicweb.views.agency_scorecard_page,
-            agency_name=self.unicef.agency)
-        self.assertEqual(response.context['agency'], self.unicef)
+            agency_name=self.foobar.agency)
+        self.assertEqual(response.context['agency'], self.foobar)
         
-        self._test_ratings(submissions.target.calc_agency_ratings(self.unicef),
+        self._test_ratings(submissions.target.calc_agency_ratings(self.foobar),
             response.context['categories'],
             publicweb.views.agency_indicator_descriptions)
         
-        (progress, no_progress) = submissions.target.get_country_progress(self.unicef)
+        (progress, no_progress) = submissions.target.get_country_progress(self.foobar)
         self.assertEqual(progress.values(),
             response.context['progress_countries'])
         self.assertEqual(no_progress.values(),
@@ -97,8 +103,12 @@ class PublicWebsiteTest(TestCase):
             country_name=self.mozambique.country)
         self.assertEqual(response.context['country'], self.mozambique)
         
-        self._test_ratings(submissions.target.calc_country_ratings(self.mozambique),
-            response.context['categories'], {})
+        ratings = submissions.target.calc_country_ratings(self.mozambique)
+        # only those indicators whose code doesn't start with Q
+        ratings = [(k, v) for (k, v) in ratings.iteritems() if not k.startswith('Q')]
+        ratings = dict(ratings)
+        self._test_ratings(ratings, response.context['categories'],
+            publicweb.views.country_indicator_descriptions)
 
         (progress, no_progress) = submissions.target.get_agency_progress(self.mozambique)
         self.assertTrue(len(progress.values()) > 0)

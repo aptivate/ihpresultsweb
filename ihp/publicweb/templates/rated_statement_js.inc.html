@@ -1,0 +1,23 @@
+<script type="text/javascript">
+jQuery(document).ready(function()
+{
+	{% for category in categories %}
+		{% for indicator in category.indicators %}
+	create_tooltip(jQuery('#datalink_{{indicator.code|cut:'G'|cut:'DP'}}'),
+	{
+		content: ajax_loading_html,
+		onBeforeShow: function()
+		{
+			{% if agency %}
+			var url = '{% url agency-spm-countries-table agency_name=agency.agency indicator_name=indicator.code %}';
+			{% else %}
+			var url = '{% url country-spm-agencies-table country_name=country.country indicator_name=indicator.code %}';
+			{% endif %}
+			
+			this.load(url);
+		}
+	});
+		{% endfor %}
+	{% endfor %}
+});
+</script>

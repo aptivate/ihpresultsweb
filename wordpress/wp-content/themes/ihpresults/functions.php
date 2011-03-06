@@ -28,7 +28,15 @@ if ( function_exists('register_sidebar') ) {
 // This theme uses wp_nav_menu() in three location.
 	register_nav_menus( array(
 		'primary' => __( 'Primary Navigation', 'ihp' ),
-) );
+));
+
+	register_nav_menus( array(
+		'secondary' => __( 'Secondary Navigation', 'ihp' ),
+));
+
+	register_nav_menus( array(
+		'tertiary' => __( 'Tertiary Navigation', 'ihp' ),
+));
 
 		
 
@@ -37,6 +45,7 @@ if ( function_exists('register_sidebar') ) {
 	
 	if ( function_exists( 'add_image_size' ) )
 	add_theme_support( 'post-thumbnails' );
+
 
 
 // Display the links to the extra feeds such as category feeds
@@ -124,6 +133,7 @@ function widget_dojo_subscribe( $args ) {
 }
 if ( function_exists('register_sidebar_widget') )
 	register_sidebar_widget('Subscribe (dojo)', 'widget_dojo_subscribe');
+
 
 
 ?>

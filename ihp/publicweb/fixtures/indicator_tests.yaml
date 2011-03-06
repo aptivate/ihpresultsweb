@@ -1,10 +1,19 @@
-- fields: {agency: 27, completed_by: Emanuele Capobianco, country: 9, date_submitted: !!timestamp '2010-12-02
-      16:00:12.791217', docversion: '0.22', job_title: Chief Health & Nutrition, type: DP}
+- fields: {agency: Foobar, description: '', type: Agency}
+  model: submissions.agency
+  pk: 999
+
+- fields: {agency: 999, country: 9}
+  model: submissions.agencycountries
+  pk: 999
+
+- fields: {agency: 999, completed_by: Laura Anselmi, country: 9, date_submitted: !!timestamp '2011-01-14
+      23:05:09.969917', docversion: '0.2', job_title: "Economista - Direc\xE7\xE3\
+      o de Planifica\xE7\xE3o e Coopera\xE7\xE3o", type: Gov}
   model: submissions.submission
-  pk: 256
+  pk: 363
 
 - fields: {baseline_value: 'Yes', baseline_year: '2008', comments: '', latest_value: 'Yes',
-    latest_year: '2009', question_number: '1', submission: 256}
+    latest_year: '2009', question_number: '1', submission: 363}
   model: submissions.dpquestion
   pk: 5571
 
@@ -13,11 +22,215 @@
       for the government sector includes all UNICEF budget for health. The reported
       on national health sector budget excludes UNICEF technical assistance for health(staff
       salaries+consultants)', latest_value: '15694294.0', latest_year: '2009', question_number: '2',
-    submission: 256}
+    submission: 363}
   model: submissions.dpquestion
   pk: 5572
 
 - fields: {baseline_value: '', baseline_year: '', comments: '', latest_value: '13643377.0',
-    latest_year: '', question_number: '3', submission: 256}
+    latest_year: '', question_number: '3', submission: 363}
   model: submissions.dpquestion
   pk: 5573
+
+- fields: {baseline_value: 'No', baseline_year: '2007', comments: 'The Nepal Health
+      Development Partnership (National Compact) was signed by MOHP and partners (AusAID,
+      DFID, WB, UNICEF, UNFPA, German Development Cooperation-GTZ/KfW, ILO,WHO, WB,
+      SDC). ', latest_value: 'Yes', latest_year: '2009', question_number: '1', submission: 363}
+  model: submissions.govquestion
+  pk: 1015
+- fields: {baseline_value: 'Yes', baseline_year: '2007', comments: Nepal Health Sector
+      Program-Implementation Plan covered the period 2004-2009. It was renewed in
+      2010. The current Health Sector Strategy Plan is Second Nepal Health Sector
+      Plan 2010-2015 and  include targets and budgets., latest_value: 'Yes', latest_year: '2009',
+    question_number: '2', submission: 363}
+  model: submissions.govquestion
+  pk: 1016
+- fields: {baseline_value: 'Yes', baseline_year: '', comments: The Nepal Health Sector
+      Program-Implementation Plan 2004-2009 were jointly assesed and discussed in
+      Joint Annual Reviews held two times a year - in July (for planning) and December
+      (performance review)., latest_value: 'Yes', latest_year: '', question_number: '3',
+    submission: 363}
+  model: submissions.govquestion
+  pk: 1017
+- fields: {baseline_value: 'Yes', baseline_year: '2007', comments: 'HRH Strategic
+      Plan 2003-2017 has been developed by MOHP. It was not costed, MOHP is regularly
+      revising the Plan.HRH was one of the major output of the NHSP 2004-2009.', latest_value: 'Yes',
+    latest_year: '2009', question_number: '4', submission: 363}
+  model: submissions.govquestion
+  pk: 1018
+- fields: {baseline_value: '2582450000.0', baseline_year: '2007', comments: 'The NHSP-IP
+      has set target that the health budget is 10% of national budget. Even though
+      the target was not met, but the health budget has increased  significantly.  The
+      current allocation is  7.24%.', latest_value: '3635930000.0', latest_year: '2009',
+    question_number: '5', submission: 363}
+  model: submissions.govquestion
+  pk: 1019
+- fields: {baseline_value: '96140000.0', baseline_year: '', comments: '', latest_value: '125460000.0',
+    latest_year: '', question_number: '6', submission: 363}
+  model: submissions.govquestion
+  pk: 1020
+- fields: {baseline_value: '184880000.0', baseline_year: '2007', comments: Capacity
+      building has been enhanced. Electronic annual work plan and budget (e-AWPB)
+      data base has been introduced and utilized to prepare budget. The amount disbursed
+      against the approved annual budget has increased from 80% in 2007 to 85% in
+      2009, latest_value: '228110000.0', latest_year: '2009', question_number: '7',
+    submission: 363}
+  model: submissions.govquestion
+  pk: 1021
+- fields: {baseline_value: '147900000.0', baseline_year: '', comments: '', latest_value: '193890000.0',
+    latest_year: '', question_number: '8', submission: 363}
+  model: submissions.govquestion
+  pk: 1022
+- fields: {baseline_value: '3.5', baseline_year: '2005', comments: Change from 3.5
+      (in 2005) to 3.0 (in 2009) in the PFM/CPIA scale of performance., latest_value: '3.0',
+    latest_year: '2009', question_number: '9', submission: 363}
+  model: submissions.govquestion
+  pk: 1023
+- fields: {baseline_value: null, baseline_year: '2005', comments: No assessment made;
+      MOHP has developed a Governance Accountability Action Program., latest_value: null,
+    latest_year: '2009', question_number: '10', submission: 363}
+  model: submissions.govquestion
+  pk: 1024
+- fields: {baseline_value: 'Yes', baseline_year: '2007', comments: 'NHSP II has envisioned
+      the following monitoring system : Inputs monitoring (finance, workforce, drugs,
+      technology); process monitoring (health service delivery): health facility survey,
+      clinical audit, fund/expenditure tracking survey, LMIS, monitoring visits; Outputs
+      monitoring (Services produced); Effects monitoring: Periodic surveys, ( NDHS,
+      NLSS), independent assessments, exit interviews, social auditing, voice monitoring,
+      household survey between two NDHS) and outcome monitoring that is  periodic
+      surveys .                 Yes Joint assessments using JANS tool.', latest_value: 'Yes',
+    latest_year: '2009', question_number: '11', submission: 363}
+  model: submissions.govquestion
+  pk: 1025
+- fields: {baseline_value: 'No', baseline_year: '2005', comments: '', latest_value: 'Yes',
+    latest_year: '2009', question_number: '12', submission: 363}
+  model: submissions.govquestion
+  pk: 1026
+- fields: {baseline_value: 'No', baseline_year: '2007', comments: 'There are evidences
+      of well representation of civil socities in the prepartion of national strategic
+      plan. For example in Global Fund Country Coordination Mechanism, of 33 members
+      20 are from civil societies/NGOs.', latest_value: 'No', latest_year: '2009',
+    question_number: '13', submission: 363}
+  model: submissions.govquestion
+  pk: 1027
+- fields: {baseline_value: null, baseline_year: '', comments: '', latest_value: null,
+    latest_year: '', question_number: '14', submission: 363}
+  model: submissions.govquestion
+  pk: 1028
+- fields: {baseline_value: '8.0', baseline_year: '2007', comments: '', latest_value: '22.0',
+    latest_year: '2009', question_number: '15', submission: 363}
+  model: submissions.govquestion
+  pk: 1029
+- fields: {baseline_value: '0.0', baseline_year: '2007', comments: 'AusAid, WB and
+      DFID; 9 other donors & non-signatories signed letter of intent.', latest_value: '22.0',
+    latest_year: '2009', question_number: '16', submission: 363}
+  model: submissions.govquestion
+  pk: 1030
+- fields: {baseline_value: '6000.0', baseline_year: '2007', comments: 'Nepal faces
+      shortage of skilled medical personnel, particularly in mountain and remotes
+      areas. The problems are on retention, inadequate skill mix, proper distribution
+      of manpower. The obstacles are on inadequate monetary and non-monetary incentives
+      (career, post graduate training, etc)', latest_value: '8000.0', latest_year: '2009',
+    question_number: '17', submission: 363}
+  model: submissions.govquestion
+  pk: 1031
+- fields: {baseline_value: '26805469.0', baseline_year: '', comments: '', latest_value: '27383773.0',
+    latest_year: '', question_number: '18', submission: 363}
+  model: submissions.govquestion
+  pk: 1032
+- fields: {baseline_value: '8787639.0', baseline_year: '2007', comments: 'The number
+      of visit has increased significantly after the policy of free health service  were
+      implemented. OPD visits by wealthier castes/ethnicities increased rapidly. ',
+    latest_value: '18947923.0', latest_year: '2009', question_number: '19', submission: 363}
+  model: submissions.govquestion
+  pk: 1033
+- fields: {baseline_value: '77230000.0', baseline_year: '2007', comments: Both the
+      health budget and salary component has increased significantly over the years.,
+    latest_value: '85500000.0', latest_year: '2009', question_number: '20', submission: 363}
+  model: submissions.govquestion
+  pk: 1034
+- fields: {baseline_value: 'Yes', baseline_year: '2007', comments: 'Data for fiscal
+      year 2008-09 is available in September 2009. In 2009, 79% hospital and 97% PHCC/HC
+      submitted the routine data through HMIS.', latest_value: 'Yes', latest_year: '2009',
+    question_number: '21', submission: 363}
+  model: submissions.govquestion
+  pk: 1035
+- fields: {baseline_value: null, baseline_year: '2007', comments: 'NHSP II has set
+      out 46 key indicators on 6 strategic objectives - Sector governance/enabling
+      environment, Stakeholder, Institutional capacity, Financial Management, Procurement,
+      Environment, Social Equity, Access and inclusion. The DP are requesting additional
+      indicators. The present HMIS system is tracking all indicators except GESI',
+    latest_value: 46 indicators are in the national results framework, latest_year: '2009',
+    question_number: '22', submission: 363}
+  model: submissions.govquestion
+  pk: 1036
+- fields: {baseline_value: null, baseline_year: '', comments: '', latest_value: no
+      sufficient data provided, latest_year: '', question_number: '23', submission: 363}
+  model: submissions.govquestion
+  pk: 1037
+- fields: {baseline_value: 25 June to 1st July 2007, baseline_year: '2007', comments: 'The
+      last JAR was conducted in July 2010, the next will be held in January 2011.
+      It includes non-state actors, policy makers of the MOHP, NPC, MoF, and representative
+      from Development Partners (both resident and non resident DPs) and Civil Societ,
+      and is.also attended by experts from HQ and Regional Offices.The JAR is linked
+      to the National Annual Review and Joint Annual Work Plan and budget. ', latest_value: 6-7
+      July 2010, latest_year: '2009', question_number: '24', submission: 363}
+  model: submissions.govquestion
+  pk: 1038
+- fields: {baseline_value: Please respond in the "answers & additional information"
+      column, baseline_year: '2007', comments: '', latest_value: Please respond in
+      the "answers & additional information" column, latest_year: '2009', question_number: '25',
+    submission: 363}
+  model: submissions.govquestion
+  pk: 1039
+- fields: {baseline_value: Please respond in the "answers & additional information"
+      column, baseline_year: '2007', comments: '', latest_value: Please respond in
+      the "answers & additional information" column, latest_year: '2009', question_number: '26',
+    submission: 363}
+  model: submissions.govquestion
+  pk: 1040
+
+- fields: {arrow: downgreen, baseline_value: 70.0, baseline_year: '1998',  country: 9,
+    latest_value: 56.5, latest_year: '2003', mdg_target: MDG1}
+  model: submissions.mdgdata
+  pk: 1
+- fields: {arrow: upgreen, baseline_value: 61.200000000000003, baseline_year: '2008',
+     country: 9, latest_value: 64.400000000000006, latest_year: '2009', mdg_target: MDG2}
+  model: submissions.mdgdata
+  pk: 2
+- fields: {arrow: upgreen, baseline_value: 0.87, baseline_year: '2008',  country: 9,
+    latest_value: 0.89000000000000001, latest_year: '2009', mdg_target: MDG3}
+  model: submissions.mdgdata
+  pk: 3
+- fields: {arrow: downgreen, baseline_value: 176.0, baseline_year: '2005',  country: 9,
+    latest_value: 169.0, latest_year: '2008', mdg_target: MDG4}
+  model: submissions.mdgdata
+  pk: 4
+- fields: {arrow: downgreen, baseline_value: 1000.0, baseline_year: '2000',  country: 9,
+    latest_value: 700.0, latest_year: '2005', mdg_target: MDG5a}
+  model: submissions.mdgdata
+  pk: 5
+- fields: {arrow: upred, baseline_value: 25.800000000000001, baseline_year: '1999',
+     country: 9, latest_value: 28.800000000000001, latest_year: '2003', mdg_target: MDG5b}
+  model: submissions.mdgdata
+  pk: 6
+- fields: {arrow: downgreen, baseline_value: 2.1000000000000001, baseline_year: '2001',
+     country: 9, latest_value: 1.6000000000000001, latest_year: '2007', mdg_target: MDG6a}
+  model: submissions.mdgdata
+  pk: 7
+- fields: {arrow: upgreen, baseline_value: 1.6000000000000001, baseline_year: '2003',
+     country: 9, latest_value: 9.5999999999999996, latest_year: '2006', mdg_target: MDG6b}
+  model: submissions.mdgdata
+  pk: 8
+- fields: {arrow: 'downgreen ', baseline_value: 240.0, baseline_year: '2005',  country: 9,
+    latest_value: 220.0, latest_year: '2008', mdg_target: MDG6c}
+  model: submissions.mdgdata
+  pk: 9
+- fields: {arrow: upgreen, baseline_value: 70.0, baseline_year: '2005',  country: 9,
+    latest_value: 76.0, latest_year: '2008', mdg_target: MDG7a}
+  model: submissions.mdgdata
+  pk: 10
+- fields: {arrow: equals, baseline_value: 11.0, baseline_year: '2005',  country: 9,
+    latest_value: 11.0, latest_year: '2008', mdg_target: MDG7b}
+  model: submissions.mdgdata
+  pk: 11
+  

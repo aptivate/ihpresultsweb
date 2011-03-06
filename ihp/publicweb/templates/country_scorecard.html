@@ -1,25 +1,11 @@
 {% extends "public_base.html" %}
 {% block title %}{{country.country}}{% endblock %}
 {% block head %}
-	<!--
-	<script type='text/javascript'>
-		var images_path = '{% url ihp-media path='images' %}';
-	</script>
-	-->
-	<script type='text/javascript' src='{% url ihp-media path='js/country-scorecard-effects.js' %}'></script>
-	<style>
-		#scorecard_header h2, table.scorecard tr.countries ul, #scorecard,
-		#scorecard h2, #scorecard h3, #scorecard ul, #scorecard .category,
-		#scorecard td.expected_result, .infobox, .infobox .item,
-		.infobox .item h3, .inner, .infobox h2,	.health-financing .chart-key,
-		.health-financing .key
-		{
-			behavior:url({% url ihp-media path='js/ie-css3.htc' %});
-		}
-	</style>	
+	{% include 'rated_statement_js.inc.html' %}
 {% endblock %}
 {% block heading %}Country Scorecard for {{country.country}}{% endblock %}
 {% block content %}
+{% include 'ajax-loading.html' %}
 
 <div class="scorecard country">
 	<!-- start scorecard col-->
@@ -29,14 +15,9 @@
 				progress in this country</h3>
 			<ul class="logos progress">
 				{% for agency in progress_agencies %}
-					<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
-						alt="{{agency.agency}}" class="logo callout-from"
-						id="datalink_{{agency.agency}}_{{country.country}}">
-						<span class="name">{{agency.agency}}</span>
-						<div id="datalink_{{agency.agency}}_{{country.country}}_content"
-							style="display: none;">For {{agency.agency}} data
-							in {{country.country}} <a href="#">click here</a>.</div>
-						</li>
+					{% with agency.agency as logo %}
+						{% include 'progress.html' %}
+					{% endwith %}
 				{% endfor %}
 			</ul>
 		</div>
@@ -46,14 +27,9 @@
 				limited progress in this country</h3>
 			<ul class="logos no_progress">
 				{% for agency in no_progress_agencies %}
-					<li><img src="{% url ihp-media path='images' %}/{{agency.agency|cut:" "}}.png"
-						alt="{{agency.agency}}" class="logo callout-from"
-						id="datalink_{{agency.agency}}_{{country.country}}">
-						<span class="name">{{agency.agency}}</span>
-						<div id="datalink_{{agency.agency}}_{{country.country}}_content"
-							style="display: none;">For {{agency.agency}} data
-							in {{country.country}} <a href="#">click here</a>.</div>
-						</li>
+					{% with agency.agency as logo %}
+						{% include 'progress.html' %}
+					{% endwith %}
 				{% endfor %}
 			</ul>
 		</div>
@@ -67,23 +43,22 @@
 			<h2>
 				<a href="#" title="Click to expand">
 					<img src="{% url ihp-media path='images' %}/flag-60.png"
-						alt="Country Ownership and Accountability">
-					Country Ownership and Accountability
+						alt="Country Ownership and Accountability">Country
+					Ownership and Accountability
 				</a>
 			</h2>
 			
-			<div class="item" style="margin-top: 0;"><!-- join tongue to h2 -->
+			<div class="item" style="background-image:none;margin-top:10px;padding-top:1px;">
 				<h3>
 					<img src="{% url ihp-media path='images' %}/results-icon-1.png"
-						alt="Commitments Documented">
-					Commitments Documented
+						alt="Commitments Documented">Commitments Documented
 				</h3>
 	
 				<ul>
 					<li>
 						<img src="{% url ihp-media path='images' %}/{{raw_data.CD1}}.png"
-							alt="{{raw_data.CD1}}" class="rating">
-						Signed Agreement
+							alt="{{raw_data.CD1}}" class="rating">Signed
+						Agreement
 					</li>
 				</ul>
 	
@@ -93,20 +68,20 @@
 			<div class="item">
 				<h3>
 					<img src="{% url ihp-media path='images' %}/results-icon-5.png"
-						alt="Health Sector Plan and AIDS Strategies">
-					Health Sector Plan and AIDS Strategies
+						alt="Health Sector Plan and AIDS Strategies">Health
+					Sector Plan and AIDS Strategies
 				</h3>
 				
 				<ul>
 					<li>
 						<img src="{% url ihp-media path='images' %}/{{raw_data.HSP1}}.png"
-							alt="{{raw_data.HSP1}}" class="rating">
-						Includes current targets and budgets
+							alt="{{raw_data.HSP1}}" class="rating">Includes
+						current targets and budgets
 					</li>
 					<li>
 						<img src="{% url ihp-media path='images' %}/{{raw_data.HSP2}}.png"
-							alt="{{raw_data.HSP2}}" class="rating">
-						Jointly Assessed
+							alt="{{raw_data.HSP2}}" class="rating">Jointly
+						Assessed
 					</li>
 				</ul>
 			</div>
@@ -114,35 +89,37 @@
 			<div class="item">
 				<h3>
 					<img src="{% url ihp-media path='images' %}/results-icon-6.png"
-						alt="Health Sector Aid Effectiveness Monitoring">
-					Health Sector Aid Effectiveness Monitoring
+						alt="Health Sector Aid Effectiveness Monitoring">Health
+					Sector Aid Effectiveness Monitoring
 				</h3>
 				
 				<ul>
 					<li>
 						<img src="{% url ihp-media path='images' %}/{{raw_data.HSM1}}.png"
-							alt="{{raw_data.HSM1}}" class="rating">
-						Active joint monitoring
+							alt="{{raw_data.HSM1}}" class="rating">Active
+						joint monitoring
 					</li>
 					<li>
 						<img src="{% url ihp-media path='images' %}/{{raw_data.HSM2}}.png"
-							alt="{{raw_data.HSM2}}" class="rating">
-						Number of development partner missions
+							alt="{{raw_data.HSM2}}" class="rating">Number
+						of development partner missions
 					</li>
 					<li>
 						<img src="{% url ihp-media path='images' %}/{{raw_data.HSM3}}.png"
-							alt="{{raw_data.HSM3}}" class="rating">
-						10% of seats in the helath sector coordination 
-						mechanism are allocated to civil society 
+							alt="{{raw_data.HSM3}}" class="rating">10% of
+						seats in the health sector coordination mechanism are
+						allocated to civil society 
 					</li>
 					<li>
 						<img src="{% url ihp-media path='images' %}/{{raw_data.HSM4}}.png"
-							alt="{{raw_data.HSM4}}" class="rating">
-						Quality of civil society engagement health
-						sector policy and accountability processes
+							alt="{{raw_data.HSM4}}" class="rating">Quality of
+						civil society engagement health sector policy and
+						accountability processes
 					</li>
 				</ul>
 			</div></div><!-- infobox country-ownership -->
+		
+		<p class="spacer"></p>
 		
 		<div class="infobox health-financing">
 			<h2>
@@ -189,12 +166,14 @@
 				</div> 
 			</div>
 			
-			<div class="item">
+			<div class="item external-financing">
 				<h3>External financing using pooled mechanisms</h3>
-				<p>{{raw_data.PF1}}</p>
-				<p>{{raw_data.PF2}}</p>
+				<p class="number">{{raw_data.PF1}}</p>
+				<p class="bubble"><span></span>{{raw_data.PF2}}</p>
 			</div></div><!-- infobox health-financing -->
 
+		<p class="spacer"></p>
+		
 		<div class="infobox country-systems">
 			<h2>
 				<a href="#" title="Click to expand">
@@ -204,36 +183,41 @@
 				</a>
 			</h2>
 			
-			<div class="item" style="margin-top: 15px;"><!-- overlap the large logo -->
-				<h3>Public Financial Management</h3>
-			
-				<p>
-					<img src="{% url ihp-media path='images' %}/{{raw_data.PFM1}}.png"
-						alt="{{raw_data.PFM1}}" class="rating">
-					Reflects good practice (or reform in progress)
-				</p>
-			</div>
-			
-			<div class="item">
-				<h3>Procurement</h3>
-			
-				<p>
-					<img src="{% url ihp-media path='images' %}/{{raw_data.PR1}}.png"
-						alt="{{raw_data.PR1}}" class="rating">
-					Reflects good practice (or reform in progress)
-				</p>
-			</div>
-			
-			<div class="item" style="margin-bottom: 0;">
-				<h3>Technical Assistance</h3>
-			
-				<p>
-					<img src="{% url ihp-media path='images' %}/{{raw_data.TA1}}.png"
-						alt="{{raw_data.TA1}}" class="rating">
-					Donor capacity development provided through coordinated programmes
-				</p>
-			</div></div><!-- infobox country-systems -->
+			<div class="item" style="margin: 15px 0 0;"><!-- overlap the large logo -->
+				<div class="item-inner">
+					<h3>Public Financial Management</h3>
+				
+					<p>
+						<img src="{% url ihp-media path='images' %}/{{raw_data.PFM1}}.png"
+							alt="{{raw_data.PFM1}}" class="rating">
+						Reflects good practice (or reform in progress)
+					</p>
+				</div>
 
+				<div class="item-inner">
+					<h3>Procurement</h3>
+				
+					<p>
+						<img src="{% url ihp-media path='images' %}/{{raw_data.PR1}}.png"
+							alt="{{raw_data.PR1}}" class="rating">
+						Reflects good practice (or reform in progress)
+					</p>
+				</div>
+
+				<div class="item-inner">
+					<h3>Technical Assistance</h3>
+				
+					<p>
+						<img src="{% url ihp-media path='images' %}/{{raw_data.TA1}}.png"
+							alt="{{raw_data.TA1}}" class="rating">
+						Donor capacity development provided through coordinated programmes
+					</p>
+				</div>
+			</div>
+		</div><!-- infobox country-systems -->
+
+		<p class="spacer"></p>
+		
 		<div class="infobox health-systems">
 			<h2>
 				<a href="#" title="Click to expand">
@@ -247,6 +231,8 @@
 				<img width="400" height="300" alt="barchart"
 					src="{% url ihp-media path='images' %}/{{country.country}}hss.png">
 			</div></div><!-- infobox health-systems -->
+		
+		<p class="spacer"></p>
 		
 		<div class="infobox managing-for-development">
 			<h2>
