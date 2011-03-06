@@ -3,11 +3,7 @@ import numbers
 from django.template import Context, Template
 from django.utils.functional import memoize
 from indicators import NA_STR
-<<<<<<< HEAD
-from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators
-=======
 from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators, calc_country_agency_indicators
->>>>>>> test
 from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, GovScorecardComments, DPScorecardRatings, Rating, Language
 import models
 from target_criteria import criteria_funcs, MissingValueException, CannotCalculateException
