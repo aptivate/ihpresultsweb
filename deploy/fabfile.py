@@ -66,7 +66,7 @@ def staging_test():
     # so we need project_root to be different ...
     env.project_dir = env.project + '_test'
     env.environment = 'staging_test'
-    env.hosts = ['fen-vz-osiaccounting']
+    env.hosts = ['lin-reactionscorecards3-stage.aptivate.org:48001']
     _local_setup()
 
 
