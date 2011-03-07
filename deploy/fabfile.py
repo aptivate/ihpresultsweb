@@ -50,5 +50,5 @@ def staging():
 def production():
     """ use production environment on remote host"""
     env.environment = 'production'
-    env.hosts = ['lin-osiacct.aptivate.org:48001']
+    env.hosts = ['lin-reactionscorecards3-live.aptivate.org:48001']
     _local_setup()

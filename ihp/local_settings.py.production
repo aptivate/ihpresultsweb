@@ -1,0 +1,12 @@
+# Poll Email Account Settings
+POLL_USERNAME = "john"
+POLL_PASSWORD = "smith"
+POLL_HOST = "my.pop.server"
+
+DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_NAME = 'ihpresults' # Or path to database file if using sqlite3.
+DATABASE_USER = 'ihpresults' # Not used with sqlite3.
+DATABASE_PASSWORD = '' # Not used with sqlite3.
+DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
+DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+DATABASE_OPTIONS = {"init_command": "SET storage_engine=INNODB"}
