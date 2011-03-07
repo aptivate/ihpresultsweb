@@ -11,6 +11,13 @@ class AgencyAdmin(admin.ModelAdmin):
     list_display = ("agency", "type")
 
 admin.site.register(Agency, AgencyAdmin)
+
+class AgencyProfileAdmin(admin.ModelAdmin):
+    list_filter = ("language", "agency")
+    list_display = ("agency", "language")
+
+admin.site.register(AgencyProfile, AgencyProfileAdmin)
+
 admin.site.register(Country)
 
 class SubmissionAdmin(admin.ModelAdmin):
@@ -71,21 +78,22 @@ admin.site.register(AgencyWorkingDraft, AgencyWorkingDraftAdmin)
 class CountryWorkingDraftAdmin(admin.ModelAdmin):
     list_display = ("country", "is_draft")
 admin.site.register(CountryWorkingDraft, CountryWorkingDraftAdmin)
-admin.site.register(DPScorecardSummary)
+
+class DPScorecardSummaryAdmin(admin.ModelAdmin):
+    list_display = ("agency", "language")
+admin.site.register(DPScorecardSummary, DPScorecardSummaryAdmin)
 
 class DPScorecardRatingsAdmin(admin.ModelAdmin):
     list_display = ("agency", "r1" , "r2a", "r2b", "r2c", "r3", "r4", "r5a", "r5b", "r5c", "r6", "r7", "r8")
 admin.site.register(DPScorecardRatings, DPScorecardRatingsAdmin)
 
+admin.site.register(DPScorecardComments)
+
 class GovScorecardRatingsAdmin(admin.ModelAdmin):
     list_display = ("country", "r1" , "r2a", "r2b", "r3", "r4", "r5a", "r5b", "r6", "r7", "r8")
 
 admin.site.register(GovScorecardRatings, GovScorecardRatingsAdmin)
-
-class CountryScorecardOverrideAdmin(admin.ModelAdmin):
-    list_display = ("country", )
-
-admin.site.register(CountryScorecardOverride, CountryScorecardOverrideAdmin)
+admin.site.register(CountryScorecardOverrideComments)
 
 class Country8DPFixAdmin(admin.ModelAdmin):
     list_filter = ("agency", "country")
@@ -107,17 +115,6 @@ class MDGDataAdmin(admin.ModelAdmin):
     form = MDGDataAdminForm
 admin.site.register(MDGData, MDGDataAdmin)
 
-class CountryLanguageAdminForm(forms.ModelForm):
-    class Meta:
-        model = CountryLanguage
-    language = forms.ChoiceField(choices=[(x, x) for x in ["English", "French"]])
-
-class CountryLanguageAdmin(admin.ModelAdmin):
-    list_filter = ("language", )
-    list_display = ("country", "language")
-    form = CountryLanguageAdminForm
-admin.site.register(CountryLanguage, CountryLanguageAdmin)
-
 admin.site.register(NotApplicable)
 
 class CountryExclusionAdmin(admin.ModelAdmin):
@@ -125,3 +122,4 @@ class CountryExclusionAdmin(admin.ModelAdmin):
     list_display = ("question_number", "country", "baseline_applicable", "latest_applicable")
 
 admin.site.register(CountryExclusion, CountryExclusionAdmin)
+admin.site.register(Language)

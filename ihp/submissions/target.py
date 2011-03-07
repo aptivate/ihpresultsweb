@@ -3,15 +3,15 @@ import numbers
 from django.template import Context, Template
 from django.utils.functional import memoize
 from indicators import NA_STR
-from indicators import (calc_agency_indicators, calc_country_indicators,
-    dp_indicators, g_indicators, calc_agency_country_indicators,
-    calc_country_agency_indicators)
-from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, CountryLanguage, DPScorecardRatings, Rating
+from indicators import calc_agency_indicators, calc_country_indicators, dp_indicators, g_indicators, calc_agency_country_indicators, calc_country_agency_indicators
+from models import AgencyTargets, AgencyCountries, Submission, CountryTargets, Country8DPFix, GovScorecardRatings, GovScorecardComments, DPScorecardRatings, Rating, Language
+import models
 from target_criteria import criteria_funcs, MissingValueException, CannotCalculateException
 import math
 from itertools import chain
 from logging import debug
 from django.utils.translation import ugettext_lazy as _
+import translations
 
 def get_agency_targets(agency, indicators):
     targets = {}
@@ -32,6 +32,7 @@ def get_country_targets(country, indicators):
     return targets
 
 def evaluate_indicator(target, base_val, cur_val):
+    
     tick_func = criteria_funcs[target.tick_criterion_type]
     arrow_func = criteria_funcs[target.arrow_criterion_type]
 
@@ -65,25 +66,17 @@ def evaluate_indicator(target, base_val, cur_val):
     except CannotCalculateException:
         return Rating.NONE
 
-commentary_map = {
-    "1DP" : "An IHP+ Country Compact or equivalent has been signed by the agency in %(cur_val).0f%% of IHP+ countries where they exist. Target = 100%%.",
-    "2DPa" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid was reported by the agency on national health sector budgets - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%. Target = 50%% reduction in aid not on budget (with > 85%% on budget).",
-    "2DPb" :"In %(cur_year)s %(cur_val).0f%% of capacity development was provided by the agency through coordinated programmes - %(diff_direction)s from %(base_val).0f%%. Target = 50%%.",
-    "2DPc" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided by the agency through programme based approaches - %(diff_direction)s from %(base_val).0f%%. Target = 66%%.",
-    "3DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided by the agency through multi-year commitments - %(diff_direction)s from %(base_val).0f%%. Target = 90%%.",
-    "4DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid disbursements provided by the agency were released according to agreed schedules - %(one_minus_diff_direction)s from %(base_val).0f%% in %(base_year)s. Target = 90%%.",
-    "5DPa" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid provided by the agency used country procurement systems - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%. Target = 33%% reduction in aid not using procurement systems.",
-    "5DPb" : "In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid provided by the agency used national public financial management systems - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%. Target = 33%% reduction in aid not using PFM systems.",
-    "5DPc" : "In %(cur_year)s the stock of parallel project implementation units (PIUs) used by the agency in the surveyed countries was %(cur_val)s - %(diff_direction)s from %(base_val)s. Target = 66%% reduction in stock of PIUs.",
-    "6DP" : "In %(cur_year)s national performance assessment frameworks were routinely used by the agency to assess progress in %(cur_val).0f%% of IHP+ countries where they exist. Target = 100%%.",
-    "7DP" : "In %(cur_year)s the agency participated in health sector mutual assessments of progress in %(cur_val).0f%% of IHP+ countries where they exist. Target = 100%%.",
-    "8DP" : "In %(cur_year)s, evidence exists in %(cur_val).0f%% of IHP+ countries that the agency supported civil society engagement in health sector policy processes. Target = 100%%.",
-}
+def evaluate_agency_country_indicator(agency, country, target, base_val, cur_val):
+    if target.indicator == "8DP":
+        try:
+            fix = Country8DPFix.objects.get(agency=agency, country=country)
+            return fix.latest_progress
+        except Country8DPFix.DoesNotExist:
+            return Rating.QUESTION
 
-default_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
-na_text = "This Standard Performance Measure was deemed not applicable to %s."
+    return evaluate_indicator(target, base_val, cur_val)
 
-def calc_agency_ratings(agency):
+def calc_agency_ratings(agency, language=None):
     """
     Returns information for all indicators for the given agency in a dict with the
     following form
@@ -106,10 +99,13 @@ def calc_agency_ratings(agency):
     }
     """
 
-    def ratings_val(tmpl):
+    language = language or models.Language.objects.get(language="English")
+    translation = translations.get_translation(language)
+
+    def ratings_val(obj, tmpl):
         def _func(indicator):
             h = indicator.replace("DP", "")
-            d = ratings.__dict__
+            d = obj.__dict__
             return d.get(tmpl % h, None)
         return _func
 
@@ -119,13 +115,14 @@ def calc_agency_ratings(agency):
         else:
             return x
 
-    ratings_comments = ratings_val("er%s")
-    ratings_target = ratings_val("r%s")
 
     targets = get_agency_targets(agency, dp_indicators)
     indicators = calc_agency_indicators(agency)
-    ratings, _ = DPScorecardRatings.objects.get_or_create(agency=agency)
+    ratings, _ = models.DPScorecardRatings.objects.get_or_create(agency=agency)
+    comments_override, _ = models.DPScorecardComments.objects.get_or_create(agency=agency, language=language)
     results = {}
+    ratings_comments = ratings_val(comments_override, "er%s")
+    ratings_target = ratings_val(ratings, "r%s")
 
     for indicator in indicators:
         (base_val, base_year, cur_val, cur_year), comments = indicators[indicator]
@@ -159,17 +156,14 @@ def calc_agency_ratings(agency):
                 diff = round(round(base_val) - round(cur_val))
 
                 if diff > 0:
-                    result["diff_direction"] = "a decrease" 
-                    result["diff_direction2"] = "down" 
-                    result["one_minus_diff_direction"] = "an increase" 
+                    result["diff_direction"] = translation.direction_decrease
+                    result["one_minus_diff_direction"] = translation.direction_increase
                 elif diff == 0:
-                    result["diff_direction"] = "no change"
-                    result["diff_direction2"] = "no change"
-                    result["one_minus_diff_direction"] = "no change" 
+                    result["diff_direction"] = translation.direction_nochange
+                    result["one_minus_diff_direction"] = translation.direction_nochange
                 else:
-                   result["diff_direction"] = "an increase"
-                   result["diff_direction2"] = "up"
-                   result["one_minus_diff_direction"] = "a decrease" 
+                   result["diff_direction"] = translation.direction_increase
+                   result["one_minus_diff_direction"] = translation.direction_decrease
 
                 if result["base_val"] > 0:
                     result["perc_change"] = (result["cur_val"] - result["base_val"]) / float(result["base_val"]) * 100
@@ -182,7 +176,7 @@ def calc_agency_ratings(agency):
                 result["one_minus_cur_val"] = 100 - result["cur_val"]
         
             try:
-                template = commentary_map[indicator]
+                template = translation.agency_commentary_text[indicator]
                 if type(template) == Template:
                     result["commentary"] = template.render(Context(result))
                 else:
@@ -192,119 +186,15 @@ def calc_agency_ratings(agency):
 
             if result["target"] == Rating.NONE:
             #if NA_STR in [base_val, cur_val]:
-                result["commentary"] = na_text % agency.agency
+                result["commentary"] = translation.rating_none_text % agency.agency
             elif result["commentary"] == "":
-                result["commentary"] = default_text
-            result["commentary"] += u"∆"
+                result["commentary"] = translation.rating_question_text
 
         results[indicator] = result
 
     return results
 
-gov_commentary_text_en = {
-    "1G": {
-        Rating.TICK : "An [space] was signed in [space] called [space].",
-        Rating.ARROW : "There is evidence of a Compact or equivalent agreement under development. The aim is to have this in place by [space].",
-        Rating.CROSS : "There are no current plans to develop a Compact or equivalent agreement.",
-    },
-    "2Ga" : {
-        Rating.TICK : "A National Health Sector Plan/Strategy is in place with current targets & budgets that have been jointly assessed.",
-        Rating.ARROW : "National Health Sector Plans/Strategy in place with current targets & budgets with evidence of plans for joint assessment.",
-        Rating.CROSS : "National Health Sector Plans/Strategy in place with no plans for joint assessment. Target = National Health Sector Plans/Strategy in place with current targets & budgets that have been jointly assessed.",
-
-    },
-    "2Gb" : {
-        Rating.TICK : "There is currently a costed and evidence based HRH plan in place that is integrated with the national health plan.",
-        Rating.ARROW : """At the end of %(cur_year)s a costed and evidence based HRH plan was under development. 
-
-At the end of %(cur_year)s a costed and evidence based HRH plan was in place but not yet integrated with the national health plan. """,
-        Rating.CROSS : "At the end of %(cur_year)s there was no costed and evidence based HRH plan in place, or plans to develop one. ",
-    },
-    "3G" : {
-        "all" : "In %(cur_year)s %(country_name)s allocated %(cur_val).1f%% of its approved annual national budget to health.",
-    },
-    "4G" : {
-        "all" : "In %(cur_year)s, %(one_minus_cur_val).0f%% of health sector funding was disbursed against the approved annual budget.",
-    },
-    "5Ga" : {
-        "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).1f on the PFM/CPIA scale of performance."
-    },
-    "5Gb" : {
-        "all" : "In %(cur_year)s, %(country_name)s achieved a score of %(cur_val).0f on the four point scale used to assess performance in the the procurement sector."
-    },
-    "6G" : {
-        Rating.TICK : "In %(cur_year)s there was a transparent and monitorable performance assessment framework in place to assess progress against (a) the national development strategies relevant to health and (b) health sector programmes.",
-        Rating.ARROW : "At the end of %(cur_year)s there was evidence that a transparent and monitorable performance assessment framework was under development to assess progress against (a) the national development  strategies relevant to health and (b) health sector programmes.",
-        Rating.CROSS : "At the end of %(cur_year)s there was no transparent and monitorable performance assessment framework in place and no plans to develop one were clear or being implemented.",
-    },
-    "7G" : {
-        Rating.TICK : "Mutual assessments are being made of progress implementing commitments in the health sector, including on aid effectiveness.",
-        Rating.ARROW : "Mutual assessments are being made of progress implementing commitments in the health sector, but not on aid effectiveness.",
-        Rating.CROSS : "Mutual assessments are not being made of progress implementing commitments in the health sector.",
-    },
-    "8G" : {
-        "all" : "In %(cur_year)s %(cur_val).0f%% of seats in the Health Sector Coordination Mechanism (or equivalent body) were allocated to Civil Society representatives."
-    },
-}
-
-gov_commentary_text_fr = {
-    "1G": {
-        Rating.TICK : u"Un [space] a été signé en [space] qui se nomme [space].",
-        Rating.ARROW : u"Certaines données indiquent qu’un accord ou une entente équivalente est en cours d’élaboration. L’objectif poursuivi est la mise en place de cet accord ou de cette entente avant le [space].",
-        Rating.CROSS : u"Il n’y a actuellement aucun plan visant à élaborer un accord ou une entente équivalente.",
-    },
-    "2Ga" : {
-        Rating.TICK : u"Un plan et une stratégie nationaux sectoriels de santé ont été mis en place à l’aide des objectifs et des budgets actuels qui ont été évalués conjointement.",
-        Rating.ARROW : u"Mise en place de plans et d'une stratégie nationaux sectoriels de santé à l’aide des objectifs et des budgets actuels qui ont été évalués conjointement.",
-        Rating.CROSS : u"Mise en place de plans et d’une stratégie nationaux sectoriels de santé sans plan d’évaluation conjointe.",
-
-    },
-    "2Gb" : {
-        Rating.TICK : u"Un plan relatif aux HRH chiffré et fondé sur des preuves qui est intégré au plan de santé national a été mis en place.",
-        Rating.ARROW : u"""
-À la fin de %(cur_year)s, un plan relatif aux HRH chiffré et fondé sur des preuves était en cours d’élaboration. 
-
-À la fin de %(cur_year)s, un plan relatif aux HRH chiffré et fondé sur des preuves avait été mis en place, mais n’était pas encore intégré au plan de santé national. 
-""",
-        Rating.CROSS : u"À la fin de %(cur_year)s, aucun plan chiffré et fondé sur des preuves relatif aux HRH n’avait été mis en place ni aucun plan visant à en élaborer un.",
-    },
-    "3G" : {
-        "all" : u"En %(cur_year)s, %(country_name)s a alloué %(cur_val).1f%% de son budget annuel ayant été approuvé pour le secteur de la santé.",
-    },
-    "4G" : {
-        "all" : u"En %(cur_year)s, %(one_minus_cur_val).0f%% du financement alloué au secteur de la santé a été décaissé en fonction du budget annuel ayant été autorisé.",
-    },
-    "5Ga" : {
-        "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val) sur l'échelle de performance GFP/EPIN."
-    },
-    "5Gb" : {
-        "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val).0f sur l’échelle d’évaluation à quatre points utilisée pour évaluer la performance du secteur de l’approvisionnement. "
-    },
-    "6G" : {
-        Rating.TICK : u"En %(cur_year)s, un cadre d’évaluation de la performance transparent et contrôlable a été mis en place pour évaluer les progrès accomplis par rapport aux a) stratégies de développement national relatives à la santé et aux b) programmes sectoriels de santé.",
-        Rating.ARROW : u"À la fin de %(cur_year)s, certaines données indiquaient qu’un cadre d’évaluation de la performance transparent et contrôlable était en cours d’élaboration pour évaluer les progrès accomplis par rapport aux a) stratégies de développement national relatives à la santé et aux b) programmes sectoriels de santé.",
-        Rating.CROSS : u"À la fin de %(cur_year)s, aucun cadre d'évaluation de la performance transparent et contrôlable n’avait été mis en place et aucun plan visant à en développer un n’était clair ou sur le point d’être mis en œuvre.",
-    },
-    "7G" : {
-        Rating.TICK : u"Des évaluations conjointes sont faites des progrès accomplis en ce qui concerne la mise en œuvre d’engagements dans le secteur de la santé, notamment en matière d’efficacité de l’aide.",
-        Rating.ARROW : u"Des évaluations conjointes sont faites des progrès accomplis en ce qui concerne la mise en œuvre d’engagements dans le secteur de la santé, mais pas en matière d’efficacité de l’aide.",
-        Rating.CROSS : u"Des évaluations conjointes sont faites des progrès accomplis en ce qui concerne la mise en œuvre d’engagements dans le secteur de la santé.",
-    },
-    "8G" : {
-        "all" : u"En %(cur_year)s, %(cur_val).0f%% des voix dans les mécanismes nationaux de coordination du secteur de la santé (ou un organe équivalent) ont été allouées aux représentants de la société civile."
-    },
-}
-
-def get_country_commentary_text(country):
-    try:
-        cl = CountryLanguage.objects.get(country=country)
-        if cl.language == "French":
-            return gov_commentary_text_fr
-    except CountryLanguage.DoesNotExist:
-        pass
-    return gov_commentary_text_en
-
-def calc_country_ratings(country):
+def calc_country_ratings(country, language=None):
     """
     Returns information for all indicators for the given country in a dict with the
     following form
@@ -326,26 +216,29 @@ def calc_country_ratings(country):
         .
     }
     """
+    language = language or models.Language.objects.get(language="English")
 
-    
-    gov_commentary_text = get_country_commentary_text(country)
+    translation = translations.get_translation(language)
+    gov_commentary_text = translation.gov_commentary_text
 
-    rating_question_text = "Insufficient data has been provided to enable a rating for this Standard Performance Measure."
-    rating_none_text = "This Standard Performance Measure was deemed not applicable to %s." % country.country
+    rating_question_text = translation.rating_question_text
+    rating_none_text = translation.rating_none_text % country.country
 
     targets = get_country_targets(country, g_indicators)
     indicators = calc_country_indicators(country)
     results = {}
-    ratings, _ = GovScorecardRatings.objects.get_or_create(country=country)
-    def ratings_val(tmpl):
+    ratings, _ = models.GovScorecardRatings.objects.get_or_create(country=country)
+    comment_override, _ = models.GovScorecardComments.objects.get_or_create(country=country, language=language)
+
+    def ratings_val(obj, tmpl):
         def _func(indicator):
             h = indicator.replace("G", "").replace("Q", "")
-            d = ratings.__dict__
+            d = obj.__dict__
             return d.get(tmpl % h, None)
         return _func
 
-    ratings_comments = ratings_val("er%s")
-    ratings_target = ratings_val("r%s")
+    ratings_comments = ratings_val(comment_override, "er%s")
+    ratings_target = ratings_val(ratings, "r%s")
 
     for indicator in indicators:
         (base_val, base_year, cur_val, cur_year), comments = indicators[indicator]
@@ -386,7 +279,6 @@ def calc_country_ratings(country):
                     commentary = gov_commentary_text[indicator]["all"]
                 else:
                     commentary = gov_commentary_text[indicator][target_value]
-                commentary += u"∆"
                 
                 try:
                     result["commentary"] = commentary % result
@@ -395,6 +287,35 @@ def calc_country_ratings(country):
 
         results[indicator] = result
     return results
+
+def calc_country_scorecard_values(country, language):
+    """
+    Calculate values needed by country scorecard
+    """
+    data = calc_country_ratings(country, language)
+    country_questions = models.GovQuestion.objects.filter(submission__country=country)
+
+    lang = language.language
+    comments, _ = models.CountryScorecardOverrideComments.objects.get_or_create(
+        country=country, language=language
+    )
+
+    data["rf2_%s" % lang] = comments.rf2 or country_questions.filter(question_number="22")[0].latest_value
+    data["rf3_%s" % lang] = comments.rf3 or country_questions.filter(question_number="23")[0].latest_value
+    data["dbr2_%s" % lang] = comments.dbr2 or country_questions.filter(question_number="11")[0].comments
+    data["hmis2_%s" % lang] = comments.hmis2 or country_questions.filter(question_number="21")[0].comments
+    jar4_question = country_questions.filter(question_number="24")[0]
+    data["jar4_%s" % lang] = comments.jar4 or "Latest Value: %s\nComment: %s" % (jar4_question.latest_value, jar4_question.comments)
+    data["pfm2_%s" % lang] = comments.pfm2 or country_questions.filter(question_number="9")[0].comments
+    data["pr2_%s" % lang] = comments.pr2 or country_questions.filter(question_number="10")[0].comments
+    data["pf2_%s" % lang] = comments.pf2 or country_questions.filter(question_number="16")[0].comments
+    data["cd2_%s" % lang] = comments.cd2 or country_questions.filter(question_number="1")[0].comments
+
+    tmp_ta2 = ""
+    for q in models.DPQuestion.objects.filter(submission__country=country, question_number="4"):
+        tmp_ta2 += q.submission.agency.agency + ": " + q.comments + "\n\n"
+    data["ta2_%s" % lang] = comments.ta2 or tmp_ta2
+    return data
 
 def country_agency_indicator_ratings(country, agency):
     """
@@ -409,26 +330,9 @@ def country_agency_indicator_ratings(country, agency):
         debug("extracting %s from %s" % (indicator, str(country_indicators)))
         values, comments = v
         (base_val, base_year, cur_val, cur_year) = values
-        # TODO this is a hack - it might be better to extract this
-        # logic out of here
-        result = None
-        if indicator in ["1DP", "6DP", "7DP"] and cur_val != NA_STR:
-            if cur_val > 0: 
-                result = Rating.TICK
-            elif base_val == None and cur_val == None:
-                result = Rating.QUESTION
-            elif base_val in [None, NA_STR]:
-                result = Rating.CROSS
-        elif indicator == "8DP":
-            try:
-                fix = Country8DPFix.objects.get(agency=agency, country=country)
-                result = fix.latest_progress
-            except Country8DPFix.DoesNotExist:
-                result = Rating.QUESTION
 
-        if result == None:
-            target = targets[indicator]
-            result = evaluate_indicator(target, base_val, cur_val)
+        target = targets[indicator]
+        result = evaluate_agency_country_indicator(agency, country, target, base_val, cur_val)
         indicators[indicator] = result
     return indicators
 
@@ -461,26 +365,9 @@ def agency_country_indicator_ratings(agency, country):
         debug("extracting %s from %s" % (indicator, str(agency_indicators)))
         values, comments = v
         (base_val, base_year, cur_val, cur_year) = values
-        # TODO this is a hack - it might be better to extract this
-        # logic out of here
-        result = None
-        if indicator in ["1G", "6G", "7G"] and cur_val != NA_STR:
-            if cur_val > 0: 
-                result = Rating.TICK
-            elif base_val == None and cur_val == None:
-                result = Rating.QUESTION
-            elif base_val in [None, NA_STR]:
-                result = Rating.CROSS
-        elif indicator == "8G":
-            try:
-                fix = Country8DPFix.objects.get(agency=agency, country=country)
-                result = fix.latest_progress
-            except Country8DPFix.DoesNotExist:
-                result = Rating.QUESTION
+        target = targets[indicator]
+        result = evaluate_agency_country_indicator(agency, country, target, base_val, cur_val)
 
-        if result == None:
-            target = targets[indicator]
-            result = evaluate_indicator(target, base_val, cur_val)
         indicators[indicator] = result
     return indicators
 

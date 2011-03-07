@@ -68,6 +68,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     "debug_toolbar",
+
+    'south',
    
     'submissions',
     'publicweb',

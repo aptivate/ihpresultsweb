@@ -2,9 +2,33 @@ import re
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson
-from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, Country, CountryScorecardOverride, GovQuestion, DPQuestion
+from submissions.models import Agency, DPScorecardSummary, DPScorecardRatings, GovScorecardRatings, GovScorecardComments, Country, CountryScorecardOverrideComments, GovQuestion, DPQuestion, Language
+import models
 from target import calc_agency_ratings, calc_country_ratings
 import indicators
+import target
+import country_scorecard
+
+class LazyCommentsLoader(object):
+    def __init__(self, model, **kwargs):
+        self._map = {}
+        self.model = model
+        self.kwargs = kwargs
+
+    def __getitem__(self, language):
+        try:
+            if type(language) != Language:
+                language = models.Language.objects.get(language=language)
+            if not language in self._map:
+                kwargs = self.kwargs.copy()
+                kwargs["language"] = language
+                comments = self.model.objects.get(**kwargs)
+                self._map[language] = comments
+            return self._map[language]
+        except Language.DoesNotExist:
+            return None
+        except self.model.DoesNotExist:
+            return None
 
 def calc_agency_comments(indicator, agency_data):
     old_comments = agency_data[indicator]["comments"]
@@ -14,10 +38,10 @@ def calc_agency_comments(indicator, agency_data):
     comments = "\n".join([comment for comment in comments if comment])
     return comments
 
+strip_agency_indicator = lambda x : x.replace("DP", "")
 def dp_summary(request, agency_id):
 
-    agency = get_object_or_404(Agency, id=agency_id)
-    summary, _ = DPScorecardSummary.objects.get_or_create(agency=agency)
+    agency = get_object_or_404(models.Agency, id=agency_id)
     erbs = range(1, 9)
 
     if request.method == "GET":
@@ -25,55 +49,68 @@ def dp_summary(request, agency_id):
 
         comments = {}
         for indicator in indicators.dp_indicators:
-            comments[indicator] = calc_agency_comments(indicator, agency_data)
+            ind_text = strip_agency_indicator(indicator)
+            comments["text%s" % ind_text] = calc_agency_comments(indicator, agency_data)
 
-        for i in erbs:
-            comments["summary%d" % i] = getattr(summary, "erb%d" % i)
+        for language in models.Language.objects.all():
+            summary, _ = models.DPScorecardSummary.objects.get_or_create(agency=agency, language=language)
+            for i in erbs:
+                comments["erb%d_%s" % (i, language.language)] = getattr(summary, "erb%d" % i)
 
         return HttpResponse(simplejson.dumps(comments))
     elif request.method == "POST":
-        for i in erbs:
-            setattr(summary, "erb%d" % i, request.POST["summary%d" % i])
-        summary.save()
-
+        comments_loader = LazyCommentsLoader(DPScorecardSummary, agency=agency)
+        for key in request.POST.keys():
+            if key.startswith("erb") and len(key.split("_")) == 2:
+                field, language = key.split("_")
+                summary = comments_loader[language]
+                if summary and hasattr(summary, field):
+                    setattr(summary, field, request.POST[key])
+        for summary in comments_loader._map.values():
+            summary.save()
+        
         return HttpResponse("OK")
     
 def dp_ratings(request, agency_id):
 
-    get_comment = lambda indicator : results[indicator]["commentary"]
-    strip_indicator = lambda x : x.replace("DP", "")
     try:
-        agency = get_object_or_404(Agency, id=agency_id)
-        ratings, _ = DPScorecardRatings.objects.get_or_create(agency=agency)
-        results = calc_agency_ratings(agency)
+        agency = get_object_or_404(models.Agency, id=agency_id)
+        ratings, _ = models.DPScorecardRatings.objects.get_or_create(agency=agency)
         data = {}
+        comments_loader = LazyCommentsLoader(models.DPScorecardComments, agency=agency)
 
         if request.method == "GET":
-            agency_data = calc_agency_ratings(agency)
 
-            for indicator in indicators.dp_indicators:
-                data[indicator] = calc_agency_comments(indicator, agency_data)
-                core_indicator = strip_indicator(indicator)
-                data["rating%s" % core_indicator] = getattr(ratings, "r%s" % core_indicator)
-                data["progress%s" % core_indicator] = getattr(ratings, "er%s" % core_indicator)
-                data["gen%s" % core_indicator] = get_comment(indicator)
+            for language in models.Language.objects.all():
+                agency_data = calc_agency_ratings(agency, language)
+                comments = comments_loader[language]
+                
+                for indicator in indicators.dp_indicators:
+                    data[indicator] = calc_agency_comments(indicator, agency_data)
+                    core_indicator = strip_agency_indicator(indicator)
+                    data["r%s" % core_indicator] = getattr(ratings, "r%s" % core_indicator)
+                    data["er%s_%s" % (core_indicator, language.language)] = getattr(comments, "er%s" % core_indicator)
+                    data["gr%s" % core_indicator] = agency_data[indicator]["commentary"]
 
             return HttpResponse(simplejson.dumps(data))
         elif request.method == "POST":
 
-            for indicator in indicators.dp_indicators:
-                core_indicator = strip_indicator(indicator)
-                
-                setattr(ratings, "r%s" % core_indicator, request.POST["r%s" % core_indicator])
-                setattr(ratings, "er%s" % core_indicator, request.POST["er%s" % core_indicator])
+            for key in request.POST.keys():
+                if key.startswith("r") and hasattr(ratings, key):
+                    setattr(ratings, key, request.POST[key])
+                elif key.startswith("er") and len(key.split("_")) == 2:
+                    field, language = key.split("_")
+                    comments = comments_loader[language]
+                    if comments and hasattr(comments, field):
+                        setattr(comments, field, request.POST[key])
             ratings.save()
-
-            results = calc_agency_ratings(agency)
+            for comments in comments_loader._map.values():
+                comments.save()
+            agency_data = calc_agency_ratings(agency)
 
             for indicator in indicators.dp_indicators:
-                core_indicator = strip_indicator(indicator)
-
-                data["gen%s" % core_indicator] = results[indicator]["commentary"]
+                core_indicator = strip_agency_indicator(indicator)
+                data["gr%s" % core_indicator] = agency_data[indicator]["commentary"]
 
             return HttpResponse(simplejson.dumps(data))
     except:
@@ -85,29 +122,49 @@ def gov_ratings(request, country_id):
     re_indconv = re.compile("(\d+)(\w*)")
     indconv = lambda indicator : "%sG%s" % re_indconv.search(indicator).groups()
     try:
-        country = get_object_or_404(Country, id=country_id)
-        ratings, _ = GovScorecardRatings.objects.get_or_create(country=country)
+        country = get_object_or_404(models.Country, id=country_id)
+        ratings, _ = models.GovScorecardRatings.objects.get_or_create(country=country)
+
+        comments_en, _ = GovScorecardComments.objects.get_or_create(
+            country=country, 
+            language=Language.objects.filter(language="English")
+        )
+        comments_fr, _ = GovScorecardComments.objects.get_or_create(
+            country=country, 
+            language=Language.objects.filter(language="French")
+        )
+
         get_comment = lambda indicator : results[indicator]["commentary"]
         data = {}
         indicators = ["1", "2a", "2b", "3", "4", "5a", "5b", "6", "7", "8"]
+        other_indicators = ["hmis1", "jar1", "hsp1", "hsp2", "hsm1", "hsm4"]
 
         if request.method == "GET":
             results = calc_country_ratings(country)
             country_data = results
 
-            
             for indicator in indicators:
-                data["rating%s" % indicator] = getattr(ratings, "r%s" % indicator)
-                data["progress%s" % indicator] = getattr(ratings, "er%s" % indicator)
-                data["gen%s" % indicator] = get_comment(indconv(indicator))
+                data["r%s" % indicator] = getattr(ratings, "r%s" % indicator)
+                data["er%s_en" % indicator] = getattr(comments_en, "er%s" % indicator)
+                data["er%s_fr" % indicator] = getattr(comments_fr, "er%s" % indicator)
+                data["gr%s" % indicator] = get_comment(indconv(indicator))
+
+            for indicator in other_indicators:
+                data[indicator] = getattr(ratings, indicator)
 
             return HttpResponse(simplejson.dumps(data))
         elif request.method == "POST":
-
             for indicator in indicators:
                 setattr(ratings, "r%s" % indicator, request.POST["r%s" % indicator]) 
-                setattr(ratings, "er%s" % indicator, request.POST["er%s" % indicator]) 
-                ratings.save()
+                setattr(comments_en, "er%s" % indicator, request.POST["er%s_en" % indicator]) 
+                setattr(comments_fr, "er%s" % indicator, request.POST["er%s_fr" % indicator]) 
+
+            for indicator in other_indicators:
+                setattr(ratings, indicator, request.POST[indicator])
+
+            ratings.save()
+            comments_en.save()
+            comments_fr.save()
 
             results = calc_country_ratings(country)
 
@@ -119,44 +176,37 @@ def gov_ratings(request, country_id):
         import traceback
         traceback.print_exc()
     
-def country_scorecard(request, country_id):
+def country_scorecard_overrides(request, country_id):
 
+    override_fields = ["RF2", "RF3", "DBR2", "HMIS2", "JAR4", "PFM2", "PR2", "PF2", "CD2", "TA2"]
     try:
         country = get_object_or_404(Country, id=country_id)
-        ratings, _ = CountryScorecardOverride.objects.get_or_create(country=country)
         data = {}
 
         if request.method == "GET":
-            results = calc_country_ratings(country)
-            country_data = results
-            data = ratings.__dict__.copy()
-            for key in data.keys():
-                if key.startswith("_"): del data[key]
+            data = {}
 
-            # TODO - this is messy. This default data should be contained elsewhere
-            country_questions = GovQuestion.objects.filter(submission__country=country)
-            data["rf2"] = data["rf2"] or country_questions.filter(question_number="22")[0].latest_value
-            data["rf3"] = data["rf3"] or country_questions.filter(question_number="23")[0].latest_value
-            data["dbr2"] = data["dbr2"] or country_questions.filter(question_number="11")[0].comments
-            data["hmis2"] = data["hmis2"] or country_questions.filter(question_number="21")[0].comments
-            jar4_question = country_questions.filter(question_number="24")[0]
-            data["jar4"] = data["jar4"] or "Latest Value: %s\nComment: %s" % (jar4_question.latest_value, jar4_question.comments)
-            data["pfm2"] = data["pfm2"] or country_questions.filter(question_number="9")[0].comments
-            data["pr2"] = data["pr2"] or country_questions.filter(question_number="10")[0].comments
-            data["pf2"] = data["pf2"] or country_questions.filter(question_number="16")[0].comments
-            data["cd2"] = data["cd2"] or country_questions.filter(question_number="1")[0].comments
-            if not data["ta2"]:
-                data["ta2"] = ""
-                for q in DPQuestion.objects.filter(submission__country=country, question_number="4"):
-                    data["ta2"] += q.submission.agency.agency + ": " + q.comments + "\n\n"
-                 
+            for language in models.Language.objects.all():
+                tmp_data = country_scorecard.get_country_export_data(country, language)
+                for field in override_fields:
+                    data["%s_%s" % (field.lower(), language.language)] = tmp_data[field]
+
             return HttpResponse(simplejson.dumps(data))
         elif request.method == "POST":
+            ratings, _ = models.GovScorecardRatings.objects.get_or_create(country=country)
+            comments_loader = LazyCommentsLoader(CountryScorecardOverrideComments, country=country)
             for key in request.POST.keys():
                 if key in ratings.__dict__:
                     ratings.__dict__[key] = request.POST[key]
+                elif len(key.split("_")) == 2:
+                    field, language = key.split("_")
+                    comments = comments_loader[language]
+                    if comments and hasattr(comments, field):
+                        setattr(comments, field, request.POST[key])
 
             ratings.save()
+            for comments in comments_loader._map.values():
+                comments.save()
 
             return HttpResponse(simplejson.dumps(data))
     except:

@@ -12,6 +12,18 @@ go away if the hosting arrangements change.
 public: static media files that are neither Wordpress nor Django, e.g. the 
 site's favicon.
 
-ihp/settings_prod.py: This script can be deleted once hosting arrnagements change.
+ihp/settings_prod.py: This script can be deleted once hosting arrangements change.
 
 ihp/scripts/check.sh: This script will be deleted by March 2011 as there will no longer be a need to collect submissions via email
+
+Database Migrations
+-------------------
+
+If you have been using the application before South was installed, i.e. before commit e4d89c340390e46bc74302bff8c26e16afb5d070. Then you need to initialise your application to use migrations.
+Run the following
+
+./manage.py syncdb
+./manage.py migrate submissions 0001 --fake
+./manage.py migrate submissions
+
+You probably want to backup your database first just in case the migrations process breaks something

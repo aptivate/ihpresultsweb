@@ -8,18 +8,24 @@
 <form class="styleform">
     <fieldset>
         <legend>Country</legend>
-        <ol><li>{{ form.country }}</li></ol>
+        <ol>
+            <li>{{ form.country }}</li>
+        </ol>
     </fieldset>
     <fieldset>
-        <legend>1DP</legend>
+        <legend>1G</legend>
         <ol>
             <li>
             {{ form.r1.label_tag }}
             {{ form.r1 }}
             </li>
             <li>
-            {{ form.er1.label_tag }}
-            {{ form.er1 }}
+            {{ form.er1_en.label_tag }}
+            {{ form.er1_en }}
+            </li>
+            <li>
+            {{ form.er1_fr.label_tag }}
+            {{ form.er1_fr }}
             </li>
             <li>
                 Generated Text:<br/>
@@ -28,15 +34,19 @@
         </ol>
     </fieldset>
     <fieldset>
-        <legend>2DPa</legend>
+        <legend>2Ga</legend>
         <ol>
             <li>
             {{ form.r2a.label_tag }}
             {{ form.r2a }}
             </li>
             <li>
-            {{ form.er2a.label_tag }}
-            {{ form.er2a }}
+            {{ form.er2a_en.label_tag }}
+            {{ form.er2a_en }}
+            </li>
+            <li>
+            {{ form.er2a_fr.label_tag }}
+            {{ form.er2a_fr }}
             </li>
             <li>
                 Generated Text:<br/>
@@ -45,15 +55,19 @@
         </ol>
     </fieldset>
     <fieldset>
-        <legend>2DPb</legend>
+        <legend>2Gb</legend>
         <ol>
             <li>
             {{ form.r2b.label_tag }}
             {{ form.r2b }}
             </li>
             <li>
-            {{ form.er2b.label_tag }}
-            {{ form.er2b }}
+            {{ form.er2b_en.label_tag }}
+            {{ form.er2b_en }}
+            </li>
+            <li>
+            {{ form.er2b_fr.label_tag }}
+            {{ form.er2b_fr }}
             </li>
             <li>
                 Generated Text:<br/>
@@ -62,15 +76,19 @@
         </ol>
     </fieldset>
     <fieldset>
-        <legend>3DP</legend>
+        <legend>3G</legend>
         <ol>
             <li>
             {{ form.r3.label_tag }}
             {{ form.r3 }}
             </li>
             <li>
-            {{ form.er3.label_tag }}
-            {{ form.er3 }}
+            {{ form.er3_en.label_tag }}
+            {{ form.er3_en }}
+            </li>
+            <li>
+            {{ form.er3_fr.label_tag }}
+            {{ form.er3_fr }}
             </li>
             <li>
                 Generated Text:<br/>
@@ -79,15 +97,19 @@
         </ol>
     </fieldset>
     <fieldset>
-        <legend>4DP</legend>
+        <legend>4G</legend>
         <ol>
             <li>
             {{ form.r4.label_tag }}
             {{ form.r4 }}
             </li>
             <li>
-            {{ form.er4.label_tag }}
-            {{ form.er4 }}
+            {{ form.er4_en.label_tag }}
+            {{ form.er4_en }}
+            </li>
+            <li>
+            {{ form.er4_fr.label_tag }}
+            {{ form.er4_fr }}
             </li>
             <li>
                 Generated Text:<br/>
@@ -96,15 +118,19 @@
         </ol>
     </fieldset>
     <fieldset>
-        <legend>5DPa</legend>
+        <legend>5Ga</legend>
         <ol>
             <li>
             {{ form.r5a.label_tag }}
             {{ form.r5a }}
             </li>
             <li>
-            {{ form.er5a.label_tag }}
-            {{ form.er5a }}
+            {{ form.er5a_en.label_tag }}
+            {{ form.er5a_en }}
+            </li>
+            <li>
+            {{ form.er5a_fr.label_tag }}
+            {{ form.er5a_fr }}
             </li>
             <li>
                 Generated Text:<br/>
@@ -113,15 +139,19 @@
         </ol>
     </fieldset>
     <fieldset>
-        <legend>5DPb</legend>
+        <legend>5Gb</legend>
         <ol>
             <li>
             {{ form.r5b.label_tag }}
             {{ form.r5b }}
             </li>
             <li>
-            {{ form.er5b.label_tag }}
-            {{ form.er5b }}
+            {{ form.er5b_en.label_tag }}
+            {{ form.er5b_en }}
+            </li>
+            <li>
+            {{ form.er5b_fr.label_tag }}
+            {{ form.er5b_fr }}
             </li>
             <li>
                 Generated Text:<br/>
@@ -130,15 +160,19 @@
         </ol>
     </fieldset>
     <fieldset>
-        <legend>6DP</legend>
+        <legend>6G</legend>
         <ol>
             <li>
             {{ form.r6.label_tag }}
             {{ form.r6 }}
             </li>
             <li>
-            {{ form.er6.label_tag }}
-            {{ form.er6 }}
+            {{ form.er6_en.label_tag }}
+            {{ form.er6_en }}
+            </li>
+            <li>
+            {{ form.er6_fr.label_tag }}
+            {{ form.er6_fr }}
             </li>
             <li>
                 Generated Text:<br/>
@@ -147,15 +181,19 @@
         </ol>
     </fieldset>
     <fieldset>
-        <legend>7DP</legend>
+        <legend>7G</legend>
         <ol>
             <li>
             {{ form.r7.label_tag }}
             {{ form.r7 }}
             </li>
             <li>
-            {{ form.er7.label_tag }}
-            {{ form.er7 }}
+            {{ form.er7_en.label_tag }}
+            {{ form.er7_en }}
+            </li>
+            <li>
+            {{ form.er7_fr.label_tag }}
+            {{ form.er7_fr }}
             </li>
             <li>
                 Generated Text:<br/>
@@ -164,19 +202,77 @@
         </ol>
     </fieldset>
     <fieldset>
-        <legend>8DP</legend>
+        <legend>8G</legend>
         <ol>
             <li>
             {{ form.r8.label_tag }}
             {{ form.r8 }}
             </li>
             <li>
-            {{ form.er8.label_tag }}
-            {{ form.er8 }}
+            {{ form.er8_en.label_tag }}
+            {{ form.er8_en }}
+            </li>
+            <li>
+            {{ form.er8_fr.label_tag }}
+            {{ form.er8_fr }}
             </li>
             <li>
                 Generated Text:<br/>
                 <div id="id_gr8"></div>
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>Health Management Information Systems</legend>
+        <ol>
+            <li>
+            {{ form.hmis1.label_tag }}
+            {{ form.hmis1 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>Joint Health Sector Reviews Conducted</legend>
+        <ol>
+            <li>
+            {{ form.jar1.label_tag }}
+            {{ form.jar1 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>Includes targets and budgets</legend>
+        <ol>
+            <li>
+            {{ form.hsp1.label_tag }}
+            {{ form.hsp1 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>Jointly assessed</legend>
+        <ol>
+            <li>
+            {{ form.hsp2.label_tag }}
+            {{ form.hsp2 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>Active Joint monitoring</legend>
+        <ol>
+            <li>
+            {{ form.hsm1.label_tag }}
+            {{ form.hsm1 }}
+            </li>
+        </ol>
+    </fieldset>
+    <fieldset>
+        <legend>Quality of civil society engagement</legend>
+        <ol>
+            <li>
+            {{ form.hsm4.label_tag }}
+            {{ form.hsm4 }}
             </li>
         </ol>
     </fieldset>
