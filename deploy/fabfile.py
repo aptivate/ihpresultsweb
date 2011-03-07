@@ -11,35 +11,64 @@ import fablib
 
 env.home = '/var/django/'
 env.project = 'reactionscorecards3'
+
+# the top level directory on the server
+env.project_dir = env.project
+
+# repository type can be "svn" or "git"
 env.repo_type = 'git'
 env.repository = 'git://github.com/aptivate/ihpresultsweb.git'
+
+env.django_dir = env.project
 env.django_apps = ['publicweb', 'submissions', ]
 env.test_cmd = ' manage.py test -v0 ' + ' '.join(env.django_apps)
 
+# put "django" here if you want django specific stuff to run
+# put "plain" here for a basic apache app
+env.project_type = "django"
+
+# does this virtualenv for python packages
+env.use_virtualenv = True
+
+# valid environments - used for require statements in fablib
+env.valid_non_prod_envs = ('dev_server', 'staging_test', 'staging')
+env.valid_envs = ('dev_server', 'staging_test', 'staging', 'production')
+
+
+# this function can just call the fablib _setup_path function
+# or you can use it to override the defaults
+def _local_setup():
+    # put your own defaults here
+    fablib._setup_path()
+    # override settings here
+    # if you have an ssh key and particular user you need to use
+    # then uncomment the next 2 lines
+    #env.user = "root" 
+    #env.key_filename = ["/home/shared/keypair.rsa"]
+    env.django_root = os.path.join(env.vcs_root, 'ihp')
+
 #
-# These three commands set up the environment variables
+# These commands set up the environment variables
 # to be used by later commands
 #
 
-def _local_setup():
-    fablib._setup_path()
-    env.django_root = os.path.join(env.vcs_root, 'ihp')
+def dev_server():
+    """ use dev environment on remote host to play with code in production-like env"""
+    utils.abort('remove this line when dev server setup')
+    env.environment = 'dev_server'
+    env.hosts = ['lin-reactionscorecards3-dev.aptivate.org:48001']
+    _local_setup()
+
 
 def staging_test():
     """ use staging environment on remote host to run tests"""
-    utils.abort('need to refactor fabfile for this to work')
     # this is on the same server as the customer facing stage site
     # so we need project_root to be different ...
-    env.project_subdir = env.project + '_test'
+    env.project_dir = env.project + '_test'
     env.environment = 'staging_test'
     env.hosts = ['fen-vz-osiaccounting']
     _local_setup()
 
-def dev():
-    """ use staging environment on remote host to demo to client"""
-    env.environment = 'dev_server'
-    env.hosts = ['lin-reactionscorecards3-dev.aptivate.org:48001']
-    _local_setup()
 
 def staging():
     """ use staging environment on remote host to demo to client"""
@@ -47,8 +76,11 @@ def staging():
     env.hosts = ['lin-reactionscorecards3-stage.aptivate.org:48001']
     _local_setup()
 
+
 def production():
     """ use production environment on remote host"""
     env.environment = 'production'
     env.hosts = ['lin-reactionscorecards3-live.aptivate.org:48001']
     _local_setup()
+
+
