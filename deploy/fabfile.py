@@ -33,6 +33,7 @@ env.use_virtualenv = True
 # valid environments - used for require statements in fablib
 env.valid_non_prod_envs = ('dev_server', 'staging_test', 'staging')
 env.valid_envs = ('dev_server', 'staging_test', 'staging', 'production')
+env.use_apache = True
 
 
 # this function can just call the fablib _setup_path function
@@ -66,6 +67,7 @@ def staging_test():
     env.project_dir = env.project + '_test'
     env.environment = 'staging_test'
     env.hosts = ['lin-reactionscorecards3-stage.aptivate.org:48001']
+    env.use_apache = False
     _local_setup()
 
 

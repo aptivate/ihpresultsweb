@@ -195,6 +195,13 @@ def touch():
 def link_local_settings():
     """link the apache.conf file"""
     require('django_root', provided_by=env.valid_envs)
+
+    # check that settings imports local_settings, as it always should,
+    # and if we forget to add that to our project, it could cause mysterious
+    # failures
+    run('grep -q "^from local_settings import \*" %s' %
+        os.path.join(env.django_root, 'settings.py'))
+
     # ensure that we create a local_settings.py using a link
     # eg. 'ln -s local_settings.py.staging local_settings.py'
     local_settings_path = os.path.join(env.django_root, 'local_settings.py')
@@ -204,6 +211,7 @@ def link_local_settings():
     if not files.exists(local_settings_path):
         with cd(env.django_root):
             sudo('ln -s local_settings.py.' + env.environment + ' local_settings.py')
+    
     # touch the wsgi file to reload apache
     touch()
 
@@ -211,6 +219,8 @@ def link_local_settings():
 def link_apache_conf():
     """link the apache.conf file"""
     require('vcs_root', provided_by=env.valid_envs)
+    if env.use_apache == False:
+        return
     conf_file = os.path.join(env.vcs_root, 'apache', env.environment+'.conf')
     apache_conf = os.path.join('/etc/httpd/conf.d', env.project+'_'+env.environment+'.conf')
     if not files.exists(conf_file):
@@ -222,16 +232,22 @@ def link_apache_conf():
 
 def configtest():    
     """ test Apache configuration """
+    if env.use_apache == False:
+        return
     sudo('/usr/sbin/httpd -S')
 
 
 def apache_reload():    
     """ reload Apache on remote host """
+    if env.use_apache == False:
+        return
     sudo('/etc/init.d/httpd reload')
 
 
 def apache_restart():    
     """ restart Apache on remote host """
+    if env.use_apache == False:
+        return
     sudo('/etc/init.d/httpd restart')
 
 
