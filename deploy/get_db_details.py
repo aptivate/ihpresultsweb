@@ -1,7 +1,7 @@
 import os,sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from project_name import local_settings
+from ihp import local_settings
 
 db_user = 'nouser'
 db_pw   = 'nopass'
