@@ -150,6 +150,13 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
     }
 
     yaxes = {
+        "2DPa" : "%",
+        "2DPb" : "%",
+        "2DPc" : "%",
+        "3DP"  : "%",
+        "4DP"  : "%",
+        "5DPa" : "%", 
+        "5DPb" : "%", 
         "5DPc" : "Total number of PIUs"
     }
 
