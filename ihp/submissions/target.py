@@ -182,6 +182,8 @@ def calc_agency_ratings(agency, language=None):
                 else:
                     result["commentary"] = template % result
             except:
+                import traceback
+                traceback.print_exc()
                 pass
 
             if result["target"] == Rating.NONE:
