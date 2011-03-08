@@ -47,6 +47,21 @@ class IHPChart(Chart):
     def __init__(self, target_element, source):
         super(IHPChart, self).__init__(target_element)
         self._source = source
+        self.colors = [
+            '#2D5352',
+            '#82A8A0',
+            '#F68B1F',
+            '#C4D82E',
+            '#4572A7', 
+            '#AA4643', 
+            '#89A54E', 
+            '#80699B', 
+            '#3D96AE', 
+            '#DB843D', 
+            '#92A8CD', 
+            '#A47D7C', 
+            '#B5CA92'
+        ]
 
     def __str__(self):
         chart = self.__dict__.setdefault("chart", ChartObject())
@@ -196,8 +211,9 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
                 "dashStyle" : "shortDash",
                 "marker" : {
                     "enabled" : "false"
-            },
-        })
+                },
+                "color": "#F68B1F",
+            })
 
         if indicator in yaxes:
             graph.yAxis = {"title" : {"text" : yaxes[indicator]}} 
@@ -314,7 +330,7 @@ class TargetCountryBarGraph(CountryBarGraph):
             "name" : target_name,
             "data" : [target] * len(latest_data),
             "type" : "line",
-            "color" : "#ff0000",
+            "color" : "#F68B1F",
             "marker" : {
                 "enabled" : "false"
             },
@@ -407,16 +423,16 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
             self.series = [{
                 "name" : dataset["name2"],
                 "data" : data2, 
-                "color" : "#AA4643"
+                "color" : "#82A8A0"
             }, {
                 "name" : dataset["name1"],
                 "data" : data1,
-                "color" : "#4572A7"
+                "color" : "#2D5352",
             }, {
                 "name" : "Target = %s%%" % (target),
                 "data" : [target] * len(categories),
                 "type" : "line",
-                "color" : "#ff0000",
+                "color" : "#F68B1F",
                 "marker" : {
                     "enabled" : "false"
                 },
