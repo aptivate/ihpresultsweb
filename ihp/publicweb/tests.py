@@ -92,7 +92,7 @@ class PublicWebsiteTest(TestCase):
             response.context['categories'],
             publicweb.views.agency_indicator_descriptions)
         
-        (progress, no_progress) = submissions.target.get_country_progress(self.foobar)
+        (no_progress, progress) = submissions.target.get_country_progress(self.foobar)
         self.assertEqual(progress.values(),
             response.context['progress_countries'])
         self.assertEqual(no_progress.values(),
@@ -110,7 +110,7 @@ class PublicWebsiteTest(TestCase):
         self._test_ratings(ratings, response.context['categories'],
             publicweb.views.country_indicator_descriptions)
 
-        (progress, no_progress) = submissions.target.get_agency_progress(self.mozambique)
+        (no_progress, progress) = submissions.target.get_agency_progress(self.mozambique)
         self.assertTrue(len(progress.values()) > 0)
         self.assertTrue(len(no_progress.values()) > 0)
         

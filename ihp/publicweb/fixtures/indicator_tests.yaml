@@ -1,4 +1,4 @@
-- fields: {agency: Foobar, description: '', type: Agency}
+- fields: {agency: Foobar, type: Agency}
   model: submissions.agency
   pk: 999
 
