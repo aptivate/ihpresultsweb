@@ -2,6 +2,7 @@ Django==1.2.4
 django-dajaxice==0.1.6
 django-debug-toolbar==0.8.4
 ipython==0.10.1
+PyYAML==3.09
 # unicodecsv==0.8.0
 git+git://github.com/jdunck/python-unicodecsv.git
 wsgiref==0.1.2
