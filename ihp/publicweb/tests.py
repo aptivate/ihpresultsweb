@@ -9,9 +9,10 @@ from __future__ import absolute_import
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 
-from submissions.models import Agency, Country, AgencyCountries
+from submissions.models import Agency, Country, AgencyCountries, Rating
 import submissions.target
 import submissions.consts
+import submissions.table_views
 
 import ihp.publicweb.views
 from ihp import publicweb
@@ -118,3 +119,31 @@ class PublicWebsiteTest(TestCase):
             response.context['progress_agencies'])
         self.assertEqual(no_progress.values(),
             response.context['no_progress_agencies'])
+
+    def test_agency_country_spms_table(self):
+        agency = self.foobar
+        country = self.mozambique
+        response = self.get(ihp.publicweb.views.agency_country_spms_table,
+            agency_name=agency.agency, country_name=country.country)
+        values = []
+    
+        indicators = submissions.views.calc_agency_country_indicators(agency,
+            country, submissions.indicators.positive_funcs)
+        ratings = submissions.views.country_agency_indicator_ratings(country, agency)
+    
+        for indicator_name, raw_values in indicators.iteritems():
+            base_val, base_year, latest_val, _ = raw_values[0]
+            indicator_abs_values = {
+                "baseline_value" : submissions.table_views.tbl_float_format(base_val), 
+                "latest_value" : submissions.table_views.tbl_float_format(latest_val), 
+                "rating" : ratings[indicator_name],
+                "cellclass" : "",
+            } 
+            values.append((indicator_name, indicator_abs_values))
+    
+        values = sorted(values, key=lambda x: x[0])
+        
+        self.assertEqual("8DP", values[11][0])
+        self.assertEqual(Rating.ARROW, values[11][1]['rating'])
+        
+        self.assertEqual(values, response.context['values'])
