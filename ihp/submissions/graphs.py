@@ -181,7 +181,7 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
         }]
         
         graph.subtitle = {
-            "text": '* Questions with baseline values from 2008 are not included',
+            "text": '* Data with baseline values from 2008 are not included',
             "align": 'left',
             "x": 50,
             "y": 388,
@@ -294,7 +294,7 @@ class CountryBarGraph(CountryChart):
         self.xAxis = {
             "categories" : country_names,
             "labels" : {
-                "rotation" : 90,
+                "rotation" : -90,
                 "y" : 40,
             }
         } 
@@ -396,7 +396,7 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
             self.xAxis = {
                 "categories" : categories,
                 "labels" : {
-                    "rotation" : 90,
+                    "rotation" : -90,
                     "y" : 40,
                 }
             } 
@@ -502,12 +502,18 @@ def government_graphs(request, template_name="submission/country_graphs_by_indic
     # Request from James to zero negative values
     neg_to_zero = lambda x : 0 if x < 0 else x
 
+
+    # Nepal needs to be shown at the end of the list and with an asterix
+    nepal = Country.objects.get(country="Nepal")
+    nepal.country = nepal.country + "*"
+    countries_3g = list(countries) + [nepal]
+    countries_3g.remove(nepal)
     extra_context["graph_3G"] = TargetCountryBarGraph(
-        countries,
+        countries_3g,
         "graph_3G",
         "3G: Proportion of national budget allocated to health",
-        [data_3G[country][0][0] for country in countries],
-        [data_3G[country][0][2] for country in countries],
+        [data_3G[country][0][0] for country in countries_3g],
+        [data_3G[country][0][2] for country in countries_3g],
         "Target", 15,
     )
     extra_context["graph_3G"].subtitle = {
