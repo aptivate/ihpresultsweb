@@ -2,7 +2,7 @@ from django.views.generic.simple import direct_to_template
 from functools import partial
 from submissions.models import Agency, Country
 from indicators import calc_agency_country_indicators, NA_STR, calc_overall_agency_indicators, positive_funcs, calc_country_indicators
-from highcharts import Chart
+from highcharts import Chart, ChartObject
 import country_scorecard
 import agency_scorecard
 
@@ -43,6 +43,41 @@ target_values = {
     "5DPc" : 0, 
 }
 
+class IHPChart(Chart):
+    def __init__(self, target_element, source):
+        super(IHPChart, self).__init__(target_element)
+        self._source = source
+
+    def __str__(self):
+        chart = self.__dict__.setdefault("chart", ChartObject())
+        if type(chart) == dict:
+            chart["renderTo"] = self._target_element
+        else:
+            chart.renderTo = self._target_element
+
+        content = super(Chart, self).__str__().strip()
+        var_name = self.var_name
+        source = self._source
+        return """ 
+var %(var_name)s; // globally available
+$(document).ready(function() {
+    %(var_name)s = new Highcharts.Chart(
+        %(content)s
+    );
+    $('tspan').last().text('%(source)s');
+});
+""" % locals()
+
+class DPChart(IHPChart):
+    def __init__(self, target_element):
+        super(DPChart, self).__init__(target_element, "Source: DP data returns")
+
+class CountryChart(IHPChart):
+    def __init__(self, target_element):
+        super(CountryChart, self).__init__(target_element, "Source: Country data returns/CSO data returns")
+
+        
+
 def projectiongraphs(request, template_name="submissions/projectiongraphs.html", extra_context=None):
     extra_context = extra_context or {}
     titles = {
@@ -69,7 +104,7 @@ def projectiongraphs(request, template_name="submissions/projectiongraphs.html",
         actual_data = [y(year) for year in range(start_year, latest_year + 1)]
         projected_data = [(year - start_year, y(year)) for year in range(latest_year, end_year + 1)]
 
-        graph = Chart("graph_%s" % indicator.lower())
+        graph = DPChart("graph_%s" % indicator.lower())
         graph.chart = {
             "marginTop" : 50,
             "defaultSeriesType": "line",
@@ -104,24 +139,33 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
     extra_context = extra_context or {}
 
     titles = titles or {
-        "2DPa" : "% of total funding on-budget (2DPa)",
-        "2DPb" : "% of TC implemented through coordinated programmes (2DPb)",
-        "2DPc" : "% of funding using Programme Based Approaches (2DPc) ",
-        "3DP"  : "% of aid provided through multi-year commitments (3DP) ",
+        "2DPa" : "2DPa: Aggregate proportion of funding on country budget",
+        "2DPb" : "2DPb: Aggregate proportion of partner support for capacity-development <br/>provided through coordinated programmes in line with national strategies",
+        "2DPc" : "2DPc: Aggregate proportion of partner support <br/>provided as programme based approaches",
+        "3DP"  : "3DP: Aggregate proportion partner support <br/>provided through multi-year commitments",
         "4DP"  : "% of actual health spending planned for that year (4DP) ",
-        "5DPa" : "% of funding for procurement using national procurement systems (5DPa)", 
-        "5DPb" : "% of funding using national PFM systems (5DPb)", 
-        "5DPc" : "Number of Parallel Project Implementation Units", 
+        "5DPa" : "5DPa: Aggregate partner use of country procurement systems", 
+        "5DPb" : "5DPb: Aggregate partner use of country public financial management systems", 
+        "5DPc" : "5DPc: Aggregate number of parallel Project Implementation Units (PIUs)", 
+    }
+
+    yaxes = {
+        "5DPc" : "Total number of PIUs"
     }
 
     indicators = calc_overall_agency_indicators(funcs=positive_funcs)
     for indicator in indicators:
         (baseline_value, _, latest_value, _) = indicators[indicator][0]
 
-        graph = Chart("graph_%s" % indicator.lower())
+        graph = DPChart("graph_%s" % indicator.lower())
 
         graph.title = {"text" : titles[indicator]}
         graph.xAxis = {"categories" : ["Baseline", "2009"]} 
+
+        if "<br" in titles[indicator]:
+            graph.chart = {
+                "marginTop" : 60
+            }
 
         graph.series = [{
             "name" : "Aggregated Data",
@@ -147,6 +191,14 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
                     "enabled" : "false"
             },
         })
+
+        if indicator in yaxes:
+            graph.yAxis = {"title" : {"text" : yaxes[indicator]}} 
+            pass
+
+        graph.legend = {
+            "enabled" : "false"
+        }
 
         extra_context["graph_%s" % indicator] = graph 
 
@@ -221,7 +273,7 @@ def countrygraphs(request, country_name, template_name="submissions/countrygraph
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
-class CountryBarGraph(Chart):
+class CountryBarGraph(CountryChart):
     def __init__(self, countries, chart_name, title, baseline_data, latest_data):
         country_names = map(lambda x: x.country, countries)
 
@@ -276,7 +328,7 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
     extra_context["graph_hw"] = CountryBarGraph(
         countries,
         "graph_hw",
-        "% of health sector budget spent on health workforce",
+        "Proportion of health sector budget spent on Human Resources for Health (HRH)",
         [remove_large(country_data[country]["indicators"]["other"]["health_workforce_perc_of_budget_baseline"] * 100) for country in countries],
         [remove_large(country_data[country]["indicators"]["other"]["health_workforce_perc_of_budget_latest"] * 100) for country in countries],
     )
@@ -284,7 +336,7 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
     extra_context["graph_outpatient_visits"] = CountryBarGraph(
         countries,
         "graph_outpatient_visits",
-        "Number of outpatient visits per 10,000 population",
+        "Number of Outpatient Department Visits per 10,000 population",
         [country_data[country]["indicators"]["other"]["outpatient_visits_baseline"] for country in countries],
         [country_data[country]["indicators"]["other"]["outpatient_visits_latest"] for country in countries],
     )
@@ -292,7 +344,7 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
     extra_context["graph_skilled_medical"] = TargetCountryBarGraph(
         countries,
         "graph_skilled_medical",
-        "Skilled medical personnel per 10,000 population",
+        "Number of skilled medical personnel per 10,000 population",
         [country_data[country]["indicators"]["other"]["skilled_personnel_baseline"] for country in countries],
         [country_data[country]["indicators"]["other"]["skilled_personnel_latest"] for country in countries],
         "WHO Recommended", 23,
@@ -320,7 +372,7 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
         data = sorted(data, key=lambda x : x[1])
         return data
 
-    class StackedAgencyBarGraph(Chart):
+    class StackedAgencyBarGraph(DPChart):
         def __init__(self, chart_name, title, dataset, target_name, target):
             super(StackedAgencyBarGraph, self).__init__(chart_name)
             categories = map(lambda x: x[0].agency, dataset["data"])
@@ -354,7 +406,7 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
                 "data" : data1,
                 "color" : "#4572A7"
             }, {
-                "name" : target_name,
+                "name" : "Target = %s%%" % (target),
                 "data" : [target] * len(categories),
                 "type" : "line",
                 "color" : "#ff0000",
@@ -367,10 +419,10 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
 
     extra_context["graph_pfm"] = StackedAgencyBarGraph(
         "graph_pfm",
-        "% of aid using national PFM systems",
+        "5DPb: Partner use of country public financial management systems",
         {
-            "name1" : "Total health aid using PFM systems (Q15)",
-            "name2" : "Total health aid not using PFM systems (Q14 - Q15)",
+            "name1" : "Health aid using PFM systems (Q15)",
+            "name2" : "Health aid not using PFM systems (Q14 - Q15)",
             "data" : indicator_data("5DPb", reverse=True)
         },
         "target", 80
@@ -378,10 +430,10 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
         
     extra_context["graph_procurement"] = StackedAgencyBarGraph(
         "graph_procurement",
-        "% of aid using national procurement systems",
+        "5DPa: Partner use of country procurement systems",
         {
-            "name1" : "Total health aid using procurement systems (Q13)",
-            "name2" : "Total health aid not using procurement systems (Q12 - Q13)",
+            "name1" : "Health aid using procurement systems (Q13)",
+            "name2" : "Health aid not using procurement systems (Q12 - Q13)",
             "data" : indicator_data("5DPa", reverse=True)
         },
         "target", 80
@@ -400,10 +452,10 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
 
     extra_context["graph_pba"] = StackedAgencyBarGraph(
         "graph_pba",
-        "% of aid using Programme Based Approaches (PBAs)",
+        "2DPC: Support provided as Programme Based Approach",
         {
-            "name1" : "% of health sector aid using PBAs",
-            "name2" : "% of health sector aid not using PBAs",
+            "name1" : "% of health aid as Programme Based Approach",
+            "name2" : "% of health aid not as Programme Based Approach",
             "data" : indicator_data("2DPc")
         },
         "target", 66
@@ -411,10 +463,10 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
 
     extra_context["graph_tc"] = StackedAgencyBarGraph(
         "graph_tc",
-        "% of capacity development provided through coordinated programmes",
+        "2DPb: Support for capacity development that is coordinated <br/>and in line with national strategies",
         {
-            "name1" : "TC through coordinated programmes (Q5)",
-            "name2" : "TC not through coordinated programmes (Q4 - Q5)",
+            "name1" : "Support coordinated and in line",
+            "name2" : "Support not coordinated and in line",
             "data" : indicator_data("2DPb")
         },
         "target", 50
@@ -422,10 +474,10 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
 
     extra_context["graph_aob"] = StackedAgencyBarGraph(
         "graph_aob",
-        "% of aid reported on budget",
+        "2DPa: Proportion of partner health aid on country budget",
         {
-            "name2" : "Total health aid not on budget",
-            "name1" : "Total health aid reported on budget",
+            "name2" : "Health aid not on budget",
+            "name1" : "Health aid reported on budget",
             "data" : indicator_data("2DPa", reverse=True)
         },
         "target", 85
@@ -446,16 +498,23 @@ def government_graphs(request, template_name="submission/country_graphs_by_indic
     extra_context["graph_3G"] = TargetCountryBarGraph(
         countries,
         "graph_3G",
-        "% of national budget is allocated to health (IHP+ Results data)",
+        "3G: Proportion of national budget allocated to health",
         [data_3G[country][0][0] for country in countries],
         [data_3G[country][0][2] for country in countries],
         "Target", 15,
     )
+    extra_context["graph_3G"].subtitle = {
+            "text": '* Target for Nepal is 10%',
+            "align": 'left',
+            "x": 50,
+            "y": 388,
+            "floating" : "true",
+        }
 
     extra_context["graph_4G"] = CountryBarGraph(
         countries,
         "graph_4G",
-        "% of health sector funding disbursed against the approved annual budget",
+        "4G: Actual disbursement of government health budgets",
         [neg_to_zero(data_4G[country][0][0]) for country in countries],
         [neg_to_zero(data_4G[country][0][2]) for country in countries],
     )
