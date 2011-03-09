@@ -192,7 +192,8 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
         graph.series = [{
             "name" : "Aggregated Data",
             "type" : "column",
-            "data" : [float(baseline_value), float(latest_value)]
+            "data" : [float(baseline_value), float(latest_value)],
+            "color" : '#82A8A0',
         }]
         
         graph.subtitle = {
@@ -363,6 +364,7 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
         [country_data[country]["indicators"]["other"]["outpatient_visits_baseline"] for country in countries],
         [country_data[country]["indicators"]["other"]["outpatient_visits_latest"] for country in countries],
     )
+    extra_context["graph_outpatient_visits"].yAxis = {"title" : {"text" : ""}} 
 
     extra_context["graph_skilled_medical"] = TargetCountryBarGraph(
         countries,
@@ -372,6 +374,7 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
         [country_data[country]["indicators"]["other"]["skilled_personnel_latest"] for country in countries],
         "WHO Recommended", 23,
     )
+    extra_context["graph_skilled_medical"].yAxis = {"title" : {"text" : ""}} 
 
     extra_context["graph_health_budget"] = TargetCountryBarGraph(
         countries,
@@ -444,8 +447,8 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
         "graph_pfm",
         "5DPb: Partner use of country public financial management systems",
         {
-            "name1" : "Health aid using PFM systems (Q15)",
-            "name2" : "Health aid not using PFM systems (Q14 - Q15)",
+            "name1" : "Health aid using PFM systems",
+            "name2" : "Health aid not using PFM systems",
             "data" : indicator_data("5DPb", reverse=True)
         },
         "target", 80
@@ -455,8 +458,8 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
         "graph_procurement",
         "5DPa: Partner use of country procurement systems",
         {
-            "name1" : "Health aid using procurement systems (Q13)",
-            "name2" : "Health aid not using procurement systems (Q12 - Q13)",
+            "name1" : "Health aid using procurement systems",
+            "name2" : "Health aid not using procurement systems",
             "data" : indicator_data("5DPa", reverse=True)
         },
         "target", 80
