@@ -41,7 +41,7 @@ def agency_export(request, language):
     for agency in Agency.objects.all():
         data = agency_scorecard.get_agency_scorecard_data(agency, language)
         writer.writerow([
-            data.get(header, "") for header in headers
+            unicode(data.get(header, "")) for header in headers
         ])
     return response
 
