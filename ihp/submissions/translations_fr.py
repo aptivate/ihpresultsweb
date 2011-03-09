@@ -30,7 +30,7 @@ gov_commentary_text = {
         "all" : u"En %(cur_year)s, %(one_minus_cur_val).0f%% du financement alloué au secteur de la santé a été décaissé en fonction du budget annuel ayant été autorisé.",
     },
     "5Ga" : {
-        "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val) sur l'échelle de performance GFP/EPIN."
+        "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val).1f%% sur l'échelle de performance GFP/EPIN."
     },
     "5Gb" : {
         "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val).0f sur l’échelle d’évaluation à quatre points utilisée pour évaluer la performance du secteur de l’approvisionnement. "
