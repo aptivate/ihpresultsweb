@@ -279,8 +279,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "AusAID", 
-            "type": "Agency", 
-            "description": ""
+            "type": "Agency" 
         }
     }, 
     {
@@ -288,8 +287,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Belgium", 
-            "type": "Agency", 
-            "description": ""
+            "type": "Agency"
         }
     }, 
     {
@@ -297,8 +295,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "EC", 
-            "type": "Agency", 
-            "description": ""
+            "type": "Agency"
         }
     }, 
     {
@@ -306,8 +303,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "GAVI", 
-            "type": "Agency", 
-            "description": ""
+            "type": "Agency"
         }
     }, 
     {
@@ -315,8 +311,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "GFATM", 
-            "type": "Agency", 
-            "description": ""
+            "type": "Agency"
         }
     }, 
     {
@@ -324,8 +319,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Netherlands", 
-            "type": "Agency", 
-            "description": ""
+            "type": "Agency"
         }
     }, 
     {
@@ -333,8 +327,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Norway", 
-            "type": "Agency", 
-            "description": ""
+            "type": "Agency"
         }
     }, 
     {
@@ -342,8 +335,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Spain", 
-            "type": "Agency", 
-            "description": "Quality of health aid and capacity building are central points of the Spanish Cooperation. In line with aid effectiveness commitments and the principles of the EU Global Health Communication, Spain aims at allocating the major part of health aid to strenghthening national health systems, mainly through Sector Budget Support, and signed officially the IHP in May 2010."
+            "type": "Agency" 
         }
     }, 
     {
@@ -351,8 +343,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Sweden", 
-            "type": "Agency", 
-            "description": ""
+            "type": "Agency"
         }
     }, 
     {
@@ -360,8 +351,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "UK", 
-            "type": "Agency", 
-            "description": ""
+            "type": "Agency"
         }
     }, 
     {
@@ -369,8 +359,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "UNAIDS", 
-            "type": "Agency", 
-            "description": "Joint United Nations Programme on HIV/Aids"
+            "type": "Agency"
         }
     }, 
     {
@@ -378,8 +367,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "UNFPA", 
-            "type": "Agency", 
-            "description": ""
+            "type": "Agency"
         }
     }, 
     {
@@ -387,8 +375,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "UNICEF", 
-            "type": "Agency", 
-            "description": ""
+            "type": "Agency"
         }
     }, 
     {
@@ -396,8 +383,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "WHO", 
-            "type": "Agency", 
-            "description": ""
+            "type": "Agency"
         }
     }, 
     {
@@ -405,8 +391,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "World Bank", 
-            "type": "Agency", 
-            "description": ""
+            "type": "Agency"
         }
     }, 
     {
@@ -414,8 +399,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Government of Burkina Faso", 
-            "type": "Government", 
-            "description": ""
+            "type": "Government"
         }
     }, 
     {
@@ -423,8 +407,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Government of Burundi", 
-            "type": "Government", 
-            "description": ""
+            "type": "Government"
         }
     }, 
     {
@@ -432,8 +415,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Government of Djibouti", 
-            "type": "Government", 
-            "description": ""
+            "type": "Government"
         }
     }, 
     {
@@ -441,8 +423,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Government of DRC", 
-            "type": "Government", 
-            "description": ""
+            "type": "Government"
         }
     }, 
     {
@@ -450,8 +431,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Government of Ethiopia", 
-            "type": "Government", 
-            "description": ""
+            "type": "Government"
         }
     }, 
     {
@@ -459,8 +439,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Government of Mali", 
-            "type": "Government", 
-            "description": ""
+            "type": "Government"
         }
     }, 
     {
@@ -468,8 +447,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Government of Mozambique", 
-            "type": "Government", 
-            "description": ""
+            "type": "Government"
         }
     }, 
     {
@@ -477,8 +455,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Government of Nepal", 
-            "type": "Government", 
-            "description": ""
+            "type": "Government"
         }
     }, 
     {
@@ -486,8 +463,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Government of Niger", 
-            "type": "Government", 
-            "description": ""
+            "type": "Government"
         }
     }, 
     {
@@ -495,8 +471,7 @@
         "model": "submissions.agency", 
         "fields": {
             "agency": "Government of Nigeria", 
-            "type": "Government", 
-            "description": ""
+            "type": "Government"
         }
     }, 
     {
@@ -1697,54 +1672,6 @@
             "arrow_criterion_type": "First Question Yes", 
             "tick_criterion_type": "First Question Yes", 
             "arrow_criterion_value": null
-        }
-    }, 
-    {
-        "pk": 1, 
-        "model": "submissions.countrylanguage", 
-        "fields": {
-            "country": 4, 
-            "language": "French"
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "submissions.countrylanguage", 
-        "fields": {
-            "country": 3, 
-            "language": "French"
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "submissions.countrylanguage", 
-        "fields": {
-            "country": 5, 
-            "language": "French"
-        }
-    }, 
-    {
-        "pk": 4, 
-        "model": "submissions.countrylanguage", 
-        "fields": {
-            "country": 2, 
-            "language": "French"
-        }
-    }, 
-    {
-        "pk": 5, 
-        "model": "submissions.countrylanguage", 
-        "fields": {
-            "country": 8, 
-            "language": "French"
-        }
-    }, 
-    {
-        "pk": 6, 
-        "model": "submissions.countrylanguage", 
-        "fields": {
-            "country": 10, 
-            "language": "French"
         }
     }, 
     {

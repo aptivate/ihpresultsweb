@@ -1,0 +1,8 @@
+# Poll Email Account Settings
+POLL_USERNAME = "john"
+POLL_PASSWORD = "smith"
+POLL_HOST = "my.pop.server"
+
+DATABASE_ENGINE = 'sqlite3' 
+DATABASE_NAME = 'ihp.db'
+from local_setttings import *

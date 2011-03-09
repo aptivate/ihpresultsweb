@@ -1,4 +1,4 @@
-- fields: {agency: Foobar, description: '', type: Agency}
+- fields: {agency: Foobar, type: Agency}
   model: submissions.agency
   pk: 999
 
@@ -233,4 +233,8 @@
     latest_value: 11.0, latest_year: '2008', mdg_target: MDG7b}
   model: submissions.mdgdata
   pk: 11
+
+- fields: {agency: 999, baseline_progress: 'tick', country: 9, latest_progress: 'arrow'}
+  model: submissions.country8dpfix
+  pk: 1
   

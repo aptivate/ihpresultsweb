@@ -1,9 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+import submissions.country_scorecard
 import submissions.target
 import submissions.views
+import submissions.table_views
 from submissions.models import Submission
+import logging
 
 class Category:
     code = property()
@@ -89,7 +92,7 @@ country_indicator_descriptions = {
 def agency_scorecard_page(request, agency_name):
     agency = submissions.models.Agency.objects.get(agency=agency_name)
     ratings = submissions.target.calc_agency_ratings(agency)
-    p, np = submissions.target.get_country_progress(agency)
+    np, p = submissions.target.get_country_progress(agency)
     
     context = dict(agency=agency,
         categories=_group_and_sort_indicators(ratings, 
@@ -103,16 +106,14 @@ def agency_scorecard_page(request, agency_name):
 def country_scorecard_page(request, country_name):
     country = submissions.models.Country.objects.get(country=country_name)
     ratings = submissions.target.calc_country_ratings(country)
-    p, np = submissions.target.get_agency_progress(country)
-    
-    titles = {}
+    np, p = submissions.target.get_agency_progress(country)
     
     context = dict(country=country,
         categories=_group_and_sort_indicators(ratings,
             country_indicator_descriptions),
         progress_agencies=p.values(),
         no_progress_agencies=np.values(),
-        raw_data=submissions.views.get_countries_export_data()[country])
+        raw_data=submissions.country_scorecard.get_country_export_data(country))
     
     return render_to_response('country_scorecard.html',
         RequestContext(request, context))
@@ -130,8 +131,8 @@ def agency_spm_countries_table(request, agency_name, indicator_name):
 
             base_val, base_year, latest_val, _ = indicators[indicator_name][0]
             country_abs_values = {
-                "baseline_value" : submissions.views.tbl_float_format(base_val), 
-                "latest_value" : submissions.views.tbl_float_format(latest_val), 
+                "baseline_value" : submissions.table_views.tbl_float_format(base_val), 
+                "latest_value" : submissions.table_views.tbl_float_format(latest_val), 
                 "rating" : ratings[indicator_name],
                 "cellclass" : "",
             } 
@@ -159,8 +160,8 @@ def country_spm_agencies_table(request, country_name, indicator_name):
 
             base_val, base_year, latest_val, _ = indicators[indicator_name][0]
             country_abs_values = {
-                "baseline_value" : submissions.views.tbl_float_format(base_val), 
-                "latest_value" : submissions.views.tbl_float_format(latest_val), 
+                "baseline_value" : submissions.table_views.tbl_float_format(base_val), 
+                "latest_value" : submissions.table_views.tbl_float_format(latest_val), 
                 "rating" : ratings[indicator_name],
                 "cellclass" : "",
             } 
@@ -186,8 +187,8 @@ def agency_country_spms_table(request, agency_name, country_name):
     for indicator_name, raw_values in indicators.iteritems():
         base_val, base_year, latest_val, _ = raw_values[0]
         indicator_abs_values = {
-            "baseline_value" : submissions.views.tbl_float_format(base_val), 
-            "latest_value" : submissions.views.tbl_float_format(latest_val), 
+            "baseline_value" : submissions.table_views.tbl_float_format(base_val), 
+            "latest_value" : submissions.table_views.tbl_float_format(latest_val), 
             "rating" : ratings[indicator_name],
             "cellclass" : "",
         } 
