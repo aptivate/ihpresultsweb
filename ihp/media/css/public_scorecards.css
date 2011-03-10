@@ -252,7 +252,7 @@ td.expected_result span.text {
 }
 
 div.col {
-	width:450px;
+	width:313px; /* 960-600(scorecard)-30(scorecard padding)-2(scorecard borders)-15(left padding)*/
 	padding:15px;
 	float:left;
 	position:relative;
@@ -262,7 +262,7 @@ div.col {
 
 #scorecard  {
 	border:1px solid #b3c6c0;
-	width:448px;
+	width:600px;/*640-30(padding)-2(borders)-8(column spacing/2)*/
 	-moz-border-radius:15px;
 	-webkit-border-radius:15px;
 	border-radius:15px;
@@ -394,7 +394,9 @@ div.col {
 
 /*Infobox column styles*/
 
-#infobox {padding-top:0;}
+#infobox {
+	padding:0 0 0 15px;
+}
 
 .infobox {
 	border:2px solid #f68b1f;
@@ -463,7 +465,7 @@ div.col {
 	top:-8px;
 }
 
-#scorecard img.rating, #infobox img.rating
+#infobox img.rating
 {
 	width: 40px;
 	height: 27px;
@@ -585,24 +587,26 @@ div.col {
 	display: block;
 	margin: 1em auto;
 	clear:both;
-	float:right;
+}
+
+#infobox .health-financing .item img.barchart {
+	width:269px; /*313-2*2(borders)-2*10(infobox padding)-2*10(item padding)*/
+	height:auto;
 }
 
 #infobox .health-financing .item img.pie { 
   position:relative;
-  top:-40px;
-  margin-bottom:-40px;
+  width: 150px;
+  height:auto;
 }
 
 .health-financing .chart-key {
-	margin: 20px 0 auto;
-	width:45%;
+	margin: 0 0 1em;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
 	border: 1px solid #b3c6c0;
 	padding: 0.5em;
-	float:left;
 	display: block;
 }
 
@@ -652,6 +656,11 @@ div.col {
 
 .health-systems .item {
 	background-color:#fff;
+}
+
+#infobox .health-systems .item img.barchart {
+	width:269px; /*313-2*2(borders)-2*10(infobox padding)-2*10(item padding)*/
+	height:auto;
 }
 
 /*Managing for Development*/
