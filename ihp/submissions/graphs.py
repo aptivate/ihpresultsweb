@@ -47,6 +47,21 @@ class IHPChart(Chart):
     def __init__(self, target_element, source):
         super(IHPChart, self).__init__(target_element)
         self._source = source
+        self.colors = [
+            '#2D5352',
+            '#82A8A0',
+            '#F68B1F',
+            '#C4D82E',
+            '#4572A7', 
+            '#AA4643', 
+            '#89A54E', 
+            '#80699B', 
+            '#3D96AE', 
+            '#DB843D', 
+            '#92A8CD', 
+            '#A47D7C', 
+            '#B5CA92'
+        ]
 
     def __str__(self):
         chart = self.__dict__.setdefault("chart", ChartObject())
@@ -150,6 +165,13 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
     }
 
     yaxes = {
+        "2DPa" : "%",
+        "2DPb" : "%",
+        "2DPc" : "%",
+        "3DP"  : "%",
+        "4DP"  : "%",
+        "5DPa" : "%", 
+        "5DPb" : "%", 
         "5DPc" : "Total number of PIUs"
     }
 
@@ -170,11 +192,12 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
         graph.series = [{
             "name" : "Aggregated Data",
             "type" : "column",
-            "data" : [float(baseline_value), float(latest_value)]
+            "data" : [float(baseline_value), float(latest_value)],
+            "color" : '#82A8A0',
         }]
         
         graph.subtitle = {
-            "text": '* Questions with baseline values from 2008 are not included',
+            "text": '* Data with baseline values from 2008 are not included',
             "align": 'left',
             "x": 50,
             "y": 388,
@@ -189,8 +212,9 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
                 "dashStyle" : "shortDash",
                 "marker" : {
                     "enabled" : "false"
-            },
-        })
+                },
+                "color": "#F68B1F",
+            })
 
         if indicator in yaxes:
             graph.yAxis = {"title" : {"text" : yaxes[indicator]}} 
@@ -287,7 +311,7 @@ class CountryBarGraph(CountryChart):
         self.xAxis = {
             "categories" : country_names,
             "labels" : {
-                "rotation" : 90,
+                "rotation" : -90,
                 "y" : 40,
             }
         } 
@@ -307,7 +331,7 @@ class TargetCountryBarGraph(CountryBarGraph):
             "name" : target_name,
             "data" : [target] * len(latest_data),
             "type" : "line",
-            "color" : "#ff0000",
+            "color" : "#F68B1F",
             "marker" : {
                 "enabled" : "false"
             },
@@ -340,6 +364,7 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
         [country_data[country]["indicators"]["other"]["outpatient_visits_baseline"] for country in countries],
         [country_data[country]["indicators"]["other"]["outpatient_visits_latest"] for country in countries],
     )
+    extra_context["graph_outpatient_visits"].yAxis = {"title" : {"text" : ""}} 
 
     extra_context["graph_skilled_medical"] = TargetCountryBarGraph(
         countries,
@@ -349,6 +374,7 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
         [country_data[country]["indicators"]["other"]["skilled_personnel_latest"] for country in countries],
         "WHO Recommended", 23,
     )
+    extra_context["graph_skilled_medical"].yAxis = {"title" : {"text" : ""}} 
 
     extra_context["graph_health_budget"] = TargetCountryBarGraph(
         countries,
@@ -389,7 +415,7 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
             self.xAxis = {
                 "categories" : categories,
                 "labels" : {
-                    "rotation" : 90,
+                    "rotation" : -90,
                     "y" : 40,
                 }
             } 
@@ -400,16 +426,16 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
             self.series = [{
                 "name" : dataset["name2"],
                 "data" : data2, 
-                "color" : "#AA4643"
+                "color" : "#82A8A0"
             }, {
                 "name" : dataset["name1"],
                 "data" : data1,
-                "color" : "#4572A7"
+                "color" : "#2D5352",
             }, {
                 "name" : "Target = %s%%" % (target),
                 "data" : [target] * len(categories),
                 "type" : "line",
-                "color" : "#ff0000",
+                "color" : "#F68B1F",
                 "marker" : {
                     "enabled" : "false"
                 },
@@ -421,8 +447,8 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
         "graph_pfm",
         "5DPb: Partner use of country public financial management systems",
         {
-            "name1" : "Health aid using PFM systems (Q15)",
-            "name2" : "Health aid not using PFM systems (Q14 - Q15)",
+            "name1" : "Health aid using PFM systems",
+            "name2" : "Health aid not using PFM systems",
             "data" : indicator_data("5DPb", reverse=True)
         },
         "target", 80
@@ -432,8 +458,8 @@ def additional_graphs(request, template_name="submissions/additionalgraphs.html"
         "graph_procurement",
         "5DPa: Partner use of country procurement systems",
         {
-            "name1" : "Health aid using procurement systems (Q13)",
-            "name2" : "Health aid not using procurement systems (Q12 - Q13)",
+            "name1" : "Health aid using procurement systems",
+            "name2" : "Health aid not using procurement systems",
             "data" : indicator_data("5DPa", reverse=True)
         },
         "target", 80
@@ -495,12 +521,18 @@ def government_graphs(request, template_name="submission/country_graphs_by_indic
     # Request from James to zero negative values
     neg_to_zero = lambda x : 0 if x < 0 else x
 
+
+    # Nepal needs to be shown at the end of the list and with an asterix
+    nepal = Country.objects.get(country="Nepal")
+    nepal.country = nepal.country + "*"
+    countries_3g = list(countries) + [nepal]
+    countries_3g.remove(nepal)
     extra_context["graph_3G"] = TargetCountryBarGraph(
-        countries,
+        countries_3g,
         "graph_3G",
         "3G: Proportion of national budget allocated to health",
-        [data_3G[country][0][0] for country in countries],
-        [data_3G[country][0][2] for country in countries],
+        [data_3G[country][0][0] for country in countries_3g],
+        [data_3G[country][0][2] for country in countries_3g],
         "Target", 15,
     )
     extra_context["graph_3G"].subtitle = {

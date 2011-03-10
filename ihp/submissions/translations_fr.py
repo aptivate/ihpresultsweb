@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 from models import Rating
+from django.template import Context, Template
 
 gov_commentary_text = {
     "1G": {
@@ -29,7 +30,7 @@ gov_commentary_text = {
         "all" : u"En %(cur_year)s, %(one_minus_cur_val).0f%% du financement alloué au secteur de la santé a été décaissé en fonction du budget annuel ayant été autorisé.",
     },
     "5Ga" : {
-        "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val) sur l'échelle de performance GFP/EPIN."
+        "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val).1f sur l'échelle de performance GFP/EPIN."
     },
     "5Gb" : {
         "all" : u"En %(cur_year)s, %(country_name)s a obtenu un résultat de %(cur_val).0f sur l’échelle d’évaluation à quatre points utilisée pour évaluer la performance du secteur de l’approvisionnement. "
@@ -58,8 +59,8 @@ gov_pc4 = "%0.1f %% increase needed to meet the Abuja target (15%%)"
 
 agency_commentary_text = {
     "1DP" : u"Un accord national IHP+ ou une entente équivalente a été signé par l’agence dans %(cur_val).0f%% des pays IHP+ dans lesquels ils sont présents. Objectif-cible = 100%%.",
-    "2DPa" : u"En %(cur_year)s, %(one_minus_cur_val).0f%% de l’aide offerte dans le secteur de la santé a été rapporté par l’agence dans les budgets nationaux sectoriels de santé, %(one_minus_diff_direction)s par rapport à %(one_minus_base_val).0f%%. Objectif-cible = réduction de 50%% de l’aide n’apparaissant pas dans le budget (dont > 85%% dans le budget).",
-    "2DPb" :u"En %(cur_year)s, %(cur_val).0f%% du développement des capacités a été offert par l’agence par l’intermédiaire de programmes coordonnés, %(diff_direction)s par rapport à %(base_val).0f%%. Objectif-cible = 50%%.",
+    "2DPa" : u"En %(cur_year)s, %(one_minus_cur_val).0f%% de l’aide offerte dans le secteur de la santé a été rapporté par l’agence dans les budgets nationaux sectoriels de santé, %(one_minus_diff_direction)s par rapport à %(one_minus_base_val).0f%%. Objectif-cible = réduction de 50%% de l’aide n’apparaissant pas dans le budget (dont ≥ 85%% dans le budget).",
+    "2DPb" : Template(u"En {{ cur_year }}, {{ cur_val|floatformat }}% du développement des capacités a été offert par l’agence par l’intermédiaire de programmes coordonnés{% if diff_direction %}, {{ diff_direction }} par rapport à {{ base_val|floatformat }}%{% endif %}. Objectif-cible = 50%."),
     "2DPc" : u"En %(cur_year)s, %(cur_val).0f%% de l’aide offerte dans le secteur de la santé a été fourni par l’agence par l’intermédiaire d’approches axées sur les programmes, %(diff_direction)s par rapport à %(base_val).0f%%. Objectif-cible = 66%%.",
     "3DP" : u"En %(cur_year)s, %(cur_val).0f%% de l’aide offerte dans le secteur de la santé a été fourni par l’agence par l’intermédiaire d’engagements pluriannuels, %(diff_direction)s par rapport à %(base_val).0f%%. Objectif-cible = 90%%.",
     "4DP" : u"En %(cur_year)s, %(cur_val).0f%% des décaissements de fonds alloués dans le secteur de la santé fournis par l’agence ont été faits conformément aux échéanciers convenus, %(diff_direction)s par rapport à %(base_val).0f%%. Objectif-cible = 90%%.",
