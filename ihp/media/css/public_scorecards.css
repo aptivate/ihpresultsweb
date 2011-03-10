@@ -296,9 +296,23 @@ div.col {
  	text-align: center;
 }
  
-#scorecard h2 .comment {
+.country #scorecard h2 .comment {
 	display: inline;
  	float: right;
+}
+
+.agency #scorecard h2 .progress,
+.agency #scorecard td.progress {
+	width: 157px; /*(600-170-73-11*2-10)/2*/
+}
+
+.agency #scorecard h2 .progress {
+	margin-right: 10px;
+}
+
+.agency #scorecard h2 .further-details,
+.agency #scorecard td.further-details {
+	width: 168px; /*(600-170-73-11*2)/2*/
 }
 
 #content #infobox ul.logos {
@@ -377,7 +391,8 @@ div.col {
 	vertical-align: top;
 }
 
-#scorecard td.progress {
+#scorecard td.progress,
+#scorecard td.further-details {
 	padding-bottom: 10px;
 	border-bottom: 2px dotted #D1DDD9;
 }
