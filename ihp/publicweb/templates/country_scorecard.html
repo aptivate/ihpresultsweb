@@ -1,12 +1,29 @@
 {% extends "public_base.html" %}
+
 {% block title %}{{country.country}}{% endblock %}
+
 {% block head %}
+	<!--
+	Adds the data table to the #country_spms_content callout template
+	below. This has to be done before the javascript in
+	rated_statement_js.inc.html copies the template into the actual
+	callout nodes hidden inside each of the result boxes that has a callout.
+	-->
+	<script type="text/javascript">
+		jQuery(document).ready(function()
+		{
+			var real_table = jQuery('#country_spms_table');
+			jQuery('.country_spms_placeholder').replaceWith(real_table);
+		});
+	</script>
+	
 	{% include 'rated_statement_js.inc.html' %}
 {% endblock %}
+
 {% block heading %}Country Scorecard for {{country.country}}{% endblock %}
+
 {% block content %}
 {% include 'ajax-loading.html' %}
-
 <div class="scorecard country">
 	<!-- start scorecard col-->
 	<div id="scorecard" class="col">
@@ -284,10 +301,17 @@
 
 <div style="display: none">
 	<div id="country_spms_table">
-		foo foo foo
 		{% include 'country_spms_table.inc.html' %}
+	</div>
+</div>
+{% endblock %}
+
+{% block dummy_tables %}
+<div style="display: none">
+	<div id="country_spms_content">
+		foo foo foo
+		<div class="country_spms_placeholder"></div>
 		blah blah blah
 	</div>
 </div>
-
 {% endblock %}
