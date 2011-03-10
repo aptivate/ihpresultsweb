@@ -5,7 +5,7 @@ import submissions.country_scorecard
 import submissions.target
 import submissions.views
 import submissions.table_views
-from submissions.models import Submission
+from submissions.models import Submission, Language, AgencyProfile
 import logging
 
 class Category:
@@ -40,13 +40,7 @@ def _group_and_sort_indicators(ratings, titles):
             categories[category_code] = category
             category.code = category_code
             category.indicators = []
-
-            if category_code in titles:
-                category.expected_result = titles[category_code]
-            else:
-                category.expected_result = (category_code + " Lorem " +
-                    "ipsum dolor sit amet, consectetur adipiscing elit. " +
-                    "Donec condimentum velit id sapien iaculis rhoncus.")
+            category.expected_result = titles[category_code]
         
         rating = ratings[indicator_code]
         i.rating = rating['target']
@@ -93,12 +87,15 @@ def agency_scorecard_page(request, agency_name):
     agency = submissions.models.Agency.objects.get(agency=agency_name)
     ratings = submissions.target.calc_agency_ratings(agency)
     np, p = submissions.target.get_country_progress(agency)
+    english = Language.objects.get(language="English")
     
     context = dict(agency=agency,
         categories=_group_and_sort_indicators(ratings, 
             agency_indicator_descriptions),
         progress_countries=p.values(),
-        no_progress_countries=np.values())
+        no_progress_countries=np.values(),
+        profile=AgencyProfile.objects.get(agency=agency,
+            language=english))
     
     return render_to_response('agency_scorecard.html',
         RequestContext(request, context))

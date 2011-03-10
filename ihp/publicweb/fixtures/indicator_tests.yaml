@@ -237,4 +237,11 @@
 - fields: {agency: 999, baseline_progress: 'tick', country: 9, latest_progress: 'arrow'}
   model: submissions.country8dpfix
   pk: 1
+
+- fields: {agency: 999, language: 1, description: 'All about barring foos'}
+  model: submissions.agencyprofile
+  pk: 1
+- fields: {agency: 999, language: 2, description: 'Tout sur le barrage des foux'}
+  model: submissions.agencyprofile
+  pk: 2
   

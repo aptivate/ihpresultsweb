@@ -9,7 +9,8 @@ from __future__ import absolute_import
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 
-from submissions.models import Agency, Country, AgencyCountries, Rating
+from submissions.models import (Agency, AgencyProfile, Country,
+    AgencyCountries, Language, Rating)
 import submissions.target
 import submissions.consts
 import submissions.table_views
@@ -98,6 +99,11 @@ class PublicWebsiteTest(TestCase):
             response.context['progress_countries'])
         self.assertEqual(no_progress.values(),
             response.context['no_progress_countries'])
+        
+        english = Language.objects.get(language="English")
+        profile = AgencyProfile.objects.get(agency=self.foobar,
+            language=english)
+        self.assertEqual(profile, response.context['profile'])
 
     def test_country_scorecard_view(self):
         response = self.get(ihp.publicweb.views.country_scorecard_page,
