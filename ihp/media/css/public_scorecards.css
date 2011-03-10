@@ -301,38 +301,36 @@ div.col {
  	float: right;
 }
 
-#content #scorecard ul {
+#content #infobox ul.logos {
 	border:1px solid #D1DDD9;
 	padding:10px;
-	margin:0 0 10px;
+	margin: 10px 0 0;
 	list-style:none;
 	-moz-border-radius:10px;
 	-webkit-border-radius:10px;
 	border-radius:10px;
 	clear:both;
 	position:relative;
-	width:426px;
 	display:block;
 	float:left;
 }
 
-#scorecard ul li {
+#content #infobox ul.logos li {
 	display:block;
 	margin:5px;
 	padding:0;
 	float:left;
-	width:42px;
 	text-align:left;
 	overflow:hidden;
 }
 
-#scorecard ul li img.logo {
+#content #infobox ul.logos li img.logo {
 	background-color:black;
 	height:40px;
 	display:block;
 }
 
-#scorecard li span.name {
+#content #infobox ul.logos li span.name {
 	font-size:0.8em;	
 }
 
@@ -756,8 +754,7 @@ div.col {
 	width:100%;
 }
 
-.callout-to
-{
+.callout-to {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -773,7 +770,7 @@ div.col {
 	-moz-box-shadow:4px 4px 8px #818181;
 	-webkit-box-shadow:4px 4px 8px #818181;
 	box-shadow:4px 4px 8px #818181;
-	max-width:60%;
+	/*max-width:60%;*/ /*UNICEF scorecard, DRC callout overflows*/ 
 	text-align: left;
 	text-transform: none;
 }
