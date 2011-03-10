@@ -321,13 +321,12 @@ div.col {
 	margin:5px;
 	padding:0;
 	float:left;
-	width:60px;
-	height:50px;
-	text-align:center;
+	width:42px;
+	text-align:left;
+	overflow:hidden;
 }
 
 #scorecard ul li img.logo {
-	width:60px;
 	background-color:black;
 	height:40px;
 	display:block;
