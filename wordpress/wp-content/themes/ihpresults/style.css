@@ -51,7 +51,7 @@ form { margin: 0; }
 	display:block;
 	float:left;
 	position:relative;
-	padding-top:50px;
+	padding-top:5px;
 	background-image:url(images/header-bg.png);
 	background-repeat:no-repeat;
 	background-position:top;
@@ -136,10 +136,10 @@ form { margin: 0; }
 	border-bottom:6px solid #EF9200;
 }
 
-.widget_qtranslate {
+#access .widget_qtranslate {
 	position: absolute;
     right: 0;
-    top: -130px;
+    top: -80px;
     z-index: 20;
 }
  
@@ -433,7 +433,8 @@ h3 {
 }
 
 h4 {
-	font-size: 1.25em;
+	font-size: 1em;
+	clear:both;
 }
 h5, h6 {
 	font-size: 1em;
@@ -545,7 +546,8 @@ list-style-type:square;
 .entry img.alignleft,
 .entry img[align="left"],
 .wp-caption.alignleft {
-	margin: .25em 1em 1em 0;
+	margin: 0 10px 10px 0;
+	padding:0;
 }
 .entry p,
 .entry li,
@@ -677,7 +679,7 @@ ul.ticklist li {
 	background-color:#EF9200;
 	display:block;
 	position:relative;
-	min-height:230px;
+	height:220px;
 }
 	
 
@@ -783,9 +785,13 @@ ul.ticklist li {
 
 /* Scorecard pages -------------------------------------------------- */
 
-.page-template-page-no-sidebar-php #content, .page-template-page-no-sidebar-php #content .entry {
-width:100%;
+	.page-template-page-scorecard-php #content, 
+	.page-template-page-scorecard-php #content .entry,
+	.page-template-page-no-sidebar-php #content,
+	.page-template-page-no-sidebar-php #content .entry {width:100%;
 }
+
+
 
 /* Comments -------------------------------------------------- */
 .comments,
@@ -876,7 +882,7 @@ width:100%;
 }
 
 #sidebar h2 a:hover {
-	color:#333333;
+	color:#EF9200;
 }
 
 #sidebar blockquote {
@@ -984,6 +990,37 @@ width:100%;
 	font-size: .8em;
 }
 
+#sidebar form input.text {
+	width:150px;
+}
+
+#sidebar form input.submit {
+    -moz-border-radius: 10px 10px 10px 10px;
+    background-color: #EF9200;
+    border: medium none;
+    color: white;
+    float: right;
+    padding: 5px 10px;
+}
+
+/* Recent Items */
+
+#sidebar .widget_recent_entries ul {
+	margin-left:15px;
+}
+
+#sidebar .widget_recent_entries li {
+	padding-bottom:10px;
+	list-item-style:square;
+}
+
+/* Newsletter */
+
+#sidebar form td,
+#sidebar form th {
+	border:none;
+}
+
 /* Footer -------------------------------------------------- */
 #footer {
 	border-top:1px solid #eee;
@@ -1019,15 +1056,11 @@ width:100%;
 	
 }
 
-#footer .siteinfo {
-	width:90px;
-}
 
 #footer .siteinfo a {
 	display:block;
 	height:20px;
-	width:90px;
-	text-align:left;
+	text-align:right;
 }
 
 #logins {
@@ -1037,8 +1070,8 @@ width:100%;
 }
 
 #logins a {
-color:#999;
-text-decoration:underline;
+	color:#999;
+	text-decoration:underline;
 }
 
 
