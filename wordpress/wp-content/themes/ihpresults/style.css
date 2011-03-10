@@ -177,6 +177,7 @@ div.menu {
 	font-size: 13px;
 	float:left;
 }
+
 #access .menu-header ul,
 div.menu ul {
 	list-style: none;
@@ -507,9 +508,7 @@ list-style-type:square;
 	display: block;
 	background: #fff;
 	padding: 4px;
-	border: 1px solid #eee;
-	border-right: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
+	border:none;
 	margin: .25em auto 1em;
 	max-width: 500px;
 }
@@ -651,7 +650,7 @@ ul.ticklist li {
 	padding-bottom:5px;
 	padding-top:5px;
 	font-size:1.4em;
-	background-image:url(images/tick.png);
+	background-image:url(images/ticklist-tick.png);
 	background-position:left;
 	background-repeat:no-repeat;
 	color:#668D82;
@@ -750,13 +749,13 @@ ul.ticklist li {
 	padding:0;
 }
 
-.home #home-bottom .mycustom-page {
+.home #home-bottom {
 	width:420px;
 	float:left;
 	position:relative;
 }
 
-.home #home-bottom .mycustom-page h2 {
+.home #home-bottom h2 {
     border: medium none;
     color: #EF9200;
     font-size: 2em;
