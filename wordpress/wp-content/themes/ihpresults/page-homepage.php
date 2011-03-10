@@ -34,6 +34,14 @@
 	  <div class="featured-content"><img class="image-2"src="<?php bloginfo('template_url'); ?>/images/icon-graphic-bg.png" alt="scorecards" /></div>
 	  <div class="icons"></div>
 	  </div><!--end top section-->
-	  </div><!--end #content-->
+</div><!--end #content-->
+	  <div class="section bottom">
+	  	<div id="home-bottom">
+		  <?php if ( function_exists('dynamic_sidebar') && dynamic_sidebar('home bottom') ) : else : ?>insert widgets into home bottom here<?php endif; ?>
+		</div>
+		  <?php get_sidebar(); ?>
+	  </div><!--end #home-bottom-->
+	  
+		
 
 <?php get_footer(); ?>
