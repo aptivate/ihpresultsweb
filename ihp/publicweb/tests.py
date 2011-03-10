@@ -119,6 +119,8 @@ class PublicWebsiteTest(TestCase):
             response.context['progress_agencies'])
         self.assertEqual(no_progress.values(),
             response.context['no_progress_agencies'])
+        self.assertEqual(("3G", "4G", "5Ga", "5Gb", "8G"),
+            response.context['country_spms_numeric'])
 
     def test_agency_country_spms_table(self):
         agency = self.foobar

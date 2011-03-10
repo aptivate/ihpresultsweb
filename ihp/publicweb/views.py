@@ -103,6 +103,19 @@ def agency_scorecard_page(request, agency_name):
     return render_to_response('agency_scorecard.html',
         RequestContext(request, context))
 
+def _format_and_sort_ratings(ratings):
+    values = []
+
+    for indicator_code, rating_data in ratings.iteritems():
+        rating_data['baseline_value_fmt'] = (
+            submissions.table_views.tbl_float_format(rating_data['base_val']))
+        rating_data['latest_value_fmt'] = (
+            submissions.table_views.tbl_float_format(rating_data['cur_val']))
+        values.append((indicator_code, rating_data))
+        
+    values = sorted(values, key=lambda x: x[0])
+    return values
+
 def country_scorecard_page(request, country_name):
     country = submissions.models.Country.objects.get(country=country_name)
     ratings = submissions.target.calc_country_ratings(country)
@@ -113,7 +126,9 @@ def country_scorecard_page(request, country_name):
             country_indicator_descriptions),
         progress_agencies=p.values(),
         no_progress_agencies=np.values(),
-        raw_data=submissions.country_scorecard.get_country_export_data(country))
+        raw_data=submissions.country_scorecard.get_country_export_data(country),
+        values=_format_and_sort_ratings(ratings),
+        country_spms_numeric=country_spms_numeric)
     
     return render_to_response('country_scorecard.html',
         RequestContext(request, context))
@@ -146,34 +161,16 @@ def agency_spm_countries_table(request, agency_name, indicator_name):
         RequestContext(request, dict(agency=agency,
             indicator_name=indicator_name, values=values)))
 
-def country_spm_agencies_table(request, country_name, indicator_name):
-    indicator_name = indicator_name.replace('G', 'DP')
+country_spms_numeric = ("3G", "4G", "5Ga", "5Gb", "8G")
+
+def country_spms_table(request, country_name):
     country = submissions.models.Country.objects.get(country=country_name)
-    agencies = submissions.models.Agency.objects.all().order_by("agency")
-    values = []
-    
-    for agency in agencies:
-        if country in agency.countries:
-            indicators = submissions.views.calc_agency_country_indicators(agency,
-                country, submissions.indicators.positive_funcs)
-            ratings = submissions.views.country_agency_indicator_ratings(country, agency)
+    ratings = submissions.target.calc_country_ratings(country)
 
-            base_val, base_year, latest_val, _ = indicators[indicator_name][0]
-            country_abs_values = {
-                "baseline_value" : submissions.table_views.tbl_float_format(base_val), 
-                "latest_value" : submissions.table_views.tbl_float_format(latest_val), 
-                "rating" : ratings[indicator_name],
-                "cellclass" : "",
-            } 
-        else:
-            country_abs_values = None
-            
-        values.append((agency, country_abs_values))
-    values = sorted(values, key=lambda x: x[0].agency)
-
-    return render_to_response('country_spm_agencies_table.html',
+    return render_to_response('country_spms_table.html',
         RequestContext(request, dict(country=country,
-            indicator_name=indicator_name, values=values)))
+            values=_format_and_sort_ratings(ratings),
+            country_spms_numeric=country_spms_numeric)))
 
 def agency_country_spms_table(request, agency_name, country_name):
     agency = submissions.models.Agency.objects.get(agency=agency_name)

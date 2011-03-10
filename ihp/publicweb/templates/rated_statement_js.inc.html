@@ -3,20 +3,21 @@ jQuery(document).ready(function()
 {
 	{% for category in categories %}
 		{% for indicator in category.indicators %}
+			{% if agency or indicator.code in country_spms_numeric %}
 	create_tooltip(jQuery('#datalink_{{indicator.code|cut:'G'|cut:'DP'}}'),
 	{
+		{% if agency %}
 		content: ajax_loading_html,
 		onBeforeShow: function()
 		{
-			{% if agency %}
 			var url = '{% url agency-spm-countries-table agency_name=agency.agency indicator_name=indicator.code %}';
-			{% else %}
-			var url = '{% url country-spm-agencies-table country_name=country.country indicator_name=indicator.code %}';
-			{% endif %}
-			
 			this.load(url);
 		}
+		{% else %}
+		content: jQuery('#country_spms_table').html()
+		{% endif %}
 	});
+			{% endif %}
 		{% endfor %}
 	{% endfor %}
 });

@@ -1,0 +1,24 @@
+<table class="data">
+	<tr class="head">
+		<th>Indicator</th>
+		<th>2007</th>
+		<th>2009</th>
+		<th>Rating ∆</th>
+	</tr>
+    
+    {% for indicator_code, value in values %}
+		{% if indicator_code in country_spms_numeric %}
+		<tr>
+			<th>{{indicator_code}}</th>
+			{% if value != None %}
+				<td>{{value.baseline_value_fmt}}</td>
+				<td>{{value.latest_value_fmt}}</td>
+				<td><img src="{% url ihp-media path='images' %}/{{value.target}}.png"
+					alt="{{value.target}}" class="rating"></td>
+			{% else %}
+				<td colspan="3">No data</td>
+			{% endif %}
+		</tr>
+		{% endif %}
+    {% endfor %}
+</table>
