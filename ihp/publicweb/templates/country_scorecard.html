@@ -1,44 +1,69 @@
 {% extends "public_base.html" %}
+
 {% block title %}{{country.country}}{% endblock %}
+
 {% block head %}
+	<!--
+	Adds the data table to the #country_spms_content callout template
+	below. This has to be done before the javascript in
+	rated_statement_js.inc.html copies the template into the actual
+	callout nodes hidden inside each of the result boxes that has a callout.
+	-->
+	<script type="text/javascript">
+		jQuery(document).ready(function()
+		{
+			var real_table = jQuery('#country_spms_table');
+			jQuery('.country_spms_placeholder').replaceWith(real_table);
+		});
+	</script>
+	
 	{% include 'rated_statement_js.inc.html' %}
 {% endblock %}
+
 {% block heading %}Country Scorecard for {{country.country}}{% endblock %}
+
 {% block content %}
 {% include 'ajax-loading.html' %}
-
 <div class="scorecard country">
 	<!-- start scorecard col-->
 	<div id="scorecard" class="col">
-		<div class="item">	
-			<h3 class="callout-from" id="progress_heading">Agencies demonstrating
-				progress in this country</h3>
-			<ul class="logos progress">
+		{% include 'rated_statements.inc.html' %}		
+	</div><!-- #scorecard col -->
+	
+	<!--start infoboxes column-->
+	<div id="infobox" class="col">
+		<div class="infobox progress">
+			<h2 class="callout-from" id="progress_heading"><a href="#"
+				title="Click to expand">Agencies demonstrating
+					progress in this country</a></h2>
+			<ul class="item logos progress">
 				{% for agency in progress_agencies %}
 					{% with agency.agency as logo %}
 						{% include 'progress.html' %}
 					{% endwith %}
 				{% endfor %}
 			</ul>
+			<div style="clear: both;"></div>
 		</div>
+
+		<p class="spacer"></p>
 		
-		<div class="item">	
-			<h3 class="callout-from" id="noprogress_heading">Agencies reporting
-				limited progress in this country</h3>
-			<ul class="logos no_progress">
+		<div class="infobox no_progress">	
+			<h2 class="callout-from" id="noprogress_heading"><a href="#"
+				title="Click to expand">Agencies reporting
+					limited progress in this country</a></h2>
+			<ul class="item logos no_progress">
 				{% for agency in no_progress_agencies %}
 					{% with agency.agency as logo %}
 						{% include 'progress.html' %}
 					{% endwith %}
 				{% endfor %}
 			</ul>
+			<div style="clear: both;"></div>
 		</div>
 
-		{% include 'rated_statements.inc.html' %}		
-	</div><!-- #scorecard col -->
-	
-	<!--start infoboxes column-->
-	<div id="infobox" class="col">
+		<p class="spacer"></p>
+
 		<div class="infobox country-ownership">
 			<h2>
 				<a href="#" title="Click to expand">
@@ -134,7 +159,7 @@
 				<h3>Total Health Financing</h3>
 				
 				<img src="{% url ihp-media path='images' %}/{{country.country}}barnew.png"
-					width="400" height="253" alt="barchart">
+					class="barchart" alt="barchart">
 					
 				<div class="chart-key">
 					<div class="key-item">
@@ -144,11 +169,10 @@
 					<div class="key-item">
 						<span class="key" style="background-color: #3cb5b8"></span>
 						External Financing
-					</div> 
-				</div> 
+					</div></div> 
 
 				<img src="{% url ihp-media path='images' %}/{{country.country}}-pie.png"
-					width="200" height="200" alt="pie">
+					class="pie" alt="pie">
 					
 				<div class="chart-key">
 					<div class="key-item">
@@ -169,7 +193,7 @@
 			<div class="item external-financing">
 				<h3>External financing using pooled mechanisms</h3>
 				<p class="number">{{raw_data.PF1}}</p>
-				<p class="bubble"><span></span>{{raw_data.PF2}}</p>
+				<p class="bubble"><span class="pointer"></span>{{raw_data.PF2}}</p>
 			</div></div><!-- infobox health-financing -->
 
 		<p class="spacer"></p>
@@ -228,7 +252,7 @@
 			</h2>
 			
 			<div class="item" style="margin-top: 20px;"><!-- clear the large logo -->
-				<img width="400" height="300" alt="barchart"
+				<img class="barchart" alt="barchart"
 					src="{% url ihp-media path='images' %}/{{country.country}}hss.png">
 			</div></div><!-- infobox health-systems -->
 		
@@ -282,4 +306,19 @@
 	</div><!-- #infobox col -->
 </div><!-- scorecard country -->
 
+<div style="display: none">
+	<div id="country_spms_table">
+		{% include 'country_spms_table.inc.html' %}
+	</div>
+</div>
+{% endblock %}
+
+{% block dummy_tables %}
+<div style="display: none">
+	<div id="country_spms_content">
+		foo foo foo
+		<div class="country_spms_placeholder"></div>
+		blah blah blah
+	</div>
+</div>
 {% endblock %}

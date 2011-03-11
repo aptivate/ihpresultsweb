@@ -10,32 +10,49 @@
 <div class="scorecard agency">
 	<!-- start scorecard col-->
 	<div id="scorecard" class="col">	
-		<div class="item">	
-			<h3 class="callout-from" id="progress_heading">Countries where
-				the agency is demonstrating progress</h3>
-			<ul class="logos progress">
+		{% include 'rated_statements.inc.html' %}		
+	</div><!-- #scorecard col -->
+	
+	<!--start infoboxes column-->
+	<div id="infobox" class="col">
+		<div class="infobox-fixed profile">	
+			<h2>Agency Profile</h2>
+
+			<div class="item">{{profile.description}}</div></div><!-- item -->
+
+		<p class="spacer"></p>
+
+		<div class="infobox progress">	
+			<h2 class="callout-from" id="progress_heading"><a href="#"
+				title="Click to expand">Countries where
+					the agency is demonstrating progress</a></h2>
+			<ul class="item logos progress">
 				{% for country in progress_countries %}
 					{% with country.country as logo %}
 						{% include 'progress.html' %}
 					{% endwith %}
 				{% endfor %}
 			</ul>
+			<div style="clear: both;"></div>
 		</div><!-- item -->
+
+		<p class="spacer"></p>
 		
-		<div class="item">	
-			<h3 class="callout-from" id="noprogress_heading">Countries where
-				the agency is reporting limited progress</h3>
-			<ul class="logos no_progress">
+		<div class="infobox no_progress">	
+			<h2 class="callout-from" id="noprogress_heading"><a href="#"
+				title="Click to expand">Countries where
+					the agency is reporting limited progress</a></h2>
+			<ul class="item logos no_progress">
 				{% for country in no_progress_countries %}
 					{% with country.country as logo %}
 						{% include 'progress.html' %}
 					{% endwith %}
 				{% endfor %}
 			</ul>
+			<div style="clear: both;"></div>
 		</div><!-- item -->
-
-		{% include 'rated_statements.inc.html' %}		
-	</div><!-- #scorecard col -->
+	</div><!-- #infobox col -->
 </div><!-- scorecard agency -->
+
 
 {% endblock %}

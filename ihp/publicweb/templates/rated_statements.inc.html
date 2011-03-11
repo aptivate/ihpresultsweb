@@ -1,7 +1,8 @@
 <h2>
 	<span id="expected_heading" class="expected callout-from">Expected Results</span><span
-		id="rating_heading" class="rating callout-from">Rating</span><span
-		id="comment_heading" class="comment callout-from">Overall Progress</span>
+		id="rating_heading" class="rating callout-from">Progress</span><span
+		id="progress_heading" class="progress callout-from">Overall Results</span>{% if agency %}<span
+		id="details_heading" class="further-details callout-from">Further Details</span>{% endif %}
 </h2>
 
 {% for category in categories %}
@@ -25,6 +26,10 @@
 					
 					<td class="progress" id="datalink_{{indicator.code|cut:'G'|cut:'DP'}}"
 						>{{indicator.overall_progress}}</td>
+						
+					{% if agency %}
+					<td class="further-details">{{indicator.commentary}}</td>
+					{% endif %}					
 				</tr>
 			{% endfor %}
 		</table>

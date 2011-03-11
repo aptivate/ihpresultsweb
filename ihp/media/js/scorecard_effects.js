@@ -2,7 +2,7 @@ function create_tooltip(target_object, options)
 {
 	default_options = {
 		baseClass: 'callout-to',
-		position: 'bottom',
+		position: 'right',
 		offset: [0, 10],
 	};
 	options = jQuery.extend(default_options, options);

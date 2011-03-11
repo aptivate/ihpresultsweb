@@ -8,7 +8,7 @@
 
 	<!-- starthead -->
 		<script type='text/javascript' src='{% url ihp-media path='js/jquery.simpletip-1.3.1.js' %}'></script>
-		<script type='text/javascript' src='{% url ihp-media path='js/country-scorecard-effects.js' %}'></script>
+		<script type='text/javascript' src='{% url ihp-media path='js/scorecard_effects.js' %}'></script>
 
 		<link rel="stylesheet" href="{% url ihp-media path='css/public_scorecards.css' %}">
 		<style>
@@ -34,6 +34,8 @@
 	</div>
 	
 	<div style="display: none">
+		{% block dummy_tables %}{% endblock %}
+		
 		<div id="progress_heading_content">
 			Countries where agency has ratings of tick or arrow for the
 			majority of standard performance measures.
@@ -68,7 +70,7 @@
 			ratings <a href="#">click here</a>.</div>
 		
 		<div id="comment_heading_content">Possible explanations text.</div>
-		
+
 		<div id="spm_1_content">
 			<p>Measured using the following SPMs:</p>
 			<table cellspacing="10" style="vertical-align: middle;">

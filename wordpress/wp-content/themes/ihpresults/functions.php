@@ -2,7 +2,7 @@
 if ( function_exists('register_sidebar') ) {
 	// have to register the sidebars separately so I can name them uniquely - SV
 	register_sidebar( array(
-		'name' => 'home featured',
+		'name' => 'header',
 		'before_widget' => '<div id="%1$s" class="widget %2$s">',
 		'after_widget' => '</div><!-- end widget -->',
 		'before_title' => '<h2>',
