@@ -244,4 +244,15 @@
 - fields: {agency: 999, language: 2, description: 'Tout sur le barrage des foux'}
   model: submissions.agencyprofile
   pk: 2
+
+- fields: {agency: 999, language: 1,
+    erb1: 'The foo was already barred when we got there',
+    erb2: "We couldn't find a foo to bar",
+    erb3: 'When we barred the foo, it frobbed',
+    erb4: 'The foo refused to be barred',
+    erb5: 'All the bars were stolen by Baz',
+    erb7: 'We switched it off and on again and it blew up',
+    erb8: 'Who dropped all these cats on top of us?'}
+  model: submissions.dpscorecardsummary
+  pk: 1
   

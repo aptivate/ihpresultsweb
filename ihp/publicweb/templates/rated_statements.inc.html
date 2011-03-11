@@ -27,9 +27,11 @@
 					<td class="progress" id="datalink_{{indicator.code|cut:'G'|cut:'DP'}}"
 						>{{indicator.overall_progress}}</td>
 						
-					{% if agency %}
-					<td class="further-details">{{indicator.commentary}}</td>
-					{% endif %}					
+					{% if agency and forloop.first %}
+						<td class="further-details"
+							rowspan="{{category.indicators|length}}"
+							>{{category.agency_report}}</td>
+					{% endif %}
 				</tr>
 			{% endfor %}
 		</table>
