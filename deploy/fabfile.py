@@ -53,7 +53,7 @@ def _local_setup():
 # to be used by later commands
 #
 
-def dev_server():
+def dev():
     """ use dev environment on remote host to play with code in production-like env"""
     env.environment = 'dev_server'
     env.hosts = ['lin-reactionscorecards3-dev.aptivate.org:48001']
@@ -84,4 +84,9 @@ def production():
     env.hosts = ['lin-reactionscorecards3-live.aptivate.org:48001']
     _local_setup()
 
-
+def deploy():
+    fablib.deploy()
+    cache_dir = os.path.join(env.vcs_root, 'wordpress', 'wp-content',
+        'plugins', 'wp-minify', 'cache')
+    sudo('mkdir -p ' + cache_dir)
+    sudo('chmod a+w ' + cache_dir)
