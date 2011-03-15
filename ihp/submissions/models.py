@@ -221,9 +221,9 @@ class MDGData(models.Model):
     country = models.ForeignKey(Country, null=False)
     mdg_target = models.CharField(max_length=20, null=False)
     baseline_year = models.CharField(max_length=4, null=True)
-    baseline_value = models.FloatField(null=True)
+    baseline_value = models.FloatField(null=True, blank=True)
     latest_year = models.CharField(max_length=4, null=True)
-    latest_value = models.FloatField(null=True)
+    latest_value = models.FloatField(null=True, blank=True)
     arrow = models.CharField(max_length=20, null=True)
 
     @property
