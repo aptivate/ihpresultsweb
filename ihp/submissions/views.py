@@ -272,7 +272,20 @@ def agency_ratings(request, template_name="submissions/agency_ratings.html", ext
     for indicator in dp_indicators:
         rating = {}
         for agency in agencies:
-            rating[agency] = data[agency][indicator]["target"]
+            cur_val = data[agency][indicator]["cur_val"]
+            base_val = data[agency][indicator]["base_val"]
+            perc_change = ""
+            try:
+                perc_change = ((cur_val - base_val) / base_val) * 100
+            except:
+                pass
+
+            rating[agency] = {
+                "rating" : data[agency][indicator]["target"],
+                "base_val" : data[agency][indicator]["base_val"],
+                "cur_val" : data[agency][indicator]["cur_val"],
+                "perc_change" : perc_change
+            }
         ratings.append((indicator, rating, spm_map[indicator]))
     
     extra_context["ratings"] = ratings

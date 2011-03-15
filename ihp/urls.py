@@ -208,6 +208,9 @@ urlpatterns = patterns('',
 
     (r'^scorecard/tables/agency_country_ratings/$', 'submissions.views.agency_country_ratings', {}, 'agency_country_ratings'),
     (r'^datatables/tables/agency_ratings/$', 'submissions.views.agency_ratings', {}, 'agency_ratings'),
+    (r'^datatables/tables/agency_ratings2/$', 'submissions.views.agency_ratings', {
+        "template_name" : "submissions/agency_ratings2.html",
+    }, 'agency_ratings2'),
 
 
     # Old views
