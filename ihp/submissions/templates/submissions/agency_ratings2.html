@@ -48,19 +48,26 @@ td:first-child {
 {% block body %}
 <table>
     <tr class="head">
-        <th>Indicator</th>
-        <th class="spmcol">SPM</th>
+        <th rowspan="2">Indicator</th>
         {% for agency in agencies %}
-            <th colspan="3">{{ agency.agency }}</th>
+            <th colspan="4">{{ agency.agency }}</th>
+        {% endfor %}
+    </tr>
+    <tr class="head">
+        {% for agency in agencies %}
+        <th>base val</th>
+        <th>cur val</th>
+        <th>% change</th>
+        <th>rating</th>
         {% endfor %}
     </tr>
     {% for indicator, data, spm_text in ratings %}
         <tr class="{% cycle 'odd' 'even' %}">
             <td>{{ indicator }}</td>
-            <td class="spmcol">{{ spm_text }}</td>
             {% for agency, r in data.items %}
                 <td>{{ r.base_val|floatformat }}</td>
                 <td>{{ r.cur_val|floatformat }}</td>
+                <td>{{ r.perc_change|floatformat }}</td>
                 <td><img src="{{ MEDIA_URL }}/images/{{ r.rating }}.png"></td>
             {% endfor %}
         </tr>
