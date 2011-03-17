@@ -609,6 +609,26 @@ div.col {
 	clear:both;
 }
 
+/*
+resize images using:
+
+for country in "Burkina Faso" Burundi Djibouti DRC Ethiopia Mali Mozambique \
+	Nepal Niger Nigeria
+do
+	gm convert -geometry 269x270 "${country}barnew.png" "$country-barchart-269.png"
+	gm convert -geometry 150x180 "${country}-pie.png" "$country-piechart-150.png"
+	gm convert -geometry 269x270 "${country}hss.png" "$country-hss-269.png"
+	country_nospace=$(echo $country | sed -e 's/ //')
+	gm convert -geometry 1000x40 +dither -colors 17 $country_nospace.png $country_nospace-40.png
+done
+
+for partner in AusAID Belgium EC GAVI GFATM Netherlands Norway Spain Sweden \
+	UNAIDS UNFPA UNICEF WHO  WorldBank
+do
+	gm convert -geometry 1000x40 +dither -colors 48 $partner.png $partner-40.png
+done
+*/
+
 #infobox .health-financing .item img.barchart {
 	width:269px; /*313-2*2(borders)-2*10(infobox padding)-2*10(item padding)*/
 	height:auto;
