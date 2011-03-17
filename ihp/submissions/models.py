@@ -28,6 +28,7 @@ class AgencyManager(models.Manager):
 
 class Agency(models.Model):
     agency = models.CharField(max_length=50, null=False, unique=True)
+    display_name = models.CharField(max_length=100, null=True, blank=True)
     type = models.CharField(max_length=15, null=False)
     objects = AgencyManager()
 

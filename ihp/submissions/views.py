@@ -23,7 +23,7 @@ def agency_export(request, language):
     language = get_object_or_404(Language, language=language)
 
     headers = [
-        "file", "agency", "profile", 
+        "file", "agency", "agencytitle", "profile", 
         "er1", "r1", "er2a", "r2a", "er2b", "r2b", "er2c", "r2c",
         "er3", "r3", "er4", "r4", "er5a", "r5a", "er5b", "r5b", "er5c", "r5c",
         "er6", "r6", "er7", "r7", "er8", "r8",
