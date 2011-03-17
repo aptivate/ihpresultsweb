@@ -111,6 +111,11 @@ form { margin: 0; }
 	padding:0;
 }
 
+body.home #header #blogname a {
+	background-image:url(images/ihp-results-logo-200.png);
+	height: 60px;
+}
+
 #blogname p, h1 .blogname {
 	margin:0;
 	line-height:0;
