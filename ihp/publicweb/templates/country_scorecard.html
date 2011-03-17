@@ -35,7 +35,7 @@
 		<div class="infobox progress">
 			<h2 class="callout-from" id="progress_heading"><a href="#"
 				title="Click to expand">Agencies demonstrating
-					progress in this country</a></h2>
+					progress in {{country.country}}</a></h2>
 			<ul class="item logos progress">
 				{% for agency in progress_agencies %}
 					{% with agency.agency as logo %}
@@ -51,7 +51,7 @@
 		<div class="infobox no_progress">	
 			<h2 class="callout-from" id="noprogress_heading"><a href="#"
 				title="Click to expand">Agencies reporting
-					limited progress in this country</a></h2>
+					limited progress in {{country.country}}</a></h2>
 			<ul class="item logos no_progress">
 				{% for agency in no_progress_agencies %}
 					{% with agency.agency as logo %}
