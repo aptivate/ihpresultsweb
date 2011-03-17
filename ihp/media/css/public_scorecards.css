@@ -445,6 +445,12 @@ div.col {
 	letter-spacing:1px;
 }
 
+#content .infobox h2#progress_heading,
+#content .infobox h2#noprogress_heading,
+#content .infobox-fixed h2 {
+	padding-left: 10px;
+}
+
 .infobox h2 img {
 	position:absolute;
 	top:-20px;
