@@ -391,8 +391,7 @@ div.col {
 	vertical-align: top;
 }
 
-#scorecard td.progress,
-#scorecard td.further-details {
+#scorecard td.progress {
 	padding-bottom: 10px;
 	border-bottom: 2px dotted #D1DDD9;
 }

@@ -21,7 +21,11 @@ class AptivateExternalCSS
 	}
 	function enqueue_scripts()
 	{
-		wp_enqueue_script("jquery");
+		if (preg_match('#^/scorecard/(partner|country)/([-\w %0-9]+)(/)?$#',
+			$_SERVER['REQUEST_URI']))
+		{
+			wp_enqueue_script("jquery");
+		}
 	}
 }
 

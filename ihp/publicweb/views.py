@@ -12,6 +12,7 @@ class Category:
     code = property()
     expected_result = property()
     indicators = property()
+    agency_report = property()
 
 class Indicator:
     code = property()
@@ -88,13 +89,20 @@ def agency_scorecard_page(request, agency_name):
     ratings = submissions.target.calc_agency_ratings(agency)
     np, p = submissions.target.get_country_progress(agency)
     english = Language.objects.get(language="English")
+    categories = _group_and_sort_indicators(ratings, 
+        agency_indicator_descriptions)
+    agency_reports = submissions.models.DPScorecardSummary.objects.get(
+        agency=agency, language=english)
+    
+    for category in categories:
+        field_name = "erb%s" % category.code[0]
+        category.agency_report = getattr(agency_reports, field_name)
     
     context = dict(agency=agency,
-        categories=_group_and_sort_indicators(ratings, 
-            agency_indicator_descriptions),
+        categories=categories,
         progress_countries=p.values(),
         no_progress_countries=np.values(),
-        profile=AgencyProfile.objects.get(agency=agency,
+        profile=submissions.models.AgencyProfile.objects.get(agency=agency,
             language=english))
     
     return render_to_response('agency_scorecard.html',

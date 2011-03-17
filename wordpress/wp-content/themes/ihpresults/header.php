@@ -101,6 +101,7 @@
 	<p id="blogname"><strong><a href="<?php bloginfo('url'); ?>"><?php bloginfo('name'); ?></a></strong></p>
 	<?php } ?>
 	<p id="tagline"><em><?php bloginfo('description'); ?></em></p>
+	<div id="components-bg"></div>
 </div>
 <div id="access">
 	<div id="access-inner">

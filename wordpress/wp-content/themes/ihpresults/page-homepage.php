@@ -30,8 +30,7 @@
 		<?php include (TEMPLATEPATH . '/searchform.php'); ?>
 	  </div>
 	  <?php endif; ?>
-	  <div class="featured-content"><img class="image-1"src="<?php bloginfo('template_url'); ?>/images/scorecards.png" alt="scorecards" /></div>
-	  <div class="featured-content"><img class="image-2"src="<?php bloginfo('template_url'); ?>/images/icon-graphic-bg.png" alt="scorecards" /></div>
+	  <div class="featured-content"><img class="image-1" src="<?php bloginfo('template_url'); ?>/images/scorecards.png" alt="scorecards" /></div>
 	  <div class="icons"></div>
 	  </div><!--end top section-->
 </div><!--end #content-->

@@ -17,6 +17,7 @@ import submissions.table_views
 
 import ihp.publicweb.views
 from ihp import publicweb
+import logging
 
 class PublicWebsiteTest(TestCase):
     fixtures = ['submission_test_data.json', 'foobar', 'indicator_tests.yaml']
@@ -55,6 +56,9 @@ class PublicWebsiteTest(TestCase):
         self.assertEqual(rating_1['target_val'], 100.0)
 
     def _test_ratings(self, expected_ratings, actual_categories, descriptions):
+        # we are going to destroy the array, so copy it first
+        actual_categories = actual_categories[:]
+        
         category = actual_categories.pop(0)
 
         for indicator_code in sorted(expected_ratings.keys()):
@@ -104,7 +108,19 @@ class PublicWebsiteTest(TestCase):
         profile = AgencyProfile.objects.get(agency=self.foobar,
             language=english)
         self.assertEqual(profile, response.context['profile'])
-
+        
+        agency_reports = submissions.models.DPScorecardSummary.objects.get(
+            agency=self.foobar, language=english)
+        
+        for i in range(1, 8):
+            try:
+                self.assertEqual(getattr(agency_reports, "erb%s" % i),
+                    response.context['categories'][i - 1].agency_report)
+            except:
+                logging.error("failed index: %s" % i)
+                logging.error("failed structure: %s" % response.context['categories'])
+                raise
+                
     def test_country_scorecard_view(self):
         response = self.get(ihp.publicweb.views.country_scorecard_page,
             country_name=self.mozambique.country)
