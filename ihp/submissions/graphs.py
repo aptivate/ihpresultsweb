@@ -154,7 +154,7 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
     extra_context = extra_context or {}
 
     titles = titles or {
-        "2DPa" : "2DPa: Aggregate proportion of funding on country budget",
+        "2DPa" : "2DPa: Aggregate proportion of partner support reported on national budgets",
         "2DPb" : "2DPb: Aggregate proportion of partner support for capacity-development <br/>provided through coordinated programmes in line with national strategies",
         "2DPc" : "2DPc: Aggregate proportion of partner support <br/>provided as programme based approaches",
         "3DP"  : "3DP: Aggregate proportion partner support <br/>provided through multi-year commitments",

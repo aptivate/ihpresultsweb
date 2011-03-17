@@ -169,7 +169,7 @@ def country_export(request, language):
        "BC4" : fformat_front, 
        "PC1" : fformat_front, 
        "PC2" : fformat_front, 
-       "PF1" : fformat_front, 
+       "PF1" : fformat_none, 
        "PHC1" : fformat_front, 
        "PHC3" : fformat_front, 
        "PHC5" : fformat_front, 
