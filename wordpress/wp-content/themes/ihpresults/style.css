@@ -212,6 +212,7 @@ div.menu ul {
 div.menu li {
 	float: left;
 	position: relative;
+	z-index: 10;
 }
 #access a {
 	color:#333;
@@ -1096,8 +1097,8 @@ ul.ticklist li {
 
 #footer .copyright {
 	float:left;
-	width:60%;
 	color:#999;
+	margin-bottom: 1em;
 }
 
 #footer .menu-footer-menu-container {clear:both;}
