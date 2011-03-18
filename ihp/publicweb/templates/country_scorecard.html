@@ -185,10 +185,9 @@
 					</div> 
 					<div class="key-item">
 						<span class="key" style="background-color: #0e3d3d"></span>
-						{% if country.country == "Nepal" %}
-							Increase required to meet Government target (10%)
-						{% else %}
-							Increase required to meet Abuja target (15%)
+						Increase required to meet
+						{% if country.country == "Nepal" %}Government target (10%)
+						{% else %}Abuja target (15%)
 						{% endif %}
 					</div>
 				</div> 
