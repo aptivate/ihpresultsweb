@@ -35,7 +35,6 @@ env.valid_non_prod_envs = ('dev_server', 'staging_test', 'staging')
 env.valid_envs = ('dev_server', 'staging_test', 'staging', 'production')
 env.use_apache = True
 
-
 # this function can just call the fablib _setup_path function
 # or you can use it to override the defaults
 def _local_setup():
@@ -90,3 +89,7 @@ def deploy():
         'plugins', 'wp-minify', 'cache')
     sudo('mkdir -p ' + cache_dir)
     sudo('chmod a+w ' + cache_dir)
+    upload_dir = os.path.join(env.vcs_root, 'wordpress', 'wp-content',
+        'uploads')
+    sudo('mkdir -p ' + upload_dir)
+    sudo('chown -R apache ' + upload_dir)
