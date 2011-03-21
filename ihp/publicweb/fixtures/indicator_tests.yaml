@@ -252,7 +252,7 @@
     erb4: 'The foo refused to be barred',
     erb5: 'All the bars were stolen by Baz',
     erb7: 'We switched it off and on again and it blew up',
-    erb8: 'Who dropped all these cats on top of us?'}
+    erb8: 'Who parachute-dropped all these cats on us?'}
   model: submissions.dpscorecardsummary
   pk: 1
   
