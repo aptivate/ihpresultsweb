@@ -8,6 +8,7 @@ fi
 perl -pe '
 s/BEGIN TRANSACTION;/set sql_mode="ANSI";/;
 s/(CREATE TABLE|INSERT INTO|REFERENCES|CREATE INDEX|ON) "([^"]*)"/\1 \2/g;
+s/^\);/) DEFAULT CHARSET=utf8;/g;
 # s/^    "([^"]+)"/    `\1`/;
 # m/(UNIQUE|REFERENCES \S+|ON \S+) \((.*)\)/ and s/"//g;
 s/ bool / boolean /g;
