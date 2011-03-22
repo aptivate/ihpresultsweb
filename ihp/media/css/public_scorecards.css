@@ -712,18 +712,18 @@ done
 /*Managing for Development*/
 
 #content .infobox.managing-for-development h3 {
-	margin-left: 10px;
-    float:left;
-    clear:none;
-    background-color:transparent;
-    color:#0A3E3D;
-    font-weight:bold;
-    padding-left:0;
+	clear:none;
+	margin-bottom:0.5em;
+	background-color:transparent;
+	color:#0A3E3D;
+	font-weight:bold;
+	padding:0 0 0 50px;
 }
 
 .infobox.managing-for-development img {
 	float: left;
 	display:block;
+	margin-bottom:0.5em;
 }
 
 .infobox.managing-for-development ul {
