@@ -3,13 +3,16 @@
 		alt="{{logo}}" class="logo" />
 	<span class="name">{{logo}}</span>
 	<script type="text/javascript">
-		create_tooltip(jQuery('#datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}'),
+jQuery(document).ready(function()
+{
+	create_tooltip(jQuery('#datalink_{{agency.agency|cut:" "}}_{{country.country|cut:" "}}'),
+		{
+			content: ajax_loading_html,
+			onBeforeShow: function()
 			{
-				content: ajax_loading_html,
-				onBeforeShow: function()
-				{
-					this.load('{% url agency-country-spms-table agency_name=agency.agency country_name=country.country %}');
-				}
-			});
+				this.load('{% url agency-country-spms-table agency_name=agency.agency country_name=country.country %}');
+			}
+		});
+});
 	</script>
 </li>
