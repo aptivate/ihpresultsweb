@@ -263,7 +263,6 @@ function createTextShadow(element, vml_parent) {
 	clone.style.left = (element.pos_ieCSS3.x + clone.position_offset.x) +'px';
 	clone.className = 'ieCSS3_text_shadow';
 
-
 	element.parentNode.appendChild(shadow);
 	element.parentNode.appendChild(clone);
 
@@ -289,8 +288,8 @@ function ondocumentready(classID) {
 	if (typeof(window.ieCSS3) == 'undefined') {
 		// Create global ieCSS3 object
 		window.ieCSS3 = {
-			'vmlified_elements': new Array(),
-			'update_timer': setInterval(updatePositionAndSize, timer_length)
+			'vmlified_elements': new Array()
+			// 'update_timer': setInterval(updatePositionAndSize, timer_length)
 		};
 
 		if (typeof(window.onresize) == 'function') { window.ieCSS3.previous_onresize = window.onresize; }
