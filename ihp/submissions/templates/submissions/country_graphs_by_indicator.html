@@ -5,6 +5,10 @@
 <script>
 {{ graph_3G|safe }}
 {{ graph_4G|safe }}
+{{ graph_hw|safe }}
+{{ graph_outpatient_visits|safe }}
+{{ graph_skilled_medical|safe }}
+{{ graph_health_budget|safe }}
 </script>
 {% endblock %}
 
@@ -13,5 +17,9 @@
 
 <div class="graphblock"><div id="graph_3G" class="graph"></div></div>
 <div class="graphblock"><div id="graph_4G" class="graph"></div></div>
+<div class="graphblock"><div id="graph_hw" class="graph"></div></div>
+<div class="graphblock"><div id="graph_outpatient_visits" class="graph"></div></div>
+<div class="graphblock"><div id="graph_skilled_medical" class="graph"></div></div>
+<div class="graphblock"><div id="graph_health_budget" class="graph"></div></div>
 
 {% endblock %}

@@ -341,50 +341,7 @@ class TargetCountryBarGraph(CountryBarGraph):
 def additional_graphs(request, template_name="submissions/additionalgraphs.html", extra_context=None):
     extra_context = extra_context or {}
     agency_data = dict([(agency, agency_scorecard.get_agency_scorecard_data(agency)) for agency in Agency.objects.all()])
-    country_data = dict([(country, country_scorecard.get_country_export_data(country)) for country in Country.objects.all()])
 
-    countries = sorted(country_data.keys(), key=lambda x : x.country)
-
-    # TODO
-    # Request from James to remove overly large values
-    remove_large = lambda x : 0 if x > 100 else x
-
-    extra_context["graph_hw"] = CountryBarGraph(
-        countries,
-        "graph_hw",
-        "Proportion of health sector budget spent on Human Resources for Health (HRH)",
-        [remove_large(country_data[country]["indicators"]["other"]["health_workforce_perc_of_budget_baseline"] * 100) for country in countries],
-        [remove_large(country_data[country]["indicators"]["other"]["health_workforce_perc_of_budget_latest"] * 100) for country in countries],
-    )
-
-    extra_context["graph_outpatient_visits"] = CountryBarGraph(
-        countries,
-        "graph_outpatient_visits",
-        "Number of Outpatient Department Visits per 10,000 population",
-        [country_data[country]["indicators"]["other"]["outpatient_visits_baseline"] for country in countries],
-        [country_data[country]["indicators"]["other"]["outpatient_visits_latest"] for country in countries],
-    )
-    extra_context["graph_outpatient_visits"].yAxis = {"title" : {"text" : ""}} 
-
-    extra_context["graph_skilled_medical"] = TargetCountryBarGraph(
-        countries,
-        "graph_skilled_medical",
-        "Number of skilled medical personnel per 10,000 population",
-        [country_data[country]["indicators"]["other"]["skilled_personnel_baseline"] for country in countries],
-        [country_data[country]["indicators"]["other"]["skilled_personnel_latest"] for country in countries],
-        "WHO Recommended", 23,
-    )
-    extra_context["graph_skilled_medical"].yAxis = {"title" : {"text" : ""}} 
-
-    extra_context["graph_health_budget"] = TargetCountryBarGraph(
-        countries,
-        "graph_health_budget",
-        "% of national budget is allocated to health (IHP+ Results data)",
-        [country_data[country]["indicators"]["3G"]["baseline_value"] for country in countries],
-        [country_data[country]["indicators"]["3G"]["latest_value"] for country in countries],
-        "Target", 15,
-    )
-            
     sort = partial(sorted, key=lambda x : x[1][1])
 
     def indicator_data(indicator, reverse=False):
@@ -517,6 +474,8 @@ def government_graphs(request, template_name="submission/country_graphs_by_indic
     data_3G = dict([(c, calc_country_indicators(c)["3G"]) for c in countries])
     data_4G = dict([(c, calc_country_indicators(c)["4G"]) for c in countries])
 
+    country_data = dict([(country, country_scorecard.get_country_export_data(country)) for country in Country.objects.all()])
+
     # TODO
     # Request from James to zero negative values
     neg_to_zero = lambda x : 0 if x < 0 else x
@@ -549,6 +508,46 @@ def government_graphs(request, template_name="submission/country_graphs_by_indic
         "4G: Actual disbursement of government health budgets",
         [neg_to_zero(data_4G[country][0][0]) for country in countries],
         [neg_to_zero(data_4G[country][0][2]) for country in countries],
+    )
+
+    # TODO
+    # Request from James to remove overly large values
+    remove_large = lambda x : 0 if x > 100 else x
+
+    extra_context["graph_hw"] = CountryBarGraph(
+        countries,
+        "graph_hw",
+        "Proportion of health sector budget spent on Human Resources for Health (HRH)",
+        [remove_large(country_data[country]["indicators"]["other"]["health_workforce_perc_of_budget_baseline"] * 100) for country in countries],
+        [remove_large(country_data[country]["indicators"]["other"]["health_workforce_perc_of_budget_latest"] * 100) for country in countries],
+    )
+
+    extra_context["graph_outpatient_visits"] = CountryBarGraph(
+        countries,
+        "graph_outpatient_visits",
+        "Number of Outpatient Department Visits per 10,000 population",
+        [country_data[country]["indicators"]["other"]["outpatient_visits_baseline"] for country in countries],
+        [country_data[country]["indicators"]["other"]["outpatient_visits_latest"] for country in countries],
+    )
+    extra_context["graph_outpatient_visits"].yAxis = {"title" : {"text" : ""}} 
+
+    extra_context["graph_skilled_medical"] = TargetCountryBarGraph(
+        countries,
+        "graph_skilled_medical",
+        "Number of skilled medical personnel per 10,000 population",
+        [country_data[country]["indicators"]["other"]["skilled_personnel_baseline"] for country in countries],
+        [country_data[country]["indicators"]["other"]["skilled_personnel_latest"] for country in countries],
+        "WHO Recommended", 23,
+    )
+    extra_context["graph_skilled_medical"].yAxis = {"title" : {"text" : ""}} 
+
+    extra_context["graph_health_budget"] = TargetCountryBarGraph(
+        countries,
+        "graph_health_budget",
+        "% of national budget is allocated to health (IHP+ Results data)",
+        [country_data[country]["indicators"]["3G"]["baseline_value"] for country in countries],
+        [country_data[country]["indicators"]["3G"]["latest_value"] for country in countries],
+        "Target", 15,
     )
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
