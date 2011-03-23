@@ -80,7 +80,6 @@ urlpatterns = patterns('',
     # Graph Views
     (r"^agencies/graphs/highlevel/$", "submissions.graphs.highlevelgraphs", {}, "highlevelgraphs"),
     (r"^agencies/graphs/projection/$", "submissions.graphs.projectiongraphs", {}, "projectiongraphs"),
-    (r"^agencies/graphs/additional/$", "submissions.graphs.additional_graphs", {}, "additionalgraphs"),
 
     (r"^agencies/(?P<agency_name>[a-zA-Z\s]+)/graphs/$", "submissions.graphs.agencygraphs", {
         "titles" : agency_ratio_titles,

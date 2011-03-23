@@ -91,6 +91,51 @@ class CountryChart(IHPChart):
     def __init__(self, target_element):
         super(CountryChart, self).__init__(target_element, "Source: Country data returns/CSO data returns")
 
+class StackedAgencyBarGraph(DPChart):
+    def __init__(self, chart_name, title, dataset, target_name, target):
+        super(StackedAgencyBarGraph, self).__init__(chart_name)
+        categories = map(lambda x: x[0].agency, dataset["data"])
+        data = map(lambda x: x[1], dataset["data"])
+
+        data1 = data
+        data2 = map(lambda x: 100 - x, data)
+
+        self.chart = {
+            "marginTop" : 50,
+            "defaultSeriesType": "column",
+        }
+        self.title = {"text" : title}
+        self.xAxis = {
+            "categories" : categories,
+            "labels" : {
+                "rotation" : -90,
+                "y" : 40,
+            }
+        } 
+        self.yAxis = {
+            "title" : {"text" : "%"},
+            "max" : 100
+        } 
+        self.series = [{
+            "name" : dataset["name2"],
+            "data" : data2, 
+            "color" : "#82A8A0"
+        }, {
+            "name" : dataset["name1"],
+            "data" : data1,
+            "color" : "#2D5352",
+        }, {
+            "name" : "Target = %s%%" % (target),
+            "data" : [target] * len(categories),
+            "type" : "line",
+            "color" : "#F68B1F",
+            "marker" : {
+                "enabled" : "false"
+            },
+        }]
+
+        self.plotOptions = {"column" : {"stacking" : "percent"}}
+
         
 
 def projectiongraphs(request, template_name="submissions/projectiongraphs.html", extra_context=None):
@@ -149,6 +194,90 @@ def projectiongraphs(request, template_name="submissions/projectiongraphs.html",
 
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
+def additional_graphs(extra_context):
+    agency_data = dict([(agency, agency_scorecard.get_agency_scorecard_data(agency)) for agency in Agency.objects.all()])
+
+    sort = partial(sorted, key=lambda x : x[1][1])
+
+    def indicator_data(indicator, reverse=False):
+        f = lambda x: x
+        if reverse: f = lambda x : 100.0 - x
+        data = [
+            (agency, f(datum[indicator]["cur_val"]))
+            for (agency, datum) in agency_data.items()
+            if datum[indicator]["cur_val"] not in (NA_STR, None)
+        ]
+        data = sorted(data, key=lambda x : x[1])
+        return data
+
+
+    extra_context["graph_pfm"] = StackedAgencyBarGraph(
+        "graph_pfm",
+        "5DPb: Partner use of country public financial management systems",
+        {
+            "name1" : "Health aid using PFM systems",
+            "name2" : "Health aid not using PFM systems",
+            "data" : indicator_data("5DPb", reverse=True)
+        },
+        "target", 80
+    )
+        
+    extra_context["graph_procurement"] = StackedAgencyBarGraph(
+        "graph_procurement",
+        "5DPa: Partner use of country procurement systems",
+        {
+            "name1" : "Health aid using procurement systems",
+            "name2" : "Health aid not using procurement systems",
+            "data" : indicator_data("5DPa", reverse=True)
+        },
+        "target", 80
+    )
+
+    extra_context["graph_multi_year"] = StackedAgencyBarGraph(
+        "graph_multi_year",
+        "% of aid provided through multi-year commitments",
+        {
+            "name1" : "% of multi-year commitments",
+            "name2" : "% not provided through multi-year commitments",
+            "data" : indicator_data("3DP")
+        },
+        "target", 90
+    )
+
+    extra_context["graph_pba"] = StackedAgencyBarGraph(
+        "graph_pba",
+        "2DPC: Support provided as Programme Based Approach",
+        {
+            "name1" : "% of health aid as Programme Based Approach",
+            "name2" : "% of health aid not as Programme Based Approach",
+            "data" : indicator_data("2DPc")
+        },
+        "target", 66
+    )
+
+    extra_context["graph_tc"] = StackedAgencyBarGraph(
+        "graph_tc",
+        "2DPb: Support for capacity development that is coordinated <br/>and in line with national strategies",
+        {
+            "name1" : "Support coordinated and in line",
+            "name2" : "Support not coordinated and in line",
+            "data" : indicator_data("2DPb")
+        },
+        "target", 50
+    )
+
+    extra_context["graph_aob"] = StackedAgencyBarGraph(
+        "graph_aob",
+        "2DPa: Proportion of partner health aid on country budget",
+        {
+            "name2" : "Health aid not on budget",
+            "name1" : "Health aid reported on budget",
+            "data" : indicator_data("2DPa", reverse=True)
+        },
+        "target", 85
+    )
+
+    return extra_context
 
 def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", extra_context=None, titles=None):
     extra_context = extra_context or {}
@@ -226,7 +355,7 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
 
         extra_context["graph_%s" % indicator] = graph 
 
-
+    extra_context = additional_graphs(extra_context)
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.html", extra_context=None, titles=None, yaxes=None, xaxis=None):
@@ -338,136 +467,6 @@ class TargetCountryBarGraph(CountryBarGraph):
         })
 
     
-def additional_graphs(request, template_name="submissions/additionalgraphs.html", extra_context=None):
-    extra_context = extra_context or {}
-    agency_data = dict([(agency, agency_scorecard.get_agency_scorecard_data(agency)) for agency in Agency.objects.all()])
-
-    sort = partial(sorted, key=lambda x : x[1][1])
-
-    def indicator_data(indicator, reverse=False):
-        f = lambda x: x
-        if reverse: f = lambda x : 100.0 - x
-        data = [
-            (agency, f(datum[indicator]["cur_val"]))
-            for (agency, datum) in agency_data.items()
-            if datum[indicator]["cur_val"] not in (NA_STR, None)
-        ]
-        data = sorted(data, key=lambda x : x[1])
-        return data
-
-    class StackedAgencyBarGraph(DPChart):
-        def __init__(self, chart_name, title, dataset, target_name, target):
-            super(StackedAgencyBarGraph, self).__init__(chart_name)
-            categories = map(lambda x: x[0].agency, dataset["data"])
-            data = map(lambda x: x[1], dataset["data"])
-
-            data1 = data
-            data2 = map(lambda x: 100 - x, data)
-
-            self.chart = {
-                "marginTop" : 50,
-                "defaultSeriesType": "column",
-            }
-            self.title = {"text" : title}
-            self.xAxis = {
-                "categories" : categories,
-                "labels" : {
-                    "rotation" : -90,
-                    "y" : 40,
-                }
-            } 
-            self.yAxis = {
-                "title" : {"text" : "%"},
-                "max" : 100
-            } 
-            self.series = [{
-                "name" : dataset["name2"],
-                "data" : data2, 
-                "color" : "#82A8A0"
-            }, {
-                "name" : dataset["name1"],
-                "data" : data1,
-                "color" : "#2D5352",
-            }, {
-                "name" : "Target = %s%%" % (target),
-                "data" : [target] * len(categories),
-                "type" : "line",
-                "color" : "#F68B1F",
-                "marker" : {
-                    "enabled" : "false"
-                },
-            }]
-
-            self.plotOptions = {"column" : {"stacking" : "percent"}}
-
-    extra_context["graph_pfm"] = StackedAgencyBarGraph(
-        "graph_pfm",
-        "5DPb: Partner use of country public financial management systems",
-        {
-            "name1" : "Health aid using PFM systems",
-            "name2" : "Health aid not using PFM systems",
-            "data" : indicator_data("5DPb", reverse=True)
-        },
-        "target", 80
-    )
-        
-    extra_context["graph_procurement"] = StackedAgencyBarGraph(
-        "graph_procurement",
-        "5DPa: Partner use of country procurement systems",
-        {
-            "name1" : "Health aid using procurement systems",
-            "name2" : "Health aid not using procurement systems",
-            "data" : indicator_data("5DPa", reverse=True)
-        },
-        "target", 80
-    )
-
-    extra_context["graph_multi_year"] = StackedAgencyBarGraph(
-        "graph_multi_year",
-        "% of aid provided through multi-year commitments",
-        {
-            "name1" : "% of multi-year commitments",
-            "name2" : "% not provided through multi-year commitments",
-            "data" : indicator_data("3DP")
-        },
-        "target", 90
-    )
-
-    extra_context["graph_pba"] = StackedAgencyBarGraph(
-        "graph_pba",
-        "2DPC: Support provided as Programme Based Approach",
-        {
-            "name1" : "% of health aid as Programme Based Approach",
-            "name2" : "% of health aid not as Programme Based Approach",
-            "data" : indicator_data("2DPc")
-        },
-        "target", 66
-    )
-
-    extra_context["graph_tc"] = StackedAgencyBarGraph(
-        "graph_tc",
-        "2DPb: Support for capacity development that is coordinated <br/>and in line with national strategies",
-        {
-            "name1" : "Support coordinated and in line",
-            "name2" : "Support not coordinated and in line",
-            "data" : indicator_data("2DPb")
-        },
-        "target", 50
-    )
-
-    extra_context["graph_aob"] = StackedAgencyBarGraph(
-        "graph_aob",
-        "2DPa: Proportion of partner health aid on country budget",
-        {
-            "name2" : "Health aid not on budget",
-            "name1" : "Health aid reported on budget",
-            "data" : indicator_data("2DPa", reverse=True)
-        },
-        "target", 85
-    )
-
-    return direct_to_template(request, template=template_name, extra_context=extra_context)
-
 def government_graphs(request, template_name="submission/country_graphs_by_indicator.html", extra_context=None):
     extra_context = extra_context or {}
     countries = sorted(Country.objects.all(), key=lambda x: x.country)
