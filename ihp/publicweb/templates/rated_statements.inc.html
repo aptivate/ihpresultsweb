@@ -24,7 +24,7 @@
 						src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
 						alt="{{indicator.rating}}" class="rating"></td>
 					
-					<td class="progress" id="datalink_{{indicator.code|cut:'G'|cut:'DP'}}"
+					<td class="progress datalink-callout-from" id="datalink_{{indicator.code|cut:'G'|cut:'DP'}}"
 						>{{indicator.overall_progress}}</td>
 						
 					{% if agency and forloop.first %}

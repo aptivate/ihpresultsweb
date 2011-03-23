@@ -201,3 +201,6 @@ def agency_country_spms_table(request, agency_name, country_name):
     return render_to_response('agency_country_spms_table.html',
         RequestContext(request, dict(agency=agency,
             country=country, values=values)))
+
+def unicode_test(request):
+    return HttpResponse(submissions.models.GovScorecardComments.objects.get(id=9).er1)

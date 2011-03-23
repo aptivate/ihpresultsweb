@@ -44,7 +44,6 @@ form { margin: 0; }
 	margin:0 auto;
 	position:relative;
 	display:block;
-	position:relative;
 }
 
 #access {
@@ -110,6 +109,11 @@ form { margin: 0; }
 	text-indent:-9999px;
 	font-size:2.5em;
 	padding:0;
+}
+
+body.home #header #blogname a {
+	background-image:url(images/ihp-results-logo-200.png);
+	height: 60px;
 }
 
 #blogname p, h1 .blogname {
@@ -208,6 +212,7 @@ div.menu ul {
 div.menu li {
 	float: left;
 	position: relative;
+	z-index: 10;
 }
 #access a {
 	color:#333;
@@ -1092,8 +1097,8 @@ ul.ticklist li {
 
 #footer .copyright {
 	float:left;
-	width:60%;
 	color:#999;
+	margin-bottom: 1em;
 }
 
 #footer .menu-footer-menu-container {clear:both;}

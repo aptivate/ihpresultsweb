@@ -21,4 +21,5 @@ urlpatterns = patterns('ihp.publicweb.views',
         url(r'^table/agency/(?P<agency_name>[-\w ]+)/country/(?P<country_name>[-\w ]+)$',
             agency_country_spms_table,
             name='agency-country-spms-table'),
+        url(r'^unicode-test$', unicode_test),
     )

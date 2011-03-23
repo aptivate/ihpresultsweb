@@ -1,24 +1,27 @@
 <script type="text/javascript">
 jQuery(document).ready(function()
 {
-	{% for category in categories %}
-		{% for indicator in category.indicators %}
-			{% if agency or indicator.code in country_spms_numeric %}
+	{% if agency %}
+		{# agency scorecards show a different data table for every indicator #}
+		{% for category in categories %}
+			{% for indicator in category.indicators %}
 	create_tooltip(jQuery('#datalink_{{indicator.code|cut:'G'|cut:'DP'}}'),
 	{
-		{% if agency %}
 		content: ajax_loading_html,
 		onBeforeShow: function()
 		{
 			var url = '{% url agency-spm-countries-table agency_name=agency.agency indicator_name=indicator.code %}';
 			this.load(url);
 		}
-		{% else %}
-		content: jQuery('#country_spms_content').html()
-		{% endif %}
 	});
-			{% endif %}
+			{% endfor %}
 		{% endfor %}
-	{% endfor %}
+	{% else %}
+		{# country scorecards show the same data table for every indicator #}
+	create_tooltip(jQuery('.datalink-callout-from'),
+	{
+		content: jQuery('#country_spms_content').html()
+	});
+	{% endif %}
 });
 </script>
