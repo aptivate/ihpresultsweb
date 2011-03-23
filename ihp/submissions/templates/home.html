@@ -33,8 +33,8 @@
                             <div class="acblock">
                             <h3>{{ agency.agency }}</h3>
                             <ul>
-                                <li><a href="{% url agencygraphs agency.agency %}">Ratio Graph</a></li> 
-                                <li><a href="{% url agencygraphs_absolute agency.agency %}">Absolute Graph</a></li>
+                                <li><a href="{% url agencygraphs agency.agency "English" %}">Graphs (English)</a></li> 
+                                <li><a href="{% url agencygraphs agency.agency "French" %}">Graphs (French)</a></li> 
                                 <li><a href="{% url agency_table_by_agency agency.id %}">Table</a></li>
                             </ul>
                             </div>
@@ -48,8 +48,8 @@
                             <div class="acblock">
                             <h3>{{ country.country }}</h3>
                             <ul>
-                                <li><a href="{% url countrygraphs country.country %}">Ratio Graph</a></li>
-                                <li><a href="{% url countrygraphs_absolute country.country %}">Absolute Graph</a></li>
+                                <li><a href="{% url countrygraphs country.country "English" %}">Graphs (English)</a></li>
+                                <li><a href="{% url countrygraphs country.country "French" %}">Graphs (French)</a></li>
                                 <li><a href="{% url agency_table_by_country country.id %}">Table</a></li>
                             </ul>
                             </div>

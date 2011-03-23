@@ -5,6 +5,8 @@ from indicators import calc_agency_country_indicators, NA_STR, calc_overall_agen
 from highcharts import Chart, ChartObject
 import country_scorecard
 import agency_scorecard
+import translations
+import models
 
 def safe_diff(a, b):
     if a in [None, NA_STR] or b in [None, NA_STR]:
@@ -44,7 +46,7 @@ target_values = {
 }
 
 class IHPChart(Chart):
-    def __init__(self, target_element, source):
+    def __init__(self, target_element, source, **kwargs):
         super(IHPChart, self).__init__(target_element)
         self._source = source
         self.colors = [
@@ -62,6 +64,9 @@ class IHPChart(Chart):
             '#A47D7C', 
             '#B5CA92'
         ]
+    
+        for key in kwargs:
+            setattr(self, key, kwargs[key])
 
     def __str__(self):
         chart = self.__dict__.setdefault("chart", ChartObject())
@@ -84,8 +89,8 @@ $(document).ready(function() {
 """ % locals()
 
 class DPChart(IHPChart):
-    def __init__(self, target_element):
-        super(DPChart, self).__init__(target_element, "Source: DP data returns")
+    def __init__(self, target_element, **kwargs):
+        super(DPChart, self).__init__(target_element, "Source: DP data returns", **kwargs)
 
 class CountryChart(IHPChart):
     def __init__(self, target_element):
@@ -135,6 +140,117 @@ class StackedAgencyBarGraph(DPChart):
         }]
 
         self.plotOptions = {"column" : {"stacking" : "percent"}}
+
+class CountryBarGraph(CountryChart):
+    def __init__(self, countries, chart_name, title, baseline_data, latest_data):
+        country_names = map(lambda x: x.country, countries)
+
+        super(CountryBarGraph, self).__init__(chart_name)
+        self.chart = {
+            "marginTop" : 50,
+            "defaultSeriesType": "column",
+        }
+        self.title = {"text" : title}
+        country_names = [country.country for country in countries]
+        self.xAxis = {
+            "categories" : country_names,
+            "labels" : {
+                "rotation" : -90,
+                "y" : 40,
+            }
+        } 
+        self.yAxis = {"title" : {"text" : "%"}} 
+        self.series = [{
+            "name" : "Baseline",
+            "data" : baseline_data
+        }, {
+            "name" : "2009",
+            "data" : latest_data 
+        }]
+
+class AgencyCountryBarGraph(DPChart):
+    def __init__(self, countries, chart_name, title, baseline_data, latest_data, **kwargs):
+        super(AgencyCountryBarGraph, self).__init__(chart_name, **kwargs)
+
+        country_names = map(lambda x: x.country, countries)
+        self.chart = {
+            "marginTop" : 50,
+            "defaultSeriesType": "column",
+        }
+        self.title = {"text" : title}
+        country_names = [country.country for country in countries]
+        self.xAxis = {
+            "categories" : country_names,
+            "labels" : {
+                "rotation" : -90,
+                "y" : 40,
+            }
+        } 
+
+        self.series = [{
+            "name" : "Baseline",
+            "data" : baseline_data 
+        }, {
+            "name" : "2009",
+            "data" : latest_data 
+        }]
+
+class AgencyCountryLatestBarGraph(AgencyCountryBarGraph):
+    def __init__(self, countries, chart_name, title, latest_data, **kwargs):
+        super(AgencyCountryLatestBarGraph, self).__init__(countries, chart_name, title, [], latest_data, **kwargs)
+
+        self.series = [{
+            "name" : "2009",
+            "data" : latest_data 
+        }]
+
+class CountryAgencyBarGraph(DPChart):
+    def __init__(self, agencies, chart_name, title, baseline_data, latest_data, **kwargs):
+        super(CountryAgencyBarGraph, self).__init__(chart_name, **kwargs)
+
+        agency_names = map(lambda x: x.agency, agencies)
+        self.chart = {
+            "marginTop" : 50,
+            "defaultSeriesType": "column",
+        }
+        self.title = {"text" : title}
+        self.xAxis = {
+            "categories" : agency_names,
+            "labels" : {
+                "rotation" : -90,
+                "y" : 40,
+            }
+        } 
+
+        self.series = [{
+            "name" : "Baseline",
+            "data" : baseline_data 
+        }, {
+            "name" : "2009",
+            "data" : latest_data 
+        }]
+
+class CountryAgencyLatestBarGraph(CountryAgencyBarGraph):
+    def __init__(self, agencies, chart_name, title, latest_data, **kwargs):
+        super(CountryAgencyLatestBarGraph, self).__init__(agencies, chart_name, title, [], latest_data, **kwargs)
+
+        self.series = [{
+            "name" : "2009",
+            "data" : latest_data 
+        }]
+
+class TargetCountryBarGraph(CountryBarGraph):
+    def __init__(self, countries, chart_name, title, baseline_data, latest_data, target_name, target):
+        super(TargetCountryBarGraph, self).__init__(countries, chart_name, title, baseline_data, latest_data)
+        self.series.append({
+            "name" : target_name,
+            "data" : [target] * len(latest_data),
+            "type" : "line",
+            "color" : "#F68B1F",
+            "marker" : {
+                "enabled" : "false"
+            },
+        })
 
         
 
@@ -358,16 +474,12 @@ def highlevelgraphs(request, template_name="submissions/highlevelgraphs.html", e
     extra_context = additional_graphs(extra_context)
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
-def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.html", extra_context=None, titles=None, yaxes=None, xaxis=None):
+def agencygraphs(request, agency_name, language=None, template_name="submissions/agencygraphs.html", extra_context=None):
     extra_context = extra_context or {}
 
-    titles = dict(titles)
-    yaxes = dict(yaxes)
     agency = Agency.objects.get(agency__iexact=agency_name)
-    for indicator in titles:
-        titles[indicator] = titles[indicator] % locals()
-    for indicator in yaxes:
-        yaxes[indicator] = yaxes[indicator] % locals()
+    language = models.Language.objects.get(language=language or "English")
+    translation = translations.get_translation(language)
     
     data = {}
     abs_values = {}
@@ -382,26 +494,78 @@ def agencygraphs(request, agency_name, template_name="submissions/agencygraphs.h
         data[country.country] = country_data
         abs_values[country.country] = country_abs_values
 
-    extra_context["countries"] = agency.countries    
-    extra_context["agency"] = agency.agency    
-    extra_context["data"] = sorted(data.items())
-    extra_context["abs_values"] = sorted(abs_values.items())
-    extra_context["titles"] = titles
-    extra_context["yaxes"] = yaxes
-    extra_context["xaxis"] = xaxis
+    abs_baseline_data = lambda ind : [abs_values[country.country][ind][0] for country in agency.countries]
+    abs_latest_data = lambda ind : [abs_values[country.country][ind][1] for country in agency.countries]
+
+    extra_context["graph_2DPa"] = AgencyCountryLatestBarGraph(
+        agency.countries, "graph_2DPa", 
+        translation.agency_graphs["2DPa"]["title"] % agency.agency,
+        [data[country.country]["2DPa"] for country in agency.countries],
+        yAxis={"title" : {"text" : translation.agency_graphs["2DPa"]["yAxis"], "margin" : 40}},
+    )
+
+    extra_context["graph_2DPb"] = AgencyCountryBarGraph(
+        agency.countries, "graph_2DPb",
+        translation.agency_graphs["2DPb"]["title"],
+        abs_baseline_data("2DPb"),
+        abs_latest_data("2DPb"),
+        yAxis={"title" : {"text" : translation.agency_graphs["2DPb"]["yAxis"]}},
+    )
+
+    extra_context["graph_2DPc"] = AgencyCountryBarGraph(
+        agency.countries, "graph_2DPc",
+        translation.agency_graphs["2DPc"]["title"],
+        abs_baseline_data("2DPc"),
+        abs_latest_data("2DPc"),
+        yAxis={"title" : {"text" : translation.agency_graphs["2DPc"]["yAxis"]}},
+    )
+
+    extra_context["graph_3DP"] = AgencyCountryBarGraph(
+        agency.countries, "graph_3DP",
+        translation.agency_graphs["3DP"]["title"],
+        abs_baseline_data("3DP"),
+        abs_latest_data("3DP"),
+        yAxis={"title" : {"text" : translation.agency_graphs["3DP"]["yAxis"], "margin" : 40}},
+    )
+
+    extra_context["graph_4DP"] = AgencyCountryBarGraph(
+        agency.countries, "graph_4DP",
+        translation.agency_graphs["4DP"]["title"] % agency.agency,
+        abs_baseline_data("4DP"),
+        abs_latest_data("4DP"),
+        yAxis={"title" : {"text" : translation.agency_graphs["4DP"]["yAxis"], "margin" : 40}},
+    )
+
+    extra_context["graph_5DPa"] = AgencyCountryLatestBarGraph(
+        agency.countries, "graph_5DPa",
+        translation.agency_graphs["5DPa"]["title"],
+        [data[country.country]["5DPa"] for country in agency.countries],
+        yAxis={"title" : {"text" : translation.agency_graphs["5DPa"]["yAxis"], "margin" : 40}},
+    )
+
+    extra_context["graph_5DPb"] = AgencyCountryLatestBarGraph(
+        agency.countries, "graph_5DPb",
+        translation.agency_graphs["5DPb"]["title"] % agency.agency,
+        [data[country.country]["5DPb"] for country in agency.countries],
+        yAxis={"title" : {"text" : translation.agency_graphs["5DPb"]["yAxis"], "margin" : 40}},
+    )
+
+    extra_context["graph_5DPc"] = AgencyCountryLatestBarGraph(
+        agency.countries, "graph_5DPc",
+        translation.agency_graphs["5DPc"]["title"] % agency.agency,
+        [data[country.country]["5DPc"] for country in agency.countries],
+        yAxis={"title" : {"text" : translation.agency_graphs["5DPc"]["yAxis"], "margin" : 40}},
+    )
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
     
-def countrygraphs(request, country_name, template_name="submissions/countrygraphs.html", extra_context=None, titles=[], yaxes=[], xaxis=""):
+def countrygraphs(request, country_name, language=None, template_name="submissions/countrygraphs.html", extra_context=None):
     extra_context = extra_context or {}
 
-    titles = dict(titles)
-    yaxes = dict(yaxes)
+    language = models.Language.objects.get(language=language or "English")
+    translation = translations.get_translation(language)
+
     country = Country.objects.get(country__iexact=country_name)
-    for indicator in titles:
-        titles[indicator] = titles[indicator] % locals()
-    for indicator in yaxes:
-        yaxes[indicator] = yaxes[indicator] % locals()
     
     data = {}
     abs_values = {}
@@ -416,55 +580,70 @@ def countrygraphs(request, country_name, template_name="submissions/countrygraph
         data[agency.agency] = agency_data
         abs_values[agency.agency] = agency_abs_values
 
-    extra_context["agencies"] = country.agencies    
-    extra_context["country"] = country.country    
-    extra_context["data"] = sorted(data.items())
-    extra_context["abs_values"] = sorted(abs_values.items())
-    extra_context["titles"] = titles
-    extra_context["yaxes"] = yaxes
-    extra_context["xaxis"] = xaxis
+    abs_baseline_data = lambda ind : [abs_values[agency.agency][ind][0] for agency in country.agencies]
+    abs_latest_data = lambda ind : [abs_values[agency.agency][ind][1] for agency in country.agencies]
+
+    extra_context["graph_2DPa"] = CountryAgencyLatestBarGraph(
+        country.agencies, "graph_2DPa", 
+        translation.country_graphs["2DPa"]["title"] % country.country,
+        [data[agency.agency]["2DPa"] for agency in country.agencies],
+        yAxis={"title" : {"text" : translation.country_graphs["2DPa"]["yAxis"], "margin" : 40}},
+    )
+
+    extra_context["graph_2DPb"] = CountryAgencyBarGraph(
+        country.agencies, "graph_2DPb",
+        translation.country_graphs["2DPb"]["title"],
+        abs_baseline_data("2DPb"),
+        abs_latest_data("2DPb"),
+        yAxis={"title" : {"text" : translation.country_graphs["2DPb"]["yAxis"]}},
+    )
+
+    extra_context["graph_2DPc"] = CountryAgencyBarGraph(
+        country.agencies, "graph_2DPc",
+        translation.country_graphs["2DPc"]["title"],
+        abs_baseline_data("2DPc"),
+        abs_latest_data("2DPc"),
+        yAxis={"title" : {"text" : translation.country_graphs["2DPc"]["yAxis"]}},
+    )
+
+    extra_context["graph_3DP"] = CountryAgencyBarGraph(
+        country.agencies, "graph_3DP",
+        translation.country_graphs["3DP"]["title"],
+        abs_baseline_data("3DP"),
+        abs_latest_data("3DP"),
+        yAxis={"title" : {"text" : translation.country_graphs["3DP"]["yAxis"], "margin" : 40}},
+    )
+
+    extra_context["graph_4DP"] = CountryAgencyBarGraph(
+        country.agencies, "graph_4DP",
+        translation.country_graphs["4DP"]["title"] % agency.agency,
+        abs_baseline_data("4DP"),
+        abs_latest_data("4DP"),
+        yAxis={"title" : {"text" : translation.country_graphs["4DP"]["yAxis"], "margin" : 40}},
+    )
+
+    extra_context["graph_5DPa"] = CountryAgencyLatestBarGraph(
+        country.agencies, "graph_5DPa",
+        translation.country_graphs["5DPa"]["title"],
+        [data[agency.agency]["5DPa"] for agency in country.agencies],
+        yAxis={"title" : {"text" : translation.country_graphs["5DPa"]["yAxis"], "margin" : 40}},
+    )
+
+    extra_context["graph_5DPb"] = CountryAgencyLatestBarGraph(
+        country.agencies, "graph_5DPb",
+        translation.country_graphs["5DPb"]["title"] % agency.agency,
+        [data[agency.agency]["5DPb"] for agency in country.agencies],
+        yAxis={"title" : {"text" : translation.country_graphs["5DPb"]["yAxis"], "margin" : 40}},
+    )
+
+    extra_context["graph_5DPc"] = CountryAgencyLatestBarGraph(
+        country.agencies, "graph_5DPc",
+        translation.country_graphs["5DPc"]["title"] % agency.agency,
+        [data[agency.agency]["5DPc"] for agency in country.agencies],
+        yAxis={"title" : {"text" : translation.country_graphs["5DPc"]["yAxis"], "margin" : 40}},
+    )
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
-
-class CountryBarGraph(CountryChart):
-    def __init__(self, countries, chart_name, title, baseline_data, latest_data):
-        country_names = map(lambda x: x.country, countries)
-
-        super(CountryBarGraph, self).__init__(chart_name)
-        self.chart = {
-            "marginTop" : 50,
-            "defaultSeriesType": "column",
-        }
-        self.title = {"text" : title}
-        country_names = [country.country for country in countries]
-        self.xAxis = {
-            "categories" : country_names,
-            "labels" : {
-                "rotation" : -90,
-                "y" : 40,
-            }
-        } 
-        self.yAxis = {"title" : {"text" : "%"}} 
-        self.series = [{
-            "name" : "Baseline",
-            "data" : baseline_data
-        }, {
-            "name" : "2009",
-            "data" : latest_data 
-        }]
-
-class TargetCountryBarGraph(CountryBarGraph):
-    def __init__(self, countries, chart_name, title, baseline_data, latest_data, target_name, target):
-        super(TargetCountryBarGraph, self).__init__(countries, chart_name, title, baseline_data, latest_data)
-        self.series.append({
-            "name" : target_name,
-            "data" : [target] * len(latest_data),
-            "type" : "line",
-            "color" : "#F68B1F",
-            "marker" : {
-                "enabled" : "false"
-            },
-        })
 
     
 def government_graphs(request, template_name="submission/country_graphs_by_indicator.html", extra_context=None):

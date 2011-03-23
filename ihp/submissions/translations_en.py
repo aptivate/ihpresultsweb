@@ -73,3 +73,40 @@ agency_commentary_text = {
 direction_decrease = "a decrease" 
 direction_increase = "an increase" 
 direction_nochange = "no change" 
+
+agency_graphs = {
+    "2DPa" : {
+        "title" : "Increase in %s\\'s aid flows to the health sector <br>not reported on goverment\\'s budget (2DPa)",
+        "yAxis" : "% increase in funds not reported <br>on government\\'s budget",
+    },
+    "2DPb" : {
+        "title" : "% of technical assistance disbursed through programmes (WB, Target: 50%)",
+        "yAxis" : "% of programme-based technical assistance",
+    },
+    "2DPc" : {
+        "title" : "% of aid flows provided in the context of programme base approaches (Target: 66%)",
+        "yAxis" : "% of aid flows",
+    },
+    "3DP" : {
+        "title" : "% of health sector funding provided through multi-year commitments",
+        "yAxis" : "% of health sector funding provided <br>through multi-year commitments",
+    },
+    "4DP" : {
+        "title" : "Increase in %s\\'s health sector aid not disbursed within the year <br>for which it was scheduled (4DP)",
+        "yAxis" : "% increase in health sector aid not disbursed <br>within the year for which it was scheduled",
+    },
+    "5DPa" : {
+        "title" : "% change in health sector aid to the public sector not using <br/>partner countries\\' procurement systems",
+        "yAxis" : "% change in health sector aid to the public sector <br>not using partner countries\\' procurement systems",
+    },
+    "5DPb" : {
+        "title" : "Increase in %s\\'s health sector aid to the public sector not using <br/>partner countries\\' PFM systems (5DPb)",
+        "yAxis" : "% increase of health sector aid to the public sector<br> not using partner countries\\' PFM systems",
+    },
+    "5DPc" : {
+        "title" : "Reduction in %s\\'s stock of parallel project implementation <br>(PIUs) units (5DPc)",
+        "yAxis" : "Reduction in the stock of parallel <br>project implementation (PIUs) units",
+    },
+}
+
+country_graphs = agency_graphs

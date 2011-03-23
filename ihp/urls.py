@@ -9,34 +9,6 @@ from submissions.models import Agency, Country
 
 admin.autodiscover()
 
-
-agency_ratio_titles = {
-    "2DPa" : "Increase in %(agency_name)s's aid flows to the health sector not reported on goverment's budget (2DPa)",
-    "2DPb" : "%% of technical assistance disbursed through programmes (WB, Target: 50%%)",
-    "2DPc" : "%% of aid flows provided in the context of programme base approaches (Target: 66%%)",
-    "3DP"  : "%% of health sector funding provided through multi-year commitments",
-    "4DP"  : "Increase in %(agency_name)s's health sector aid not disbursed within the year for which it was scheduled (4DP)",
-    "5DPa" : "%% change in health sector aid to the public sector not using partner countries' procurement systems",
-    "5DPb" : "Increase in %(agency_name)s's health sector aid to the public sector not using partner countries' PFM systems (5DPb)",
-    "5DPc" : "Reduction in %(agency_name)s's stock of parallel project implementation (PIUs) units (5DPc)",
-}
-
-agency_abs_titles = dict(agency_ratio_titles)
-agency_abs_titles["5DPa"] = "%% of health sector aid to the public sector not using partner countries' procurement systems"
-
-agency_yaxis = {
-    "2DPa" : "%% increase in funds not reported on government's budget",
-    "2DPb" : "%% of programme-based technical assistance",
-    "2DPc" : "%% of aid flows",
-    "3DP"  : "%% of health sector funding provided through multi-year commitments",
-    "4DP"  : "%% increase in health sector aid not disbursed within the year for which it was scheduled",
-    "5DPa" : "%% change in health sector aid to the public sector not using partner countries' procurement systems",
-    "5DPb" : "%% increase of health sector aid to the public sector not using partner countries' PFM systems",
-    "5DPc" : "%% reduction in stock of parallel project implementation (PIUs) units",
-}
-
-agency_xaxis = "IHP+ Country"
-
 country_ratio_titles = {
     "2DPa" : "Increase in %(country_name)s's aid flows to the health sector not reported on goverment's budget (2DPa)",
     "2DPb" : "%% of technical assistance disbursed through programmes (WB, Target: 50%%)",
@@ -48,10 +20,6 @@ country_ratio_titles = {
     "5DPc" : "Reduction in %(country_name)s's stock of parallel project implementation (PIUs) units (5DPc)",
 }
 
-country_abs_titles = dict(country_ratio_titles)
-country_abs_titles["5DPa"] = "%% of health sector aid to the public sector not using partner countries' procurement systems"
-country_yaxis = agency_yaxis
-country_xaxis = "IHP+ Agency"
 
 urlpatterns = patterns('',
 
@@ -81,31 +49,8 @@ urlpatterns = patterns('',
     (r"^agencies/graphs/highlevel/$", "submissions.graphs.highlevelgraphs", {}, "highlevelgraphs"),
     (r"^agencies/graphs/projection/$", "submissions.graphs.projectiongraphs", {}, "projectiongraphs"),
 
-    (r"^agencies/(?P<agency_name>[a-zA-Z\s]+)/graphs/$", "submissions.graphs.agencygraphs", {
-        "titles" : agency_ratio_titles,
-        "yaxes" : agency_yaxis,
-        "xaxis" : agency_xaxis,
-    }, "agencygraphs"),
-
-    (r"^agencies/(?P<agency_name>[a-zA-Z\s]+)/graphs/absolute$", "submissions.graphs.agencygraphs", {
-        "template_name" : "submissions/agencygraphs_absolute.html",
-        "titles" : agency_abs_titles,
-        "yaxes" : agency_yaxis,
-        "xaxis" : agency_xaxis,
-    }, "agencygraphs_absolute"),
-
-    (r"^agencies/graphs/by_country/(?P<country_name>[a-zA-Z\s]+)/ratio_graph/$", "submissions.graphs.countrygraphs", {
-        "titles" : country_ratio_titles,
-        "yaxes" : country_yaxis,
-        "xaxis" : country_xaxis,
-    }, "countrygraphs"),
-
-    (r"^agencies/graphs/by_country/(?P<country_name>[a-zA-Z\s]+)/absolute_graph/$", "submissions.graphs.countrygraphs", {
-        "template_name" : "submissions/countrygraphs_absolute.html",
-        "titles" : country_ratio_titles,
-        "yaxes" : country_yaxis,
-        "xaxis" : country_xaxis,
-    }, "countrygraphs_absolute"),
+    (r"^agencies/(?P<agency_name>[a-zA-Z\s]+)/graphs/(?P<language>.+)/$", "submissions.graphs.agencygraphs", {}, "agencygraphs"),
+    (r"^agencies/graphs/by_country/(?P<country_name>[a-zA-Z\s]+)/graphs/(?P<language>.+)/$", "submissions.graphs.countrygraphs", {}, "countrygraphs"),
 
     (r"^countries/graphs/$", "submissions.graphs.government_graphs", {
         "template_name" : "submissions/main_base.html",
