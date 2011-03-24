@@ -11,6 +11,7 @@ def ffloat(x):
 
 class ChartObject(object):
     def __init__(self, tabs=0):
+        super(ChartObject, self).__init__()
         self._tabs = tabs 
 
     @property

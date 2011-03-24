@@ -48,6 +48,7 @@ urlpatterns = patterns('',
     # Graph Views
     (r"^agencies/graphs/highlevel/$", "submissions.graphs.highlevelgraphs", {}, "highlevelgraphs"),
     (r"^agencies/graphs/projection/$", "submissions.graphs.projectiongraphs", {}, "projectiongraphs"),
+    (r"^agencies/graphs/(?P<indicator>\w+)/(?P<language>\w+)/$", "submissions.graphs.agency_graphs_by_indicator", {}, "agency_graphs_by_indicator"),
 
     (r"^agencies/(?P<agency_name>[a-zA-Z\s]+)/graphs/(?P<language>.+)/$", "submissions.graphs.agencygraphs", {}, "agencygraphs"),
     (r"^agencies/graphs/by_country/(?P<country_name>[a-zA-Z\s]+)/graphs/(?P<language>.+)/$", "submissions.graphs.countrygraphs", {}, "countrygraphs"),

@@ -112,3 +112,71 @@ agency_graphs = {
 }
 
 country_graphs = agency_graphs
+
+highlevel_graphs = {
+    "2DPa" : {
+        "title" : "2DPa: Aggregate proportion of partner support reported on national budgets",
+        "yAxis" : "%",
+    },
+    "2DPb" : {
+        "title" : "2DPb: Aggregate proportion of partner support for capacity-development <br/>provided through coordinated programmes in line with national strategies",
+        "yAxis" : "%",
+    },
+    "2DPc" : {
+        "title" : "2DPc: Aggregate proportion of partner support <br/>provided as programme based approaches",
+        "yAxis" : "%",
+    },
+    "3DP"  : {
+        "title" : "3DP: Aggregate proportion partner support <br/>provided through multi-year commitments",
+        "yAxis" : "%",
+    },
+    "4DP"  : {
+        "title" : "% of actual health spending planned for that year (4DP) ",
+        "yAxis" : "%",
+    },
+    "5DPa" : {
+        "title" : "5DPa: Aggregate partner use of country procurement systems", 
+        "yAxis" : "%",
+    },
+    "5DPb" : {
+        "title" : "5DPb: Aggregate partner use of country public financial management systems", 
+        "yAxis" : "%",
+    },
+    "5DPc" : {
+        "title" : "5DPc: Aggregate number of parallel Project Implementation Units (PIUs)", 
+        "yAxis" : "Total number of PIUs",
+    }
+}
+
+additional_graphs = {
+    "2DPa" : {
+        "series1" : "Health aid not on budget",
+        "series2" : "Health aid reported on budget",
+        "title" : "2DPa: Proportion of partner health aid on country budget",
+    },
+    "2DPb" : {
+        "series1" : "Support coordinated and in line",
+        "series2" : "Support not coordinated and in line",
+        "title" : "2DPb: Support for capacity development that is coordinated <br/>and in line with national strategies",
+    },
+    "2DPc" : {
+        "series1" : "% of health aid as Programme Based Approach",
+        "series2" : "% of health aid not as Programme Based Approach",
+        "title" : "2DPC: Support provided as Programme Based Approach",
+    },
+    "3DP" : {
+        "series1" : "% of multi-year commitments",
+        "series2" : "% not provided through multi-year commitments",
+        "title" : "% of aid provided through multi-year commitments",
+    },
+    "5DPa" : {
+        "series1" : "Health aid using procurement systems",
+        "series2" : "Health aid not using procurement systems",
+        "title" : "5DPa: Partner use of country procurement systems",
+    },
+    "5DPb" : {
+        "series1" : "Health aid using PFM systems",
+        "series2" : "Health aid not using PFM systems",
+        "title" : "5DPb: Partner use of country public financial management systems",
+    }
+}
