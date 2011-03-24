@@ -22,6 +22,8 @@
 
 </div><!-- end entry -->
 
+<?php comments_template(); ?>
+
 <?php endwhile; else: ?>
 
 <div class="error">
