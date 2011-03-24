@@ -17,3 +17,16 @@ ol li {
 #flickr-rss-dojo-version li {
 	display: inline;
 }
+
+#header #access #results h2 {
+	font-size:1.1em;
+}
+
+#header #access #access-inner .menu-header, 
+#header #access #access-inner .menu-header .sub-menu {
+	z-index:10;
+}
+
+#featured-content {
+	overflow:hidden;
+}
