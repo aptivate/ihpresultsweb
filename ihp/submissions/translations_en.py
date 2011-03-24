@@ -104,8 +104,8 @@ agency_graphs = {
         "yAxis" : "% increase of health sector aid to the public sector<br> not using partner countries\\' PFM systems",
     },
     "5DPc" : {
-        "title" : "Reduction in %s\\'s stock of parallel project implementation <br>(PIUs) units (5DPc)",
-        "yAxis" : "Reduction in the stock of parallel <br>project implementation (PIUs) units",
+        "title" : "Number of %s\\'s parallel project implementation <br>(PIUs) units (5DPc)",
+        "yAxis" : "Number parallel <br>project implementation (PIUs) units",
     },
 }
 
