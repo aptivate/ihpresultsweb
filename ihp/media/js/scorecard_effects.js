@@ -3,7 +3,7 @@ function create_tooltip(target_object, options)
 	default_options = {
 		baseClass: 'callout-to',
 		position: 'right',
-		offset: [0, 10]
+		offset: [10, 0]
 	};
 	options = jQuery.extend(default_options, options);
 	jQuery(target_object).simpletip(options);
@@ -28,10 +28,18 @@ jQuery(document).ready(function()
 	}
 		
 	// Attach callouts to their content using Simpletip
-	jQuery('.callout-from').each(function(i, callout_from)
+	jQuery('.callout-from').add('.has-callout-below').each(function(i, callout_from)
 	{
 		// load content from the DIV with the same ID plus "_content"
-		create_tooltip(jQuery(callout_from),
-			{content: jQuery('#' + callout_from.id + "_content").html()});
+		options = {content: jQuery('#' + callout_from.id + "_content").html()};
+		callout_from_jquery = jQuery(callout_from);
+		
+		if (callout_from_jquery.hasClass('has-callout-below'))
+		{
+			options.position = 'bottom';
+			options.offset = [0, 10];
+		}
+		
+		create_tooltip(callout_from_jquery, options);
 	});
 });
