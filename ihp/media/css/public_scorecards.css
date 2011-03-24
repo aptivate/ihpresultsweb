@@ -72,6 +72,7 @@ div.scorecard-page h1
 {
 	font-size: 0.6em;
 	margin-left: 0.5em;
+	display: inline-block;
 }
 
 #content table.scorecard
@@ -80,11 +81,6 @@ div.scorecard-page h1
 	margin-bottom:20px;
 	clear:both;
 	border:none;
-}
-
-#content table.scorecard *
-{
-	vertical-align: middle;
 }
 
 #content table.scorecard tr td
@@ -255,7 +251,6 @@ div.col {
 	width:313px; /* 960-600(scorecard)-30(scorecard padding)-2(scorecard borders)-15(left padding)*/
 	padding:15px;
 	float:left;
-	position:relative;
 }
 
 /*Scorecard column styles*/
@@ -461,7 +456,7 @@ div.col {
 }
 
 .infobox h2 a {
-	color: inherit;
+	color: white;
 	text-decoration: none;
 }
 
@@ -493,7 +488,6 @@ div.col {
 
 #infobox p.spacer {
   display:block;
-  position:relative;
   height:26px;
   margin:0;
   clear:both;
@@ -549,7 +543,6 @@ div.col {
 
 .country-ownership li img {
 	float:right;
-	position:relative;
 	top:-4px;
 }
 
@@ -733,27 +726,11 @@ done
 }
 
 /* Background and z-index hacks for ie-css3.htc */
-/*
-#scorecard_header h2, table.scorecard tr.countries ul, #scorecard,
-#scorecard ul.logos, #scorecard .category, .infobox, .inner,
-.health-financing .chart-key, .health-financing .key
-{
-	background-color: white;
-}
-*/
 #scorecard, .infobox { 
-  /* z-index: 1; /* should be -40 for rounded corners, but breaks tooltips */
   clear:both;
   position:relative;
   margin:0;
 }
-/*
-.infobox.country-ownership h2,
-.infobox.country-ownership .item h3 { z-index: 10; }
-#scorecard .category, .infobox .item { z-index: -30; }
-.health-financing .chart-key { z-index: -20; }
-.health-financing .key { z-index: -10; }
-*/
 
 /* Override Wordpress themes */
 .scorecard img
@@ -813,7 +790,6 @@ done
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: 3;
 	display: none;
 	border:2px solid #F68B1F;
 	padding: 10px;
@@ -828,6 +804,7 @@ done
 	/*max-width:60%;*/ /*UNICEF scorecard, DRC callout overflows*/ 
 	text-align: left;
 	text-transform: none;
+	z-index: 10000; /* force above everything else, doesn't work for IE7 */
 }
 
 .callout-to a
@@ -835,9 +812,12 @@ done
 	color: #ccc;
 }
 
-#scorecard .callout-to td
+#scorecard td .callout-to th,
+#scorecard td .callout-to td,
+.callout-to th,
+.callout-to td
 {
-	vertical-align: inherit;
+	vertical-align: middle;
 }
 
 /* Data tables */
@@ -855,6 +835,7 @@ table.data th {
 	border-bottom: 1px solid #ddd;
 }
 
+#scorecard tr.last td table.data td, 
 table.data td {
 	border: 1px solid #eee;
 	border-style: solid none;
@@ -864,3 +845,4 @@ table.data td {
 #ajax_loading {
 	display: none;
 }
+

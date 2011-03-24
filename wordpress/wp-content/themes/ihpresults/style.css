@@ -32,7 +32,6 @@ form { margin: 0; }
 #header, #access, #wrapper, #footer {
 	clear:both;
 	width:100%;
-	position:relative;
 	display:block;
 	float:left;
 	padding:0;
@@ -42,8 +41,11 @@ form { margin: 0; }
 #branding, #access-inner, #wrapper-inner, #footer-inner {
 	width:960px;
 	margin:0 auto;
-	position:relative;
 	display:block;
+}
+
+#branding {
+	position:relative;
 }
 
 #access {
@@ -131,7 +133,7 @@ body.home #header #blogname a {
 	background-repeat:no-repeat;
 	background-position:top right;
 	width:391px;
-	height:170px;
+	height:164px;
 	position:absolute;
 	right:0;
 	top:-10px;
@@ -189,7 +191,6 @@ body.home #header #blogname a {
 	color:#fff;
 }
 
-
 #access .menu-header,
 div.menu {
 	font-size: 13px;
@@ -202,12 +203,16 @@ div.menu ul {
 	margin: 0px;
 }
 
-
 #access .menu-header li,
 div.menu li {
 	float: left;
 	position: relative;
 }
+
+.sub-menu {
+	z-index: 99999;
+}
+
 #access a {
 	color:#333;
 	display:block;
@@ -282,21 +287,22 @@ div.menu li {
   background:none repeat scroll 0 0 #EF9200;
   clear:both;
   display:block;
-  padding: 6px;
-  position:relative;
+  padding: 6px 6px 0;
   left:-10px;
   width:650px;
   height:35px;
 }
 
 #access .results-inner {
-    -moz-border-radius: 15px 15px 15px 15px;
-    background-color: #0E3D3D;
-    color: #FFFFFF;
-    display: block;
-    height: 24px;
-    margin: 0 auto;
-    padding: 5px 10px;
+	-moz-border-radius:15px;
+	-webkit-border-radius:15px;
+	border-radius:15px;
+	background-color:#0E3D3D;
+	display:block;
+	height: 24px;
+	margin: 0 auto;
+	padding:5px 10px;
+	color:#fff;
 }
 
 #access #results h2 {
@@ -309,9 +315,9 @@ div.menu li {
 }
 
 #access #results .menu-header ul ul {
-  -moz-box-shadow:3px 3px 4px #333333;
-  -webkit-box-shadow:3px 3px 4px #333333;
-  box-shadow:3px 3px 4px #333333;
+  -moz-box-shadow:3px 3px 4px #333;
+  -webkit-box-shadow:3px 3px 4px #333;
+  box-shadow:3px 3px 4px #333;
   padding-bottom:10px;
   padding-top:10px;
   top:16px;
@@ -340,9 +346,9 @@ div.menu li {
 }
 
 #access #results ul ul {
-	-moz-border-radius:0 8px 8px 8px; 
-	-webkit-border-radius:0 8px 8px 8px;
-	border-radius:0 8px 8px 8px;
+	-moz-border-radius:0 8px 8px; 
+	-webkit-border-radius:0 8px 8px;
+	border-radius:0 8px 8px;
 	background-color:#fff;
 }
 
@@ -367,9 +373,9 @@ color:#333;
 }
 
 #access #results input#s {
-  -moz-box-shadow:3px 3px 8px #363636 inset;
-  -webkit-box-shadow:3px 3px 8px #363636 inset;
-  box-shadow:3px 3px 8px #363636 inset;
+  -moz-box-shadow:3px 3px 4px #333 inset;
+  -webkit-box-shadow:3px 3px 4px #333 inset;
+  box-shadow:3px 3px 4px #333 inset;
   border:medium none;
   height:20px;
   margin:0 5px;
@@ -414,7 +420,6 @@ a:hover, a:active {
 	text-decoration:underline;
 	color:#333;
 }
-
 a.strong-link {
 	font-weight:bold;
 	background-color:#DFE6E6;
@@ -772,10 +777,10 @@ ul.ticklist li,
 }
 
 .home .featured-content img.image-1 {
-    display: block;
-    left: 0;
-    position: absolute;
-    top: -15px;
+	display: block;
+	left:0;
+	position: absolute;
+	top:-15px;
 	z-index:15!important;
 }
 
@@ -799,8 +804,6 @@ ul.ticklist li,
     font-weight: normal;
     margin-bottom: 0.5em;
 }
-
-
 
 .home #sidebar {
 	width:540px;
@@ -1008,7 +1011,6 @@ ul.ticklist li,
 	margin: .25em 0;
 }
 
-
 /* twitter */
 .twitter {
 	margin: 0;
@@ -1029,7 +1031,6 @@ ul.ticklist li,
 .widget_twitter .designed {
 	display:none;
 }
-
 
 #sidebar form input.submit {
     -moz-border-radius: 10px 10px 10px 10px;
@@ -1052,9 +1053,8 @@ ul.ticklist li,
 }
 
 #sidebar .widget ul li a {
-    color: #0E3D3D;
+	color: #0E3D3D;
 }
-
 
 #sidebar .widget_recent_entries li {
 	padding-bottom:10px;
@@ -1075,6 +1075,7 @@ ul.ticklist li,
 #sidebar form.alo_easymail_widget_form td input.input-radio {
 	width:20px;
 }
+
 /* Footer -------------------------------------------------- */
 #footer {
 	border-top:1px solid #eee;

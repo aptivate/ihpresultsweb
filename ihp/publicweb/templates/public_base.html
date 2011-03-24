@@ -13,15 +13,35 @@
 		<style>
 			#scorecard_header h2, table.scorecard tr.countries ul, #scorecard,
 			#scorecard h2, #scorecard h3, #scorecard ul, #scorecard .category,
-			#scorecard td.expected_result, .infobox, .infobox .item,
-			.infobox .item h3, .inner, .infobox h2,	.health-financing .chart-key,
-			.health-financing .key
+			#scorecard td.expected_result, .infobox
 			{
 				behavior:url({% url ihp-media path='js/ie-css3.htc' %});
 			}
-			.infobox .item h3 { z-index:1; } 
-		</style>	
+			/* .infobox .item h3 { z-index:1; } */
+			/* .infobox .item { z-index:-1; } */ 
+		</style>
+		<!-- ie3-css doesn't work well enough on IE7 for the headings to
+		be readable, so don't round them -->
+		<!--[if IE 8]>
+			<style>
+				.infobox .item,
+				.infobox .item h3,
+				.inner,
+				.infobox h2,
+				.health-financing .chart-key,
+				.health-financing .key
+				{
+					behavior:url({% url ihp-media path='js/ie-css3.htc' %});
+				}
+			</style>
+		<![endif]-->
+		
 		{% block head %}{% endblock %}
+		
+		<!--[if IE 7]>
+			<link rel="stylesheet" href="{% url ihp-media path='css/public_scorecards_ie7bugs.css' %}"
+				type="text/css" media="screen" />
+		<![endif]-->
 	<!-- endhead -->
 </head>
 <body>
