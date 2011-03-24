@@ -169,13 +169,64 @@
          
          boundryCheck: function(posX, posY)
          {
-            var newX = posX + tooltip.outerWidth();
-            var newY = posY + tooltip.outerHeight();
+            var tooltipPos = {};
+            tooltipPos.l = posX;
+            tooltipPos.t = posY;
+            tooltipPos.r = tooltipPos.l + tooltip.outerWidth();
+            tooltipPos.b = tooltipPos.t + tooltip.outerHeight();
             
-            var windowWidth = jQuery(window).width() + jQuery(window).scrollLeft();
-            var windowHeight = jQuery(window).height() + jQuery(window).scrollTop();
+            var jwin = jQuery(window);
+            var visible = {};
+            visible.l = jwin.scrollLeft();
+            visible.t = jwin.scrollTop();
+            visible.r = visible.l + jwin.width();
+            visible.b = visible.t + jwin.height();
             
-            return [(newX >= windowWidth), (newY >= windowHeight)];
+            // default to no adjustment
+            var adjustment = [0, 0];
+			
+			/*
+            alert("visible = " + visible.l + "," + visible.t + ":" +
+               visible.r + "," + visible.b + ";\n" +
+               "tooltip pos = " + tooltipPos.l + "," + tooltipPos.t + ":" +
+               tooltipPos.r + "," + tooltipPos.b + ";\n" +
+               "adjustment = " + adjustment[0] + "," + adjustment[1]);
+            */
+            
+            // does tooltip extend past the bottom right of the visible area?
+            if (visible.r < tooltipPos.r) adjustment[0] = visible.r - tooltipPos.r;
+            if (visible.b < tooltipPos.b) adjustment[1] = visible.b - tooltipPos.b;
+
+			/*
+            alert("shift up:\n" +
+               "visible = " + visible.l + "," + visible.t + ":" +
+               visible.r + "," + visible.b + ";\n" +
+               "tooltip = " + tooltipPos.l + "," + tooltipPos.t + ":" +
+               tooltipPos.r + "," + tooltipPos.b + ";\n" +
+               "adjustment = " + adjustment[0] + "," + adjustment[1]);
+            */
+            
+            // apply adjustment to see if it takes the tooltip off top/left of screen
+            // we could ignore tooltipPos.r and tooltipPos.b because we don't need them any more
+            tooltipPos.l = tooltipPos.l + adjustment[0];
+            tooltipPos.t = tooltipPos.t + adjustment[1];
+            tooltipPos.r = tooltipPos.r + adjustment[0];
+            tooltipPos.b = tooltipPos.b + adjustment[1];
+            
+            // does tooltip (now) start above the top left of the visible area?
+            if (visible.l > tooltipPos.l) adjustment[0] = adjustment[0] + visible.l - tooltipPos.l;
+            if (visible.t > tooltipPos.t) adjustment[1] = adjustment[1] + visible.t - tooltipPos.t;
+            
+            /*
+            alert("shift down:\n" +
+               "visible = " + visible.l + "," + visible.t + ":" +
+               visible.r + "," + visible.b + ";\n" +
+               "tooltip = " + tooltipPos.l + "," + tooltipPos.t + ":" +
+               tooltipPos.r + "," + tooltipPos.b + ";\n" +
+               "adjustment = " + adjustment[0] + "," + adjustment[1]);
+            */
+            
+            return adjustment;
          },
          
          updatePos: function(event)
@@ -245,10 +296,28 @@
                
                if(conf.boundryCheck)
                {
-                  var overflow = self.boundryCheck(posX, posY);
-                                    
-                  if(overflow[0]) posX = posX - (tooltipWidth / 2) - (2 * conf.offset[0]);
-                  if(overflow[1]) posY = posY - (tooltipHeight / 2) - (2 * conf.offset[1]);
+                  // boundryCheck needs the screen position, not the offset(),
+                  // to see whether the element overflows the screen; but the
+                  // CSS position is relative to the offset parent, not the
+                  // screen.
+                  
+                  var offsetFromOffsetParent = elem.position();
+                  var offsetFromDocumentOrigin = elem.offset();
+                  var offsetOfOffsetParent = {
+                     x: offsetFromDocumentOrigin.left - offsetFromOffsetParent.left,
+                     y: offsetFromDocumentOrigin.top  - offsetFromOffsetParent.top
+                  };
+                  
+                  var adjustment = self.boundryCheck(posX + offsetOfOffsetParent.x,
+                     posY + offsetOfOffsetParent.y);
+                  
+                  /*
+                  alert("adjust posX from " + posX + " by " + overflow[0] +
+                     "pixels");
+                  */
+                  
+                  posX = posX + adjustment[0];
+                  posY = posY + adjustment[1];
                }
             }
             else
@@ -305,7 +374,11 @@
          onBeforeHide: function(){},
          onHide: function(){},
          beforeContentLoad: function(){},
-         onContentLoad: function(){}
+         onContentLoad: function()
+         {
+            // If some content has been loaded, need to reposition the tooltip
+            this.updatePos();
+         }
       };
       jQuery.extend(defaultConf, conf);
       
