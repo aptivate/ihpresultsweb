@@ -305,17 +305,26 @@ def agency_graphs_by_indicator(request, indicator, language, template_name="subm
         "obj" : graph
     })
 
+    agency_data = dict([(agency, agency_scorecard.get_agency_scorecard_data(agency)) for agency in Agency.objects.all()])
+
+    name = "graph2_%s" % indicator
+    graph = additional_graph_by_indicator(indicator, name, translation, agency_data)
+    graphs.append({
+        "name" : name,
+        "obj" : graph
+    })
+
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
-def projectiongraphs(request, template_name="submissions/projectiongraphs.html", extra_context=None):
+def projectiongraphs(request, language, template_name="submissions/projectiongraphs.html", extra_context=None):
     extra_context = extra_context or {}
-    titles = {
-        "2DPa" : "Projected time required to meet On Budget target <br>(based on current levels of performance):2007 Baseline",
-        "5DPb" : "Projected time required to meet PFM target <br>(based on current levels of performance):2007 Baseline",
-    }
+
+    language = models.Language.objects.get(language=language or "English")
+    translation = translations.get_translation(language)
+
     indicators = calc_overall_agency_indicators(funcs=positive_funcs)
 
-    for indicator in titles.keys():
+    for indicator in ["2DPa", "5DPb"]:
         (baseline_value, baseline_year, latest_value, latest_year) = indicators[indicator][0]
         baseline_year, latest_year = int(baseline_year), int(latest_year)
         target_value = target_values[indicator]
@@ -339,7 +348,7 @@ def projectiongraphs(request, template_name="submissions/projectiongraphs.html",
             "defaultSeriesType": "line",
         }
 
-        graph.title = {"text" : titles[indicator]}
+        graph.title = {"text" : translation.projection_graphs[indicator]["title"]}
         graph.xAxis = {"categories" : range(start_year, end_year + 1)} 
         graph.yAxis = {"title" : {"text" : ""}} 
 
@@ -352,7 +361,7 @@ def projectiongraphs(request, template_name="submissions/projectiongraphs.html",
             "dashStyle" : "shortDash",
             "color" : "#89A54E",
         }, {
-            "name": "Target",
+            "name": translation.target_language["target"],
             "data": target_data,
             "marker": {
                "enabled": "false"
@@ -362,89 +371,6 @@ def projectiongraphs(request, template_name="submissions/projectiongraphs.html",
         extra_context["graph_%s" % indicator] = graph 
 
     return direct_to_template(request, template=template_name, extra_context=extra_context)
-
-def additional_graphs(translation, extra_context):
-    agency_data = dict([(agency, agency_scorecard.get_agency_scorecard_data(agency)) for agency in Agency.objects.all()])
-
-    def indicator_data(indicator, reverse=False):
-        f = lambda x: x
-        if reverse: f = lambda x : 100.0 - x
-        data = [
-            (agency, f(datum[indicator]["cur_val"]))
-            for (agency, datum) in agency_data.items()
-            if datum[indicator]["cur_val"] not in (NA_STR, None)
-        ]
-        data = sorted(data, key=lambda x : x[1])
-        return data
-
-
-    extra_context["graph_pfm"] = StackedAgencyBarGraph(
-        "graph_pfm",
-        {
-            "name1" : translation.additional_graphs["5DPb"]["series1"],
-            "name2" : translation.additional_graphs["5DPb"]["series2"],
-            "data" : indicator_data("5DPb", reverse=True)
-        },
-        "target", 80,
-        title=translation.additional_graphs["5DPb"]["title"]
-    )
-        
-    extra_context["graph_procurement"] = StackedAgencyBarGraph(
-        "graph_procurement",
-        {
-            "name1" : translation.additional_graphs["5DPa"]["series1"],
-            "name2" : translation.additional_graphs["5DPa"]["series2"],
-            "data" : indicator_data("5DPa", reverse=True)
-        },
-        "target", 80,
-        title=translation.additional_graphs["5DPa"]["title"]
-    )
-
-    extra_context["graph_multi_year"] = StackedAgencyBarGraph(
-        "graph_multi_year",
-        {
-            "name1" : translation.additional_graphs["3DP"]["series1"],
-            "name2" : translation.additional_graphs["3DP"]["series2"],
-            "data" : indicator_data("3DP")
-        },
-        "target", 90,
-        title=translation.additional_graphs["3DP"]["title"]
-    )
-
-    extra_context["graph_pba"] = StackedAgencyBarGraph(
-        "graph_pba",
-        {
-            "name1" : translation.additional_graphs["2DPc"]["series1"],
-            "name2" : translation.additional_graphs["2DPc"]["series2"],
-            "data" : indicator_data("2DPc")
-        },
-        "target", 66,
-        title=translation.additional_graphs["2DPc"]["title"]
-    )
-
-    extra_context["graph_tc"] = StackedAgencyBarGraph(
-        "graph_tc",
-        {
-            "name1" : translation.additional_graphs["2DPb"]["series1"],
-            "name2" : translation.additional_graphs["2DPb"]["series2"],
-            "data" : indicator_data("2DPb")
-        },
-        "target", 50,
-        title=translation.additional_graphs["2DPb"]["title"]
-    )
-
-    extra_context["graph_aob"] = StackedAgencyBarGraph(
-        "graph_aob",
-        {
-            "name1" : translation.additional_graphs["2DPa"]["series1"],
-            "name2" : translation.additional_graphs["2DPa"]["series2"],
-            "data" : indicator_data("2DPa", reverse=True)
-        },
-        "target", 85,
-        title=translation.additional_graphs["2DPa"]["title"]
-    )
-
-    return extra_context
 
 def highlevel_graph_by_indicator(indicator, name, translation, baseline_value, latest_value, target=None):
 
@@ -472,33 +398,33 @@ def highlevel_graph_by_indicator(indicator, name, translation, baseline_value, l
 
     return graph
 
-def additional_graph_by_indicator(indicator, name, translation, baseline_value, latest_value, target=None):
+def additional_graph_by_indicator(indicator, name, translation, agency_data):
 
-    if target:
-        graph = HighlevelBarChart(
-            name, 
-            float(baseline_value), float(latest_value),
-            title=translation.highlevel_graphs[indicator]["title"],
-            subtitle=translation.highlevel_graphs[indicator]["subtitle"],
-            target=target_values[indicator],
-            yAxis=translation.highlevel_graphs[indicator]["yAxis"],
-        )
-    else:
-        graph = HighlevelBarChart(
-            name, 
-            float(baseline_value), float(latest_value),
-            title=translation.highlevel_graphs[indicator]["title"],
-            subtitle=translation.highlevel_graphs[indicator]["subtitle"],
-            yAxis=translation.highlevel_graphs[indicator]["yAxis"],
-        )
+    def indicator_data(indicator, reverse=False):
+        f = lambda x: x
+        if reverse: f = lambda x : 100.0 - x
+        data = [
+            (agency, f(datum[indicator]["cur_val"]))
+            for (agency, datum) in agency_data.items()
+            if datum[indicator]["cur_val"] not in (NA_STR, None)
+        ]
+        data = sorted(data, key=lambda x : x[1])
+        return data
 
-    graph.legend = {
-        "enabled" : "false"
-    }
+    target = target_values[indicator]
 
-    return graph
+    return StackedAgencyBarGraph(
+        name,
+        {
+            "name1" : translation.additional_graphs[indicator]["series1"],
+            "name2" : translation.additional_graphs[indicator]["series2"],
+            "data" : indicator_data(indicator, reverse=True)
+        },
+        "target", target,
+        title=translation.additional_graphs[indicator]["title"]
+    )
 
-def highlevelgraphs(request, language=None, template_name="submissions/highlevelgraphs.html", extra_context=None, titles=None):
+def highlevelgraphs(request, language, template_name="submissions/highlevelgraphs.html", extra_context=None, titles=None):
     extra_context = extra_context or {}
 
     language = models.Language.objects.get(language=language or "English")
@@ -515,7 +441,15 @@ def highlevelgraphs(request, language=None, template_name="submissions/highlevel
 
         extra_context["graph_%s" % indicator] = graph 
 
-    extra_context = additional_graphs(translation, extra_context)
+    agency_data = dict([(agency, agency_scorecard.get_agency_scorecard_data(agency)) for agency in Agency.objects.all()])
+
+    extra_context["graph_pfm"] = additional_graph_by_indicator("5DPb", "graph_pfm", translation, agency_data)
+    extra_context["graph_procurement"] = additional_graph_by_indicator("5DPa", "graph_procurement", translation, agency_data)
+    extra_context["graph_multi_year"] = additional_graph_by_indicator("3DP", "graph_multi_year", translation, agency_data)
+    extra_context["graph_pba"] = additional_graph_by_indicator("2DPc", "graph_pba", translation, agency_data)
+    extra_context["graph_tc"] = additional_graph_by_indicator("2DPb", "graph_tc", translation, agency_data)
+    extra_context["graph_aob"] = additional_graph_by_indicator("2DPa", "graph_aob", translation, agency_data)
+
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
 def agencygraphs(request, agency_name, language=None, template_name="submissions/agencygraphs.html", extra_context=None):
@@ -603,7 +537,7 @@ def agencygraphs(request, agency_name, language=None, template_name="submissions
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
     
-def countrygraphs(request, country_name, language=None, template_name="submissions/countrygraphs.html", extra_context=None):
+def countrygraphs(request, country_name, language, template_name="submissions/countrygraphs.html", extra_context=None):
     extra_context = extra_context or {}
 
     language = models.Language.objects.get(language=language or "English")
@@ -690,8 +624,12 @@ def countrygraphs(request, country_name, language=None, template_name="submissio
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
     
-def government_graphs(request, template_name="submission/country_graphs_by_indicator.html", extra_context=None):
+def government_graphs(request, language, template_name="submission/country_graphs_by_indicator.html", extra_context=None):
     extra_context = extra_context or {}
+
+    language = models.Language.objects.get(language=language or "English")
+    translation = translations.get_translation(language)
+
     countries = sorted(Country.objects.all(), key=lambda x: x.country)
     data_3G = dict([(c, calc_country_indicators(c)["3G"]) for c in countries])
     data_4G = dict([(c, calc_country_indicators(c)["4G"]) for c in countries])
@@ -701,6 +639,10 @@ def government_graphs(request, template_name="submission/country_graphs_by_indic
     # TODO
     # Request from James to zero negative values
     neg_to_zero = lambda x : 0 if x < 0 else x
+
+    # TODO
+    # Request from James to remove overly large values
+    remove_large = lambda x : 0 if x > 100 else x
 
 
     # Nepal needs to be shown at the end of the list and with an asterix
@@ -713,35 +655,31 @@ def government_graphs(request, template_name="submission/country_graphs_by_indic
         "graph_3G",
         [data_3G[country][0][0] for country in countries_3g],
         [data_3G[country][0][2] for country in countries_3g],
-        "Target", 15,
-        title="3G: Proportion of national budget allocated to health",
+        translation.target_language["target"], 15,
+        title=translation.government_graphs["3G"]["title"],
     )
     extra_context["graph_3G"].subtitle = {
-            "text": '* Target for Nepal is 10%',
-            "align": 'left',
-            "x": 50,
-            "y": 388,
-            "floating" : "true",
-        }
+        "text": translation.government_graphs["3G"]["subtitle"],
+        "align": 'left',
+        "x": 50,
+        "y": 388,
+        "floating" : "true",
+    }
 
     extra_context["graph_4G"] = CountryBarGraph(
         countries,
         "graph_4G",
         [neg_to_zero(data_4G[country][0][0]) for country in countries],
         [neg_to_zero(data_4G[country][0][2]) for country in countries],
-        title="4G: Actual disbursement of government health budgets",
+        title=translation.government_graphs["4G"]["title"],
     )
-
-    # TODO
-    # Request from James to remove overly large values
-    remove_large = lambda x : 0 if x > 100 else x
 
     extra_context["graph_hw"] = CountryBarGraph(
         countries,
         "graph_hw",
         [remove_large(country_data[country]["indicators"]["other"]["health_workforce_perc_of_budget_baseline"] * 100) for country in countries],
         [remove_large(country_data[country]["indicators"]["other"]["health_workforce_perc_of_budget_latest"] * 100) for country in countries],
-        title="Proportion of health sector budget spent on Human Resources for Health (HRH)",
+        title=translation.government_graphs["health_workforce"]["title"],
     )
 
     extra_context["graph_outpatient_visits"] = CountryBarGraph(
@@ -749,7 +687,7 @@ def government_graphs(request, template_name="submission/country_graphs_by_indic
         "graph_outpatient_visits",
         [country_data[country]["indicators"]["other"]["outpatient_visits_baseline"] for country in countries],
         [country_data[country]["indicators"]["other"]["outpatient_visits_latest"] for country in countries],
-        title="Number of Outpatient Department Visits per 10,000 population",
+        title=translation.government_graphs["outpatient_visits"]["title"],
     )
     extra_context["graph_outpatient_visits"].yAxis = {"title" : {"text" : ""}} 
 
@@ -758,8 +696,8 @@ def government_graphs(request, template_name="submission/country_graphs_by_indic
         "graph_skilled_medical",
         [country_data[country]["indicators"]["other"]["skilled_personnel_baseline"] for country in countries],
         [country_data[country]["indicators"]["other"]["skilled_personnel_latest"] for country in countries],
-        "WHO Recommended", 23,
-        title="Number of skilled medical personnel per 10,000 population",
+        translation.target_language["who"], 23,
+        title=translation.government_graphs["skilled_medical"]["title"],
     )
     extra_context["graph_skilled_medical"].yAxis = {"title" : {"text" : ""}} 
 
@@ -768,8 +706,8 @@ def government_graphs(request, template_name="submission/country_graphs_by_indic
         "graph_health_budget",
         [country_data[country]["indicators"]["3G"]["baseline_value"] for country in countries],
         [country_data[country]["indicators"]["3G"]["latest_value"] for country in countries],
-        "Target", 15,
-        title="% of national budget is allocated to health (IHP+ Results data)",
+        translation.target_language["target"], 15,
+        title=translation.government_graphs["health_budget"]["title"],
     )
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)

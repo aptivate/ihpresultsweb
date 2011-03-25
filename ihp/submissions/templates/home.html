@@ -105,8 +105,8 @@
                         <h2>Additional Graphs</h2>
                         <p>
                             <ul>
-                                <li><a href="{% url highlevelgraphs %}">High-level Graphs</a></li>
-                                <li><a href="{% url projectiongraphs %}">Projection Graphs</a></li>
+                                <li><a href="{% url highlevelgraphs "English" %}">High-level Graphs</a> (<a href="{% url highlevelgraphs "French" %}">French</a>)</li>
+                                <li><a href="{% url projectiongraphs "English" %}">Projection Graphs</a> (<a href="{% url projectiongraphs "French" %}">French</a>)</li>
                             </ul>
                         </p>
                     </div>
@@ -119,7 +119,7 @@
                             <ul>
                                 <li><a href="{% url country_table %}">Country Table</a></li>
                                 <li><a href="{% url country_matrix %}">Country Table without Figures</a></li>
-                                <li><a href="{% url government_graphs %}">Government Graphs</a></li>
+                                <li><a href="{% url government_graphs "English" %}">Government Graphs (<a href="{% url government_graphs "French" %}">French</a>)</li>
                                 <li><a href="{% url country_response_breakdown %}">Response Breakdown</a></li>
                             </ul>
                         </p>

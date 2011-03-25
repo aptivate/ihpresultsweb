@@ -30,8 +30,8 @@ urlpatterns = patterns('',
     }}, "home"),
 
     # New csv views
-    (r'^scorecard/export/agencies/(?P<language>.+)/$', 'submissions.views.agency_export', {}, 'agency_export'),
-    (r'^scorecard/export/countries/(?P<language>.+)/$', 'submissions.views.country_export', {}, 'country_export'),
+    (r'^scorecard/export/agencies/(?P<language>\w+)/$', 'submissions.views.agency_export', {}, 'agency_export'),
+    (r'^scorecard/export/countries/(?P<language>\w+)/$', 'submissions.views.country_export', {}, 'country_export'),
 
     # Edit views
     (r'^scorecard/edit/agencies/summary/$', 'submissions.views.dp_summary_edit', {}, 'dp_summary_edit'),
@@ -46,14 +46,14 @@ urlpatterns = patterns('',
     (r'^api/country_scorecard/(?P<country_id>\d+)/$', 'submissions.api.country_scorecard_overrides', {}, 'api_country_scorecard'),
 
     # Graph Views
-    (r"^agencies/graphs/highlevel/$", "submissions.graphs.highlevelgraphs", {}, "highlevelgraphs"),
-    (r"^agencies/graphs/projection/$", "submissions.graphs.projectiongraphs", {}, "projectiongraphs"),
+    (r"^agencies/graphs/highlevel/(?P<language>\w+)/$", "submissions.graphs.highlevelgraphs", {}, "highlevelgraphs"),
+    (r"^agencies/graphs/projection/(?P<language>\w+)/$", "submissions.graphs.projectiongraphs", {}, "projectiongraphs"),
     (r"^agencies/graphs/(?P<indicator>\w+)/(?P<language>\w+)/$", "submissions.graphs.agency_graphs_by_indicator", {}, "agency_graphs_by_indicator"),
 
-    (r"^agencies/(?P<agency_name>[a-zA-Z\s]+)/graphs/(?P<language>.+)/$", "submissions.graphs.agencygraphs", {}, "agencygraphs"),
-    (r"^agencies/graphs/by_country/(?P<country_name>[a-zA-Z\s]+)/graphs/(?P<language>.+)/$", "submissions.graphs.countrygraphs", {}, "countrygraphs"),
+    (r"^agencies/(?P<agency_name>[a-zA-Z\s]+)/graphs/(?P<language>\w+)/$", "submissions.graphs.agencygraphs", {}, "agencygraphs"),
+    (r"^agencies/graphs/by_country/(?P<country_name>[a-zA-Z\s]+)/graphs/(?P<language>\w+)/$", "submissions.graphs.countrygraphs", {}, "countrygraphs"),
 
-    (r"^countries/graphs/$", "submissions.graphs.government_graphs", {
+    (r"^countries/graphs/(?P<language>\w+)/$", "submissions.graphs.government_graphs", {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/country_graphs_by_indicator.html"

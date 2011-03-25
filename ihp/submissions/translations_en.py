@@ -186,3 +186,39 @@ additional_graphs = {
         "title" : "5DPb: Partner use of country public financial management systems",
     }
 }
+
+projection_graphs = {
+    "2DPa" : {
+        "title" : "Projected time required to meet On Budget target <br>(based on current levels of performance):2007 Baseline",
+    },
+    "5DPb" : {
+        "title" : "Projected time required to meet PFM target <br>(based on current levels of performance):2007 Baseline",
+    }
+}
+
+government_graphs = {
+    "3G" : {
+        "title" : "3G: Proportion of national budget allocated to health",
+        "subtitle" : "* Target for Nepal is 10%",
+    },
+    "4G" : {
+        "title" : "4G: Actual disbursement of government health budgets",
+    },
+    "health_workforce" : {
+        "title" : "Proportion of health sector budget spent on Human Resources for Health (HRH)",
+    },
+    "outpatient_visits" : {
+        "title" : "Number of Outpatient Department Visits per 10,000 population",
+    },
+    "skilled_medical" : {
+        "title" : "Number of skilled medical personnel per 10,000 population",
+    },
+    "health_budget" : {
+        "title" : "% of national budget is allocated to health (IHP+ Results data)",
+    }
+}
+
+target_language = {
+    "target" : "target",
+    "who" : "WHO Recommended"
+}
