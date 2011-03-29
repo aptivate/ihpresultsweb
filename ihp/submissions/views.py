@@ -17,7 +17,6 @@ import translations
 import country_scorecard
 import agency_scorecard
 from table_views import *
-from consts import spm_map
 
 def agency_export(request, language):
     language = get_object_or_404(Language, language=language)
