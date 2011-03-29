@@ -459,7 +459,7 @@ def agencygraphs(request, agency_name, language=None, template_name="submissions
     extra_context = extra_context or {}
 
     agency = Agency.objects.get(agency__iexact=agency_name)
-    translation = request.translation
+    extra_context["translation"] = translation = request.translation
 
     data = {}
     for country in agency.countries:

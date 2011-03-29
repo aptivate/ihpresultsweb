@@ -300,3 +300,33 @@ indicator = "Indicator"
 base_val = "base val"
 cur_val = "cur val"
 perc_change = "% change"
+
+dp_table_footnote = """
+<b>NB:</b>  It is important to note that the country context has a significant impact on the extent to which progress can be made by Development Partners for each of the Standard Performance Measures.  Comparisons of performance across the country offices of a single agency should be made with this in mind.
+<ul>
+<li>- Methodology is available at</li>
+<li>- SPMs are available at</li>
+<li>- Targets are available at</li>
+<li>- Links to guidance</li>
+<li>- List what the symbols mean</li>
+<li>- This is self reported data</li>
+<li>- Note on aggregation</li>
+<li>- Note on 5DPb (5 not-applicable countries). DRC; Burundi; Djibouti; Nigeria; Nepal</li>
+<li>- This is 2009 data - progress may have been made in 2010 that is not reported here</li>
+</ul>
+"""
+
+country_table_footnotes = """
+<b>NB</b> The consistency of interpretation for key terms and definitions between participating agencies may vary within this country. This could affect the comparability of results. Comparisons should be made with this in mind. 
+<ul>
+<li>Methodology is available at </li>
+<li>SPMs are available at</li>
+<li>Targets are available at</li>
+<li>Links to guidance</li>
+<li>List what the symbols mean</li>
+<li>Link to country scorecard</li>
+<li>Fr / Eng – This is self reported data</li>
+<li>This is 2009 data</li>
+<li>progress may have been made in 2010 that is not reported here</li>
+</ul>
+"""

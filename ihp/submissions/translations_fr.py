@@ -78,40 +78,73 @@ direction_nochange = "aucun changement"
 
 agency_graphs = {
     "2DPa" : {
-        "title" : "Increase in %s\\'s aid flows to the health sector <br>not reported on goverment\\'s budget (2DPa)",
-        "yAxis" : "% increase in funds not reported <br>on government\\'s budget",
+        "title" : "2DPa: Change in %% of %(agency_name)s\\'s aid flows to the health sector <br>not reported on goverment\\'s budget",
+        "yAxis" : "% change in funds not reported <br>on government\\'s budget",
     },
     "2DPb" : {
-        "title" : "% of technical assistance disbursed through programmes (WB, Target: 50%)",
-        "yAxis" : "% of programme-based technical assistance",
+        "title" : "2DPb: Change in %% of capacity development provided <br>by the %(agency_name)s through coordinated programmes",
+        "yAxis" : "%% of capacity development support <br/>provided through coordinated programmes",
     },
     "2DPc" : {
-        "title" : "% of aid flows provided in the context of programme base approaches (Target: 66%)",
-        "yAxis" : "% of aid flows",
+        "title" : "2DPc: Change in %% of aid provided through programme based approaches",
+        "yAxis" : "%% of health sector aid provided <br/>through programme based approaches",
     },
     "3DP" : {
-        "title" : "% of health sector funding provided through multi-year commitments",
-        "yAxis" : "% of health sector funding provided <br>through multi-year commitments",
+        "title" : "3DP: % of health sector funding provided through multi-year commitments",
+        "yAxis" : "%% of health sector funding provided <br>through multi-year commitments",
     },
     "4DP" : {
-        "title" : "Increase in %s\\'s health sector aid not disbursed within the year <br>for which it was scheduled (4DP)",
-        "yAxis" : "% increase in health sector aid not disbursed <br>within the year for which it was scheduled",
+        "title" : "4DP: Change in %% of %s\\'s health sector aid not disbursed <br>within the year for which it was scheduled",
+        "yAxis" : "%% of health sector aid disbursed <br>within the year for which it was scheduled",
     },
     "5DPa" : {
-        "title" : "% change in health sector aid to the public sector not using <br/>partner countries\\' procurement systems",
-        "yAxis" : "% change in health sector aid to the public sector <br>not using partner countries\\' procurement systems",
+        "title" : "5DPa: % change in health sector aid to the public sector not using <br/>partner countries\\' procurement systems",
+        "yAxis" : "%% change in health sector aid to the public sector <br>not using partner countries\\' procurement systems",
     },
     "5DPb" : {
-        "title" : "Increase in %s\\'s health sector aid to the public sector not using <br/>partner countries\\' PFM systems (5DPb)",
-        "yAxis" : "% increase of health sector aid to the public sector<br> not using partner countries\\' PFM systems",
+        "title" : "5DPb: Change in %% of %s\\'s health sector aid to the public sector <br/>not using partner countries\\' PFM systems",
+        "yAxis" : "%% change in health sector aid to the public sector<br> not using partner countries\\' PFM systems",
     },
     "5DPc" : {
-        "title" : "Reduction in %s\\'s stock of parallel project implementation <br>(PIUs) units (5DPc)",
-        "yAxis" : "% reduction in stock of parallel <br>project implementation (PIUs) units",
+        "title" : "5DPc: Change in number of %s\\'s <br/>parallel project implementation (PIUs) units",
+        "yAxis" : "Number parallel <br>project implementation (PIUs) units",
     },
 }
 
-country_graphs = agency_graphs
+country_graphs = {
+    "2DPa" : {
+        "title" : "2DPa: Change in aid flows to the %(country_name)s health sector <br/>not reported on government\\'s budget",
+        "yAxis" : "%% change in aid flows not reported <br/>on government\\'s budget",
+    },
+    "2DPb" : {
+        "title" : "2DPb: Change in %% of capacity development support provided to %(country_name)s <br/>health sector through coordinated programmes",
+        "yAxis" : "%% of capacity development support <br/>provided through coordinated programmes",
+    },
+    "2DPc" : {
+        "title" : "2DPc: Change in %% of health sector aid provided to %(country_name)s <br/>through programme based approaches",
+        "yAxis" : "%% of health sector aid provided <br/>through programme based approaches",
+    },
+    "3DP" : {
+        "title" : "3DP: Change in %% of health sector aid provided to %(country_name)s<br/> through multi-year commitments",
+        "yAxis" : "%% of health sector funding provided <br>through multi-year commitments",
+    },
+    "4DP" : {
+        "title" : "4DP: Change in %% of health sector aid to %(country_name)s <br/>disbursed within the year for which it was scheduled",
+        "yAxis" : "%% of health sector aid disbursed <br>within the year for which it was scheduled",
+    },
+    "5DPa" : {
+        "title" : "5DPa: %% change in health sector aid to %(country_name)s public sector <br/>not using country procurement systems.",
+        "yAxis" : "%% change in health sector aid to the public sector <br>not using partner countries\\' procurement systems",
+    },
+    "5DPb" : {
+        "title" : "5DPb: %% change in health sector aid to %(country_name)s public sector<br/> not using country PFM systems.",
+        "yAxis" : "%% change in health sector aid to the public sector<br> not using partner countries\\' PFM systems",
+    },
+    "5DPc" : {
+        "title" : "5DPc: Number of agency PIUs in place in %(country_name)s",
+        "yAxis" : "Number parallel <br>project implementation (PIUs) units",
+    },
+}
 
 highlevel_graphs = {
     "2DPa" : {
@@ -261,3 +294,33 @@ indicator = "Indicator"
 base_val = "base val"
 cur_val = "cur val"
 perc_change = "% change"
+
+dp_table_footnote = """
+<b>NB:</b>  It is important to note that the country context has a significant impact on the extent to which progress can be made by Development Partners for each of the Standard Performance Measures.  Comparisons of performance across the country offices of a single agency should be made with this in mind.
+<ul>
+<li>- Methodology is available at</li>
+<li>- SPMs are available at</li>
+<li>- Targets are available at</li>
+<li>- Links to guidance</li>
+<li>- List what the symbols mean</li>
+<li>- This is self reported data</li>
+<li>- Note on aggregation</li>
+<li>- Note on 5DPb (5 not-applicable countries). DRC; Burundi; Djibouti; Nigeria; Nepal</li>
+<li>- This is 2009 data - progress may have been made in 2010 that is not reported here</li>
+</ul>
+"""
+
+country_table_footnotes = """
+<b>NB</b> The consistency of interpretation for key terms and definitions between participating agencies may vary within this country. This could affect the comparability of results. Comparisons should be made with this in mind. 
+<ul>
+<li>Methodology is available at </li>
+<li>SPMs are available at</li>
+<li>Targets are available at</li>
+<li>Links to guidance</li>
+<li>List what the symbols mean</li>
+<li>Link to country scorecard</li>
+<li>Fr / Eng – This is self reported data</li>
+<li>This is 2009 data</li>
+<li>progress may have been made in 2010 that is not reported here</li>
+</ul>
+"""
