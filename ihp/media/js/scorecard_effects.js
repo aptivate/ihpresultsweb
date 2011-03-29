@@ -3,7 +3,7 @@ function create_tooltip(target_object, options)
 	default_options = {
 		baseClass: 'callout-to',
 		position: 'right',
-		offset: [0, 10],
+		offset: [10, 0]
 	};
 	options = jQuery.extend(default_options, options);
 	jQuery(target_object).simpletip(options);
@@ -11,67 +11,35 @@ function create_tooltip(target_object, options)
 
 jQuery(document).ready(function()
 {
-	jQuery('.infobox .item').hide();
+	// Disable animation in browsers that require the IE VML hack,
+	// because polling for object size changes eats too much CPU 
+	// and resizing objects causes positioning bugs in IE7.
 	
-	jQuery('.infobox h2 a').click(function()
+	if (!jQuery.browser.msie || jQuery.browser.version >= 9)
 	{
-		var toShow = jQuery(this).closest('.infobox').children('.item');
-		jQuery(toShow).slideToggle();
-		return false;
-	});
-			
-	// add background images to items with curvy corners
-	// if (jQuery.browser.msie && jQuery.browser.version < 9)
-	{
-		function moveProperty(property, from, to, replacement)
-		{
-			// alert(item.css('margin-top'));
-			to.css(property, from.css(property));
-			from.css(property, replacement);
-		}
+		jQuery('.infobox .item').hide();
 		
-		function wrap(items, image_name_base)
+		jQuery('.infobox h2 a').click(function()
 		{
-			items.each(function(i, obj)
-			{
-				var item = jQuery(obj);
-
-				var outerWrap = jQuery('<div style="background: ' + 
-					'url(' + images_path + '/' + image_name_base + '-top.png) ' +
-					'no-repeat top; clear: both;">');
-
-				var innerWrap = jQuery('<div style="background: ' +
-					'url(' + images_path + '/' + image_name_base + '-bottom.png) ' +
-					'no-repeat bottom;">');
-				
-				// moveProperty('border-left-style', item, outerWrap, 'none');
-				moveProperty('border-style', item, outerWrap, 'none');
-				moveProperty('border-color', item, outerWrap, 'inherit');
-				moveProperty('border-width', item, outerWrap, '0');
-				moveProperty('background-color', item, outerWrap, 'inherit');
-				moveProperty('margin-bottom', item, outerWrap, '0');
-				
-				// alert(item.css('margin-top'));
-				// outerWrap.css('margin', item.css('margin'));
-				// item.css('margin', '0');
-
-				item.wrap(outerWrap);
-				item.wrap(innerWrap);
-				item.after('<div style="clear: both;">');
-			});
-		}
-
-		/*		
-		wrap(jQuery('#scorecard h2').add('#scorecard h3'), 'scorecard-h2');
-		wrap(jQuery('#scorecard .logos'), 'scorecard-item');
-		*/
+			var toShow = jQuery(this).closest('.infobox').children('.item');
+			jQuery(toShow).slideToggle();
+			return false;
+		});
 	}
-	
+		
 	// Attach callouts to their content using Simpletip
-	jQuery('.callout-from').each(function(i, callout_from)
+	jQuery('.callout-from').add('.has-callout-below').each(function(i, callout_from)
 	{
 		// load content from the DIV with the same ID plus "_content"
-		create_tooltip(jQuery(callout_from),
-			{content: jQuery('#' + callout_from.id + "_content").html()});
+		options = {content: jQuery('#' + callout_from.id + "_content").html()};
+		callout_from_jquery = jQuery(callout_from);
+		
+		if (callout_from_jquery.hasClass('has-callout-below'))
+		{
+			options.position = 'bottom';
+			options.offset = [0, 10];
+		}
+		
+		create_tooltip(callout_from_jquery, options);
 	});
 });

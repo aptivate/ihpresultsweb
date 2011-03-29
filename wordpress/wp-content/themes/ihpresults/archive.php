@@ -92,7 +92,7 @@
     <p>
       <?php the_excerpt_rss(); /* just like the_excerpt, but really strips all the HTML, including BR tags */ ?>
     </p>
-	<a title="click to view full post: <?php the_title(); ?>" href="<?php echo get_permalink() ?>">View full post</a>
+	<a class="strong-link" title="click to view full post: <?php the_title(); ?>" href="<?php echo get_permalink() ?>">View full post</a>
     <?php wp_link_pages(array('before' => '<p><strong>Pages:</strong> ', 'after' => '</p>', 'next_or_number' => 'number')); ?>
   </div>
   <div class="metadata">

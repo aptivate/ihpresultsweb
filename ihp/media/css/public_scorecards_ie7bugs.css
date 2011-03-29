@@ -1,0 +1,20 @@
+/*
+Brutal hacks to make scorecards usable in IE7, which appears to completely
+ignore z-index on positioned elements, making it impossible to put tooltips
+above other things that need to be positioned like H2 (needs to establish
+position for its icons... unless we disable the icons!
+*/
+
+div.col, .infobox,
+#content .infobox h2,
+#content .infobox-fixed h2,
+#content #infobox ul.logos,
+#content #infobox .item h3 {
+	position: static;
+}
+
+#content .infobox h2 img,
+#content .infobox-fixed h2 img,
+#content #infobox .item h3 img {
+	display: none;
+}

@@ -33,7 +33,7 @@
 	<!--start infoboxes column-->
 	<div id="infobox" class="col">
 		<div class="infobox progress">
-			<h2 class="callout-from" id="progress_heading"><a href="#"
+			<h2 class="has-callout-below" id="progress_heading"><a href="#"
 				title="Click to expand">Agencies demonstrating
 					progress in {{country.country}}</a></h2>
 			<ul class="item logos progress">
@@ -49,7 +49,7 @@
 		<p class="spacer"></p>
 		
 		<div class="infobox no_progress">	
-			<h2 class="callout-from" id="noprogress_heading"><a href="#"
+			<h2 class="has-callout-below" id="noprogress_heading"><a href="#"
 				title="Click to expand">Agencies reporting
 					limited progress in {{country.country}}</a></h2>
 			<ul class="item logos no_progress">
@@ -272,8 +272,8 @@
 			
 			<div class="item" style="margin-top: 15px;"><!-- nearly clear the large logo -->
 				<img src="{% url ihp-media path='images' %}/{{raw_data.RF1}}.png"
-					alt="{{raw_data.RF1}}" class="rating">
-				<h3>National Results Framework Agreed</h3>
+					alt="{{raw_data.RF1}}" class="rating"><h3>National
+					Results Framework Agreed</h3>
 				<ul>
 					<li>{{raw_data.RF2}}</li>
 					<li>{{raw_data.RF3}}</li>
@@ -282,8 +282,8 @@
 		
 			<div class="item">
 				<img src="{% url ihp-media path='images' %}/{{raw_data.HMIS1}}.png"
-					alt="{{raw_data.HMIS1}}" class="rating">
-				<h3>Health Management Information Systems (HMIS)</h3> 
+					alt="{{raw_data.HMIS1}}" class="rating"><h3>Health
+					Management Information Systems (HMIS)</h3> 
 				<ul>
 					<li>{{raw_data.HMIS2}}</li>
 				</ul>
@@ -291,8 +291,8 @@
 			
 			<div class="item">
 				<img src="{% url ihp-media path='images' %}/{{raw_data.DBR1}}.png"
-					alt="{{raw_data.DBR1}}" class="rating">
-				<h3>Decisions Based on Results</h3> 
+					alt="{{raw_data.DBR1}}" class="rating"><h3>Decisions
+					Based on Results</h3> 
 				<ul>
 					<li>{{raw_data.DBR2}}</li>
 				</ul>
@@ -300,8 +300,8 @@
 		
 			<div class="item" style="margin-bottom: 0;">
 				<img src="{% url ihp-media path='images' %}/{{raw_data.JAR1}}.png"
-					alt="{{raw_data.JAR1}}" class="rating">
-				<h3>Joint Health Sector</h3> 
+					alt="{{raw_data.JAR1}}" class="rating"><h3>Joint
+					Health Sector</h3> 
 				<ul>
 					<li>{{raw_data.JAR4}}</li>
 				</ul>

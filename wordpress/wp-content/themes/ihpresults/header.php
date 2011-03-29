@@ -114,9 +114,10 @@
 	<?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'primary' ) ); ?>
 	<div id="results">
     	<div class="results-inner">
-    		 <h2>Find results by:</h2>
-    		 <?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'secondary' ) ); ?>
-				<?php get_search_form(); ?>
+    		<h2>Scorecards:</h2>
+    		<?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'secondary' ) ); ?>
+    		<h2>Search:</h2>
+			<?php get_search_form(); ?>
     	</div>
 	</div><!-- #results -->
 	</div><!-- #access-inner -->
