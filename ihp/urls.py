@@ -130,7 +130,7 @@ urlpatterns = patterns('',
         "countries" : Country.objects.all(),
     }}, "datatables"),
 
-    (r'^datatables/tables/agency/by_country/(?P<country_id>\d+)/$', 'submissions.views.agency_table_by_country', {
+    (r'^datatables/tables/agency/by_country/(?P<country_id>\d+)/(?P<language>\w+)/$', 'submissions.views.agency_table_by_country', {
         "template_name" : "submissions/datatables_base.html",
         "extra_context" : {
             "content_file" : "submissions/agency_table.html"
@@ -152,8 +152,8 @@ urlpatterns = patterns('',
     }, 'datatables_country_matrix'),
 
     (r'^scorecard/tables/agency_country_ratings/$', 'submissions.views.agency_country_ratings', {}, 'agency_country_ratings'),
-    (r'^datatables/tables/agency_ratings/$', 'submissions.views.agency_ratings', {}, 'agency_ratings'),
-    (r'^datatables/tables/agency_ratings2/$', 'submissions.views.agency_ratings', {
+    (r'^agencies/tables/agency_ratings/(?P<language>\w+)/$', 'submissions.table_views.agency_ratings', {}, 'agency_ratings'),
+    (r'^agencies/tables/agency_ratings2/(?P<language>\w+)/$', 'submissions.table_views.agency_ratings', {
         "template_name" : "submissions/agency_ratings2.html",
     }, 'agency_ratings2'),
 

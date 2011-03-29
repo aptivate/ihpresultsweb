@@ -48,8 +48,8 @@ td:first-child {
 {% block body %}
 <table>
     <tr class="head">
-        <th>Indicator</th>
-        <th class="spmcol">SPM</th>
+        <th>{{ translation.indicator }}</th>
+        <th class="spmcol">{{ translation.spm }}</th>
         {% for agency in agencies %}
             <th>{{ agency.agency }}</th>
         {% endfor %}

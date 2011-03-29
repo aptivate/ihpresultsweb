@@ -7,6 +7,7 @@ import indicators
 from indicators import NA_STR
 import consts
 import translations
+import agency_scorecard
 
 def tbl_float_format(x, places=0):
     if type(x) == float:
@@ -208,4 +209,33 @@ def country_table(request, language="English", template_name="submissions/countr
         
     return direct_to_template(request, template=template_name, extra_context=extra_context)
     
+def agency_ratings(request, language="English", template_name="submissions/agency_ratings.html", extra_context=None):
+    extra_context = extra_context or {}
+    extra_context["translation"] = translation = request.translation
+    ratings = []
+    data = dict([(agency, agency_scorecard.get_agency_scorecard_data(agency)) for agency in models.Agency.objects.all()])
+
+    agencies = models.Agency.objects.all().order_by("agency")
+    for indicator in indicators.dp_indicators:
+        rating = {}
+        for agency in agencies:
+            cur_val = data[agency][indicator]["cur_val"]
+            base_val = data[agency][indicator]["base_val"]
+            perc_change = ""
+            try:
+                perc_change = ((cur_val - base_val) / base_val) * 100
+            except:
+                pass
+
+            rating[agency] = {
+                "rating" : data[agency][indicator]["target"],
+                "base_val" : data[agency][indicator]["base_val"],
+                "cur_val" : data[agency][indicator]["cur_val"],
+                "perc_change" : perc_change
+            }
+        ratings.append((indicator, rating, translation.spm_map[indicator]))
+    
+    extra_context["ratings"] = ratings
+    extra_context["agencies"] = agencies
+    return direct_to_template(request, template=template_name, extra_context=extra_context)
 

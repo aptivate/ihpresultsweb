@@ -257,3 +257,7 @@ gov_spm_map = {
     "8G" : "Evidence that Civil Society is actively represented in health sector policy processes - including Health Sector planning, coordination & review mechanisms.",
 }
         
+indicator = "Indicator"
+base_val = "base val"
+cur_val = "cur val"
+perc_change = "% change"
