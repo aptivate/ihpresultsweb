@@ -61,21 +61,21 @@ urlpatterns = patterns('',
     }, "government_graphs"),
 
     # Table Views
-    (r'^agencies/tables/by_country/(?P<country_id>\d+)/$', 'submissions.views.agency_table_by_country', {
+    (r'^agencies/tables/by_country/(?P<country_id>\d+)/(?P<language>\w+)/$', 'submissions.views.agency_table_by_country', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/agency_table.html"
         }
     }, 'agency_table_by_country'),
 
-    (r'^agencies/agency/tables/(?P<agency_id>\d+)/$', 'submissions.views.agency_table_by_agency', {
+    (r'^agencies/agency/tables/(?P<agency_id>\d+)/(?P<language>\w+)/$', 'submissions.views.agency_table_by_agency', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/agency_table.html"
         }
     }, 'agency_table_by_agency'),
 
-    (r'^agencies/tables/by_indicator/(?P<indicator>.+)/$', 'submissions.views.agency_table_by_indicator', {
+    (r'^agencies/tables/by_indicator/(?P<indicator>\w+)/(?P<language>\w+)/$', 'submissions.views.agency_table_by_indicator', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/agency_table_by_indicator.html"
@@ -103,14 +103,14 @@ urlpatterns = patterns('',
         }
     }, 'agency_response_breakdown'),
 
-    (r'^countries/tables/$', 'submissions.views.country_table', {
+    (r'^countries/tables/(?P<language>\w+)/$', 'submissions.views.country_table', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/country_table.html"
         }
     }, 'country_table'),
 
-    (r'^countries/tables/matrix$', 'submissions.views.country_table', {
+    (r'^countries/tables/matrix/(?P<language>\w+)/$', 'submissions.views.country_table', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/country_matrix.html"
@@ -137,14 +137,14 @@ urlpatterns = patterns('',
         }
     }, 'datatables_agency_table_by_country'),
 
-    (r'^datatables/tables/agency/by_agency/(?P<agency_id>\d+)/$', 'submissions.views.agency_table_by_agency', {
+    (r'^datatables/tables/agency/by_agency/(?P<agency_id>\d+)/(?P<language>\w+)/$', 'submissions.views.agency_table_by_agency', {
         "template_name" : "submissions/datatables_base.html",
         "extra_context" : {
             "content_file" : "submissions/agency_table.html"
         }
     }, 'datatables_agency_table_by_agency'),
 
-    (r'^datatables/tables/country/matrix$', 'submissions.views.country_table', {
+    (r'^datatables/tables/country/matrix/(?P<language>\w+)/$', 'submissions.views.country_table', {
         "template_name" : "submissions/datatables_base.html",
         "extra_context" : {
             "content_file" : "submissions/country_matrix.html"

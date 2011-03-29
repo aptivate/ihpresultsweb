@@ -289,8 +289,7 @@ class HighlevelBarChart(DPChart):
 
 def agency_graphs_by_indicator(request, indicator, language, template_name="submissions/agency_graphs_by_indicator.html", extra_context=None):
     extra_context = extra_context or {}
-    language = models.Language.objects.get(language=language or "English")
-    translation = translations.get_translation(language)
+    translation = request.translation
 
     indicators = calc_overall_agency_indicators(funcs=positive_funcs)
 
@@ -319,8 +318,7 @@ def agency_graphs_by_indicator(request, indicator, language, template_name="subm
 def projectiongraphs(request, language, template_name="submissions/projectiongraphs.html", extra_context=None):
     extra_context = extra_context or {}
 
-    language = models.Language.objects.get(language=language or "English")
-    translation = translations.get_translation(language)
+    translation = request.translation
 
     indicators = calc_overall_agency_indicators(funcs=positive_funcs)
 
@@ -427,8 +425,7 @@ def additional_graph_by_indicator(indicator, name, translation, agency_data):
 def highlevelgraphs(request, language, template_name="submissions/highlevelgraphs.html", extra_context=None, titles=None):
     extra_context = extra_context or {}
 
-    language = models.Language.objects.get(language=language or "English")
-    translation = translations.get_translation(language)
+    translation = request.translation
     indicators = calc_overall_agency_indicators(funcs=positive_funcs)
 
     for indicator in indicators:
@@ -456,8 +453,7 @@ def agencygraphs(request, agency_name, language=None, template_name="submissions
     extra_context = extra_context or {}
 
     agency = Agency.objects.get(agency__iexact=agency_name)
-    language = models.Language.objects.get(language=language or "English")
-    translation = translations.get_translation(language)
+    translation = request.translation
     
     data = {}
     abs_values = {}
@@ -540,8 +536,7 @@ def agencygraphs(request, agency_name, language=None, template_name="submissions
 def countrygraphs(request, country_name, language, template_name="submissions/countrygraphs.html", extra_context=None):
     extra_context = extra_context or {}
 
-    language = models.Language.objects.get(language=language or "English")
-    translation = translations.get_translation(language)
+    translation = request.translation
 
     country = Country.objects.get(country__iexact=country_name)
     
@@ -627,8 +622,7 @@ def countrygraphs(request, country_name, language, template_name="submissions/co
 def government_graphs(request, language, template_name="submission/country_graphs_by_indicator.html", extra_context=None):
     extra_context = extra_context or {}
 
-    language = models.Language.objects.get(language=language or "English")
-    translation = translations.get_translation(language)
+    translation = request.translation
 
     countries = sorted(Country.objects.all(), key=lambda x: x.country)
     data_3G = dict([(c, calc_country_indicators(c)["3G"]) for c in countries])

@@ -35,7 +35,7 @@
                             <ul>
                                 <li><a href="{% url agencygraphs agency.agency "English" %}">Graphs (English)</a></li> 
                                 <li><a href="{% url agencygraphs agency.agency "French" %}">Graphs (French)</a></li> 
-                                <li><a href="{% url agency_table_by_agency agency.id %}">Table</a></li>
+                                <li><a href="{% url agency_table_by_agency agency.id "English" %}">Table</a></li>
                             </ul>
                             </div>
                             {% endfor %}
@@ -50,7 +50,7 @@
                             <ul>
                                 <li><a href="{% url countrygraphs country.country "English" %}">Graphs (English)</a></li>
                                 <li><a href="{% url countrygraphs country.country "French" %}">Graphs (French)</a></li>
-                                <li><a href="{% url agency_table_by_country country.id %}">Table</a></li>
+                                <li><a href="{% url agency_table_by_country country.id "English" %}">Table</a></li>
                             </ul>
                             </div>
                             {% endfor %}
@@ -61,18 +61,18 @@
                         <h2>Partner Data by Indicator</h2>
                         <p style="text-align:left">
                             <ul style="text-align:left">
-                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "1DP" %}">1DP</a></span></li>
-                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "2DPa" %}">2DPa</a> (<a href="{% url agency_graphs_by_indicator "2DPa" "English" %}">Graphs</a>)</span></li>
-                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "2DPb" %}">2DPb</a> (<a href="{% url agency_graphs_by_indicator "2DPb" "English" %}">Graphs</a>)</span></li>
-                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "2DPc" %}">2DPc</a> (<a href="{% url agency_graphs_by_indicator "2DPc" "English" %}">Graphs</a>)</span></li>
-                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "3DP" %}">3DP</a> (<a href="{% url agency_graphs_by_indicator "3DP" "English" %}">Graphs</a>)</span></li>
-                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "4DP" %}">4DP</a> (<a href="{% url agency_graphs_by_indicator "4DP" "English" %}">Graphs</a>)</span></li>
-                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "5DPa" %}">5DPa</a> (<a href="{% url agency_graphs_by_indicator "5DPa" "English" %}">Graphs</a>)</span></li>
-                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "5DPb" %}">5DPb</a> (<a href="{% url agency_graphs_by_indicator "5DPb" "English" %}">Graphs</a>)</span></li>
-                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "5DPc" %}">5DPc</a> (<a href="{% url agency_graphs_by_indicator "5DPc" "English" %}">Graphs</a>)</span></li>
-                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "6DP" %}">6DP</a></span></li>
-                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "7DP" %}">7DP</a></span></li>
-                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "8DP" %}">8DP</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "1DP" "English" %}">1DP</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "2DPa" "English" %}">2DPa</a> (<a href="{% url agency_graphs_by_indicator "2DPa" "English" %}">Graphs</a>)</span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "2DPb" "English" %}">2DPb</a> (<a href="{% url agency_graphs_by_indicator "2DPb" "English" %}">Graphs</a>)</span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "2DPc" "English" %}">2DPc</a> (<a href="{% url agency_graphs_by_indicator "2DPc" "English" %}">Graphs</a>)</span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "3DP" "English" %}">3DP</a> (<a href="{% url agency_graphs_by_indicator "3DP" "English" %}">Graphs</a>)</span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "4DP" "English" %}">4DP</a> (<a href="{% url agency_graphs_by_indicator "4DP" "English" %}">Graphs</a>)</span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "5DPa" "English" %}">5DPa</a> (<a href="{% url agency_graphs_by_indicator "5DPa" "English" %}">Graphs</a>)</span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "5DPb" "English" %}">5DPb</a> (<a href="{% url agency_graphs_by_indicator "5DPb" "English" %}">Graphs</a>)</span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "5DPc" "English" %}">5DPc</a> (<a href="{% url agency_graphs_by_indicator "5DPc" "English" %}">Graphs</a>)</span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "6DP" "English" %}">6DP</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "7DP" "English" %}">7DP</a></span></li>
+                                <li><span class="indicatorblock"><a href="{% url agency_table_by_indicator "8DP" "English" %}">8DP</a></span></li>
                             </ul>
                         </p>
                         </div>
@@ -117,8 +117,8 @@
                         <h2>Country Data</h2>
                         <p>
                             <ul>
-                                <li><a href="{% url country_table %}">Country Table</a></li>
-                                <li><a href="{% url country_matrix %}">Country Table without Figures</a></li>
+                                <li><a href="{% url country_table "English" %}">Country Table</a></li>
+                                <li><a href="{% url country_matrix "English" %}">Country Table without Figures</a></li>
                                 <li><a href="{% url government_graphs "English" %}">Government Graphs (<a href="{% url government_graphs "French" %}">French</a>)</li>
                                 <li><a href="{% url country_response_breakdown %}">Response Breakdown</a></li>
                             </ul>

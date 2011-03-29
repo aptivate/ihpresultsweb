@@ -6,6 +6,7 @@ import target
 import indicators
 from indicators import NA_STR
 import consts
+import translations
 
 def tbl_float_format(x, places=0):
     if type(x) == float:
@@ -29,7 +30,7 @@ def perc_change(base_val, latest_val):
         return None
     return (latest_val - base_val) / base_val * 100.0
 
-def agency_table_by_indicator(request, indicator, template_name="submissions/agency_table_by_indicator.html", extra_context=None):
+def agency_table_by_indicator(request, indicator, language="English", template_name="submissions/agency_table_by_indicator.html", extra_context=None):
     dp_gov_map = {
         "1DP" : "1G",
         "6DP" : "6G",
@@ -37,6 +38,7 @@ def agency_table_by_indicator(request, indicator, template_name="submissions/age
         "8DP" : "8G",
     }
     extra_context = extra_context or {} 
+    extra_context["translation"] = request.translation
 
     country_calcs = None
     countries = models.Country.objects.all().order_by("country")
@@ -82,10 +84,11 @@ def agency_table_by_indicator(request, indicator, template_name="submissions/age
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
-def agency_table_by_agency(request, agency_id, template_name="submissions/agency_table.html", extra_context=None):
+def agency_table_by_agency(request, agency_id, language="English", template_name="submissions/agency_table.html", extra_context=None):
     extra_context = extra_context or {} 
     agency = get_object_or_404(models.Agency, pk=agency_id)
 
+    extra_context["translation"] = translation = request.translation
     abs_values = {}
     for country in agency.countries:
         country_abs_values = {}
@@ -103,15 +106,16 @@ def agency_table_by_agency(request, agency_id, template_name="submissions/agency
             } 
         abs_values[country.country] = country_abs_values
     extra_context["abs_values"] = sorted(abs_values.items())
-    extra_context["spm_map"] = consts.spm_map
-    extra_context["institution_name"] = "%s Data across IHP+ Countries" % agency.agency
+    extra_context["spm_map"] = translation.spm_map
+    extra_context["institution_name"] = translation.by_agency_title % agency.agency
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
-def agency_table_by_country(request, country_id, template_name="submissions/agency_table.html", extra_context=None):
+def agency_table_by_country(request, country_id, language="English", template_name="submissions/agency_table.html", extra_context=None):
     extra_context = extra_context or {} 
     country = get_object_or_404(models.Country, pk=country_id)
 
+    extra_context["translation"] = translation = request.translation
     abs_values = {}
     for agency in country.agencies:
         ratings = target.country_agency_indicator_ratings(country, agency)
@@ -129,8 +133,8 @@ def agency_table_by_country(request, country_id, template_name="submissions/agen
             } 
         abs_values[agency.agency] = agency_abs_values
     extra_context["abs_values"] = sorted(abs_values.items())
-    extra_context["spm_map"] = consts.spm_map
-    extra_context["institution_name"] = "Development Partners in %s" % country.country
+    extra_context["spm_map"] = translation.spm_map
+    extra_context["institution_name"] = translation.by_country_title % country.country
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
@@ -145,8 +149,9 @@ def gbs_table(request, agency_id, template_name="submissions/gbs_table.html", ex
 
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
-def country_table(request, template_name="submissions/country_table.html", extra_context=None):
+def country_table(request, language="English", template_name="submissions/country_table.html", extra_context=None):
     extra_context = extra_context or {}
+    extra_context["translation"] = translation = request.translation
     abs_values = {}
     for country in models.Country.objects.all().order_by("country"):
         country_abs_values = {}
@@ -199,7 +204,7 @@ def country_table(request, template_name="submissions/country_table.html", extra
                 ) 
         abs_values[country.country] = country_abs_values
     extra_context["abs_values"] = sorted(abs_values.items())
-    extra_context["spm_map"] = consts.gov_spm_map
+    extra_context["spm_map"] = translation.gov_spm_map
         
     return direct_to_template(request, template=template_name, extra_context=extra_context)
     

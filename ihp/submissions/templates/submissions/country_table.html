@@ -6,8 +6,8 @@
 <h1>IHP+ Country Government Data</h1>
 <table class="gov">
     <tr class="head">
-        <th rowspan="2">SPM #</th>
-        <th rowspan="2" class="spm">Standard Performance Measure</th>
+        <th rowspan="2">{{ translation.spm }} #</th>
+        <th rowspan="2" class="spm">{{ translation.standard_performance_measure }}</th>
         {% for country, _ in abs_values %}
         <th colspan="3">{{ country }}</th>
         {% endfor %}
@@ -16,7 +16,7 @@
         {% for country, _ in abs_values %}
             <th>2007</th>
             <th>2009</th>
-            <th>Rating</th>
+            <th>{{ translation.rating }}</th>
         {% endfor %}
 
     </tr>
