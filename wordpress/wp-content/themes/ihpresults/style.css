@@ -33,9 +33,12 @@ form { margin: 0; }
 	clear:both;
 	width:100%;
 	display:block;
-	float:left;
 	padding:0;
 	margin:0;
+}
+
+#access {
+	margin-top: 1.5em;
 }
 
 #branding, #access-inner, #wrapper-inner, #footer-inner {
@@ -56,7 +59,6 @@ form { margin: 0; }
 
 #wrapper {
 	padding-top: 20px;
-	float: left;
 
 }
 #sidebar {
@@ -66,15 +68,10 @@ form { margin: 0; }
 }
 
 #content {
-	float:left;
 	margin-bottom:20px;
 	padding:0;
 	width:590px;
 }
-
-
-
-
 
 #footer {
 	clear: both;
@@ -90,23 +87,19 @@ form { margin: 0; }
 
 #header {
 	display:block;
-	float:left;
-	position:relative;
 	padding-top:5px;
 	background-repeat:no-repeat;
 	background-position:top;
 	margin-top:0px;
-	z-index:10;
+	position: relative;
 }
 
 #header #blogname a, #header h1 a {
 	line-height: 1;
 	display: block;
-	float: left;
-	height: 50px;
+	height: 60px;
 	width: 200px;
 	margin:0;
-	position: relative;
 	background-image:url(images/ihpresults-logo.png);
 	background-repeat:no-repeat;
 	text-indent:-9999px;
@@ -141,7 +134,6 @@ body.home #header #blogname a {
 }
 
 .home #header #components-bg { 
-	z-index: 1;	
 	height:466px;
 	opacity:1;
 }
@@ -194,7 +186,6 @@ body.home #header #blogname a {
 #access .menu-header,
 div.menu {
 	font-size: 13px;
-	float:left;
 }
 
 #access .menu-header ul,
@@ -205,12 +196,16 @@ div.menu ul {
 
 #access .menu-header li,
 div.menu li {
-	float: left;
 	position: relative;
 }
 
-.sub-menu {
-	z-index: 99999;
+#menu-top-menu > li,
+#menu-results-menu > li {
+	float: left;
+}
+
+#menu-results-menu > li {
+	margin-right: 0.5em;
 }
 
 #access a {
@@ -221,7 +216,7 @@ div.menu li {
 	line-height:38px;
 	padding-bottom:0;
 	padding-left:0;
-	padding-right:20px;
+	padding-right:1em;
 	padding-top:0;
 	text-decoration:none;
 }
@@ -233,7 +228,7 @@ div.menu li {
 	left: 0;
 	float: left;
 	width: 150px;
-	z-index: 99999;
+	z-index: 1;
 }
 #access ul ul li {
 	min-width: 150px;
@@ -242,12 +237,12 @@ div.menu li {
 	left: 100%;
 	top: 0;
 }
-#access ul ul a {
+#access ul ul {
 	background: #D1DDD9;
+}
+#access ul ul a {
 	line-height: 1em;
 	padding: 5px;
-	width: 150px;
-	height: auto;
 }
 #access li:hover > a {
 	background: #fff;
@@ -286,11 +281,8 @@ div.menu li {
   border-radius:15px 15px 0 0;
   background:none repeat scroll 0 0 #EF9200;
   clear:both;
-  display:block;
+  display:inline-block;
   padding: 6px 6px 0;
-  left:-10px;
-  width:650px;
-  height:35px;
 }
 
 #access .results-inner {
@@ -298,11 +290,10 @@ div.menu li {
 	-webkit-border-radius:15px;
 	border-radius:15px;
 	background-color:#0E3D3D;
-	display:block;
-	height: 24px;
-	margin: 0 auto;
+	margin: 0;
 	padding:5px 10px;
 	color:#fff;
+	white-space:nowrap;
 }
 
 #access #results h2 {
@@ -358,8 +349,6 @@ color:#333;
 
 #access #results #searchform {
   margin:0;
-  display:block;
-  float:right; 
   
 }
  
@@ -370,6 +359,7 @@ color:#333;
   border:medium none;
   padding:2px 5px;
   background-color:#fff;
+  position:relative;
 }
 
 #access #results input#s {
@@ -481,13 +471,13 @@ h5, h6 {
 p, ul, ol, table, .navigation {
 	margin: .25em 0 1em;
 }
-th, td {
+#content th, #content td {
 	padding: .5em .66em;
 	line-height: 1.1;
 	vertical-align: top;
 	border-bottom: 1px solid #ddd;
 }
-th {
+#content th {
 	text-align: left;
 	vertical-align: bottom;
 }
@@ -512,10 +502,6 @@ ul, ol {
 ul ul,
 ol ol {
 	margin: 0;
-}
-li {
-	margin:0 0.5em 0 0;
-	padding-left: 0;
 }
 ul li {
 	list-style-type: none;
@@ -723,7 +709,6 @@ ul.ticklist li,
 	width:100%;
 	background-color:#EF9200;
 	display:block;
-	position:relative;
 	height:220px;
 }
 	
@@ -733,7 +718,6 @@ ul.ticklist li,
 	width:960px;
 	margin:0 auto;
 	clear:both;
-	position:relative;
 }
 
 
@@ -771,30 +755,23 @@ ul.ticklist li,
 
 .home .featured-content {
 	display:block;
-	float:left;
-	width:630px;
-	position:relative;
 }
 
 .home .featured-content img.image-1 {
 	display: block;
-	left:0;
-	position: absolute;
+	position: relative;
 	top:-15px;
-	z-index:15!important;
 }
 
 .home .section.bottom {
 	width:960px;
 	margin:0 auto;
-	position:relative;
 	padding:0;
 }
 
 .home #home-bottom {
 	width:420px;
 	float:left;
-	position:relative;
 }
 
 .home #home-bottom h2 {

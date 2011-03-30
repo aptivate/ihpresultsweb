@@ -30,3 +30,12 @@ ol li {
 #featured-content {
 	overflow:hidden;
 }
+
+/*
+If we position the featured image AT ALL, because of the IE7 z-index bug,
+it MUST stack above the drop-down menus, which makes them pretty unusable.
+*/
+.home .featured-content img.image-1 {
+	position: static;
+}
+.home .featured-content img.image-1
