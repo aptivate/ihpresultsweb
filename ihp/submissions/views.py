@@ -23,7 +23,7 @@ def agency_export(request, language):
     language = get_object_or_404(Language, language=language)
 
     headers = [
-        "file", "agency", "profile", 
+        "file", "agency", "agencytitle", "profile", 
         "er1", "r1", "er2a", "r2a", "er2b", "r2b", "er2c", "r2c",
         "er3", "r3", "er4", "r4", "er5a", "r5a", "er5b", "r5b", "er5c", "r5c",
         "er6", "r6", "er7", "r7", "er8", "r8",
@@ -169,7 +169,7 @@ def country_export(request, language):
        "BC4" : fformat_front, 
        "PC1" : fformat_front, 
        "PC2" : fformat_front, 
-       "PF1" : fformat_front, 
+       "PF1" : fformat_none, 
        "PHC1" : fformat_front, 
        "PHC3" : fformat_front, 
        "PHC5" : fformat_front, 
@@ -272,7 +272,20 @@ def agency_ratings(request, template_name="submissions/agency_ratings.html", ext
     for indicator in dp_indicators:
         rating = {}
         for agency in agencies:
-            rating[agency] = data[agency][indicator]["target"]
+            cur_val = data[agency][indicator]["cur_val"]
+            base_val = data[agency][indicator]["base_val"]
+            perc_change = ""
+            try:
+                perc_change = ((cur_val - base_val) / base_val) * 100
+            except:
+                pass
+
+            rating[agency] = {
+                "rating" : data[agency][indicator]["target"],
+                "base_val" : data[agency][indicator]["base_val"],
+                "cur_val" : data[agency][indicator]["cur_val"],
+                "perc_change" : perc_change
+            }
         ratings.append((indicator, rating, spm_map[indicator]))
     
     extra_context["ratings"] = ratings

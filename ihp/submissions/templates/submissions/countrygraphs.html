@@ -1,30 +1,30 @@
 {% extends "submissions/graph_base.html" %}
-{% load indgraph %}
 
 {% block graphdefs %}
 
 <script>
-{% ratiograph country 2DPa data graph_2dpa titles.2DPa yaxes.2DPa xaxis %}
-{% ratiograph country 2DPb data graph_2dpb titles.2DPb yaxes.2DPb xaxis %}
-{% ratiograph country 2DPc data graph_2dpc titles.2DPc yaxes.2DPc xaxis %}
-{% ratiograph country 3DP data graph_3dp titles.3DP yaxes.3DP xaxis %}
-{% ratiograph country 4DP data graph_4dp titles.4DP yaxes.4DP xaxis %}
-{% ratiograph country 5DPa data graph_5dpa titles.5DPa yaxes.5DPa xaxis %}
-{% ratiograph country 5DPb data graph_5dpb titles.5DPb yaxes.5DPb xaxis %}
-{% ratiograph country 5DPc data graph_5dpc titles.5DPc yaxes.5DPc xaxis %}
+{{ graph_2DPa|safe }}
+{{ graph_2DPb|safe }}
+{{ graph_2DPc|safe }}
+{{ graph_3DP|safe }}
+{{ graph_4DP|safe }}
+{{ graph_5DPa|safe }}
+{{ graph_5DPb|safe }}
+{{ graph_5DPc|safe }}
+
 </script>
 {% endblock %}
 
 {% block body %}
 <h1>{{ agency }}</h1>
 
-<div class="graphblock"><div id="graph_2dpa" class="graph"></div></div>
-<div class="graphblock"><div id="graph_2dpb" class="graph"></div></div>
-<div class="graphblock"><div id="graph_2dpc" class="graph"></div></div>
-<div class="graphblock"><div id="graph_3dp" class="graph"></div></div>
-<div class="graphblock"><div id="graph_4dp" class="graph"></div></div>
-<div class="graphblock"><div id="graph_5dpa" class="graph"></div></div>
-<div class="graphblock"><div id="graph_5dpb" class="graph"></div></div>
-<div class="graphblock"><div id="graph_5dpc" class="graph"></div></div>
+<div class="graphblock"><div id="graph_2DPa" class="graph"></div></div>
+<div class="graphblock"><div id="graph_2DPb" class="graph"></div></div>
+<div class="graphblock"><div id="graph_2DPc" class="graph"></div></div>
+<div class="graphblock"><div id="graph_3DP" class="graph"></div></div>
+<div class="graphblock"><div id="graph_4DP" class="graph"></div></div>
+<div class="graphblock"><div id="graph_5DPa" class="graph"></div></div>
+<div class="graphblock"><div id="graph_5DPb" class="graph"></div></div>
+<div class="graphblock"><div id="graph_5DPc" class="graph"></div></div>
 
 {% endblock %}

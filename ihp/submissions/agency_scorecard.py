@@ -11,6 +11,7 @@ def get_agency_scorecard_data(agency, language=None):
         data["np"], data["p"] = target.get_country_progress(agency)
         data["file"] = agency.agency
         data["agency"] = agency.agency 
+        data["agencytitle"] = agency.display_name 
         data["profile"] = agency_profile.description
         for indicator in indicators.dp_indicators:
             h = indicator.replace("DP", "")

@@ -147,8 +147,14 @@ def calc_agency_ratings(agency, language=None):
         if ratings_comments(indicator):
             result["commentary"] = ratings_comments(indicator)
         else:
+            is_base_num = isinstance(base_val, numbers.Real)
+            is_cur_num = isinstance(cur_val, numbers.Real)
+
+            if is_base_num: result["one_minus_base_val"] = 100 - result["base_val"]
+            if is_cur_num: result["one_minus_cur_val"] = 100 - result["cur_val"]
+        
             # create commentary
-            if (base_val not in [None, NA_STR]) and (cur_val not in [None, NA_STR]):
+            if is_base_num and is_cur_num:
                 result["diff_val"] = math.fabs(base_val - cur_val)
                 # This is really dirty but the text is currently formatted using
                 # no decimal places and so this calculation should use the rounded
@@ -172,9 +178,6 @@ def calc_agency_ratings(agency, language=None):
                     result["perc_change"] = 0
                     result["abs_perc_change"] = 0
 
-                result["one_minus_base_val"] = 100 - result["base_val"]
-                result["one_minus_cur_val"] = 100 - result["cur_val"]
-        
             try:
                 template = translation.agency_commentary_text[indicator]
                 if type(template) == Template:
@@ -182,13 +185,13 @@ def calc_agency_ratings(agency, language=None):
                 else:
                     result["commentary"] = template % result
             except:
-                import traceback
-                traceback.print_exc()
                 pass
 
             if result["target"] == Rating.NONE:
             #if NA_STR in [base_val, cur_val]:
                 result["commentary"] = translation.rating_none_text % agency.agency
+            elif result["target"] == Rating.QUESTION:
+                result["commentary"] = translation.rating_question_text
             elif result["commentary"] == "":
                 result["commentary"] = translation.rating_question_text
 

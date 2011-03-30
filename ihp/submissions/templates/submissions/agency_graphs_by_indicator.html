@@ -1,0 +1,21 @@
+{% extends "submissions/graph_base.html" %}
+
+{% block graphdefs %}
+
+<script>
+
+{% for graph in graphs %}
+    {{ graph.obj|safe }}
+{% endfor %}
+
+</script>
+{% endblock %}
+
+{% block body %}
+<h1>{{ agency }}</h1>
+
+{% for graph in graphs %}
+    <div class="graphblock"><div id="{{ graph.name }}" class="graph"></div></div>
+{% endfor %}
+
+{% endblock %}

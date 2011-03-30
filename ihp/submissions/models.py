@@ -28,6 +28,7 @@ class AgencyManager(models.Manager):
 
 class Agency(models.Model):
     agency = models.CharField(max_length=50, null=False, unique=True)
+    display_name = models.CharField(max_length=100, null=True, blank=True)
     type = models.CharField(max_length=15, null=False)
     objects = AgencyManager()
 
@@ -221,9 +222,9 @@ class MDGData(models.Model):
     country = models.ForeignKey(Country, null=False)
     mdg_target = models.CharField(max_length=20, null=False)
     baseline_year = models.CharField(max_length=4, null=True)
-    baseline_value = models.FloatField(null=True)
+    baseline_value = models.FloatField(null=True, blank=True)
     latest_year = models.CharField(max_length=4, null=True)
-    latest_value = models.FloatField(null=True)
+    latest_value = models.FloatField(null=True, blank=True)
     arrow = models.CharField(max_length=20, null=True)
 
     @property

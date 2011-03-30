@@ -62,7 +62,7 @@ agency_commentary_text = {
     "2DPc" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided by the agency through programme based approaches - %(diff_direction)s from %(base_val).0f%%. Target = 66%%.",
     "3DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid was provided by the agency through multi-year commitments - %(diff_direction)s from %(base_val).0f%%. Target = 90%%.",
     "4DP" : "In %(cur_year)s %(cur_val).0f%% of health sector aid disbursements provided by the agency were released according to agreed schedules - %(diff_direction)s from %(base_val).0f%% in %(base_year)s. Target = 90%%.",
-    "5DPa" : u"In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid provided by the agency used country procurement systems - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%. Target = 33%% reduction in aid not using procurement systems (with ≥ 80%% using country systems).",
+    "5DPa" : Template("In {{ cur_year }} {{ one_minus_cur_val|floatformat }}% of health sector aid provided by the agency used country procurement systems{% if one_minus_diff_direction %} - {{ one_minus_diff_direction }} from {{ one_minus_base_val|floatformat }}%{% endif %}. Target = 33% reduction in aid not using procurement systems (with ≥ 80% using country systems)."),
     "5DPb" : u"In %(cur_year)s %(one_minus_cur_val).0f%% of health sector aid provided by the agency used national public financial management systems - %(one_minus_diff_direction)s from %(one_minus_base_val).0f%%. Target = 33%% reduction in aid not using PFM systems (with ≥ 80%% using country systems).",
     "5DPc" : "In %(cur_year)s the stock of parallel project implementation units (PIUs) used by the agency in the surveyed countries was %(cur_val)s - %(diff_direction)s from %(base_val)s. Target = 66%% reduction in stock of PIUs.",
     "6DP" : "In %(cur_year)s national performance assessment frameworks were routinely used by the agency to assess progress in %(cur_val).0f%% of IHP+ countries where they exist. Target = 100%%.",
@@ -73,3 +73,152 @@ agency_commentary_text = {
 direction_decrease = "a decrease" 
 direction_increase = "an increase" 
 direction_nochange = "no change" 
+
+agency_graphs = {
+    "2DPa" : {
+        "title" : "Increase in %s\\'s aid flows to the health sector <br>not reported on goverment\\'s budget (2DPa)",
+        "yAxis" : "% increase in funds not reported <br>on government\\'s budget",
+    },
+    "2DPb" : {
+        "title" : "% of technical assistance disbursed through programmes (WB, Target: 50%)",
+        "yAxis" : "% of programme-based technical assistance",
+    },
+    "2DPc" : {
+        "title" : "% of aid flows provided in the context of programme base approaches (Target: 66%)",
+        "yAxis" : "% of aid flows",
+    },
+    "3DP" : {
+        "title" : "% of health sector funding provided through multi-year commitments",
+        "yAxis" : "% of health sector funding provided <br>through multi-year commitments",
+    },
+    "4DP" : {
+        "title" : "Increase in %s\\'s health sector aid not disbursed within the year <br>for which it was scheduled (4DP)",
+        "yAxis" : "% increase in health sector aid not disbursed <br>within the year for which it was scheduled",
+    },
+    "5DPa" : {
+        "title" : "% change in health sector aid to the public sector not using <br/>partner countries\\' procurement systems",
+        "yAxis" : "% change in health sector aid to the public sector <br>not using partner countries\\' procurement systems",
+    },
+    "5DPb" : {
+        "title" : "Increase in %s\\'s health sector aid to the public sector not using <br/>partner countries\\' PFM systems (5DPb)",
+        "yAxis" : "% increase of health sector aid to the public sector<br> not using partner countries\\' PFM systems",
+    },
+    "5DPc" : {
+        "title" : "Number of %s\\'s parallel project implementation <br>(PIUs) units (5DPc)",
+        "yAxis" : "Number parallel <br>project implementation (PIUs) units",
+    },
+}
+
+country_graphs = agency_graphs
+
+highlevel_graphs = {
+    "2DPa" : {
+        "title" : "2DPa: Aggregate proportion of partner support reported on national budgets",
+        "yAxis" : "%",
+        "subtitle" : "* Data with baseline values from 2008 are not included",
+    },
+    "2DPb" : {
+        "title" : "2DPb: Aggregate proportion of partner support for capacity-development <br/>provided through coordinated programmes in line with national strategies",
+        "yAxis" : "%",
+        "subtitle" : "* Data with baseline values from 2008 are not included",
+    },
+    "2DPc" : {
+        "title" : "2DPc: Aggregate proportion of partner support <br/>provided as programme based approaches",
+        "yAxis" : "%",
+        "subtitle" : "* Data with baseline values from 2008 are not included",
+    },
+    "3DP"  : {
+        "title" : "3DP: Aggregate proportion partner support <br/>provided through multi-year commitments",
+        "yAxis" : "%",
+        "subtitle" : "* Data with baseline values from 2008 are not included",
+    },
+    "4DP"  : {
+        "title" : "% of actual health spending planned for that year (4DP) ",
+        "yAxis" : "%",
+        "subtitle" : "* Data with baseline values from 2008 are not included",
+    },
+    "5DPa" : {
+        "title" : "5DPa: Aggregate partner use of country procurement systems", 
+        "yAxis" : "%",
+        "subtitle" : "* Data with baseline values from 2008 are not included",
+    },
+    "5DPb" : {
+        "title" : "5DPb: Aggregate partner use of country public financial management systems", 
+        "yAxis" : "%",
+        "subtitle" : "* Data with baseline values from 2008 are not included",
+    },
+    "5DPc" : {
+        "title" : "5DPc: Aggregate number of parallel Project Implementation Units (PIUs)", 
+        "yAxis" : "Total number of PIUs",
+        "subtitle" : "* Data with baseline values from 2008 are not included",
+    }
+}
+
+additional_graphs = {
+    "2DPa" : {
+        "series1" : "Health aid not on budget",
+        "series2" : "Health aid reported on budget",
+        "title" : "2DPa: Proportion of partner health aid on country budget",
+    },
+    "2DPb" : {
+        "series1" : "Support coordinated and in line",
+        "series2" : "Support not coordinated and in line",
+        "title" : "2DPb: Support for capacity development that is coordinated <br/>and in line with national strategies",
+    },
+    "2DPc" : {
+        "series1" : "% of health aid as Programme Based Approach",
+        "series2" : "% of health aid not as Programme Based Approach",
+        "title" : "2DPC: Support provided as Programme Based Approach",
+    },
+    "3DP" : {
+        "series1" : "% of multi-year commitments",
+        "series2" : "% not provided through multi-year commitments",
+        "title" : "% of aid provided through multi-year commitments",
+    },
+    "5DPa" : {
+        "series1" : "Health aid using procurement systems",
+        "series2" : "Health aid not using procurement systems",
+        "title" : "5DPa: Partner use of country procurement systems",
+    },
+    "5DPb" : {
+        "series1" : "Health aid using PFM systems",
+        "series2" : "Health aid not using PFM systems",
+        "title" : "5DPb: Partner use of country public financial management systems",
+    }
+}
+
+projection_graphs = {
+    "2DPa" : {
+        "title" : "Projected time required to meet On Budget target <br>(based on current levels of performance):2007 Baseline",
+    },
+    "5DPb" : {
+        "title" : "Projected time required to meet PFM target <br>(based on current levels of performance):2007 Baseline",
+    }
+}
+
+government_graphs = {
+    "3G" : {
+        "title" : "3G: Proportion of national budget allocated to health",
+        "subtitle" : "* Target for Nepal is 10%",
+    },
+    "4G" : {
+        "title" : "4G: Actual disbursement of government health budgets",
+    },
+    "health_workforce" : {
+        "title" : "Proportion of health sector budget spent on Human Resources for Health (HRH)",
+    },
+    "outpatient_visits" : {
+        "title" : "Number of Outpatient Department Visits per 10,000 population",
+    },
+    "skilled_medical" : {
+        "title" : "Number of skilled medical personnel per 10,000 population",
+    },
+    "health_budget" : {
+        "title" : "% of national budget is allocated to health (IHP+ Results data)",
+    }
+}
+
+target_language = {
+    "target" : "target",
+    "who" : "WHO Recommended"
+}

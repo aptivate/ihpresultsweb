@@ -9,34 +9,6 @@ from submissions.models import Agency, Country
 
 admin.autodiscover()
 
-
-agency_ratio_titles = {
-    "2DPa" : "Increase in %(agency_name)s's aid flows to the health sector not reported on goverment's budget (2DPa)",
-    "2DPb" : "%% of technical assistance disbursed through programmes (WB, Target: 50%%)",
-    "2DPc" : "%% of aid flows provided in the context of programme base approaches (Target: 66%%)",
-    "3DP"  : "%% of health sector funding provided through multi-year commitments",
-    "4DP"  : "Increase in %(agency_name)s's health sector aid not disbursed within the year for which it was scheduled (4DP)",
-    "5DPa" : "%% change in health sector aid to the public sector not using partner countries' procurement systems",
-    "5DPb" : "Increase in %(agency_name)s's health sector aid to the public sector not using partner countries' PFM systems (5DPb)",
-    "5DPc" : "Reduction in %(agency_name)s's stock of parallel project implementation (PIUs) units (5DPc)",
-}
-
-agency_abs_titles = dict(agency_ratio_titles)
-agency_abs_titles["5DPa"] = "%% of health sector aid to the public sector not using partner countries' procurement systems"
-
-agency_yaxis = {
-    "2DPa" : "%% increase in funds not reported on government's budget",
-    "2DPb" : "%% of programme-based technical assistance",
-    "2DPc" : "%% of aid flows",
-    "3DP"  : "%% of health sector funding provided through multi-year commitments",
-    "4DP"  : "%% increase in health sector aid not disbursed within the year for which it was scheduled",
-    "5DPa" : "%% change in health sector aid to the public sector not using partner countries' procurement systems",
-    "5DPb" : "%% increase of health sector aid to the public sector not using partner countries' PFM systems",
-    "5DPc" : "%% reduction in stock of parallel project implementation (PIUs) units",
-}
-
-agency_xaxis = "IHP+ Country"
-
 country_ratio_titles = {
     "2DPa" : "Increase in %(country_name)s's aid flows to the health sector not reported on goverment's budget (2DPa)",
     "2DPb" : "%% of technical assistance disbursed through programmes (WB, Target: 50%%)",
@@ -48,10 +20,6 @@ country_ratio_titles = {
     "5DPc" : "Reduction in %(country_name)s's stock of parallel project implementation (PIUs) units (5DPc)",
 }
 
-country_abs_titles = dict(country_ratio_titles)
-country_abs_titles["5DPa"] = "%% of health sector aid to the public sector not using partner countries' procurement systems"
-country_yaxis = agency_yaxis
-country_xaxis = "IHP+ Agency"
 
 urlpatterns = patterns('',
 
@@ -62,8 +30,8 @@ urlpatterns = patterns('',
     }}, "home"),
 
     # New csv views
-    (r'^scorecard/export/agencies/(?P<language>.+)/$', 'submissions.views.agency_export', {}, 'agency_export'),
-    (r'^scorecard/export/countries/(?P<language>.+)/$', 'submissions.views.country_export', {}, 'country_export'),
+    (r'^scorecard/export/agencies/(?P<language>\w+)/$', 'submissions.views.agency_export', {}, 'agency_export'),
+    (r'^scorecard/export/countries/(?P<language>\w+)/$', 'submissions.views.country_export', {}, 'country_export'),
 
     # Edit views
     (r'^scorecard/edit/agencies/summary/$', 'submissions.views.dp_summary_edit', {}, 'dp_summary_edit'),
@@ -78,37 +46,14 @@ urlpatterns = patterns('',
     (r'^api/country_scorecard/(?P<country_id>\d+)/$', 'submissions.api.country_scorecard_overrides', {}, 'api_country_scorecard'),
 
     # Graph Views
-    (r"^agencies/graphs/highlevel/$", "submissions.graphs.highlevelgraphs", {}, "highlevelgraphs"),
-    (r"^agencies/graphs/projection/$", "submissions.graphs.projectiongraphs", {}, "projectiongraphs"),
-    (r"^agencies/graphs/additional/$", "submissions.graphs.additional_graphs", {}, "additionalgraphs"),
+    (r"^agencies/graphs/highlevel/(?P<language>\w+)/$", "submissions.graphs.highlevelgraphs", {}, "highlevelgraphs"),
+    (r"^agencies/graphs/projection/(?P<language>\w+)/$", "submissions.graphs.projectiongraphs", {}, "projectiongraphs"),
+    (r"^agencies/graphs/(?P<indicator>\w+)/(?P<language>\w+)/$", "submissions.graphs.agency_graphs_by_indicator", {}, "agency_graphs_by_indicator"),
 
-    (r"^agencies/(?P<agency_name>[a-zA-Z\s]+)/graphs/$", "submissions.graphs.agencygraphs", {
-        "titles" : agency_ratio_titles,
-        "yaxes" : agency_yaxis,
-        "xaxis" : agency_xaxis,
-    }, "agencygraphs"),
+    (r"^agencies/(?P<agency_name>[a-zA-Z\s]+)/graphs/(?P<language>\w+)/$", "submissions.graphs.agencygraphs", {}, "agencygraphs"),
+    (r"^agencies/graphs/by_country/(?P<country_name>[a-zA-Z\s]+)/graphs/(?P<language>\w+)/$", "submissions.graphs.countrygraphs", {}, "countrygraphs"),
 
-    (r"^agencies/(?P<agency_name>[a-zA-Z\s]+)/graphs/absolute$", "submissions.graphs.agencygraphs", {
-        "template_name" : "submissions/agencygraphs_absolute.html",
-        "titles" : agency_abs_titles,
-        "yaxes" : agency_yaxis,
-        "xaxis" : agency_xaxis,
-    }, "agencygraphs_absolute"),
-
-    (r"^agencies/graphs/by_country/(?P<country_name>[a-zA-Z\s]+)/ratio_graph/$", "submissions.graphs.countrygraphs", {
-        "titles" : country_ratio_titles,
-        "yaxes" : country_yaxis,
-        "xaxis" : country_xaxis,
-    }, "countrygraphs"),
-
-    (r"^agencies/graphs/by_country/(?P<country_name>[a-zA-Z\s]+)/absolute_graph/$", "submissions.graphs.countrygraphs", {
-        "template_name" : "submissions/countrygraphs_absolute.html",
-        "titles" : country_ratio_titles,
-        "yaxes" : country_yaxis,
-        "xaxis" : country_xaxis,
-    }, "countrygraphs_absolute"),
-
-    (r"^countries/graphs/$", "submissions.graphs.government_graphs", {
+    (r"^countries/graphs/(?P<language>\w+)/$", "submissions.graphs.government_graphs", {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/country_graphs_by_indicator.html"
@@ -208,6 +153,9 @@ urlpatterns = patterns('',
 
     (r'^scorecard/tables/agency_country_ratings/$', 'submissions.views.agency_country_ratings', {}, 'agency_country_ratings'),
     (r'^datatables/tables/agency_ratings/$', 'submissions.views.agency_ratings', {}, 'agency_ratings'),
+    (r'^datatables/tables/agency_ratings2/$', 'submissions.views.agency_ratings', {
+        "template_name" : "submissions/agency_ratings2.html",
+    }, 'agency_ratings2'),
 
 
     # Old views
