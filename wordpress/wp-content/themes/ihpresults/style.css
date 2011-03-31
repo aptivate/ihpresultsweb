@@ -71,6 +71,7 @@ form { margin: 0; }
 	margin-bottom:20px;
 	padding:0;
 	width:590px;
+	float: left;
 }
 
 #footer {
@@ -141,7 +142,7 @@ body.home #header #blogname a {
 /* Navigation -------------------------------------------------- */
 
 #access {
-	border-bottom:6px solid #EF9200;
+	border-bottom:6px solid #EFAA38;
 }
 
 #access .skip-link {
@@ -279,7 +280,7 @@ div.menu li {
   -moz-border-radius:15px 15px 0 0;
   -webkit-border-radius:15px 15px 0 0;
   border-radius:15px 15px 0 0;
-  background:none repeat scroll 0 0 #EF9200;
+  background:none repeat scroll 0 0 #EFAA38;
   clear:both;
   display:inline-block;
   padding: 6px 6px 0;
@@ -707,7 +708,7 @@ ul.ticklist li,
 
 .home #content {
 	width:100%;
-	background-color:#EF9200;
+	background-color:#EFAA38;
 	display:block;
 	height:220px;
 }
@@ -1196,4 +1197,16 @@ a.button {
 
 a.button:hover {
 color:#333;
+}
+
+#social-bookmarks {
+	border-top: 1px solid #ccc;
+	padding-top: 0.5em;
+	color: #888;
+}
+#social-bookmarks img {
+	display: inline;
+	margin: 0;
+	padding: 0;
+	vertical-align: -20%;
 }

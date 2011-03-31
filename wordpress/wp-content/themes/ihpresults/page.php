@@ -20,6 +20,14 @@
 
 <?php edit_post_link('Edit this page.', '<div class="metadata"><p class="byline"><small>', '</small></p></div>'); ?>
 
+<?php if (function_exists('simple_social_bookmarks')) : ?>
+<div id="social-bookmarks">
+Share this page with:
+<?php echo simple_social_bookmarks('','','',
+	'iconfolder=../../plugins/simple-social-bookmarks/default'); ?>
+</div>
+<?php endif; ?>
+
 </div><!-- end entry -->
 
 <?php comments_template(); ?>
@@ -33,8 +41,11 @@
 </div>
 
 <?php endif; ?>
-</div> <!-- end content -->
 
 <?php get_sidebar(); ?>
+
+<div style="clear: both;"></div>
+
+</div> <!-- end content -->
 
 <?php get_footer(); ?>
