@@ -65,11 +65,10 @@ less nice, so we only do it on IE7.
 	left: inherit;
 }
 */
-#access .menu-header li, div.menu li {
+#access #menu-top-menu li { 
 	position: static;
 }
-#access #results .menu-header ul ul.sub-menu, #access ul ul.sub-menu {
-	top: inherit;
-	left: inherit;
+#access #menu-top-menu li ul.sub-menu {
+	top: 0;
 	position: relative;
 }

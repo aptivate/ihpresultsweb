@@ -474,7 +474,6 @@ p, ul, ol, table, .navigation {
 }
 #content th, #content td {
 	padding: .5em .66em;
-	line-height: 1.1;
 	vertical-align: top;
 	border-bottom: 1px solid #ddd;
 }
