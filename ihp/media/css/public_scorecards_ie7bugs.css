@@ -18,3 +18,7 @@ div.col, .infobox,
 #content #infobox .item h3 img {
 	display: none;
 }
+
+#scorecard td.expected_result p {
+	position: static; /* should be relative, but that breaks IE7 menus */
+}
