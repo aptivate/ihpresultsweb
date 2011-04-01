@@ -33,14 +33,25 @@
 	  <div class="featured-content"><img class="image-1" src="<?php bloginfo('template_url'); ?>/images/scorecards.png" alt="scorecards" /></div>
 	  <div class="icons"></div>
 	  </div><!--end top section-->
+
 </div><!--end #content-->
+
 	  <div class="section bottom">
 	  	<div id="home-bottom">
+
 		  <?php if ( function_exists('dynamic_sidebar') && dynamic_sidebar('home bottom') ) : else : ?>insert widgets into home bottom here<?php endif; ?>
+
+<?php if (function_exists('simple_social_bookmarks')) : ?>
+<div id="social-bookmarks">
+Share this page with:
+<?php echo simple_social_bookmarks('','','',
+	'iconfolder=../../plugins/simple-social-bookmarks/default'); ?>
+</div>
+<?php endif; ?>
+
 		</div>
 		  <?php get_sidebar(); ?>
 	  </div><!--end #home-bottom-->
 	  
-		
 
 <?php get_footer(); ?>
