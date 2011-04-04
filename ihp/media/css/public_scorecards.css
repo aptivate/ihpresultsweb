@@ -354,7 +354,6 @@ div.col {
 
 #scorecard td.expected_result {
 	background-color:#D1DDD9;
-	padding:0;
 	-moz-border-radius:8px;
 	-webkit-border-radius:8px;
 	border-radius:8px;
@@ -363,8 +362,8 @@ div.col {
 }
 
 #scorecard td.expected_result p {
-	position: relative;
 	margin: 10px 0 0;
+	position: relative; /* needed for icon positioning, but breaks IE7 menus */
 }
 
 #scorecard td.rating {
@@ -728,7 +727,6 @@ done
 /* Background and z-index hacks for ie-css3.htc */
 #scorecard, .infobox { 
   clear:both;
-  position:relative;
   margin:0;
 }
 
@@ -778,7 +776,6 @@ done
 
 #scorecard h2
 {
-	position: relative;
 }
 
 #content .content {
@@ -801,7 +798,7 @@ done
 	-moz-box-shadow:4px 4px 8px #818181;
 	-webkit-box-shadow:4px 4px 8px #818181;
 	box-shadow:4px 4px 8px #818181;
-	/*max-width:60%;*/ /*UNICEF scorecard, DRC callout overflows*/ 
+	max-width:20em; /*UNICEF scorecard, DRC callout overflows*/ 
 	text-align: left;
 	text-transform: none;
 	z-index: 10000; /* force above everything else, doesn't work for IE7 */
@@ -829,7 +826,7 @@ table.data {
 table.data th, table.data td {
 	padding: 0.2em 0.5em;
 	text-align: left;
-} 
+}
 
 table.data th {
 	border-bottom: 1px solid #ddd;

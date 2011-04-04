@@ -106,20 +106,26 @@
 <div id="access">
 	<div id="access-inner">
 	<?php if ( function_exists('dynamic_sidebar') && dynamic_sidebar('header') ) : else : ?><?php endif; ?>
-  <?php /*  Allow screen readers / text browsers to skip the navigation menu and get right to the good stuff */ ?>
+	<?php /*  Allow screen readers / text browsers to skip the navigation menu and get right to the good stuff */ ?>
 	<div class="skip-link screen-reader-text"><a href="#content" title="<?php esc_attr_e( 'Skip to content', 'ihpresults' ); ?>">
                  <?php _e( 'Skip to content', 'twentyten' ); ?></a></div>
 	<?php /* Our navigation menu.  If one isn't filled out, wp_nav_menu falls back to wp_page_menu.  The menu assiged to the primary position is 
                  the one used.  If none is assigned, the menu with the lowest ID is used.  */ ?>
 	<?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'primary' ) ); ?>
+	<table cellspacing="0" cellpadding="0" class="ie7-hack" style="margin: 0; border-spacing: 0; clear: both;"><tr><td style="margin: 0; padding: 0;">
 	<div id="results">
-    	<div class="results-inner">
-    		<h2>Scorecards:</h2>
-    		<?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'secondary' ) ); ?>
-    		<h2>Search:</h2>
-			<?php get_search_form(); ?>
-    	</div>
+    	<table class="results-inner">
+    		<tr>
+    			<td><h2>Scorecards:</h2></td>
+    			<td>
+    				<?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'secondary' ) ); ?>
+    			</td>
+    			<td><h2>Search:</h2></td>
+    			<td><?php get_search_form(); ?></td>
+    		</tr>
+    	</table>
 	</div><!-- #results -->
+	</td></tr></table>
 	</div><!-- #access-inner -->
 
 </div><!-- #access -->

@@ -30,3 +30,45 @@ ol li {
 #featured-content {
 	overflow:hidden;
 }
+
+/*
+If we position the featured image AT ALL, because of the IE7 z-index bug,
+it MUST stack above the drop-down menus, which makes them pretty unusable.
+*/
+.home .featured-content img.image-1 {
+	position: static;
+}
+
+/*
+Menu has no drop shadow on IE7, so needs work to separate it from the page
+background.
+*/
+#menu-results-menu ul.sub-menu {
+	border-left: 1px solid #eee;
+	border-right: 2px solid #888;
+	border-bottom: 2px solid #888;
+}
+
+/*
+If menu headings have relative position, they appear above drop-down menus
+earlier in the page in IE7, so we need to disable their relative position,
+which makes the drop-down menus positioned relative to the whole page, so
+we need to override the explicit top and left too. This makes the menus look
+less nice, so we only do it on IE7.
+*/
+/*
+#access .menu-header li, div.menu li {
+	position: static;
+}
+#access #results .menu-header ul ul.sub-menu {
+	top: inherit;
+	left: inherit;
+}
+*/
+#access #menu-top-menu li { 
+	position: static;
+}
+#access #menu-top-menu li ul.sub-menu {
+	top: 0;
+	position: relative;
+}

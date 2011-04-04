@@ -12,7 +12,7 @@
 				<tr class="indicator {%if forloop.last%}last{%endif%}">
 					{% if forloop.first %}
 						<td class="expected_result callout-from"
-							id="spm_{{category.code|cut:'G'|cut:'DP'}}"
+							id="spm_{{category.code}}"
 							rowspan="{{category.indicators|length}}">
 							<p><img
 								src="{% url ihp-media path='images' %}/results-icon-{{category.code|cut:'G'|cut:'DP'}}.png"
@@ -20,7 +20,7 @@
 						</td>
 					{% endif %}
 					
-					<td class="rating callout-from" id="rating_{{indicator.code|cut:'G'|cut:'DP'}}"><img
+					<td class="rating callout-from" id="rating_{{indicator.code}}"><img
 						src="{% url ihp-media path='images' %}/{{indicator.rating}}.png"
 						alt="{{indicator.rating}}" class="rating"></td>
 					
