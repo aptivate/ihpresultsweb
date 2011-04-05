@@ -162,6 +162,25 @@ class StackedAgencyBarGraph(DPChart):
 
         self.plotOptions = {"column" : {"stacking" : "percent"}}
 
+class AgencyBarGraph(DPChart):
+    def __init__(self, agencies, chart_name, series, **kwargs):
+        agency_names = map(lambda x: x.agency, agencies)
+
+        super(AgencyBarGraph, self).__init__(chart_name, **kwargs)
+        self.chart["defaultSeriesType"] = "column"
+        
+        self.xAxis = {
+            "categories" : agency_names,
+            "labels" : {
+                "rotation" : -90,
+                "y" : 40,
+            }
+        } 
+
+        if type(series) != list:
+            series = [series]
+        self.series = series
+
 class CountryBarGraph(CountryChart):
     def __init__(self, countries, chart_name, baseline_data, latest_data, **kwargs):
         country_names = map(lambda x: x.country, countries)
@@ -411,16 +430,33 @@ def additional_graph_by_indicator(indicator, name, translation, agency_data):
 
     target = target_values[indicator]
 
-    return StackedAgencyBarGraph(
-        name,
-        {
-            "name1" : translation.additional_graphs[indicator]["series1"],
-            "name2" : translation.additional_graphs[indicator]["series2"],
-            "data" : indicator_data(indicator, reverse=False)
-        },
-        "target", target,
-        title=translation.additional_graphs[indicator]["title"]
-    )
+    if indicator == "5DPc":
+        data = indicator_data(indicator)
+        agencies = [datum[0] for datum in data]
+        series = {
+            "name" : "PIUs",
+            "data" : [datum[1] for datum in data]
+        }
+        graph = AgencyBarGraph(
+            agencies, name, series,
+            title=translation.additional_graphs[indicator]["title"],
+            yAxis=translation.additional_graphs[indicator]["yAxis"],
+            legend={"enabled" : "false"},
+        )
+        return graph
+
+    else:
+        reverse = ["2DPa", "5DPa", "5DPb"]
+        return StackedAgencyBarGraph(
+            name,
+            {
+                "name1" : translation.additional_graphs[indicator]["series1"],
+                "name2" : translation.additional_graphs[indicator]["series2"],
+                "data" : indicator_data(indicator, reverse=True if indicator in reverse else False)
+            },
+            "target", target,
+            title=translation.additional_graphs[indicator]["title"]
+        )
 
 def highlevelgraphs(request, language, template_name="submissions/highlevelgraphs.html", extra_context=None, titles=None):
     extra_context = extra_context or {}

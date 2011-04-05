@@ -189,8 +189,8 @@ highlevel_graphs = {
 
 additional_graphs = {
     "2DPa" : {
-        "series1" : "Health aid not on budget",
-        "series2" : "Health aid reported on budget",
+        "series1" : "Health aid reported on budget",
+        "series2" : "Health aid not on budget",
         "title" : "2DPa: Proportion of partner health aid on country budget",
     },
     "2DPb" : {
@@ -224,9 +224,8 @@ additional_graphs = {
         "title" : "5DPb: Partner use of country public financial management systems",
     },
     "5DPc" : {
-        "series1" : "Health aid using PFM systems",
-        "series2" : "Health aid not using PFM systems",
-        "title" : "5DPc: Partner use of country public financial management systems",
+        "yAxis" : "Total number of PIUs",
+        "title" : "5DPc: Aggregate number of parallel Project Implementation Units (PIU)s<br/> by development partner",
     }
 }
 

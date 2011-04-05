@@ -202,6 +202,11 @@ additional_graphs = {
         "series2" : "% not provided through multi-year commitments",
         "title" : "% of aid provided through multi-year commitments",
     },
+    "4DP" : {
+        "series1" : "% of aid disbursed within the year for which it was scheduled",
+        "series2" : "% of aid not disbursed within the year for which it was scheduled",
+        "title" : "4DP: % of health sector aid disbursed within the year for which it was scheduled",
+    },
     "5DPa" : {
         "series1" : "Health aid using procurement systems",
         "series2" : "Health aid not using procurement systems",
@@ -211,6 +216,10 @@ additional_graphs = {
         "series1" : "Health aid using PFM systems",
         "series2" : "Health aid not using PFM systems",
         "title" : "5DPb: Partner use of country public financial management systems",
+    },
+    "5DPc" : {
+        "yAxis" : "Total number of PIUs",
+        "title" : "5DPc: Aggregate number of parallel Project Implementation Units (PIU)s by development partner",
     }
 }
 
