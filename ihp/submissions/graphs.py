@@ -416,7 +416,7 @@ def additional_graph_by_indicator(indicator, name, translation, agency_data):
         {
             "name1" : translation.additional_graphs[indicator]["series1"],
             "name2" : translation.additional_graphs[indicator]["series2"],
-            "data" : indicator_data(indicator, reverse=True)
+            "data" : indicator_data(indicator, reverse=False)
         },
         "target", target,
         title=translation.additional_graphs[indicator]["title"]
