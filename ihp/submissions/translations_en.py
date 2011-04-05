@@ -201,12 +201,17 @@ additional_graphs = {
     "2DPc" : {
         "series1" : "% of health aid as Programme Based Approach",
         "series2" : "% of health aid not as Programme Based Approach",
-        "title" : "2DPC: Support provided as Programme Based Approach",
+        "title" : "2DPc: Support provided as Programme Based Approach",
     },
     "3DP" : {
         "series1" : "% of multi-year commitments",
         "series2" : "% not provided through multi-year commitments",
-        "title" : "% of aid provided through multi-year commitments",
+        "title" : "3DP: % of aid provided through multi-year commitments",
+    },
+    "4DP" : {
+        "series1" : "% of aid disbursed within the year for which it was scheduled",
+        "series2" : "% of aid not disbursed within the year for which it was scheduled",
+        "title" : "4DP: % of health sector aid disbursed within the year for which it was scheduled",
     },
     "5DPa" : {
         "series1" : "Health aid using procurement systems",
@@ -217,6 +222,11 @@ additional_graphs = {
         "series1" : "Health aid using PFM systems",
         "series2" : "Health aid not using PFM systems",
         "title" : "5DPb: Partner use of country public financial management systems",
+    },
+    "5DPc" : {
+        "series1" : "Health aid using PFM systems",
+        "series2" : "Health aid not using PFM systems",
+        "title" : "5DPc: Partner use of country public financial management systems",
     }
 }
 
