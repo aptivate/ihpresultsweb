@@ -129,10 +129,14 @@
             <td><img src="{{ MEDIA_URL }}/images/{{data.8DP.rating}}.png"></td>
         {% endfor %}
     </tr>
+    <tr>
+        <td colspan="100">
+            <div class="footnotes">
+            {{ translation.dp_table_footnote|safe }}
+            </div>
+        </td>
+    </tr>
 </table>
 <br/>
-<div style="text-align:left; margin:auto">
-{{ translation.dp_table_footnote|safe }}
-</div>
 
 {% endblock %}

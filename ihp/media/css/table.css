@@ -90,3 +90,15 @@ h1 {
 em {
     font-style: italic;
 }
+
+ul, ul li {
+    list-style-type: disc;
+    margin-left: 1em;
+}
+
+.footnotes {
+    text-align: justify;
+    margin-left: 1em;
+    font-size: 0.8em;
+    padding: 1em;
+}

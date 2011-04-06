@@ -89,8 +89,12 @@
             <td><img src="{{ MEDIA_URL }}images/{{ data.8G.4 }}.png"></td>
         {% endfor %}
     </tr>
+    <tr>
+        <td colspan="100">
+            <div class="footnotes">
+            {{ translation.country_table_footnote|safe }}
+            </div>
+        </td>
+    </tr>
 </table>
-<div style="text-align:left; margin:auto">
-{{ translation.country_table_footnote|safe }}
-</div>
 {% endblock %}
