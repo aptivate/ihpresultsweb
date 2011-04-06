@@ -311,31 +311,44 @@ cur_val = "cur val"
 perc_change = "% change"
 
 dp_table_footnote = """
-<b>NB:</b>  It is important to note that the country context has a significant impact on the extent to which progress can be made by Development Partners for each of the Standard Performance Measures.  Comparisons of performance across the country offices of a single agency should be made with this in mind.
+<b>Important information about these ratings:</b><br/>
+<em>Notes on methods:</em>
 <ul>
-<li>- Methodology is available at</li>
-<li>- SPMs are available at</li>
-<li>- Targets are available at</li>
-<li>- Links to guidance</li>
-<li>- List what the symbols mean</li>
-<li>- This is self reported data</li>
-<li>- Note on aggregation</li>
-<li>- Note on 5DPb (5 not-applicable countries). DRC; Burundi; Djibouti; Nigeria; Nepal</li>
-<li>- This is 2009 data - progress may have been made in 2010 that is not reported here</li>
+    <li>The methodology used to undertake this exercise is available at – <a href="http://www.ihpresults.com/how/methodology/">www.ihpresults.com/how/methodology</a></li>
+    <li>Standard Performance Measures (SPMs) for Country Governments and Development Partners, along with their associated targets, are available at – <a href="http://www.ihpresults.com/how/methodology/spms">www.ihpresults.com/how/methodology/spms</a></li>
+    <li>The Criteria used to reach the above ratings are available at – <a href="http://www.ihpresults.net/how/methodology/rating/">www.ihpresults.net/how/methodology/rating/</a></li>
+    <li>Detailed guidance on key terms and definitions is available at – <a href="http://www.ihpresults/how/data_collection">www.ihpresults/how/data_collection</a></li>
+    <li>The latest available data for this exercise was from 2009. Progress may have been made in 2010 that is not reported here.</li>
+    <li>Development Partner data has been aggregated to produce ratings for individual Development Partner scorecards. For more a more detailed explanation on this see – <a href="http://www.ihpresults.net/how/limitations/">www.ihpresults.net/how/limitations</a></li>
+<li>SPM 5DPb: 5 countries’ data is not counted for this SPM. For more a more detailed explanation on this see – <a href="http://www.ihpresults.net/how/limitations/">www.ihpresults.net/how/limitations/</a></li>
+</ul>
+<br/>
+<em>Notes on interpretation:</em><br/>
+The exercise has been largely self-reported, and it has been difficult to find opportunities to triangulate data without imposing significant transaction costs. 
+<ul>
+    <li>The consistency of interpretation for key terms and definitions between participating agencies may vary within this country. This could affect the comparability of results.</li>
+    <li>For Development Partner SPM ratings it is important to note that the country context has a significant impact on the extent to which progress can be made by Development Partners for each of the Standard Performance Measures. Comparisons of performance across the country offices of a single agency should be made with this in mind.
+    </li>
 </ul>
 """
 
-country_table_footnotes = """
-<b>NB</b> The consistency of interpretation for key terms and definitions between participating agencies may vary within this country. This could affect the comparability of results. Comparisons should be made with this in mind. 
+country_table_footnote = """
+<b>Important information about these ratings:</b><br/>
+<em>Notes on methods:</em>
 <ul>
-<li>Methodology is available at </li>
-<li>SPMs are available at</li>
-<li>Targets are available at</li>
-<li>Links to guidance</li>
-<li>List what the symbols mean</li>
-<li>Link to country scorecard</li>
-<li>Fr / Eng – This is self reported data</li>
-<li>This is 2009 data</li>
-<li>progress may have been made in 2010 that is not reported here</li>
+    <li>The methodology used to undertake this exercise is available at – <a href="http://www.ihpresults.com/how/methodology/">www.ihpresults.com/how/methodology</a></li>
+    <li>Standard Performance Measures (SPMs) for Country Governments and Development Partners, along with their associated targets, are available at – <a href="http://www.ihpresults.com/how/methodology/spms">www.ihpresults.com/how/methodology/spms</a></li>
+    <li>The Criteria used to reach the above ratings are available at – <a href="http://www.ihpresults.net/how/methodology/rating/">www.ihpresults.net/how/methodology/rating/</a></li>
+    <li>Detailed guidance on key terms and definitions is available at – <a href="http://www.ihpresults/how/data_collection">www.ihpresults/how/data_collection</a></li>
+    <li>The latest available data for this exercise was from 2009. Progress may have been made in 2010 that is not reported here.</li>
+    <li>Development Partner data has been aggregated to produce ratings for individual Development Partner scorecards. For more a more detailed explanation on this see – <a href="http://www.ihpresults.net/how/limitations/">www.ihpresults.net/how/limitations</a></li>
+<li>SPM 5DPb: 5 countries’ data is not counted for this SPM. For more a more detailed explanation on this see – <a href="http://www.ihpresults.net/how/limitations/">www.ihpresults.net/how/limitations/</a></li>
+</ul>
+<br/>
+<em>Notes on interpretation:</em><br/>
+The exercise has been largely self-reported, and it has been difficult to find opportunities to triangulate data without imposing significant transaction costs. 
+<ul>
+    <li>The consistency of interpretation for key terms and definitions between participating agencies may vary within this country. This could affect the comparability of results.</li>
+    </li>
 </ul>
 """

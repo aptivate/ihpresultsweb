@@ -86,3 +86,7 @@ th.spm {
 h1 {
     text-align: center;
 }
+
+em {
+    font-style: italic;
+}
