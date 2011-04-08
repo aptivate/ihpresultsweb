@@ -23,12 +23,6 @@ country_ratio_titles = {
 
 urlpatterns = patterns('',
 
-    (r'^$', direct_to_template, {"template" : "home.html", "extra_context" : {
-        "agencies" : Agency.objects.filter(type="Agency"),
-        "gbsagencies" : Agency.objects.get_by_type("GBS"),
-        "countries" : Country.objects.all(),
-    }}, "home"),
-
     # New csv views
     (r'^scorecard/export/agencies/(?P<language>\w+)/$', 'submissions.views.agency_export', {}, 'agency_export'),
     (r'^scorecard/export/countries/(?P<language>\w+)/$', 'submissions.views.country_export', {}, 'country_export'),
