@@ -20,15 +20,7 @@ country_ratio_titles = {
     "5DPc" : "Reduction in %(country_name)s's stock of parallel project implementation (PIUs) units (5DPc)",
 }
 
-
 urlpatterns = patterns('',
-
-    (r'^$', direct_to_template, {"template" : "home.html", "extra_context" : {
-        "agencies" : Agency.objects.filter(type="Agency"),
-        "gbsagencies" : Agency.objects.get_by_type("GBS"),
-        "countries" : Country.objects.all(),
-    }}, "home"),
-
     # New csv views
     (r'^scorecard/export/agencies/(?P<language>\w+)/$', 'submissions.views.agency_export', {}, 'agency_export'),
     (r'^scorecard/export/countries/(?P<language>\w+)/$', 'submissions.views.country_export', {}, 'country_export'),
@@ -170,6 +162,14 @@ urlpatterns = patterns('',
 
 )
 
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^$', direct_to_template, {"template" : "home.html", "extra_context" : {
+        "agencies" : Agency.objects.filter(type="Agency"),
+        "gbsagencies" : Agency.objects.get_by_type("GBS"),
+        "countries" : Country.objects.all(),
+    }}, "home"))
+
 _media_url = settings.MEDIA_URL
 if _media_url.startswith('/'):
     _media_url = _media_url[1:]
@@ -177,3 +177,4 @@ urlpatterns += patterns('',
     (r'^%s(?P<path>.*)$' % _media_url, serve,
         {'document_root' : settings.MEDIA_ROOT}, 'ihp-media'))
 del(_media_url, serve)
+
