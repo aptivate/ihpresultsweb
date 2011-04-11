@@ -5,7 +5,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Adi Eyal', 'adi@burgercom.co.za'),
+    ('Aptivate', 'carers-reactionscorecards@aptivate.org'),
 )
 
 MANAGERS = ADMINS
@@ -93,3 +93,5 @@ DEBUG_TOOLBAR_PANELS = (
 POLL_USERNAME = "ihpresults2010survey@human-scale.net"
 POLL_PASSWORD = "changeme"
 POLL_HOST = "pop.gmail.com"
+
+from local_settings import *
