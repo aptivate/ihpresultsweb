@@ -27,3 +27,4 @@ Run the following
 ./manage.py migrate submissions
 
 You probably want to backup your database first just in case the migrations process breaks something
+---
