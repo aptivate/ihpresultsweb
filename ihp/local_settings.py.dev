@@ -4,7 +4,9 @@ POLL_PASSWORD = "smith"
 POLL_HOST = "my.pop.server"
 
 DATABASE_ENGINE = 'sqlite3' 
-DATABASE_NAME = 'ihp.db'
+
+import os
+DATABASE_NAME = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'ihp.db')
 
 DEBUG = True
 TEMPLATE_DEBUG = True
