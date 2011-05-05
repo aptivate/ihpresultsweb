@@ -91,12 +91,12 @@ def agency_scorecard_page(request, agency_name):
     english = Language.objects.get(language="English")
     categories = _group_and_sort_indicators(ratings, 
         agency_indicator_descriptions)
-    agency_reports = submissions.models.DPScorecardSummary.objects.get(
+    agency_report = submissions.models.DPScorecardSummary.objects.get(
         agency=agency, language=english)
     
     for category in categories:
         field_name = "erb%s" % category.code[0]
-        category.agency_report = getattr(agency_reports, field_name)
+        category.agency_report = getattr(agency_report, field_name)
     
     context = dict(agency=agency,
         categories=categories,
