@@ -151,8 +151,8 @@ body.home #header #blogname a {
 
 #access .widget_qtranslate {
 	position: absolute;
-    right: 0;
-    top: -80px;
+    right: 5px;
+    top: 5px;
     z-index: 20;
 }
  

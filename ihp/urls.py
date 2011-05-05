@@ -20,15 +20,7 @@ country_ratio_titles = {
     "5DPc" : "Reduction in %(country_name)s's stock of parallel project implementation (PIUs) units (5DPc)",
 }
 
-
 urlpatterns = patterns('',
-
-    (r'^$', direct_to_template, {"template" : "home.html", "extra_context" : {
-        "agencies" : Agency.objects.filter(type="Agency"),
-        "gbsagencies" : Agency.objects.get_by_type("GBS"),
-        "countries" : Country.objects.all(),
-    }}, "home"),
-
     # New csv views
     (r'^scorecard/export/agencies/(?P<language>\w+)/$', 'submissions.views.agency_export', {}, 'agency_export'),
     (r'^scorecard/export/countries/(?P<language>\w+)/$', 'submissions.views.country_export', {}, 'country_export'),
@@ -61,21 +53,21 @@ urlpatterns = patterns('',
     }, "government_graphs"),
 
     # Table Views
-    (r'^agencies/tables/by_country/(?P<country_id>\d+)/$', 'submissions.views.agency_table_by_country', {
+    (r'^agencies/tables/by_country/(?P<country_id>\d+)/(?P<language>\w+)/$', 'submissions.views.agency_table_by_country', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/agency_table.html"
         }
     }, 'agency_table_by_country'),
 
-    (r'^agencies/agency/tables/(?P<agency_id>\d+)/$', 'submissions.views.agency_table_by_agency', {
+    (r'^agencies/agency/tables/(?P<agency_id>\d+)/(?P<language>\w+)/$', 'submissions.views.agency_table_by_agency', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/agency_table.html"
         }
     }, 'agency_table_by_agency'),
 
-    (r'^agencies/tables/by_indicator/(?P<indicator>.+)/$', 'submissions.views.agency_table_by_indicator', {
+    (r'^agencies/tables/by_indicator/(?P<indicator>\w+)/(?P<language>\w+)/$', 'submissions.views.agency_table_by_indicator', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/agency_table_by_indicator.html"
@@ -103,14 +95,14 @@ urlpatterns = patterns('',
         }
     }, 'agency_response_breakdown'),
 
-    (r'^countries/tables/$', 'submissions.views.country_table', {
+    (r'^countries/tables/(?P<language>\w+)/$', 'submissions.views.country_table', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/country_table.html"
         }
     }, 'country_table'),
 
-    (r'^countries/tables/matrix$', 'submissions.views.country_table', {
+    (r'^countries/tables/matrix/(?P<language>\w+)/$', 'submissions.views.country_table', {
         "template_name" : "submissions/main_base.html",
         "extra_context" : {
             "content_file" : "submissions/country_matrix.html"
@@ -130,21 +122,21 @@ urlpatterns = patterns('',
         "countries" : Country.objects.all(),
     }}, "datatables"),
 
-    (r'^datatables/tables/agency/by_country/(?P<country_id>\d+)/$', 'submissions.views.agency_table_by_country', {
+    (r'^datatables/tables/agency/by_country/(?P<country_id>\d+)/(?P<language>\w+)/$', 'submissions.views.agency_table_by_country', {
         "template_name" : "submissions/datatables_base.html",
         "extra_context" : {
             "content_file" : "submissions/agency_table.html"
         }
     }, 'datatables_agency_table_by_country'),
 
-    (r'^datatables/tables/agency/by_agency/(?P<agency_id>\d+)/$', 'submissions.views.agency_table_by_agency', {
+    (r'^datatables/tables/agency/by_agency/(?P<agency_id>\d+)/(?P<language>\w+)/$', 'submissions.views.agency_table_by_agency', {
         "template_name" : "submissions/datatables_base.html",
         "extra_context" : {
             "content_file" : "submissions/agency_table.html"
         }
     }, 'datatables_agency_table_by_agency'),
 
-    (r'^datatables/tables/country/matrix$', 'submissions.views.country_table', {
+    (r'^datatables/tables/country/matrix/(?P<language>\w+)/$', 'submissions.views.country_table', {
         "template_name" : "submissions/datatables_base.html",
         "extra_context" : {
             "content_file" : "submissions/country_matrix.html"
@@ -152,8 +144,8 @@ urlpatterns = patterns('',
     }, 'datatables_country_matrix'),
 
     (r'^scorecard/tables/agency_country_ratings/$', 'submissions.views.agency_country_ratings', {}, 'agency_country_ratings'),
-    (r'^datatables/tables/agency_ratings/$', 'submissions.views.agency_ratings', {}, 'agency_ratings'),
-    (r'^datatables/tables/agency_ratings2/$', 'submissions.views.agency_ratings', {
+    (r'^agencies/tables/agency_ratings/(?P<language>\w+)/$', 'submissions.table_views.agency_ratings', {}, 'agency_ratings'),
+    (r'^agencies/tables/agency_ratings2/(?P<language>\w+)/$', 'submissions.table_views.agency_ratings', {
         "template_name" : "submissions/agency_ratings2.html",
     }, 'agency_ratings2'),
 
@@ -170,6 +162,14 @@ urlpatterns = patterns('',
 
 )
 
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^$', direct_to_template, {"template" : "home.html", "extra_context" : {
+        "agencies" : Agency.objects.filter(type="Agency"),
+        "gbsagencies" : Agency.objects.get_by_type("GBS"),
+        "countries" : Country.objects.all(),
+    }}, "home"))
+
 _media_url = settings.MEDIA_URL
 if _media_url.startswith('/'):
     _media_url = _media_url[1:]
@@ -177,3 +177,4 @@ urlpatterns += patterns('',
     (r'^%s(?P<path>.*)$' % _media_url, serve,
         {'document_root' : settings.MEDIA_ROOT}, 'ihp-media'))
 del(_media_url, serve)
+

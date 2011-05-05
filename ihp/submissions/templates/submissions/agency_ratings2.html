@@ -48,17 +48,17 @@ td:first-child {
 {% block body %}
 <table>
     <tr class="head">
-        <th rowspan="2">Indicator</th>
+        <th rowspan="2">{{ translation.indicator }}</th>
         {% for agency in agencies %}
             <th colspan="4">{{ agency.agency }}</th>
         {% endfor %}
     </tr>
     <tr class="head">
         {% for agency in agencies %}
-        <th>base val</th>
-        <th>cur val</th>
-        <th>% change</th>
-        <th>rating</th>
+        <th>{{ translation.base_val }}</th>
+        <th>{{ translation.cur_val }}</th>
+        <th>{{ translation.perc_change }}</th>
+        <th>{{ translation.rating }}</th>
         {% endfor %}
     </tr>
     {% for indicator, data, spm_text in ratings %}

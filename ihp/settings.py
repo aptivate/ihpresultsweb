@@ -5,7 +5,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Adi Eyal', 'adi@burgercom.co.za'),
+    ('Aptivate', 'carers-reactionscorecards@aptivate.org'),
 )
 
 MANAGERS = ADMINS
@@ -52,6 +52,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 #    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'submissions.middleware.TranslationMiddleware',
 )
 
 ROOT_URLCONF = 'ihp.urls'
@@ -92,3 +93,5 @@ DEBUG_TOOLBAR_PANELS = (
 POLL_USERNAME = "ihpresults2010survey@human-scale.net"
 POLL_PASSWORD = "changeme"
 POLL_HOST = "pop.gmail.com"
+
+from local_settings import *

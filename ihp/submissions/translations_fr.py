@@ -78,40 +78,73 @@ direction_nochange = "aucun changement"
 
 agency_graphs = {
     "2DPa" : {
-        "title" : "Increase in %s\\'s aid flows to the health sector <br>not reported on goverment\\'s budget (2DPa)",
-        "yAxis" : "% increase in funds not reported <br>on government\\'s budget",
+        "title" : "2DPa: Change in %% of %(agency_name)s\\'s aid flows to the health sector <br>not reported on goverment\\'s budget",
+        "yAxis" : "% change in funds not reported <br>on government\\'s budget",
     },
     "2DPb" : {
-        "title" : "% of technical assistance disbursed through programmes (WB, Target: 50%)",
-        "yAxis" : "% of programme-based technical assistance",
+        "title" : "2DPb: Change in %% of capacity development provided <br>by the %(agency_name)s through coordinated programmes",
+        "yAxis" : "%% of capacity development support <br/>provided through coordinated programmes",
     },
     "2DPc" : {
-        "title" : "% of aid flows provided in the context of programme base approaches (Target: 66%)",
-        "yAxis" : "% of aid flows",
+        "title" : "2DPc: Change in %% of aid provided through programme based approaches",
+        "yAxis" : "%% of health sector aid provided <br/>through programme based approaches",
     },
     "3DP" : {
-        "title" : "% of health sector funding provided through multi-year commitments",
-        "yAxis" : "% of health sector funding provided <br>through multi-year commitments",
+        "title" : "3DP: % of health sector funding provided through multi-year commitments",
+        "yAxis" : "%% of health sector funding provided <br>through multi-year commitments",
     },
     "4DP" : {
-        "title" : "Increase in %s\\'s health sector aid not disbursed within the year <br>for which it was scheduled (4DP)",
-        "yAxis" : "% increase in health sector aid not disbursed <br>within the year for which it was scheduled",
+        "title" : "4DP: Change in %% of %s\\'s health sector aid not disbursed <br>within the year for which it was scheduled",
+        "yAxis" : "%% of health sector aid disbursed <br>within the year for which it was scheduled",
     },
     "5DPa" : {
-        "title" : "% change in health sector aid to the public sector not using <br/>partner countries\\' procurement systems",
-        "yAxis" : "% change in health sector aid to the public sector <br>not using partner countries\\' procurement systems",
+        "title" : "5DPa: % change in health sector aid to the public sector not using <br/>partner countries\\' procurement systems",
+        "yAxis" : "%% change in health sector aid to the public sector <br>not using partner countries\\' procurement systems",
     },
     "5DPb" : {
-        "title" : "Increase in %s\\'s health sector aid to the public sector not using <br/>partner countries\\' PFM systems (5DPb)",
-        "yAxis" : "% increase of health sector aid to the public sector<br> not using partner countries\\' PFM systems",
+        "title" : "5DPb: Change in %% of %s\\'s health sector aid to the public sector <br/>not using partner countries\\' PFM systems",
+        "yAxis" : "%% change in health sector aid to the public sector<br> not using partner countries\\' PFM systems",
     },
     "5DPc" : {
-        "title" : "Reduction in %s\\'s stock of parallel project implementation <br>(PIUs) units (5DPc)",
-        "yAxis" : "% reduction in stock of parallel <br>project implementation (PIUs) units",
+        "title" : "5DPc: Change in number of %s\\'s <br/>parallel project implementation (PIUs) units",
+        "yAxis" : "Number parallel <br>project implementation (PIUs) units",
     },
 }
 
-country_graphs = agency_graphs
+country_graphs = {
+    "2DPa" : {
+        "title" : "2DPa: Change in aid flows to the %(country_name)s health sector <br/>not reported on government\\'s budget",
+        "yAxis" : "%% change in aid flows not reported <br/>on government\\'s budget",
+    },
+    "2DPb" : {
+        "title" : "2DPb: Change in %% of capacity development support provided to %(country_name)s <br/>health sector through coordinated programmes",
+        "yAxis" : "%% of capacity development support <br/>provided through coordinated programmes",
+    },
+    "2DPc" : {
+        "title" : "2DPc: Change in %% of health sector aid provided to %(country_name)s <br/>through programme based approaches",
+        "yAxis" : "%% of health sector aid provided <br/>through programme based approaches",
+    },
+    "3DP" : {
+        "title" : "3DP: Change in %% of health sector aid provided to %(country_name)s<br/> through multi-year commitments",
+        "yAxis" : "%% of health sector funding provided <br>through multi-year commitments",
+    },
+    "4DP" : {
+        "title" : "4DP: Change in %% of health sector aid to %(country_name)s <br/>disbursed within the year for which it was scheduled",
+        "yAxis" : "%% of health sector aid disbursed <br>within the year for which it was scheduled",
+    },
+    "5DPa" : {
+        "title" : "5DPa: %% change in health sector aid to %(country_name)s public sector <br/>not using country procurement systems.",
+        "yAxis" : "%% change in health sector aid to the public sector <br>not using partner countries\\' procurement systems",
+    },
+    "5DPb" : {
+        "title" : "5DPb: %% change in health sector aid to %(country_name)s public sector<br/> not using country PFM systems.",
+        "yAxis" : "%% change in health sector aid to the public sector<br> not using partner countries\\' PFM systems",
+    },
+    "5DPc" : {
+        "title" : "5DPc: Number of agency PIUs in place in %(country_name)s",
+        "yAxis" : "Number parallel <br>project implementation (PIUs) units",
+    },
+}
 
 highlevel_graphs = {
     "2DPa" : {
@@ -169,6 +202,11 @@ additional_graphs = {
         "series2" : "% not provided through multi-year commitments",
         "title" : "% of aid provided through multi-year commitments",
     },
+    "4DP" : {
+        "series1" : "% of aid disbursed within the year for which it was scheduled",
+        "series2" : "% of aid not disbursed within the year for which it was scheduled",
+        "title" : "4DP: % of health sector aid disbursed within the year for which it was scheduled",
+    },
     "5DPa" : {
         "series1" : "Health aid using procurement systems",
         "series2" : "Health aid not using procurement systems",
@@ -178,6 +216,10 @@ additional_graphs = {
         "series1" : "Health aid using PFM systems",
         "series2" : "Health aid not using PFM systems",
         "title" : "5DPb: Partner use of country public financial management systems",
+    },
+    "5DPc" : {
+        "yAxis" : "Total number of PIUs",
+        "title" : "5DPc: Aggregate number of parallel Project Implementation Units (PIU)s by development partner",
     }
 }
 
@@ -216,3 +258,91 @@ target_language = {
     "target" : "objectif",
     "who" : "WHO Recommended"
 }
+
+rating = "Rating2"
+country_data = "Country Data"
+agency = "Agency"
+by_agency_title = "%s Data across IHP+ Countries"
+by_country_title = "Development Partners in %s"
+spm = "SPM"
+standard_performance_measure = "Standard Performance Measure"
+
+spm_map = {
+    #"1DP" : "Proportion of ihp+ countries in which the partner has signed commitment to (or documented support for) the ihp+ country compact, or equivalent agreement.",
+    "1DP" : "Partner has signed commitment to (or documented support for) the IHP+ country compact, or equivalent agreement, where they exist.",
+    "2DPa" : "Percent of aid flows to the health sector that is reported on national health sector budgets.",
+    "2DPb" : "Percent of current capacity-development support provided through coordinated programmes consistent with national plans/strategies for the health sector.",
+    "2DPc" : "Percent of health sector aid provided as programme based approaches.",
+    "3DP" : "Percent of health sector aid provided through multi-year commitments.",
+    "4DP" : "Percent of health sector aid disbursements released according to agreed schedules in annual or multi-year frameworks.",
+    "5DPa" : "Percent of health sector aid that uses country procurement systems.",
+    "5DPb" : "Percent of health sector aid that uses public financial management systems.",
+    "5DPc" : "Number of parallel project implementation units (pius) per country.",
+    #"6DP" : "Proportion of countries in which agreed, transparent and monitorable performance assessment frameworks are being used to assess progress in the health sector.",
+    "6DP" : "Partner uses the single national performance assessment framework, where they exist, as the primary basis to assess progress (of support to health sector).",
+    #"7DP" : "Proportion of countries where mutual assessments have been made of progress implementing commitments in the health sector, including on aid effectiveness.",
+    "7DP" : "Partner has participated in mutual assessment of progress implementing commitments in the health sector, including on aid effectiveness, if a mutual assessment process exists.",
+    "8DP" : "Evidence of support for civil society to be actively represented in health sector policy processes - including health sector planning, coordination & review mechanisms.",
+}
+
+gov_spm_map = {
+    "1G" : "IHP+ Compact or equivalent mutual agreement in place.",
+    "2Ga1" : "National Health Sector Plans/Strategy in place with current targets & budgets.",
+    "2Ga2" : "National Health Sector Plans/Strategy in place with current targets & budgets that have been jointly assessed.",
+    "2Gb" : "Costed and evidence-based HRH plan in place that is integrated with the national health plan.",
+    "3G" : "Proportion of public funding allocated to health.",
+    "4G" : "Proportion of health sector funding disbursed against the approved annual budget.",
+    "5Ga" : "Public Financial Management systems for the health sector either (a) adhere to broadly accepted good practices or (b) have a reform programme in place to achieve these.",
+    "5Gb" : "Country Procurement systems for the health sector either (a) adhere to broadly accepted good practices or (b) have a reform programme in place to achieve these.",
+    "6G" : "An agreed transparent and monitorable performance assessment framework is being used to assess progress in the health sector.",
+    "7G" : "Mutual Assessments, such as Joint Annual Health Sector Reviews, have been made of progress implementing commitments in the health sector, including on aid effectiveness.",
+    "8G" : "Evidence that Civil Society is actively represented in health sector policy processes - including Health Sector planning, coordination & review mechanisms.",
+}
+        
+indicator = "Indicator"
+base_val = "base val"
+cur_val = "cur val"
+perc_change = "% change"
+
+dp_table_footnote = """
+<b>Important information about these ratings:</b><br/>
+<em>Notes on methods:</em>
+<ul>
+    <li>The methodology used to undertake this exercise is available at – <a href="http://www.ihpresults.com/how/methodology/">www.ihpresults.com/how/methodology</a></li>
+    <li>Standard Performance Measures (SPMs) for Country Governments and Development Partners, along with their associated targets, are available at – <a href="http://www.ihpresults.com/how/methodology/spms">www.ihpresults.com/how/methodology/spms</a></li>
+    <li>The Criteria used to reach the above ratings are available at – <a href="http://www.ihpresults.net/how/methodology/rating/">www.ihpresults.net/how/methodology/rating/</a></li>
+    <li>Detailed guidance on key terms and definitions is available at – <a href="http://www.ihpresults/how/data_collection">www.ihpresults/how/data_collection</a></li>
+    <li>The latest available data for this exercise was from 2009. Progress may have been made in 2010 that is not reported here.</li>
+    <li>Development Partner data has been aggregated to produce ratings for individual Development Partner scorecards. For more a more detailed explanation on this see – <a href="http://www.ihpresults.net/how/limitations/">www.ihpresults.net/how/limitations</a></li>
+<li>SPM 5DPb: 5 countries’ data is not counted for this SPM. For more a more detailed explanation on this see – <a href="http://www.ihpresults.net/how/limitations/">www.ihpresults.net/how/limitations/</a></li>
+</ul>
+<br/>
+<em>Notes on interpretation:</em><br/>
+The exercise has been largely self-reported, and it has been difficult to find opportunities to triangulate data without imposing significant transaction costs. 
+<ul>
+    <li>The consistency of interpretation for key terms and definitions between participating agencies may vary within this country. This could affect the comparability of results.</li>
+    <li>For Development Partner SPM ratings it is important to note that the country context has a significant impact on the extent to which progress can be made by Development Partners for each of the Standard Performance Measures. Comparisons of performance across the country offices of a single agency should be made with this in mind.
+    </li>
+</ul>
+"""
+
+country_table_footnote = """
+<b>Important information about these ratings:</b><br/>
+<em>Notes on methods:</em>
+<ul>
+    <li>The methodology used to undertake this exercise is available at – <a href="http://www.ihpresults.com/how/methodology/">www.ihpresults.com/how/methodology</a></li>
+    <li>Standard Performance Measures (SPMs) for Country Governments and Development Partners, along with their associated targets, are available at – <a href="http://www.ihpresults.com/how/methodology/spms">www.ihpresults.com/how/methodology/spms</a></li>
+    <li>The Criteria used to reach the above ratings are available at – <a href="http://www.ihpresults.net/how/methodology/rating/">www.ihpresults.net/how/methodology/rating/</a></li>
+    <li>Detailed guidance on key terms and definitions is available at – <a href="http://www.ihpresults/how/data_collection">www.ihpresults/how/data_collection</a></li>
+    <li>The latest available data for this exercise was from 2009. Progress may have been made in 2010 that is not reported here.</li>
+    <li>Development Partner data has been aggregated to produce ratings for individual Development Partner scorecards. For more a more detailed explanation on this see – <a href="http://www.ihpresults.net/how/limitations/">www.ihpresults.net/how/limitations</a></li>
+<li>SPM 5DPb: 5 countries’ data is not counted for this SPM. For more a more detailed explanation on this see – <a href="http://www.ihpresults.net/how/limitations/">www.ihpresults.net/how/limitations/</a></li>
+</ul>
+<br/>
+<em>Notes on interpretation:</em><br/>
+The exercise has been largely self-reported, and it has been difficult to find opportunities to triangulate data without imposing significant transaction costs. 
+<ul>
+    <li>The consistency of interpretation for key terms and definitions between participating agencies may vary within this country. This could affect the comparability of results.</li>
+    </li>
+</ul>
+"""

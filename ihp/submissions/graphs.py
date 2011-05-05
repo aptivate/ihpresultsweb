@@ -162,6 +162,25 @@ class StackedAgencyBarGraph(DPChart):
 
         self.plotOptions = {"column" : {"stacking" : "percent"}}
 
+class AgencyBarGraph(DPChart):
+    def __init__(self, agencies, chart_name, series, **kwargs):
+        agency_names = map(lambda x: x.agency, agencies)
+
+        super(AgencyBarGraph, self).__init__(chart_name, **kwargs)
+        self.chart["defaultSeriesType"] = "column"
+        
+        self.xAxis = {
+            "categories" : agency_names,
+            "labels" : {
+                "rotation" : -90,
+                "y" : 40,
+            }
+        } 
+
+        if type(series) != list:
+            series = [series]
+        self.series = series
+
 class CountryBarGraph(CountryChart):
     def __init__(self, countries, chart_name, baseline_data, latest_data, **kwargs):
         country_names = map(lambda x: x.country, countries)
@@ -214,7 +233,7 @@ class AgencyCountryLatestBarGraph(AgencyCountryBarGraph):
         super(AgencyCountryLatestBarGraph, self).__init__(countries, chart_name, [], latest_data, **kwargs)
 
         self.series = [{
-            "name" : "2009",
+            "name" : "% change from baseline year",
             "data" : latest_data 
         }]
 
@@ -289,8 +308,7 @@ class HighlevelBarChart(DPChart):
 
 def agency_graphs_by_indicator(request, indicator, language, template_name="submissions/agency_graphs_by_indicator.html", extra_context=None):
     extra_context = extra_context or {}
-    language = models.Language.objects.get(language=language or "English")
-    translation = translations.get_translation(language)
+    translation = request.translation
 
     indicators = calc_overall_agency_indicators(funcs=positive_funcs)
 
@@ -319,8 +337,7 @@ def agency_graphs_by_indicator(request, indicator, language, template_name="subm
 def projectiongraphs(request, language, template_name="submissions/projectiongraphs.html", extra_context=None):
     extra_context = extra_context or {}
 
-    language = models.Language.objects.get(language=language or "English")
-    translation = translations.get_translation(language)
+    translation = request.translation
 
     indicators = calc_overall_agency_indicators(funcs=positive_funcs)
 
@@ -413,22 +430,38 @@ def additional_graph_by_indicator(indicator, name, translation, agency_data):
 
     target = target_values[indicator]
 
-    return StackedAgencyBarGraph(
-        name,
-        {
-            "name1" : translation.additional_graphs[indicator]["series1"],
-            "name2" : translation.additional_graphs[indicator]["series2"],
-            "data" : indicator_data(indicator, reverse=True)
-        },
-        "target", target,
-        title=translation.additional_graphs[indicator]["title"]
-    )
+    if indicator == "5DPc":
+        data = indicator_data(indicator)
+        agencies = [datum[0] for datum in data]
+        series = {
+            "name" : "PIUs",
+            "data" : [datum[1] for datum in data]
+        }
+        graph = AgencyBarGraph(
+            agencies, name, series,
+            title=translation.additional_graphs[indicator]["title"],
+            yAxis=translation.additional_graphs[indicator]["yAxis"],
+            legend={"enabled" : "false"},
+        )
+        return graph
+
+    else:
+        reverse = ["2DPa", "5DPa", "5DPb"]
+        return StackedAgencyBarGraph(
+            name,
+            {
+                "name1" : translation.additional_graphs[indicator]["series1"],
+                "name2" : translation.additional_graphs[indicator]["series2"],
+                "data" : indicator_data(indicator, reverse=True if indicator in reverse else False)
+            },
+            "target", target,
+            title=translation.additional_graphs[indicator]["title"]
+        )
 
 def highlevelgraphs(request, language, template_name="submissions/highlevelgraphs.html", extra_context=None, titles=None):
     extra_context = extra_context or {}
 
-    language = models.Language.objects.get(language=language or "English")
-    translation = translations.get_translation(language)
+    translation = request.translation
     indicators = calc_overall_agency_indicators(funcs=positive_funcs)
 
     for indicator in indicators:
@@ -452,173 +485,168 @@ def highlevelgraphs(request, language, template_name="submissions/highlevelgraph
 
     return direct_to_template(request, template=template_name, extra_context=extra_context)
 
+def calc_graph_values(indicator, base_val, latest_val):
+    if indicator in ["2DPa", "5DPa", "5DPb"]:
+        return None, safe_mul(safe_div(safe_diff(latest_val, base_val), base_val), 100)
+    else:
+        return base_val, latest_val
+
 def agencygraphs(request, agency_name, language=None, template_name="submissions/agencygraphs.html", extra_context=None):
     extra_context = extra_context or {}
 
     agency = Agency.objects.get(agency__iexact=agency_name)
-    language = models.Language.objects.get(language=language or "English")
-    translation = translations.get_translation(language)
-    
+    extra_context["translation"] = translation = request.translation
+
     data = {}
-    abs_values = {}
     for country in agency.countries:
         country_data = {}
-        country_abs_values = {}
         indicators = calc_agency_country_indicators(agency, country)
         for indicator in ["2DPa", "2DPb", "2DPc", "3DP", "4DP", "5DPa", "5DPb", "5DPc"]:
             base_val, _, latest_val, _ = indicators[indicator][0]
-            country_abs_values[indicator] = (base_val, latest_val) 
-            country_data[indicator] = safe_mul(safe_div(safe_diff(latest_val, base_val), base_val), 100)
+            country_data[indicator] = calc_graph_values(indicator, base_val, latest_val)
         data[country.country] = country_data
-        abs_values[country.country] = country_abs_values
-
-    abs_baseline_data = lambda ind : [abs_values[country.country][ind][0] for country in agency.countries]
-    abs_latest_data = lambda ind : [abs_values[country.country][ind][1] for country in agency.countries]
+    
+    agency_name = agency.agency
 
     extra_context["graph_2DPa"] = AgencyCountryLatestBarGraph(
         agency.countries, "graph_2DPa", 
-        [data[country.country]["2DPa"] for country in agency.countries],
-        title=translation.agency_graphs["2DPa"]["title"] % agency.agency,
+        [data[country.country]["2DPa"][1] for country in agency.countries],
+        title=translation.agency_graphs["2DPa"]["title"] % locals(),
         yAxis=translation.agency_graphs["2DPa"]["yAxis"],
     )
 
     extra_context["graph_2DPb"] = AgencyCountryBarGraph(
         agency.countries, "graph_2DPb",
-        abs_baseline_data("2DPb"),
-        abs_latest_data("2DPb"),
-        title=translation.agency_graphs["2DPb"]["title"],
+        [data[country.country]["2DPb"][0] for country in agency.countries],
+        [data[country.country]["2DPb"][1] for country in agency.countries],
+        title=translation.agency_graphs["2DPb"]["title"] % locals(),
         yAxis=translation.agency_graphs["2DPb"]["yAxis"],
     )
 
     extra_context["graph_2DPc"] = AgencyCountryBarGraph(
         agency.countries, "graph_2DPc",
-        abs_baseline_data("2DPc"),
-        abs_latest_data("2DPc"),
-        title=translation.agency_graphs["2DPc"]["title"],
+        [data[country.country]["2DPc"][0] for country in agency.countries],
+        [data[country.country]["2DPc"][1] for country in agency.countries],
+        title=translation.agency_graphs["2DPc"]["title"] % locals(),
         yAxis=translation.agency_graphs["2DPc"]["yAxis"],
     )
 
     extra_context["graph_3DP"] = AgencyCountryBarGraph(
         agency.countries, "graph_3DP",
-        abs_baseline_data("3DP"),
-        abs_latest_data("3DP"),
+        [data[country.country]["3DP"][0] for country in agency.countries],
+        [data[country.country]["3DP"][1] for country in agency.countries],
         title=translation.agency_graphs["3DP"]["title"],
         yAxis=translation.agency_graphs["3DP"]["yAxis"],
     )
 
     extra_context["graph_4DP"] = AgencyCountryBarGraph(
         agency.countries, "graph_4DP",
-        abs_baseline_data("4DP"),
-        abs_latest_data("4DP"),
+        [data[country.country]["4DP"][0] for country in agency.countries],
+        [data[country.country]["4DP"][1] for country in agency.countries],
         title=translation.agency_graphs["4DP"]["title"] % agency.agency,
         yAxis=translation.agency_graphs["4DP"]["yAxis"],
     )
 
     extra_context["graph_5DPa"] = AgencyCountryLatestBarGraph(
         agency.countries, "graph_5DPa",
-        [data[country.country]["5DPa"] for country in agency.countries],
+        [data[country.country]["5DPa"][1] for country in agency.countries],
         title=translation.agency_graphs["5DPa"]["title"],
         yAxis=translation.agency_graphs["5DPa"]["yAxis"],
     )
 
     extra_context["graph_5DPb"] = AgencyCountryLatestBarGraph(
         agency.countries, "graph_5DPb",
-        [data[country.country]["5DPb"] for country in agency.countries],
+        [data[country.country]["5DPb"][1] for country in agency.countries],
         title=translation.agency_graphs["5DPb"]["title"] % agency.agency,
         yAxis=translation.agency_graphs["5DPb"]["yAxis"],
     )
 
-    extra_context["graph_5DPc"] = AgencyCountryLatestBarGraph(
+    extra_context["graph_5DPc"] = AgencyCountryBarGraph(
         agency.countries, "graph_5DPc",
-        [data[country.country]["5DPc"] for country in agency.countries],
+        [data[country.country]["5DPc"][0] for country in agency.countries],
+        [data[country.country]["5DPc"][1] for country in agency.countries],
         title=translation.agency_graphs["5DPc"]["title"] % agency.agency,
         yAxis=translation.agency_graphs["5DPc"]["yAxis"],
     )
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
     
+    
 def countrygraphs(request, country_name, language, template_name="submissions/countrygraphs.html", extra_context=None):
     extra_context = extra_context or {}
 
-    language = models.Language.objects.get(language=language or "English")
-    translation = translations.get_translation(language)
-
+    translation = request.translation
     country = Country.objects.get(country__iexact=country_name)
     
     data = {}
-    abs_values = {}
     for agency in country.agencies:
         agency_data = {}
-        agency_abs_values = {}
         indicators = calc_agency_country_indicators(agency, country)
         for indicator in ["2DPa", "2DPb", "2DPc", "3DP", "4DP", "5DPa", "5DPb", "5DPc"]:
             base_val, _, latest_val, _ = indicators[indicator][0]
-            agency_abs_values[indicator] = (base_val, latest_val) 
-            agency_data[indicator] = safe_mul(safe_div(safe_diff(latest_val, base_val), base_val), 100)
+            agency_data[indicator] = calc_graph_values(indicator, base_val, latest_val)
         data[agency.agency] = agency_data
-        abs_values[agency.agency] = agency_abs_values
 
-    abs_baseline_data = lambda ind : [abs_values[agency.agency][ind][0] for agency in country.agencies]
-    abs_latest_data = lambda ind : [abs_values[agency.agency][ind][1] for agency in country.agencies]
-
+    country_name = country.country
     extra_context["graph_2DPa"] = CountryAgencyLatestBarGraph(
         country.agencies, "graph_2DPa", 
-        [data[agency.agency]["2DPa"] for agency in country.agencies],
-        title=translation.country_graphs["2DPa"]["title"] % country.country,
-        yAxis=translation.country_graphs["2DPa"]["yAxis"],
+        [data[agency.agency]["2DPa"][1] for agency in country.agencies],
+        title=translation.country_graphs["2DPa"]["title"] % locals(),
+        yAxis=translation.country_graphs["2DPa"]["yAxis"] % locals(),
     )
 
     extra_context["graph_2DPb"] = CountryAgencyBarGraph(
         country.agencies, "graph_2DPb",
-        abs_baseline_data("2DPb"),
-        abs_latest_data("2DPb"),
-        title=translation.country_graphs["2DPb"]["title"],
-        yAxis=translation.country_graphs["2DPb"]["yAxis"],
+        [data[agency.agency]["2DPb"][0] for agency in country.agencies],
+        [data[agency.agency]["2DPb"][1] for agency in country.agencies],
+        title=translation.country_graphs["2DPb"]["title"] % locals(),
+        yAxis=translation.country_graphs["2DPb"]["yAxis"] % locals(),
     )
 
     extra_context["graph_2DPc"] = CountryAgencyBarGraph(
         country.agencies, "graph_2DPc",
-        abs_baseline_data("2DPc"),
-        abs_latest_data("2DPc"),
-        title=translation.country_graphs["2DPc"]["title"],
-        yAxis=translation.country_graphs["2DPc"]["yAxis"],
+        [data[agency.agency]["2DPc"][0] for agency in country.agencies],
+        [data[agency.agency]["2DPc"][1] for agency in country.agencies],
+        title=translation.country_graphs["2DPc"]["title"] % locals(),
+        yAxis=translation.country_graphs["2DPc"]["yAxis"] % locals(),
     )
 
     extra_context["graph_3DP"] = CountryAgencyBarGraph(
         country.agencies, "graph_3DP",
-        abs_baseline_data("3DP"),
-        abs_latest_data("3DP"),
-        title=translation.country_graphs["3DP"]["title"],
-        yAxis=translation.country_graphs["3DP"]["yAxis"],
+        [data[agency.agency]["3DP"][0] for agency in country.agencies],
+        [data[agency.agency]["3DP"][1] for agency in country.agencies],
+        title=translation.country_graphs["3DP"]["title"] % locals(),
+        yAxis=translation.country_graphs["3DP"]["yAxis"] % locals(),
     )
 
     extra_context["graph_4DP"] = CountryAgencyBarGraph(
         country.agencies, "graph_4DP",
-        abs_baseline_data("4DP"),
-        abs_latest_data("4DP"),
-        title=translation.country_graphs["4DP"]["title"] % agency.agency,
-        yAxis=translation.country_graphs["4DP"]["yAxis"],
+        [data[agency.agency]["4DP"][0] for agency in country.agencies],
+        [data[agency.agency]["4DP"][1] for agency in country.agencies],
+        title=translation.country_graphs["4DP"]["title"] % locals(),
+        yAxis=translation.country_graphs["4DP"]["yAxis"] % locals(),
     )
 
     extra_context["graph_5DPa"] = CountryAgencyLatestBarGraph(
         country.agencies, "graph_5DPa",
-        [data[agency.agency]["5DPa"] for agency in country.agencies],
-        title=translation.country_graphs["5DPa"]["title"],
-        yAxis=translation.country_graphs["5DPa"]["yAxis"],
+        [data[agency.agency]["5DPa"][1] for agency in country.agencies],
+        title=translation.country_graphs["5DPa"]["title"] % locals(),
+        yAxis=translation.country_graphs["5DPa"]["yAxis"] % locals(),
     )
 
     extra_context["graph_5DPb"] = CountryAgencyLatestBarGraph(
         country.agencies, "graph_5DPb",
-        [data[agency.agency]["5DPb"] for agency in country.agencies],
-        title=translation.country_graphs["5DPb"]["title"] % agency.agency,
-        yAxis=translation.country_graphs["5DPb"]["yAxis"],
+        [data[agency.agency]["5DPb"][1] for agency in country.agencies],
+        title=translation.country_graphs["5DPb"]["title"] % locals(),
+        yAxis=translation.country_graphs["5DPb"]["yAxis"] % locals(),
     )
 
-    extra_context["graph_5DPc"] = CountryAgencyLatestBarGraph(
+    extra_context["graph_5DPc"] = CountryAgencyBarGraph(
         country.agencies, "graph_5DPc",
-        [data[agency.agency]["5DPc"] for agency in country.agencies],
-        title=translation.country_graphs["5DPc"]["title"] % agency.agency,
-        yAxis=translation.country_graphs["5DPc"]["yAxis"],
+        [data[agency.agency]["5DPc"][0] for agency in country.agencies],
+        [data[agency.agency]["5DPc"][1] for agency in country.agencies],
+        title=translation.country_graphs["5DPc"]["title"] % locals(),
+        yAxis=translation.country_graphs["5DPc"]["yAxis"] % locals(),
     )
     
     return direct_to_template(request, template=template_name, extra_context=extra_context)
@@ -627,8 +655,7 @@ def countrygraphs(request, country_name, language, template_name="submissions/co
 def government_graphs(request, language, template_name="submission/country_graphs_by_indicator.html", extra_context=None):
     extra_context = extra_context or {}
 
-    language = models.Language.objects.get(language=language or "English")
-    translation = translations.get_translation(language)
+    translation = request.translation
 
     countries = sorted(Country.objects.all(), key=lambda x: x.country)
     data_3G = dict([(c, calc_country_indicators(c)["3G"]) for c in countries])

@@ -1,3 +1,5 @@
 *.pyc
 *.db
 .*.swp
+*~
+ihp/local_settings.py

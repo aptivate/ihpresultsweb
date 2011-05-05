@@ -17,7 +17,7 @@
 <h1>{{ institution_name }}</h1>
 <table class="dpind">
     <tr class="head">
-        <th rowspan="2">Agency</th>
+        <th rowspan="2">{{ translation.agency }}</th>
         {% for country in countries %}
         <th colspan="3">{{ country.country }}</th>
         {% endfor %}
@@ -26,13 +26,13 @@
         {% for country in countries %}
             <th>2007</th>
             <th>2009</th>
-            <th>Rating ∆</th>
+            <th>{{ translation.rating }} ∆</th>
         {% endfor %}
 
     </tr>
     {% if country_calcs %}
     <tr class="countryrow even">
-        <td>Country Data</td>
+        <td>{{ translation.country_data }}</td>
         {% for country, calcs in country_calcs %}
             <td>{{ calcs.base_val|floatformat|default_if_none:"-" }}</td>
             <td>{{ calcs.cur_val|floatformat|default_if_none:"-" }}</td>
