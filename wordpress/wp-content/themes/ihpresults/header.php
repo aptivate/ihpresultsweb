@@ -8,7 +8,7 @@
 	if ( is_404() ) { echo "404: Page Not Found"; }
 	wp_title('');
 	if ( is_archive() ) { echo " archive "; }
-	if ( !is_home() ) { echo " at "; }
+	if ( !is_home() ) { echo " "; }
 	bloginfo('name');
 ?></title>
 <?php
