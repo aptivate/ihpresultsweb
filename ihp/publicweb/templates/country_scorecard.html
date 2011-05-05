@@ -39,7 +39,7 @@
 			<ul class="item logos progress">
 				{% for agency in progress_agencies %}
 					{% with agency.agency as logo %}
-						{% include 'progress.html' %}
+						{% include 'progress.inc.html' %}
 					{% endwith %}
 				{% endfor %}
 			</ul>
@@ -55,7 +55,7 @@
 			<ul class="item logos no_progress">
 				{% for agency in no_progress_agencies %}
 					{% with agency.agency as logo %}
-						{% include 'progress.html' %}
+						{% include 'progress.inc.html' %}
 					{% endwith %}
 				{% endfor %}
 			</ul>
