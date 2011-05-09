@@ -10,4 +10,5 @@ xlrd==0.7.1
 xlwt==0.7.2
 South==0.7.3
 django-jenkins
-Dozer
+Dozer==0.1
+PIL==1.1.7
