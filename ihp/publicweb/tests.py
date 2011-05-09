@@ -171,3 +171,23 @@ class PublicWebsiteTest(TestCase):
         self.assertEqual(Rating.ARROW, values[11][1]['rating'])
         
         self.assertEqual(values, response.context['values'])
+
+    def test_agency_spm_countries_table(self):
+        agency = self.foobar
+        indicator_name = '8DP'
+        response = self.get(ihp.publicweb.views.agency_spm_countries_table,
+            agency_name=agency.agency, indicator_name=indicator_name)
+        values = response.context['values']
+        
+        # first entry should be Mozambique, check its data
+        first_row = values.pop(0)
+        self.assertEqual(self.mozambique, first_row[0])
+        self.assertEqual(dict(
+            baseline_value='N/A',
+            latest_value='N/A',
+            rating=Rating.ARROW,
+            cellclass=''),
+            first_row[1])
+        
+        # there should be no other data values
+        self.assertEqual([], values)

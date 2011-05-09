@@ -156,10 +156,11 @@ def agency_spm_countries_table(request, agency_name, indicator_name):
                 "rating" : ratings[indicator_name],
                 "cellclass" : "",
             } 
+            values.append((country, country_abs_values))
         else:
-            country_abs_values = None
+            # skip rows for countries where this agency does not work. refs #1013
+            pass
             
-        values.append((country, country_abs_values))
     values = sorted(values, key=lambda x: x[0].country)
 
     return render_to_response('agency_spm_countries_table.html',
