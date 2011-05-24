@@ -736,7 +736,7 @@ function ALO_em_batch_sending () {
 		$headers .= "Content-Type: text/html; charset=\"" . strtolower( get_option('blog_charset') ) . "\"\n";		
 		
         // ---- Send MAIL ----
-        $mail_engine = @wp_mail($recipients[$r]['email'], $subject, $updated_content, $headers );  
+        $mail_engine = wp_mail($recipients[$r]['email'], $subject, $updated_content, $headers );  
         
         if( $mail_engine && is_email($recipients[$r]['email']) ) {
             $recipients[$r]['result'] = 1;
