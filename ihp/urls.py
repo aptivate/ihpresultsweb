@@ -160,15 +160,12 @@ urlpatterns = patterns('',
 
     (r'^admin/', include(admin.site.urls)),
 
-)
-
-if settings.DEBUG:
-    urlpatterns += patterns('',
-        (r'^$', direct_to_template, {"template" : "home.html", "extra_context" : {
-        "agencies" : Agency.objects.filter(type="Agency"),
-        "gbsagencies" : Agency.objects.get_by_type("GBS"),
-        "countries" : Country.objects.all(),
-    }}, "home"))
+    # dashboard is URL to access underlying data indirectly
+    (r'^dashboard/$', direct_to_template, {"template" : "home.html", "extra_context" : {
+    "agencies" : Agency.objects.filter(type="Agency"),
+    "gbsagencies" : Agency.objects.get_by_type("GBS"),
+    "countries" : Country.objects.all()}},
+     "home"))
 
 _media_url = settings.MEDIA_URL
 if _media_url.startswith('/'):
