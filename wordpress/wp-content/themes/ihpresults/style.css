@@ -1209,3 +1209,9 @@ color:#333;
 	padding: 0;
 	vertical-align: -20%;
 }
+
+/* -------------------------------------------------------------- */
+/* fix for video embed - https://projects.aptivate.org/issues/1269 */
+.entry object {
+    display: inline;
+}
