@@ -1,4 +1,4 @@
-Django==1.2.4
+Django==1.2.5
 django-dajaxice==0.1.6
 django-debug-toolbar==0.8.4
 ipython==0.10.1
