@@ -1,10 +1,11 @@
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 import submissions.country_scorecard
 import submissions.target
 import submissions.views
 import submissions.table_views
+from submissions.models import Agency, Country
 from submissions.models import Submission, Language, AgencyProfile
 import logging
 
@@ -85,7 +86,7 @@ country_indicator_descriptions = {
     }
 
 def agency_scorecard_page(request, agency_name):
-    agency = submissions.models.Agency.objects.get(agency=agency_name)
+    agency = get_object_or_404(Agency, agency=agency_name)
     ratings = submissions.target.calc_agency_ratings(agency)
     np, p = submissions.target.get_country_progress(agency)
     english = Language.objects.get(language="English")
@@ -122,7 +123,7 @@ def _format_and_sort_ratings(ratings):
     return values
 
 def country_scorecard_page(request, country_name):
-    country = submissions.models.Country.objects.get(country=country_name)
+    country = get_object_or_404(Country, country=country_name)
     ratings = submissions.target.calc_country_ratings(country)
     np, p = submissions.target.get_agency_progress(country)
     
